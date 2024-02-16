@@ -1,0 +1,52 @@
+.root{
+    -fx-background-color:#EAEEF4;
+}
+
+.side_ankerpane{
+    -fx-background-color:#56AB2F;
+    -fx-background-color: linear-gradient(to bottom right, #56ab2f, #a8e063);
+    -fx-border-width: 2px 2px 2px 2px;
+}
+
+.inner_pane{
+    -fx-background-color:#ffffff;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+.btn_home{
+    -fx-background-color: #aad597;
+
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
+.btn_home:hover {
+    -fx-background-color: #aad597;
+    -fx-font-weight: bold;
+    -fx-border-width: 2px;
+    -fx-border-color: WHITE;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
+.pane_1{
+    -fx-background-color:#77bb58;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #77bb58;
+}
+.ajouter_stock{
+    -fx-background-color: #aad597;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
+.tt{
+    -fx-background-color: #aad597;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
