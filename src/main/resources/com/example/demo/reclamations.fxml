@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.repondreReclamationController">
+   <children>
+      <VBox layoutX="14.0" layoutY="95.0" prefHeight="310.0" prefWidth="197.0" spacing="5.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID Client :" wrappingWidth="132.53667449951172" />
+            <TextField fx:id="tfIdClient" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Titre  :" wrappingWidth="132.53667449951172" />
+            <TextField fx:id="tfTitre" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Statut :" wrappingWidth="132.53667449951172" />
+            <TextField fx:id="tfStatut" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type :" wrappingWidth="132.53667449951172" />
+            <TextField fx:id="tfType" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description :" wrappingWidth="132.53667449951172" />
+            <TextArea fx:id="tfDescription" prefHeight="60.0" prefWidth="198.0" />
+         </children>
+      </VBox>
+      <Label layoutX="315.0" layoutY="28.0" prefHeight="36.0" prefWidth="181.0" text="Réclamation" textAlignment="CENTER">
+         <font>
+            <Font name="Arial" size="30.0" />
+         </font>
+      </Label>
+      <TableView fx:id="table" layoutX="273.0" layoutY="95.0" onMouseClicked="#getData" prefHeight="310.0" prefWidth="530.0">
+        <columns>
+          <TableColumn fx:id="colIdReclamation" prefWidth="75.0" text="ID Réclamation" />
+          <TableColumn fx:id="colIdClient" prefWidth="75.0" text="ID Client" />
+            <TableColumn fx:id="colDescription" prefWidth="75.0" text="Déscription" />
+            <TableColumn fx:id="colTitre" prefWidth="75.0" text="Titre" />
+            <TableColumn fx:id="colStatut" prefWidth="75.0" text="Statut" />
+            <TableColumn fx:id="colType" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="colDateReclamation" prefWidth="75.0" text="Date de Réclamation" />
+        </columns>
+      </TableView>
+      <ButtonBar layoutX="218.0" layoutY="454.0" prefHeight="40.0" prefWidth="393.0">
+        <buttons>
+            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addReclamation" text="Ajouter" />
+            <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateReclamation" text="Modifier" />
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteReclamation" text="Supprimer" />
+          <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearReclamation" text="Clear" />
+        </buttons>
+         <padding>
+            <Insets right="17.0" />
+         </padding>
+      </ButtonBar>
+   </children>
+</AnchorPane>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.ajoutAvisController">
+    <children>
+        <VBox layoutX="50.0" layoutY="50.0" spacing="10.0">
+            <children>
+                <Label text="Donnez votre avis" />
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Note:" />
+                        <TextField fx:id="tfNote" />
+                        <Label text="(sur 5)" />
+                    </children>
+                </HBox>
+                <HBox spacing="10.0">
+                    <children>
+                        <Label text="Commentaire:" />
+                        <TextArea fx:id="tfCom" prefHeight="100.0" prefWidth="200.0" />
+                    </children>
+                </HBox>
+                <Button fx:id="btnSu" mnemonicParsing="false" onAction="#donnerAvis" text="Soumettre" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
