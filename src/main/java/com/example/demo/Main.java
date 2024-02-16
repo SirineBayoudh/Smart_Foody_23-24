@@ -15,6 +15,7 @@ public class Main extends Application {
         stage.setHeight(700);
         stage.setWidth(1200);
         stage.setTitle("Smart foody");
+        
         stage.setScene(scene);
         stage.show();
     }
