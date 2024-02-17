@@ -112,12 +112,14 @@ public class PageClientController {
         });
     }
 
-    private void updateSearchResults(String searchText) {
+    /*private void updateSearchResults(String searchText) {
         try {
             // Requête SQL pour récupérer les marques de produit correspondant au texte de recherche
             String sql = "SELECT DISTINCT marque FROM produit WHERE marque LIKE ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, "%" + searchText + "%");
+
+            // Exécutez la requête et obtenez le résultat
             ResultSet resultSet = statement.executeQuery();
 
             // Effacer le contenu précédent du TextField
@@ -140,7 +142,7 @@ public class PageClientController {
         } catch (SQLException e) {
             System.out.println("Erreur lors de la mise à jour des résultats de recherche : " + e.getMessage());
         }
-    }
+    }*/
 
 
     private void displayAllProducts() {
