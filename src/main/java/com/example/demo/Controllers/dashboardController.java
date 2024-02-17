@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class dashboardController implements Initializable {
 
     @FXML
-    private Pane innerPane;
+    private Pane  innerPane;
     @FXML
     private Button btn_home;
     @FXML
@@ -73,12 +73,13 @@ public class dashboardController implements Initializable {
 
     @FXML
     private void stock() {
-        loadPage("/com/example/demo/s.fxml");
+        loadPage("/com/example/demo/stock.fxml");
     }
     @FXML
-    private void user() {
-        loadPage("/com/example/demo/utilisateur.fxml");
+    private void alerte() {
+        loadPage("/com/example/demo/Alerte.fxml");
     }
+
     private void loadPage(String page) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(page));

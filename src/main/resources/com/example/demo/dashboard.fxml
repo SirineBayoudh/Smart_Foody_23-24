@@ -110,7 +110,7 @@
                         <Image url="@Images/aliments.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btn221" layoutX="13.0" layoutY="565.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="    Alertes" textFill="WHITE">
+                  <Button fx:id="btn221" layoutX="13.0" layoutY="565.0" mnemonicParsing="false" onAction="#alerte" onMouseClicked="#alerte" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="  Alertes" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
