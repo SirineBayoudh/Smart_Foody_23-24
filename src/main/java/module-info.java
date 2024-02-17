@@ -4,6 +4,7 @@ module com.example.demo {
 
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires java.mail;
 
     opens com.example.demo to javafx.fxml;
     opens com.example.demo.Models to javafx.base;
