@@ -24,13 +24,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
-
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 public class conseilController implements Initializable {
+    // Your Twilio credentials
+    private final String ACCOUNT_SID = "AC288eedcef6012dbb4dd8c8951813655b";
+    private final String AUTH_TOKEN = "b49516edf2250911df2c8caa199aee7e";
     @FXML
     private Button btnDelete;
     @FXML
@@ -121,8 +124,6 @@ public class conseilController implements Initializable {
             int note = conseil.getNote();
             if (note >= 1 && note <= 5) {
                 noteDistribution[note - 1]++; // Decrement by 1 to fit in array index
-            } else {
-                System.out.println("Warning: Note value out of range - " + note);
             }
         }
 
@@ -292,6 +293,15 @@ public class conseilController implements Initializable {
         }
     }
 
+    public void sendSMS(String to, String body) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Message message = Message.creator(
+                        new PhoneNumber("+21651600246"),
+                        new PhoneNumber("+13613103097"),
+                        body)
+                .create();
+    }
+
     @FXML
     void updateConseil(ActionEvent event) {
         // Create an alert dialog for confirmation
@@ -310,6 +320,7 @@ public class conseilController implements Initializable {
                     st.setString(1, tReponse.getText());
                     st.setInt(2, id_conseil);
                     st.executeUpdate();
+                    sendSMS("+21651600246", "Conseil updated");
                     showConseils();
                     clear();
                 } catch (SQLException e) {

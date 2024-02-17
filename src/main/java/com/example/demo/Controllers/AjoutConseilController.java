@@ -39,7 +39,7 @@ public class AjoutConseilController implements Initializable {
             String insert = "INSERT INTO conseil(id_conseil, id_client, matricule, statut, demande, reponse, date_conseil) VALUES (?, ?, ?, ?, ?, ?, ?)";
             con = MyConnection.instance.getCnx();
             st = con.prepareStatement(insert);
-            st.setString(1, String.valueOf(4923));
+            st.setString(1, String.valueOf(49770023));
             st.setString(2, String.valueOf(123123123));
             st.setInt(3, 321312312);
             st.setString(4, "en attente");
@@ -113,7 +113,7 @@ public class AjoutConseilController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MyConnection.getInstance();
