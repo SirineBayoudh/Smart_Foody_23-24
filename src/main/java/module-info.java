@@ -6,6 +6,7 @@ module com.example.demo {
     requires java.sql;
 
     opens com.example.demo to javafx.fxml;
+    opens com.example.demo.Models to javafx.base;
     exports com.example.demo;
     exports com.example.demo.Controllers;
     opens com.example.demo.Controllers to javafx.fxml;

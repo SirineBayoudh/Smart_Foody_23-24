@@ -70,10 +70,12 @@ public class dashboardController implements Initializable {
         btn_home.getStyleClass().add("btn_home");
 
     }
-
     @FXML
     private void stock() {
-        loadPage("/com/example/demo/s.fxml");
+    }
+    @FXML
+    private void conseil() {
+        loadPage("/com/example/demo/conseil.fxml");
     }
     @FXML
     private void user() {

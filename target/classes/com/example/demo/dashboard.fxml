@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
+<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
 <left>
     <VBox prefHeight="800.0" prefWidth="184.0">
         <children>
@@ -39,7 +39,7 @@
                             <Font size="15.0" />
                         </font>
                     </Button>
-                  <Button fx:id="btn2" layoutX="13.0" layoutY="403.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="     Conseils" textFill="WHITE">
+                  <Button fx:id="btn2" layoutX="13.0" layoutY="403.0" mnemonicParsing="false" onAction="#conseil" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="     Conseils" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>

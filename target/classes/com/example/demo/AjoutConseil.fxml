@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="279.0" prefWidth="343.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AjoutConseilController">
+    <children>
+        <Label layoutX="19.0" layoutY="69.0" text="Demande :" textFill="#56ab2f">
+            <font>
+                <Font name="System Bold Italic" size="17.0" />
+            </font></Label>
+        <TextArea fx:id="demandeLabel" layoutX="126.0" layoutY="70.0" prefHeight="142.0" prefWidth="202.0" style="-fx-border-color: #232323;" />
+        <!--
+        <Label layoutX="22.0" layoutY="186.0" text="Note :" textFill="#56ab2f">
+            <font>
+                <Font name="System Bold Italic" size="17.0" />
+            </font></Label>
+        <ChoiceBox fx:id="noteChoiceBox" layoutX="126.0" layoutY="185.0" prefHeight="26.0" prefWidth="56.0" style="-fx-background-color: #ffffff; -fx-border-color: #232323; -fx-background-radius: 0; -fx-border-radius: 0;">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="1" />
+                    <String fx:value="2" />
+                    <String fx:value="3" />
+                    <String fx:value="4" />
+                    <String fx:value="5" />
+                </FXCollections>
+            </items>
+        </ChoiceBox>
+        -->
+        <Text fill="#3c7720" layoutX="82.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajout d'une demande">
+            <font>
+                <Font name="System Bold Italic" size="20.0" />
+            </font>
+        </Text>
+      <Button fx:id="addBtn" layoutX="132.0" layoutY="229.0" mnemonicParsing="false" onAction="#ajoutConseil" prefHeight="35.0" prefWidth="98.0" styleClass="btn" stylesheets="@css/style_dash.css" text="       Ajouter">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="141.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/plus.png" />
+         </image>
+      </ImageView>
+    </children>
+</AnchorPane>
