@@ -131,7 +131,6 @@ public class conseilController implements Initializable {
         for (int i = 0; i < 5; i++) {
             series.getData().add(new XYChart.Data<>(String.valueOf(i + 1), noteDistribution[i]));
         }
-        
         stackedBarChart.getData().clear();
         stackedBarChart.getData().add(series);
     }
