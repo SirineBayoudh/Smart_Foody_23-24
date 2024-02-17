@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PageClientController">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PageClientController">
    <children>
       <BorderPane layoutX="158.0" layoutY="70.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -101,13 +101,13 @@
                <content>
                   <VBox prefHeight="1638.0" prefWidth="1000.0">
                      <children>
-                        <ImageView fitHeight="494.0" fitWidth="959.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="583.0" fitWidth="1175.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@Images/photo_acc.png" />
                            </image>
                         </ImageView>
                         <Pane prefHeight="43.0" prefWidth="950.0" />
-                        <HBox prefHeight="106.0" prefWidth="950.0">
+                        <HBox prefHeight="86.0" prefWidth="1190.0">
                            <children>
                               <VBox prefHeight="100.0" prefWidth="388.0">
                                  <children>
@@ -143,7 +143,7 @@
                                     <Insets left="30.0" />
                                  </HBox.margin>
                               </VBox>
-                              <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="148.0" visible="false" />
+                              <Separator orientation="VERTICAL" prefHeight="70.0" prefWidth="346.0" visible="false" />
                               <VBox prefHeight="100.0" prefWidth="372.0">
                                  <children>
                                     <ChoiceBox fx:id="categorieChoiceBox" prefHeight="30.0" prefWidth="200.0" styleClass="comboBox" stylesheets="@css/style_pageClient.css">
@@ -158,20 +158,20 @@
                         <Pane prefHeight="50.0" prefWidth="950.0" />
                         <HBox prefHeight="938.0" prefWidth="1000.0">
                            <children>
-                              <BorderPane prefHeight="900.0" prefWidth="950.0">
+                              <BorderPane prefHeight="923.0" prefWidth="1188.0">
                                  <left>
-                                    <VBox prefHeight="900.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+                                    <VBox prefHeight="723.0" prefWidth="299.0" BorderPane.alignment="CENTER">
                                        <children>
                                           <VBox fx:id="chosenFruitCard" alignment="CENTER" prefHeight="372.0" prefWidth="239.0" stylesheets="@css/style_pageClient.css">
                                              <children>
                                                 <HBox prefHeight="62.0" prefWidth="239.0" stylesheets="@css/style_pageClient.css">
                                                    <children>
-                                                      <Label fx:id="fruitNameLabel" prefHeight="32.0" prefWidth="118.0" text="Mangue" textFill="#56ab2f">
+                                                      <Label fx:id="fruitNameLabel" prefHeight="32.0" prefWidth="137.0" text="Mangue" textFill="#56ab2f">
                                                          <font>
                                                             <Font name="Cambria" size="25.0" />
                                                          </font>
                                                       </Label>
-                                                      <Label fx:id="fruitPriceLabel" prefHeight="32.0" prefWidth="94.0" text="4.99" textFill="#56ab2f">
+                                                      <Label fx:id="fruitPriceLabel" prefHeight="32.0" prefWidth="98.0" text="4.99" textFill="#56ab2f">
                                                          <font>
                                                             <Font name="Cambria" size="25.0" />
                                                          </font>
@@ -215,11 +215,11 @@
                                  <center>
                                     <VBox prefHeight="900.0" prefWidth="690.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <HBox prefHeight="714.0" prefWidth="679.0">
+                                          <HBox prefHeight="714.0" prefWidth="918.0">
                                              <children>
-                                                <ScrollPane prefHeight="734.0" prefWidth="679.0">
+                                                <ScrollPane prefHeight="714.0" prefWidth="849.0">
                                                    <content>
-                                                      <GridPane fx:id="imagesGrid" prefHeight="350.0" prefWidth="658.0">
+                                                      <GridPane fx:id="imagesGrid" prefHeight="350.0" prefWidth="740.0">
                                                         <columnConstraints>
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                         </columnConstraints>
@@ -238,24 +238,24 @@
                                     </VBox>
                                  </center>
                                  <bottom>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                                    <VBox prefHeight="200.0" prefWidth="1182.0" BorderPane.alignment="CENTER">
                                        <children>
                                           <Pane prefHeight="50.0" prefWidth="950.0" />
-                                          <HBox prefHeight="150.0" prefWidth="950.0">
+                                          <HBox prefHeight="150.0" prefWidth="1198.0">
                                              <children>
-                                                <VBox prefHeight="158.0" prefWidth="390.0">
+                                                <VBox prefHeight="150.0" prefWidth="542.0">
                                                    <children>
                                                       <ImageView fitHeight="113.0" fitWidth="114.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
                                                             <Image url="@Images/trans_logo.png" />
                                                          </image>
                                                          <VBox.margin>
-                                                            <Insets left="130.0" />
+                                                            <Insets left="170.0" />
                                                          </VBox.margin>
                                                       </ImageView>
                                                       <Label prefHeight="35.0" prefWidth="362.0" text="Première boutique en ligne offrant une variété des produits alimentaires sains et de qualité  avec un service de conseil gratuit" textFill="#56ab2f" wrapText="true">
                                                          <VBox.margin>
-                                                            <Insets left="20.0" right="20.0" />
+                                                            <Insets left="100.0" right="20.0" />
                                                          </VBox.margin>
                                                          <font>
                                                             <Font name="Cambria" size="12.0" />
@@ -303,13 +303,16 @@
                                                          <font>
                                                             <Font name="Cambria" size="15.0" />
                                                          </font>
+                                                         <VBox.margin>
+                                                            <Insets left="40.0" />
+                                                         </VBox.margin>
                                                       </Label>
                                                       <Label prefHeight="18.0" prefWidth="118.0" text="Smart Foody" textFill="#56ab2f">
                                                          <font>
                                                             <Font name="Cambria" size="15.0" />
                                                          </font>
                                                          <VBox.margin>
-                                                            <Insets left="50.0" />
+                                                            <Insets left="100.0" />
                                                          </VBox.margin>
                                                       </Label>
                                                       <Label prefHeight="18.0" prefWidth="105.0" text="+21671465735" textFill="#56ab2f">
@@ -317,7 +320,7 @@
                                                             <Font name="Cambria" size="15.0" />
                                                          </font>
                                                          <VBox.margin>
-                                                            <Insets left="50.0" />
+                                                            <Insets left="100.0" />
                                                          </VBox.margin>
                                                       </Label>
                                                       <Label prefHeight="18.0" prefWidth="173.0" text="Contact@smartfoody.tn" textFill="#56ab2f">
@@ -325,7 +328,7 @@
                                                             <Font name="Cambria" size="15.0" />
                                                          </font>
                                                          <VBox.margin>
-                                                            <Insets left="50.0" />
+                                                            <Insets left="100.0" />
                                                          </VBox.margin>
                                                       </Label>
                                                    </children>

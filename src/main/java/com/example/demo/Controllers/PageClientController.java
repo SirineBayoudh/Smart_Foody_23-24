@@ -94,6 +94,7 @@ public class PageClientController {
 
         // Initialiser le ChoiceBox avec les catégories
         categorieChoiceBox.setItems(categories);
+        imagesGrid.setHgap(20);
 
 
         // Afficher tous les produits au démarrage sans filtre de catégorie
