@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AlerteController">
+<Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AlerteController">
     <children>
         <!-- Le contenu spécifique de votre page de stocks -->
         <TableView fx:id="AlerteTableView" layoutX="313.0" layoutY="271.0" onMouseClicked="#alerte" prefHeight="312.0" prefWidth="455.0">

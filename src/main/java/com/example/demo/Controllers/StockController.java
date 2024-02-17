@@ -91,17 +91,13 @@ public class StockController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Trecherche.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Filter the data based on the entered text
             filterData(newValue);
         });
 
         clickpane.setOnMouseClicked(event -> handlePaneClick(event));
-        //property of the delete and update buttons to the absence of selection in the table
-      //  btnsupprimer.disableProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNull());
-       // btnupdate.disableProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNull());
         show();
         Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
-        //VboxAjouter.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNull());
+
     }
     public static StockController getInstance() {
         if (instance == null) {
@@ -111,10 +107,10 @@ public class StockController implements Initializable{
     }
 
     public void checkStockAndDisplayLowestQuantity() {
-        // Assuming stockData is a list of Stock objects
+
         ObservableList<Stock> stockData = displayAllStock();
 
-        // Find the stock with the lowest quantity
+        // petite quantite
         Stock lowestStock = findLowestStock(stockData);
 
         if (lowestStock != null) {
@@ -135,14 +131,12 @@ public class StockController implements Initializable{
         alert.setHeaderText(null);
         alert.setContentText(message);
 
-        // Customize the alert style (optional)
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(
                 getClass().getResource("/com/example/demo/css/style_dash.css").toExternalForm()
         );
         dialogPane.getStyleClass().add("custom-alert");
 
-        // Show the alert
         alert.showAndWait();
     }
     private Stock findLowestStock(ObservableList<Stock> stockData) {
@@ -159,7 +153,6 @@ public class StockController implements Initializable{
 
             }
         }
-
         return lowestStock;
     }
     public int getLowestStockId() {
@@ -167,10 +160,10 @@ public class StockController implements Initializable{
     }
     @FXML
     private void handlePaneClick(MouseEvent event) {
-        // Clear the selection in the TableView when the Pane is clicked
+        // annuler select in the TableView when the Pane is clicked
         stockTableView.getSelectionModel().clearSelection();
 
-        // Clear other fields or perform additional actions if needed
+        // Clear other fields
         Qntfield.setText(null);
         Idfield.setText(null);
         Refield.setText(null);
@@ -185,12 +178,12 @@ public class StockController implements Initializable{
 
         try {
             Connection connection = MyConnection.getInstance().getCnx();
-            // Select all columns from the stockk table
+
             String selectQuery = "SELECT * FROM stock";
 
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(selectQuery)) {
-                // Iterate through the result set and create Stock objects
+
                 while (resultSet.next()) {
                     int id_s = resultSet.getInt("id_s");
                     String nom=resultSet.getString("nom");
@@ -217,7 +210,6 @@ public class StockController implements Initializable{
         try {
             Connection connection = MyConnection.getInstance().getCnx();
 
-            // Select product information from both produit and stockk tables
             String selectQuery = "SELECT p.prix, s.quantite " +
                     "FROM produit p INNER JOIN stock s ON p.ref = s.ref_produit " +
                     "WHERE s.ref_produit = ?";
@@ -226,7 +218,7 @@ public class StockController implements Initializable{
                 preparedStatement.setInt(1, ref_produit);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    // Check if the product entry exists in the stockk table
+
                     if (resultSet.next()) {
                         // Retrieve product information
                         float prix = resultSet.getFloat("prix");
@@ -240,10 +232,6 @@ public class StockController implements Initializable{
 
                         // Update the total value in the stockk table
                         updateTotalValueInDatabase(ref_produit, totalValue);
-
-                        // If you want to update the UI, you can use a label or some other UI component here
-                        // For example, if you have a label named totalLabel, you can update it like this:
-                        // totalLabel.setText(String.valueOf(totalValue));
 
                         return totalValue;
                     } else {
@@ -263,7 +251,6 @@ public class StockController implements Initializable{
         try {
             Connection connection = MyConnection.getInstance().getCnx();
 
-            // Update the total value in the stockk table
             String updateQuery = "UPDATE stock SET cout = ? WHERE ref_produit = ?";
             try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
                 updateStatement.setFloat(1, totalValue);
@@ -307,17 +294,15 @@ void handleButtonAction(ActionEvent event) {
         stage.setTitle("Ajouter stock");
         stage.setScene(new Scene(root));
         stage.setOnHidden((WindowEvent windowEvent) -> {
-            // This code will be executed when the window is closed
             show(); // Update the table
         });
         stage.show();
     } catch (IOException e) {
         e.printStackTrace();
-        System.out.println("Error loading Ajouter_stock.fxml");
+        System.out.println("Error du chargement Ajouter_stock.fxml");
     }
 }
     public void updateTotalValue(float totalValue) {
-        // Update your UI element to display the total value
         tTotal.setText(String.valueOf(totalValue));
     }
     @FXML
@@ -325,7 +310,7 @@ void handleButtonAction(ActionEvent event) {
         Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
         if (selectedStock == null) {
-            // Display an alert indicating that no item is selected
+            // alert lors d'absence d'un element selectionner
             showAlert("Veuillez sélectionner un élément.");
         } else {
             stockTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -333,16 +318,14 @@ void handleButtonAction(ActionEvent event) {
                     id_s = newSelection.getId_s();
                 }
             });
-            // Create an alert dialog
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText(null);
             alert.setContentText("Vous êtes sur  de supprimer le stock?");
 
-            // Show the alert and wait for the user's response
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    // User clicked OK, proceed with delete
                     String delete = "DELETE FROM stock WHERE id_s = ?";
                     Connection connection = MyConnection.getInstance().getCnx();
                     try {
@@ -365,7 +348,7 @@ void getData(MouseEvent event) {
     Vboxupdate.visibleProperty().unbind();
     Vboxupdate.setVisible(event.getClickCount() == 1);
 
-    if (event.getClickCount() == 1) { // Check for single-click
+    if (event.getClickCount() == 1) {
         Stock selectedstock= stockTableView.getSelectionModel().getSelectedItem();
         Idfield.setText(String.valueOf(selectedstock.getId_s()));
         Refield.setText(String.valueOf(selectedstock.getProduitRef()));
@@ -377,7 +360,7 @@ void getData(MouseEvent event) {
         Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
         if (selectedStock == null) {
-            // Display an alert indicating that no item is selected
+
             showAlert("Veuillez sélectionner un élément.");
         } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -385,12 +368,11 @@ void getData(MouseEvent event) {
             alert.setHeaderText(null);
             alert.setContentText("Vous êtes sur de modifier le stock ? ");
 
-            // Show the alert and wait for the user's response
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     if (!isInteger(Qntfield.getText())) {
                         showAlert("La quantité doit être un entier.");
-                        return; // Exit the method if the quantity is not a valid integer
+                        return;
                     }
                     String update = "update stock set quantite = ? where id_s = ?";
                     Connection connection = MyConnection.getInstance().getCnx();
@@ -398,14 +380,14 @@ void getData(MouseEvent event) {
                     try {
                         PreparedStatement st = connection.prepareStatement(update);
                         st.setInt(1, Integer.parseInt(Qntfield.getText())); // Convert the String to int
-                        st.setInt(2, Integer.parseInt(Idfield.getText())); // Assuming Idfield is a TextField for the id_s
+                        st.setInt(2, Integer.parseInt(Idfield.getText())); //
 
                         st.executeUpdate();
                         show();
 
                     } catch (SQLException | NumberFormatException e) {
                         e.printStackTrace();
-                        // Handle the exception appropriately
+
                     }
                 }
 
@@ -427,7 +409,6 @@ void getData(MouseEvent event) {
             alert.setHeaderText(null);
             alert.setContentText(message);
 
-            // Apply a custom style to the alert
             DialogPane dialogPane = alert.getDialogPane();
             dialogPane.getStylesheets().add(
                     getClass().getResource("/com/example/demo/css/style_dash.css").toExternalForm()
@@ -440,24 +421,23 @@ void getData(MouseEvent event) {
 
     /*****************Recherche************/
     private void filterData(String searchText) {
-        // Get the current list of Conseil objects from the TableView
+
         ObservableList<Stock> dataList = displayAllStock();
 
-        // Create a filtered list to hold Stock objects matching the search criteria
         ObservableList<Stock> filteredList = FXCollections.observableArrayList();
 
-        // Iterate through the dataList and add Stock objects that match the search criteria
+
         for (Stock stock : dataList) {
             String brand = stock.getProduitMarque().toLowerCase();
             searchText = searchText.toLowerCase().trim();
 
-            // Check if the brand name contains the searchText as a substring
+
             if (brand.contains(searchText)) {
                 filteredList.add(stock);
             }
         }
 
-        // Clear the TableView and add the filtered data
+        // Clear the TableView and data filtered
         stockTableView.getItems().clear();
         stockTableView.getItems().addAll(filteredList);
     }

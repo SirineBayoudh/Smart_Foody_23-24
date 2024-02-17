@@ -43,38 +43,31 @@ public class AjouterStockController {
     private TextField tNom;
     private StockController stockController;
 
-    // Add a method to set the StockController
+
     public void setStockController(StockController stockController) {
         this.stockController = stockController;
     }
 
     @FXML
     void handleAddStock(ActionEvent event) {
-        // Logic to add a new stock
-
-        // Call createStock method
         createStock(event);
 
-        // Calculate total value
+        // calcul total
         int ref_produit = Integer.parseInt(tRef.getText());
         float totalValue = calculateTotalValue(ref_produit);
 
         // Update StockController
         if (stockController != null) {
-            stockController.show(); // Refresh the table
+            stockController.show(); // mis a jour table
             stockController.updateTotalValue(totalValue); // Update total value
         }
 
-        // Close the AjouterStockController window
+        // fermeture de  AjouterStockController window
         Stage stage = (Stage) btnSave.getScene().getWindow();
         stage.close();
     }
 
-    // Add a new method to close the window
-    private void closeWindow() {
-        Stage stage = (Stage) btnSave.getScene().getWindow();
-        stage.close();
-    }
+
 
     private boolean isProductExists(int ref) {
         try {
@@ -83,7 +76,7 @@ public class AjouterStockController {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, ref);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                return resultSet.next(); // Returns true if the product exists
+                return resultSet.next(); // Retourner true if product existe
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,22 +101,22 @@ public class AjouterStockController {
         try {
             Connection connection = MyConnection.getInstance().getCnx();
 
-            // Check if the product exists
+            // produit existe
             if (isProductExists(ref)) {
-                // Fetch the product details
+                // detail produit  (fetch)
                 String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
                 try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
                     selectStatement.setInt(1, ref);
                     ResultSet resultSet = selectStatement.executeQuery();
 
-                    // If the product is found, set the 'marque' value in the tMarque TextField
+                    // if produit existe , set  'marque' value in the tMarque TextField
                     if (resultSet.next()) {
                         String marque = resultSet.getString("marque");
                         tMarque.setText(marque);
                     }
                 }
             } else {
-                // Clear the tMarque TextField if the product doesn't exist
+                // supprimer tmarque textfield if produit n'existe pas
                 tMarque.clear();
                 System.out.println("Product does not exist. Please add the product first.");
             }
@@ -148,21 +141,19 @@ public class AjouterStockController {
 
                 Connection connection = MyConnection.getInstance().getCnx();
 
-                // Check if the product exists
                 if (isProductExists(ref)) {
-                    // Check if a stock entry with the same reference already exists
+                    // verifier l'existance du ref dans stock
                     if (!isStockEntryExists(ref)) {
-                        // Fetch the product details
                         String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
                         try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
                             selectStatement.setInt(1, ref);
                             ResultSet resultSet = selectStatement.executeQuery();
 
-                            // If the product is found, proceed with adding the stock entry
+                            // produit existe ,ajouter  stock entry
                             if (resultSet.next()) {
                                 String marque = resultSet.getString("marque"); // Retrieve the 'marque' value from the result set
 
-                                // Add the stock entry with the fetched product details
+                                // ajouter  stock entry avec   produits details
                                 String insertQuery = "INSERT INTO stock (ref_produit, marque, quantite,nom, nb_vendu) VALUES (?,?, ?, ?, ?)";
                                 try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
                                     insertStatement.setInt(1, ref);
@@ -172,23 +163,23 @@ public class AjouterStockController {
                                     insertStatement.setInt(5, nbVendu);
                                     insertStatement.executeUpdate();
 
-                                    // Close the window
+                                    // fermer window
                                     Stage stage = (Stage) btnSave.getScene().getWindow();
                                     stage.close();
 
-                                    showAlert("Stock entry added successfully!", "Success", Alert.AlertType.INFORMATION);
+                                    showAlert("Stock ajouté avec succés!", "Succés", Alert.AlertType.INFORMATION);
                                 }
                             }
                         }
                     } else {
-                        showAlert("Stock entry with the same reference already exists.", "Duplicate Entry", Alert.AlertType.WARNING);
+                        showAlert("Réference déja existante.", "Réference existe", Alert.AlertType.WARNING);
                     }
                 } else {
-                    showAlert("Product does not exist. Please add the product first.", "Product Not Found", Alert.AlertType.WARNING);
+                    showAlert("Produit inexistant, veuillez ajouter le produit.", "Produit introuvable", Alert.AlertType.WARNING);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                showAlert("Error occurred while adding stock entry.", "Error", Alert.AlertType.ERROR);
+                showAlert("erreur d'ajout du stock.", "Error", Alert.AlertType.ERROR);
             }
         }
     }
@@ -240,7 +231,7 @@ public class AjouterStockController {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, ref);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                return resultSet.next(); // Returns true if the stock entry exists
+                return resultSet.next(); //Retourner true if stok entry existe
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -273,8 +264,6 @@ public class AjouterStockController {
     private float calculateTotalValue(int ref_produit) {
         try {
             Connection connection = MyConnection.getInstance().getCnx();
-
-            // Select product information from both produit and stockk tables
             String selectQuery = "SELECT p.prix, s.quantite " +
                     "FROM produit p INNER JOIN stock s ON p.ref = s.ref_produit " +
                     "WHERE s.ref_produit = ?";
@@ -283,16 +272,16 @@ public class AjouterStockController {
                 preparedStatement.setInt(1, ref_produit);
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    // Check if the product entry exists in the stockk table
+                    // test produit existe dans table stock
                     if (resultSet.next()) {
-                        // Retrieve product information
+                        // Retrancher les informations du produits
                         float prix = resultSet.getFloat("prix");
                         int quantite = resultSet.getInt("quantite");
 
-                        // Calculate the total value
+                        // calculer total
                         return prix * quantite;
                     } else {
-                        System.out.println("Product with ref " + ref_produit + " not found in stockk table.");
+                        System.out.println("Produit ave réference  " + ref_produit + " n'existe pas  dans le stock.");
                     }
                 }
             }
@@ -300,7 +289,7 @@ public class AjouterStockController {
             e.printStackTrace();
         }
 
-        // Return a default value in case of an error or if the product is not found
+        // produit not found , error , case prend valeur 0.0
         return 0.0f;
     }
 
