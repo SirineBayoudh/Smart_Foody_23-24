@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" prefHeight="450.0" prefWidth="400.0" stylesheets="@css/style_login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.LoginController">
+    <children>
+        <ImageView fitHeight="123.0" fitWidth="124.0" layoutX="138.0" pickOnBounds="true" preserveRatio="true" translateY="10.0">
+            <image>
+                <Image url="@Images/trans_logo.png" />
+            </image>
+        </ImageView>
+        <Text fx:id="t1" fill="#56ab2f" layoutX="90.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Se connecter" translateY="10.0" />
+        <Text fill="WHITE" layoutX="246.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="S'inscrire" translateY="10.0" />
+        <VBox layoutX="45.0" layoutY="100.0" prefHeight="207.0" prefWidth="347.0" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="60.0">
+            <children>
+                <Label text="Email" textFill="WHITE" translateY="10.0" />
+                <TextField fx:id="temail" maxWidth="-Infinity" prefHeight="0.0" prefWidth="310.0" promptText="E-mail" />
+                <Label text="Mot de passe" textFill="WHITE" translateY="10.0" />
+                <ImageView fx:id="eyeClosed" fitHeight="28.0" fitWidth="26.0" onMouseClicked="#Close_Eye_OnClick" pickOnBounds="true" translateX="310.0" translateY="5.0">
+                    <image>
+                        <Image url="@Images/visibilite.png" />
+                    </image>
+                </ImageView>
+                <PasswordField fx:id="tpwd" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnAction" prefWidth="310.0" promptText="Mot de passe" translateY="-40.0" />
+                <TextField fx:id="tpwdshow" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnAction" prefHeight="0.0" prefWidth="310.0" promptText="Mot de passe" translateY="-88.0" />
+                <Text fill="#56ab2f" strokeType="OUTSIDE" strokeWidth="0.0" text="Mot de passe oublié ?" translateY="-60.0" />
+                <Button fx:id="btnCon" alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="118.0" text="Connexion" translateX="40.0" translateY="-50.0">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
+                <ImageView fx:id="eyeOpen" fitHeight="28.0" fitWidth="26.0" layoutX="10.0" layoutY="127.0" onMouseClicked="#Open_Eye_OnClick" pickOnBounds="true" translateX="310.0" translateY="-210.0">
+                    <image>
+                        <Image url="@Images/fermer-les-yeux.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </VBox>
+    </children>
+    <styleClass>
+        <String fx:value="login-container" />
+        <String fx:value="box" />
+    </styleClass>
+</AnchorPane>
