@@ -8,14 +8,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static final String CURRENCY = "DT";
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("PageClient.fxml"));
         Scene scene = new Scene(root);
         stage.setHeight(700);
         stage.setWidth(1200);
         stage.setTitle("Smart foody");
-        
+
         stage.setScene(scene);
         stage.show();
     }
