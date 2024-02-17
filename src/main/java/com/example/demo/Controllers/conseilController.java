@@ -24,6 +24,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
+
 
 public class conseilController implements Initializable {
     @FXML
@@ -32,6 +37,8 @@ public class conseilController implements Initializable {
     private Button btnUpdate;
     @FXML
     private Button btnClear;
+    @FXML
+    private StackedBarChart<String, Number> stackedBarChart;
     @FXML
     private TableColumn<Conseil, Date> coldate;
     @FXML
@@ -98,10 +105,35 @@ public class conseilController implements Initializable {
             if (selectedStatus != null) {
                 filterData(selectedStatus);
                 updatePieChart();
+                populateStackedBarChart();
             }
         });
         btnClear.setOnAction(this::clearField);
         updatePieChart();
+        populateStackedBarChart();
+    }
+
+    private void populateStackedBarChart() {
+        ObservableList<Conseil> dataList = getConseils();
+        int[] noteDistribution = new int[5]; // Array to store the distribution of notes from 1 to 5
+
+        for (Conseil conseil : dataList) {
+            int note = conseil.getNote();
+            if (note >= 1 && note <= 5) {
+                noteDistribution[note - 1]++; // Decrement by 1 to fit in array index
+            } else {
+                System.out.println("Warning: Note value out of range - " + note);
+            }
+        }
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Distribution des notes");
+        for (int i = 0; i < 5; i++) {
+            series.getData().add(new XYChart.Data<>(String.valueOf(i + 1), noteDistribution[i]));
+        }
+        
+        stackedBarChart.getData().clear();
+        stackedBarChart.getData().add(series);
     }
 
     private void updatePieChart() {
@@ -204,6 +236,7 @@ public class conseilController implements Initializable {
         countAll.setText(String.valueOf(list.size()));
 
         updatePieChart();
+        populateStackedBarChart();
     }
 
     @FXML
