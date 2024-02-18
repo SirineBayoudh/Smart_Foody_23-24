@@ -1,6 +1,5 @@
 package com.example.demo.Controllers;
 
-
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
 import javafx.event.ActionEvent;
@@ -10,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -24,30 +22,32 @@ import java.util.List;
 
 public class PanierController {
 
+    // Déclaration des éléments de l'interface
     public Button btnViderPanier;
     @FXML
     private VBox productsContainer;
+
+    // Connexion à la base de données
     Connection cnx;
 
-
+    // Constructeur
     public PanierController() {
         cnx = MyConnection.getInstance().getCnx();
-
     }
+
+    // Méthode d'initialisation
     public void initialize() {
         afficherProduits();
         int nombreProduits = obtenirNombreProduitsDansLePanier();
-
-        // Désactiver le bouton si le panier est vide
         btnViderPanier.setDisable(nombreProduits == 0);
     }
 
+    // CRUD (Create, Read, Update, Delete) Operations
 
-    // Affiche les produits dans le panier en rejoignant les tables `produit` et `panier` par `ref_produit`.
-
+    //////////**************************** Affiche les produits dans le panier en rejoignant les
+    // tables `produit` et `panier` par `ref_produit`.***********************************************
     public List<Produit> affichageProduitsDansLePanier() {
         List<Produit> produits = new ArrayList<>();
-        // Requête SQL modifiée pour rejoindre les tables `produit` et `panier` par `ref_produit`
         String requete = "SELECT p.* FROM produit p JOIN panier pa ON p.ref = pa.ref_produit";
         try (Statement stm = cnx.createStatement()) {
             try (ResultSet rs = stm.executeQuery(requete)) {
@@ -69,6 +69,7 @@ public class PanierController {
         return produits;
     }
 
+    /////////////////////////////////////////////// Supprime un produit du panier///////////////////////////////////////////////
     public void supprimerProduitDuPanier(String refProduit) {
         String requete = "DELETE FROM panier WHERE ref_produit = ?";
         try (PreparedStatement pst = cnx.prepareStatement(requete)) {
@@ -83,8 +84,10 @@ public class PanierController {
             System.out.println("Erreur lors de la suppression du produit du panier : " + e.getMessage());
         }
     }
+
+    ///////////////////////////////// Affiche les produits dans le panier///////////////////////////////////////////////////////////
     public void afficherProduits() {
-        List<Produit> produits =affichageProduitsDansLePanier();
+        List<Produit> produits = affichageProduitsDansLePanier();
         productsContainer.getChildren().clear();
 
         for (Produit produit : produits) {
@@ -105,36 +108,27 @@ public class PanierController {
             productBox.getChildren().addAll(labelProduit, quantiteSpinner, btnSupprimer);
             productsContainer.getChildren().add(productBox);
         }
-
     }
-    //on a ici ajouter le bouton viderpanier pour supprimer tous les produits de panier et si le panier est vide le bouton est incliquable
+
+    ///////////////////////////////////////// Vide le panier/////////////////////////////////////////////////////
     public void viderPanier() {
-        // Obtenir le nombre de produits dans le panier
         int nombreProduits = obtenirNombreProduitsDansLePanier();
 
         // Si le panier n'est pas vide, afficher la boîte de dialogue de confirmation
         if (nombreProduits > 0) {
-            // Création de la boîte de dialogue de confirmation
             Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationDialog.setTitle("Confirmation");
             confirmationDialog.setHeaderText("Confirmation de vidage du panier");
             confirmationDialog.setContentText("Êtes-vous sûr de vouloir vider votre panier ?");
 
-            // Personnalisation des boutons
             confirmationDialog.getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
-
-            // Ajout des styles CSS pour personnaliser la boîte de dialogue
             confirmationDialog.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
             confirmationDialog.getDialogPane().getStyleClass().add("custom-alert");
-
-            // Personnalisation des styles des boutons "OK" et "Annuler"
             confirmationDialog.getDialogPane().lookupButton(ButtonType.OK).getStyleClass().add("ok-button");
             confirmationDialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().add("cancel-button");
 
-            // Affichage de la boîte de dialogue et attente de la réponse de l'utilisateur
             confirmationDialog.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    // L'utilisateur a cliqué sur OK, vider le panier
                     String requete = "DELETE FROM panier";
                     try (Statement statement = cnx.createStatement()) {
                         int rowCount = statement.executeUpdate(requete);
@@ -148,21 +142,21 @@ public class PanierController {
                         System.out.println("Erreur lors de la suppression des éléments du panier : " + e.getMessage());
                     }
                 } else {
-                    // L'utilisateur a cliqué sur Annuler, ne rien faire
                     System.out.println("Opération annulée.");
                 }
             });
         }
     }
 
-    // Méthode pour obtenir le nombre de produits dans le panier
 
+
+    /////////////////////// Méthode pour obtenir le nombre de produits dans le panier////////////////////////////
     private int obtenirNombreProduitsDansLePanier() {
         List<Produit> produits = affichageProduitsDansLePanier();
         return produits.size();
     }
 
-    ////////par le bouton ajouter au panier
+    // Affiche les produits disponibles pour être ajoutés au panier juste pour le test dans l'intégration elle sera supprimé
     public List<Produit> afficherProduitDansPanier() {
         List<Produit> produits = new ArrayList<>();
         String requete = "SELECT * FROM produit";
@@ -185,25 +179,20 @@ public class PanierController {
         }
         return produits;
     }
+
+    // Ajoute un produit au panier///////////////////////////////////////////////
     public void ajouterProduitAuPanier(String refProduit) {
-        // La requête SQL pour insérer un produit dans le panier avec 'ref_produit'
-        // et en définissant les valeurs par défaut pour 'remise' et 'total'
         String requete = "INSERT INTO panier (ref_produit, remise, totale) VALUES (?, 0, 0)";
         try (PreparedStatement pst = cnx.prepareStatement(requete)) {
-            pst.setString(1, refProduit); // Assigner la référence du produit à la première variable de la requête
-            pst.executeUpdate(); // Exécuter la requête d'insertion
+            pst.setString(1, refProduit);
+            pst.executeUpdate();
             System.out.println("Produit ajouté au panier avec succès");
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout du produit au panier : " + e.getMessage());
         }
     }
 
-
-
-
-
-
-    ////navigation entre les interfaces
+    // Méthodes de navigation//////////////////////////////////////////////////////////
 
     @FXML
     private void chargerInterfaceCommande(ActionEvent event) {
@@ -218,43 +207,16 @@ public class PanierController {
         }
     }
 
-//    public void afficherProduit() {
-//        try {
-//            // Charger le fichier FXML de l'interface panier.fxml
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Produit.fxml"));
-//            Parent root = loader.load();
-//
-//            // Créer une nouvelle scène avec l'interface chargée
-//            Scene scene = new Scene(root);
-//
-//            // Obtenir la fenêtre principale
-//            Stage stage = (Stage) productsContainer.getScene().getWindow();
-//
-//            // Définir la nouvelle scène sur la fenêtre principale
-//            stage.setScene(scene);
-//            stage.show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
     public void navbarre() {
         try {
-            // Charger le fichier FXML de l'interface panier.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
             Parent root = loader.load();
-
-            // Créer une nouvelle scène avec l'interface chargée
             Scene scene = new Scene(root);
-
-            // Obtenir la fenêtre principale
             Stage stage = (Stage) productsContainer.getScene().getWindow();
-
-            // Définir la nouvelle scène sur la fenêtre principale
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
