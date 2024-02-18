@@ -112,39 +112,6 @@ public class PageClientController {
         });
     }
 
-    /*private void updateSearchResults(String searchText) {
-        try {
-            // Requête SQL pour récupérer les marques de produit correspondant au texte de recherche
-            String sql = "SELECT DISTINCT marque FROM produit WHERE marque LIKE ?";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, "%" + searchText + "%");
-
-            // Exécutez la requête et obtenez le résultat
-            ResultSet resultSet = statement.executeQuery();
-
-            // Effacer le contenu précédent du TextField
-            searchResultTextField.clear();
-
-            // Ajouter les résultats de la recherche au TextField
-            StringBuilder resultBuilder = new StringBuilder();
-            while (resultSet.next()) {
-                String marque = resultSet.getString("marque");
-                resultBuilder.append(marque).append("\n");
-            }
-            searchResultTextField.setText(resultBuilder.toString());
-
-            // Afficher le TextField des résultats de recherche si des résultats sont disponibles
-            if (!resultBuilder.toString().isEmpty()) {
-                searchResultTextField.setVisible(true);
-            } else {
-                searchResultTextField.setVisible(false);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la mise à jour des résultats de recherche : " + e.getMessage());
-        }
-    }*/
-
-
     private void displayAllProducts() {
         try {
             // Requête SQL pour récupérer toutes les URL des images depuis la base de données

@@ -1,6 +1,7 @@
 package com.example.demo.Models;
 
 public class Produit {
+    private Integer ref;
     private String marque;
     private String categorie;
     private Float prix;
@@ -16,6 +17,14 @@ public class Produit {
 
     public String getMarque() {
         return marque;
+    }
+
+    public Integer getRef() {
+        return ref;
+    }
+
+    public void setRef(Integer ref) {
+        this.ref = ref;
     }
 
     public void setMarque(String marque) {
@@ -69,6 +78,9 @@ public class Produit {
         this.image = image;
         this.obj = obj;
         this.critere = critere;
+    }
+    public Produit(){
+
     }
 
     @Override
