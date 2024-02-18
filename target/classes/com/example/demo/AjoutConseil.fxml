@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="279.0" prefWidth="343.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AjoutConseilController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AjoutConseilController">
     <children>
         <Label layoutX="19.0" layoutY="69.0" text="Demande :" textFill="#56ab2f">
             <font>
@@ -33,16 +33,16 @@
             </items>
         </ChoiceBox>
         -->
-        <Text fill="#3c7720" layoutX="82.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajout d'une demande">
+        <Text fill="#3c7720" layoutX="82.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajout d'une demande de conseil">
             <font>
                 <Font name="System Bold Italic" size="20.0" />
             </font>
         </Text>
-      <Button fx:id="addBtn" layoutX="132.0" layoutY="229.0" mnemonicParsing="false" onAction="#ajoutConseil" prefHeight="35.0" prefWidth="98.0" styleClass="btn" stylesheets="@css/style_dash.css" text="       Ajouter">
+      <Button fx:id="addBtn" layoutX="178.0" layoutY="231.0" mnemonicParsing="false" onAction="#ajoutConseil" prefHeight="35.0" prefWidth="98.0" styleClass="btn" stylesheets="@css/style_dash.css" text="       Ajouter">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="141.0" layoutY="234.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="187.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/plus.png" />
          </image>

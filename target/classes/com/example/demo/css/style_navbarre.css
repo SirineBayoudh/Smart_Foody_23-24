@@ -1,0 +1,85 @@
+/* styles.css */
+
+
+/* Top HBox - Label */
+.label-top {
+    -fx-alignment: CENTER;
+    -fx-pref-height: 18.0;
+    -fx-pref-width: 150.0;
+    -fx-text-fill: black;
+    -fx-font: 18.0 System-Bold;
+}
+
+/* Top HBox - ImageView */
+.image-view-logo {
+    -fx-fit-height: 108.0;
+    -fx-fit-width: 112.0;
+}
+
+/* Center HBox */
+.hbox-center {
+    -fx-spacing: 10;
+    -fx-padding: 10;
+}
+
+
+
+/* Bottom HBox */
+.hbox-bottom {
+    -fx-spacing: 10;
+    -fx-padding: 10;
+    -fx-background-color: #333; /* Dark background color */
+}
+
+/* Bottom HBox - Label */
+.label-bottom {
+    -fx-text-fill: black;
+}
+/* Add your other styles */
+
+.footer-title {
+    -fx-font-size: 16.0;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0; /* Adjust the padding as needed */
+}
+
+.contact-info {
+    -fx-font-size: 14.0;
+    /* Add any other styles you want for contact information */
+}
+
+/* Add your other styles */
+.nav-item {
+    -fx-padding: 10px;
+    -fx-text-fill: black;
+}
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.icon-button:pressed {
+    -fx-border-color: green;
+    -fx-border-width: 2px;
+    -fx-background-color: transparent;
+}
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+
+
+.nav-item:hover, .nav-icon:hover {
+    -fx-border-color: green;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+    -fx-padding: 5;
+}
+
+
+.navbar {
+    -fx-background-color: white;
+}
+
