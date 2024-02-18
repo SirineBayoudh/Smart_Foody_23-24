@@ -9,8 +9,8 @@ public class ChatBotController {
     private TextArea chatArea;
 
     @FXML
-    private void sendCaloriesInFoodMessage() {
-        sendMessage("Calories dans les aliments ?");
+    private void BienFaitMessage() {
+        sendMessage("Bienfaits d'une alimentation équilibrée ?");
     }
 
     @FXML
@@ -63,8 +63,8 @@ public class ChatBotController {
             return "3 jours";
         } else if (message.equalsIgnoreCase("Modes de paiement ?")) {
             return "en ligne ou en espèce";
-        } else if (message.equalsIgnoreCase("Calories dans les aliments ?")) {
-            return "Le nombre de calories dans les aliments dépend de leur composition et de leur taille de portion.";
+        } else if (message.equalsIgnoreCase("Bienfaits d'une alimentation équilibrée ?")) {
+            return "Une alimentation équilibrée peut favoriser la santé globale en fournissant à l'organisme les nutriments essentiels dont il a besoin, tels que les vitamines, les minéraux, les protéines et les fibres.";
         } else if (message.equalsIgnoreCase("Conseils pour une alimentation saine ?")) {
             return "Mangez une variété de fruits, de légumes, de céréales complètes et de protéines maigres. Limitez les aliments transformés et les sucres ajoutés.";
         }
