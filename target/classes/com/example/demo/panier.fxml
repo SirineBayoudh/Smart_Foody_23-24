@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.Region?>
 <AnchorPane prefHeight="698.0" prefWidth="873.0" stylesheets="@css/style_panier.css" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PanierController">
     <children>
@@ -46,6 +47,11 @@
                             <!-- Products will be added here dynamically -->
                         </VBox>
                     </ScrollPane>
+                    <Button fx:id="btnViderPanier" onAction="#viderPanier" styleClass="button-order" text="Vider le Panier">
+                        <VBox.margin>
+                            <Insets left="180.0" />
+                        </VBox.margin>
+                    </Button>
                 </VBox>
 
                 <!-- Pricing Section -->

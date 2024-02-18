@@ -9,9 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +24,7 @@ import java.util.List;
 
 public class PanierController {
 
+    public Button btnViderPanier;
     @FXML
     private VBox productsContainer;
     Connection cnx;
@@ -37,6 +36,10 @@ public class PanierController {
     }
     public void initialize() {
         afficherProduits();
+        int nombreProduits = obtenirNombreProduitsDansLePanier();
+
+        // Désactiver le bouton si le panier est vide
+        btnViderPanier.setDisable(nombreProduits == 0);
     }
 
 
@@ -104,10 +107,60 @@ public class PanierController {
         }
 
     }
+    //on a ici ajouter le bouton viderpanier pour supprimer tous les produits de panier et si le panier est vide le bouton est incliquable
+    public void viderPanier() {
+        // Obtenir le nombre de produits dans le panier
+        int nombreProduits = obtenirNombreProduitsDansLePanier();
 
+        // Si le panier n'est pas vide, afficher la boîte de dialogue de confirmation
+        if (nombreProduits > 0) {
+            // Création de la boîte de dialogue de confirmation
+            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationDialog.setTitle("Confirmation");
+            confirmationDialog.setHeaderText("Confirmation de vidage du panier");
+            confirmationDialog.setContentText("Êtes-vous sûr de vouloir vider votre panier ?");
 
+            // Personnalisation des boutons
+            confirmationDialog.getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
 
+            // Ajout des styles CSS pour personnaliser la boîte de dialogue
+            confirmationDialog.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+            confirmationDialog.getDialogPane().getStyleClass().add("custom-alert");
 
+            // Personnalisation des styles des boutons "OK" et "Annuler"
+            confirmationDialog.getDialogPane().lookupButton(ButtonType.OK).getStyleClass().add("ok-button");
+            confirmationDialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().add("cancel-button");
+
+            // Affichage de la boîte de dialogue et attente de la réponse de l'utilisateur
+            confirmationDialog.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    // L'utilisateur a cliqué sur OK, vider le panier
+                    String requete = "DELETE FROM panier";
+                    try (Statement statement = cnx.createStatement()) {
+                        int rowCount = statement.executeUpdate(requete);
+                        if (rowCount > 0) {
+                            System.out.println("Le panier a été vidé avec succès.");
+                            afficherProduits();
+                        } else {
+                            System.out.println("Le panier est déjà vide.");
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("Erreur lors de la suppression des éléments du panier : " + e.getMessage());
+                    }
+                } else {
+                    // L'utilisateur a cliqué sur Annuler, ne rien faire
+                    System.out.println("Opération annulée.");
+                }
+            });
+        }
+    }
+
+    // Méthode pour obtenir le nombre de produits dans le panier
+
+    private int obtenirNombreProduitsDansLePanier() {
+        List<Produit> produits = affichageProduitsDansLePanier();
+        return produits.size();
+    }
 
     ////////par le bouton ajouter au panier
     public List<Produit> afficherProduitDansPanier() {
@@ -144,6 +197,13 @@ public class PanierController {
             System.out.println("Erreur lors de l'ajout du produit au panier : " + e.getMessage());
         }
     }
+
+
+
+
+
+
+    ////navigation entre les interfaces
 
     @FXML
     private void chargerInterfaceCommande(ActionEvent event) {
