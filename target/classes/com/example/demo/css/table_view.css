@@ -8,7 +8,7 @@
 }
 .table-row-cell:hover {
     -fx-background-color: #ffffff;
-    -fx-text-background-color: #ffffff;
+    -fx-text-background-color: #111111;
 }
 .table-row-cell:odd{
     -fx-background-color: #ffffff;

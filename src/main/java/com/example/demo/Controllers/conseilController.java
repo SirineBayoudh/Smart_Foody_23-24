@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
@@ -29,9 +30,9 @@ import javafx.scene.chart.XYChart;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import javafx.scene.control.Pagination;
 
 public class conseilController implements Initializable {
-    // Your Twilio credentials
     private final String ACCOUNT_SID = "AC288eedcef6012dbb4dd8c8951813655b";
     private final String AUTH_TOKEN = "";
     @FXML
@@ -78,15 +79,19 @@ public class conseilController implements Initializable {
     private Label countMoy;
     @FXML
     private TextArea tReponse;
+    @FXML
+    private Pagination pagination;
     Connection con = null;
     PreparedStatement st= null;
     ResultSet rs = null;
     int id_conseil=0;
+    private final int ITEMS_PER_PAGE = 10;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MyConnection.getInstance();
         showConseils();
+        setupPagination();
         // vboxUpdate form is visible only if there is a selection in the table
         vboxUpdate.visibleProperty().bind(table.getSelectionModel().selectedItemProperty().isNotNull());
         // delete, update, and clear buttons are only enabled when there is a selection in the table
@@ -114,6 +119,18 @@ public class conseilController implements Initializable {
         btnClear.setOnAction(this::clearField);
         updatePieChart();
         populateStackedBarChart();
+    }
+
+    private void setupPagination() {
+        int pageCount = (getConseils().size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+        pagination.setPageCount(pageCount);
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
+            int startIndex = newIndex.intValue() * ITEMS_PER_PAGE;
+            int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, getConseils().size());
+            ObservableList<Conseil> pageData = FXCollections.observableArrayList(
+                    getConseils().subList(startIndex, endIndex));
+            table.setItems(pageData);
+        });
     }
 
     private void populateStackedBarChart() {
@@ -158,9 +175,8 @@ public class conseilController implements Initializable {
                 filteredList.add(conseil);
             }
         }
-        // Clear the TableView and add the filtered data
-        table.getItems().clear();
-        table.getItems().addAll(filteredList);
+        // Set the filtered data to the TableView
+        table.setItems(filteredList);
     }
 
     @FXML
@@ -201,7 +217,10 @@ public class conseilController implements Initializable {
 
     public void showConseils(){
         ObservableList<Conseil> list = getConseils();
-        table.setItems(list);
+        // Get the sublist containing the first 10 rows
+        ObservableList<Conseil> firstPageData = FXCollections.observableArrayList(list.subList(0, Math.min(list.size(), ITEMS_PER_PAGE)));
+        // Set the items to the TableView
+        table.setItems(firstPageData);
         colidconseil.setCellValueFactory(new PropertyValueFactory<Conseil,Integer>("id_conseil"));
         colidclient.setCellValueFactory(new PropertyValueFactory<Conseil,Integer>("id_client"));
         colmatricule.setCellValueFactory(new PropertyValueFactory<Conseil,Integer>("matricule"));
