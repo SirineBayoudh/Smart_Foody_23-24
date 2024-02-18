@@ -3,12 +3,18 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Tools.MyConnection;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,6 +41,8 @@ public class LoginController implements Initializable {
 
     String password;
 
+    private int id_user;
+
     public void setTemail(String temail) {
         this.temail.setText(temail);
     }
@@ -56,8 +64,18 @@ public class LoginController implements Initializable {
             pst.setString(2,tpwd.getText());
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Login successfully", ButtonType.OK);
-                alert.show();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
+                try {
+                    Parent root = loader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    //Pour fermer la fenêtre du login
+                    Stage loginStage = (Stage) temail.getScene().getWindow();
+                    loginStage.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }else {
                 Alert alert = new Alert(Alert.AlertType.WARNING,"Login error",ButtonType.OK);
                 alert.show();
@@ -100,6 +118,22 @@ public class LoginController implements Initializable {
         eyeClosed.setVisible(true);
         tpwdshow.setVisible(false);
         eyeOpen.setVisible(false);
+    }
+
+    @FXML
+    void redirectToRegister(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/register.fxml"));
+        try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+            //Pour fermer la fenêtre du login
+            Stage loginStage = (Stage) temail.getScene().getWindow();
+            loginStage.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

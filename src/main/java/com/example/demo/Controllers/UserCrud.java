@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserCrud implements ICrud<Utilisateur>{
 
-    Connection cnx;
+    static Connection cnx;
 
     public UserCrud() {
         cnx = MyConnection.getInstance().getCnx();
@@ -101,5 +101,21 @@ public class UserCrud implements ICrud<Utilisateur>{
             System.out.println(e.getMessage());
         }
         return ListU;
+    }
+
+    public static boolean emailExists(String email) {
+        String query = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";
+        try {
+            PreparedStatement pst = cnx.prepareStatement(query);
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0; // Si count est supérieur à 0, cela signifie qu'un utilisateur avec cet e-mail existe déjà
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

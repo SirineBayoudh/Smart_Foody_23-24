@@ -8,14 +8,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import javax.net.ssl.SSLSession;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
@@ -81,6 +85,15 @@ public class RegisterController implements Initializable {
     private String objectifChoisi;
     @FXML
     private Button btnInscri;
+
+
+    public void setTemail(String temail) {
+        this.temail.setText(temail);
+    }
+
+    public void setTpwd(String tpwd) {
+        this.tpwd.setText(tpwd);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -158,22 +171,81 @@ public class RegisterController implements Initializable {
 
     @FXML
     void addUser(ActionEvent event) {
+
+        //Contrôle sur les champs vides
+        if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || villeChoisie == null ||tfrue.getText().isEmpty() || objectifChoisi == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Champs manquants");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez remplir tous les champs obligatoires.");
+            alert.showAndWait();
+            return;
+        }
+
+        // Vérifiez si l'e-mail est au format requis ****@esprit.tn
+        String emailPattern = "^[A-Za-z0-9._%+-]+@esprit\\.tn$";
+        if (!temail.getText().matches(emailPattern)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Format d'e-mail incorrect");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez saisir une adresse e-mail valide au format ****@esprit.tn.");
+            alert.showAndWait();
+            return; // Arrête l'exécution de la méthode si le format de l'e-mail est incorrect
+        }
+
+        //contrôle sur l'@ email existe déjà
+        if (UserCrud.emailExists(temail.getText())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Adresse e-mail déjà utilisée");
+            alert.setHeaderText(null);
+            alert.setContentText("L'adresse e-mail est déjà associée à un compte existant.");
+            alert.showAndWait();
+            return;
+        }
+
+        //contrôle sur le mot de passe = confirm mot de passe
+        if (!tpwd.getText().equals(tpwdconfirm.getText())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Erreur de mot de passe");
+            alert.setHeaderText(null);
+            alert.setContentText("Le mot de passe et la confirmation du mot de passe ne correspondent pas.");
+            alert.showAndWait();
+            return;
+        }
+
         Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),tpwd.getText(), Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION,"Client ajoutée avec succès", ButtonType.OK);
-        alert.show();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
-        /*try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
+        try {
             Parent root = loader.load();
-            LoginController lc = loader.getController();
-            lc.setTemail(temail.getText());
-            lc.setTpwd(tpwd.getText());
-            temail.getScene().setRoot(root);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+            //Pour fermer la fenêtre du login
+            Stage loginStage = (Stage) temail.getScene().getWindow();
+            loginStage.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }*/
+        }
+    }
+
+
+    @FXML
+    void redirectToLogin(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
+        try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+            //Pour fermer la fenêtre du login
+            Stage loginStage = (Stage) temail.getScene().getWindow();
+            loginStage.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

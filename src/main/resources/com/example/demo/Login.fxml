@@ -20,7 +20,7 @@
             </image>
         </ImageView>
         <Text fx:id="t1" fill="#56ab2f" layoutX="90.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-underline: true;" text="Se connecter" translateY="10.0" />
-        <Text fill="WHITE" layoutX="246.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="S'inscrire" translateY="10.0" />
+        <Text fill="WHITE" layoutX="236.0" layoutY="134.0" onMouseClicked="#redirectToRegister" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="S'inscrire" translateY="5.0" />
         <VBox layoutX="45.0" layoutY="100.0" prefHeight="207.0" prefWidth="347.0" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="60.0">
             <children>
                 <Label text="Email" textFill="WHITE" translateY="10.0" />
@@ -34,7 +34,7 @@
                 <PasswordField fx:id="tpwd" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnAction" prefWidth="310.0" promptText="Mot de passe" translateY="-40.0" />
                 <TextField fx:id="tpwdshow" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnAction" prefHeight="0.0" prefWidth="310.0" promptText="Mot de passe" translateY="-88.0" />
                 <Text fill="#56ab2f" strokeType="OUTSIDE" strokeWidth="0.0" text="Mot de passe oublié ?" translateY="-60.0" />
-                <Button fx:id="btnCon" alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="118.0" text="Connexion" translateX="40.0" translateY="-50.0">
+                <Button fx:id="btnCon" alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="118.0" text="Connexion" translateX="30.0" translateY="-50.0">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>

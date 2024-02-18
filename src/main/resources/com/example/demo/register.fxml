@@ -56,7 +56,7 @@
                 <ComboBox fx:id="choixObjectif" prefWidth="310.0" promptText="Objectif" styleClass="combo-box" stylesheets="@css/style_login.css" translateY="-330.0" />
                 <Button fx:id="btnInscri" mnemonicParsing="false" onAction="#addUser" styleClass="login-form-container" stylesheets="@css/style_login.css" text="S'inscrire" translateX="35.0" translateY="-320.0" />
                 <Label text="Vous avez déjà un compte?" textFill="#fffefe" translateX="37.0" translateY="-330.0" />
-                <Label fx:id="linkConnexion" layoutX="10.0" layoutY="862.0" text="Connexion" textFill="#56ab2f" translateX="210.0" translateY="-364.0" />
+                <Label fx:id="linkConnexion" layoutX="10.0" layoutY="862.0" onMouseClicked="#redirectToLogin" text="Connexion" textFill="#56ab2f" translateX="210.0" translateY="-364.0" />
             </children>
         </VBox>
     </children>
