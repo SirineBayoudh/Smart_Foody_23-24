@@ -52,7 +52,7 @@ public class AjoutConseilController implements Initializable {
             int rowsAffected = st.executeUpdate();
             if (rowsAffected > 0) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Conseil added successfully.");
-                sendEmail("yassiine.studies@gmail.com", "nouvelle demande reçue", demandeLabel.getText(), currentDate.toString());
+                sendEmail("yassiine.studies@gmail.com", "Smart Foody : Nouvelle demande reçue", demandeLabel.getText(), currentDate.toString());
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to add conseil.");
             }

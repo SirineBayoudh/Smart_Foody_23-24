@@ -33,7 +33,7 @@ import com.twilio.type.PhoneNumber;
 public class conseilController implements Initializable {
     // Your Twilio credentials
     private final String ACCOUNT_SID = "AC288eedcef6012dbb4dd8c8951813655b";
-    private final String AUTH_TOKEN = "b49516edf2250911df2c8caa199aee7e";
+    private final String AUTH_TOKEN = "";
     @FXML
     private Button btnDelete;
     @FXML
@@ -245,7 +245,7 @@ public class conseilController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to delete this conseil?");
+        alert.setContentText("Etes-vous sûr de vouloir supprimer ce conseil?");
         // Show the alert and wait for the user's response
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -308,7 +308,7 @@ public class conseilController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to update this conseil?");
+        alert.setContentText("Êtes-vous sûr de vouloir mettre à jour ce conseil?");
         // Show the alert and wait for the user's response
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
@@ -320,7 +320,7 @@ public class conseilController implements Initializable {
                     st.setString(1, tReponse.getText());
                     st.setInt(2, id_conseil);
                     st.executeUpdate();
-                    sendSMS("+21651600246", "Conseil updated");
+                    sendSMS("+21651600246", "Un conseil a été mis à jour avec succès");
                     showConseils();
                     clear();
                 } catch (SQLException e) {
