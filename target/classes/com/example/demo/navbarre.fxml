@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0"
+            prefWidth="902.0" stylesheets="@css/style_navbarre.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.demo.Controllers.NavbarreCotroller">
+   <top>
+      <!-- Ajustement de l'espacement entre les éléments de la HBox -->
+      <HBox prefHeight="75.0" prefWidth="902.0" spacing="30" styleClass="navbar" BorderPane.alignment="CENTER">
+         <children>
+            <!-- Ajustement de la taille des icônes pour une meilleure harmonie -->
+            <ImageView fitHeight="99.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+               <image>
+                  <Image url="@Images/trans_logo.png" />
+               </image>
+            </ImageView>
+            <!-- Réduction de la taille de police pour une meilleure intégration dans l'espace disponible -->
+            <Label styleClass="nav-item" text="Accueil">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" top="25.0" />
+               </HBox.margin>
+            </Label>
+            <Label onMouseClicked="#loadProduit" styleClass="nav-item" text="Nos Produits">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" top="25.0" />
+               </HBox.margin>
+            </Label>
+            <Label styleClass="nav-item" text="Réclamation">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" top="25.0" />
+               </HBox.margin>
+            </Label>
+            <Label styleClass="nav-item" text="Conseils">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" top="25.0" />
+               </HBox.margin>
+            </Label>
+            <!-- Ajustement de la taille des icônes de navigation -->
+            <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#loadPanier"
+                        pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+               <image>
+                  <Image url="@Images/panier.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="20.0" top="25.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+               <image>
+                  <Image url="@Images/homme.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="20.0" top="25.0" />
+               </HBox.margin>
+            </ImageView>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <BorderPane fx:id="centerPane" />
+   </center>
+</BorderPane>

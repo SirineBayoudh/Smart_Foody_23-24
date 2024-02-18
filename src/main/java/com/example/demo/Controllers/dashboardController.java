@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class dashboardController implements Initializable {
 
     @FXML
-    private Pane innerPane;
+    private Pane  innerPane;
     @FXML
     private Button btn_home;
     @FXML

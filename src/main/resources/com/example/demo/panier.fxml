@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="698.0" prefWidth="873.0" stylesheets="@css/style_panier.css" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PanierController">
+    <children>
+        <!-- Navbar -->
+        <!-- Navbar -->
+        <HBox prefHeight="60.0" prefWidth="698.0" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+            <HBox prefHeight="34.0" prefWidth="797.0" styleClass="navbar-labels" HBox.hgrow="ALWAYS">
+                <!-- Bouton Fléché -->
+                <Button styleClass="arrow-button" onAction="#navbarre">
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                            <image>
+                                <Image url="@Images/arrow_back.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+            </HBox>
+        </HBox>
+
+
+        <!-- Main Content -->
+        <!-- Main Content -->
+        <VBox styleClass="main-content" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.topAnchor="80">
+            <!-- Product Details and Pricing -->
+            <HBox prefHeight="510.0" prefWidth="638.0" spacing="20" styleClass="cart-details">
+                <!-- Product Details Section -->
+                <VBox prefHeight="503.0" prefWidth="769.0" styleClass="product-details" VBox.vgrow="ALWAYS">
+                    <Label styleClass="section-title" text="Mon Panier" />
+                    <ScrollPane prefHeight="477.0" prefWidth="365.0" VBox.vgrow="ALWAYS">
+                        <VBox fx:id="productsContainer" spacing="10">
+                            <!-- Products will be added here dynamically -->
+                        </VBox>
+                    </ScrollPane>
+                </VBox>
+
+                <!-- Pricing Section -->
+                <VBox prefHeight="474.0" prefWidth="444.0" styleClass="pricing-details" VBox.vgrow="ALWAYS">
+                    <Label styleClass="section-title" text="Récapitulatif de Commande" />
+                    <Label styleClass="pricing-info" text="Sous-total: XXX €" />
+                    <Label styleClass="pricing-info" text="Remise: X%" />
+                    <Label styleClass="pricing-info" text="Total: XXX €" />
+                    <Button fx:id="btnValiderCommande" onAction="#chargerInterfaceCommande" styleClass="button-order" text="Valider la Commande" />
+                </VBox>
+            </HBox>
+        </VBox>
+
+    </children>
+</AnchorPane>
