@@ -17,6 +17,13 @@ public class Alerte {
         this.date = date;
     }
 
+    public Alerte(int id_alerte, int id_stock, String description_alerte, Date date) {
+        this.id_alerte = id_alerte;
+        this.id_stock = id_stock;
+        this.description_alerte = description_alerte;
+        this.date = date;
+    }
+
     public Alerte(int id_stock, Date date) {
         this.id_stock = id_stock;
         this.date = date;

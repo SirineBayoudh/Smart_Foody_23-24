@@ -186,19 +186,23 @@ public class AjouterStockController {
 
     @FXML
     private boolean validateInputs() {
-        if (tRef.getText().isEmpty() || tQnt.getText().isEmpty()) {
-            showAlert1("Erreur", "Les champs Ref et Quantité sont obligatoires.", Alert.AlertType.ERROR);
+        if (tRef.getText().isEmpty() || tQnt.getText().isEmpty() || tNom.getText().isEmpty()|| tMarque.getText().isEmpty()) {
+            showAlert1("Erreur", "Les champs sont obligatoires.", Alert.AlertType.ERROR);
             return false;
         }
 
         try {
-            // Validate if tRef is a valid integer
+            // Validate if tRef, tQnt type  int
             Integer.parseInt(tRef.getText());
-
-            // Validate if tQnt is a valid integer
             Integer.parseInt(tQnt.getText());
+            // Validate if tNom type String
+            String nomValue = tNom.getText();
+            if (!nomValue.matches("^[a-zA-Z]+$")) {
+                showAlert1("Erreur", "Le nom doit contenir uniquement des lettres.", Alert.AlertType.ERROR);
+                return false;
+            }
         } catch (NumberFormatException e) {
-            showAlert1("Erreur", "Les champs Ref et Quantité doivent être des entiers valides.", Alert.AlertType.ERROR);
+            showAlert1("Erreur", "Les champs doivent être respecter leurs Types.", Alert.AlertType.ERROR);
             return false;
         }
 

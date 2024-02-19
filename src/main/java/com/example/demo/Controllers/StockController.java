@@ -11,8 +11,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +27,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+
+
 
 public class StockController implements Initializable{
 
@@ -88,6 +92,9 @@ public class StockController implements Initializable{
     private int lowestStockId;
 
     private static StockController instance;
+    @FXML
+    private BarChart<String, Number> barchart;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Trecherche.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -116,6 +123,7 @@ public class StockController implements Initializable{
         if (lowestStock != null) {
             lowestStockId = lowestStock.getId_s();
             String message = "le  stock : "+lowestStock.getId_s()+"quantité" + lowestStock.getQuantite();
+
             runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
         } else {
             runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
@@ -139,7 +147,7 @@ public class StockController implements Initializable{
 
         alert.showAndWait();
     }
-    private Stock findLowestStock(ObservableList<Stock> stockData) {
+    public static Stock findLowestStock(ObservableList<Stock> stockData) {
         Stock lowestStock = null;
         int minQuantity = Integer.MAX_VALUE;
 
@@ -173,29 +181,71 @@ public class StockController implements Initializable{
 
 
     /******** Get stock data from the database**********/
+//    public ObservableList<Stock> displayAllStock() {
+//        ObservableList<Stock> stockData = FXCollections.observableArrayList();
+//
+//        try {
+//            Connection connection = MyConnection.getInstance().getCnx();
+//
+//            String selectQuery = "SELECT * FROM stock";
+//
+//            try (Statement statement = connection.createStatement();
+//                 ResultSet resultSet = statement.executeQuery(selectQuery)) {
+//
+//                while (resultSet.next()) {
+//                    int id_s = resultSet.getInt("id_s");
+//                    String nom=resultSet.getString("nom");
+//                    int ref = resultSet.getInt("ref_produit");
+//                    String marque = resultSet.getString("marque");
+//                    int quantite = resultSet.getInt("quantite");
+//                    int nb_vendu = resultSet.getInt("nb_vendu");
+//
+//                    Produit produit = new Produit(ref, marque, "category", 0); // You may need to adjust this based on your Produit class
+//                    float cout = calculateTotalValue(ref); // Calculate cout
+//
+//                    Stock stockEntry = new Stock(id_s, produit, quantite,nom, nb_vendu, cout);
+//                    stockData.add(stockEntry);
+//                }
+//
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return stockData;
+//    }
+
     public ObservableList<Stock> displayAllStock() {
         ObservableList<Stock> stockData = FXCollections.observableArrayList();
 
         try {
             Connection connection = MyConnection.getInstance().getCnx();
 
-            String selectQuery = "SELECT * FROM stock";
+            String selectQuery = "SELECT s.id_s, s.nom, p.ref AS ref_produit, p.marque, lc.id_lc, lc.quantite AS quantite_commandee, s.quantite, s.nb_vendu " +
+                    "FROM stock s " +
+                    "JOIN produit p ON s.ref_produit = p.ref " +
+                    "LEFT JOIN ligne_commande lc ON p.ref = lc.ref_produit";
 
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(selectQuery)) {
 
                 while (resultSet.next()) {
                     int id_s = resultSet.getInt("id_s");
-                    String nom=resultSet.getString("nom");
-                    int ref = resultSet.getInt("ref_produit");
+                    String nom = resultSet.getString("nom");
+                    int refProduit = resultSet.getInt("ref_produit");
                     String marque = resultSet.getString("marque");
-                    int quantite = resultSet.getInt("quantite");
+                    int idLigneCommande = resultSet.getInt("id_lc");
+                    int quantiteCommandee = resultSet.getInt("quantite_commandee");
+                    int quantiteStock = resultSet.getInt("quantite");
                     int nb_vendu = resultSet.getInt("nb_vendu");
 
-                    Produit produit = new Produit(ref, marque, "category", 0); // You may need to adjust this based on your Produit class
-                    float cout = calculateTotalValue(ref); // Calculate cout
+                    // Mettez à jour nb_vendu avec la quantité commandée
+                    mettreAJourNbVendu(idLigneCommande);
 
-                    Stock stockEntry = new Stock(id_s, produit, quantite,nom, nb_vendu, cout);
+                    Produit produit = new Produit(refProduit, marque, "category", 0); // Assurez-vous de fournir les valeurs correctes
+                    float cout = calculateTotalValue(refProduit);
+
+                    Stock stockEntry = new Stock(id_s, produit, quantiteStock, nom, nb_vendu, cout);
                     stockData.add(stockEntry);
                 }
 
@@ -206,6 +256,25 @@ public class StockController implements Initializable{
 
         return stockData;
     }
+
+    public void mettreAJourNbVendu(int idLigneCommande) {
+        String updateQuery = "UPDATE stock s " +
+                "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
+                "SET s.nb_vendu = lc.quantite " +
+                "WHERE lc.id_lc = ?";
+
+        try {
+            Connection connection = MyConnection.getInstance().getCnx();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+
+            preparedStatement.setInt(1, idLigneCommande);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public float calculateTotalValue(int ref_produit) {
         try {
             Connection connection = MyConnection.getInstance().getCnx();
@@ -275,6 +344,8 @@ public class StockController implements Initializable{
             id_stockColumn.setCellValueFactory(new PropertyValueFactory<>("id_s"));
             NomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
             tTotal.setCellValueFactory(new PropertyValueFactory<>("cout"));
+            updateBarChart(list);
+
         } else {
             System.out.println("TableView is null");
         }
@@ -428,7 +499,7 @@ void getData(MouseEvent event) {
 
 
         for (Stock stock : dataList) {
-            String brand = stock.getProduitMarque().toLowerCase();
+            String brand = stock.getNom().toLowerCase();
             searchText = searchText.toLowerCase().trim();
 
 
@@ -441,7 +512,33 @@ void getData(MouseEvent event) {
         stockTableView.getItems().clear();
         stockTableView.getItems().addAll(filteredList);
     }
-    /*****************************Cout*******************************/
+    /*****************************Stat *******************************/
+    private void updateBarChart(ObservableList<Stock> stockData) {
+        barchart.getData().clear();
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        for (Stock stock : stockData) {
+            try {
+                int quantity = stock.getQuantite();
+                String referenceCategory = String.valueOf(stock.getProduitRef());
+
+                // Utilisez BarChart.Data pour spécifier les valeurs des axes X et Y
+                BarChart.Data<String, Number> data = new BarChart.Data<>(referenceCategory, quantity);
+                series.getData().add(data);
+
+                // Si vous avez besoin de personnaliser l'apparence des barres, vous pouvez le faire ici
+                Node bar = data.getNode();
+                // Ajoutez ici votre personnalisation de la barre (si nécessaire)
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid reference format: " + stock.getProduitRef());
+            }
+        }
+
+        barchart.getData().add(series);
+        barchart.setTitle("Quantités de stock par référence de produit");
+        barchart.getXAxis().setLabel("Référence du produit");
+        barchart.getYAxis().setLabel("Quantité");
+    }
 
 
 }

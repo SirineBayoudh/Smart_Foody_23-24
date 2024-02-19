@@ -86,7 +86,7 @@ public class dashboardController implements Initializable {
             centerPane.setCenter(root);
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the exception as needed
+
         }
     }
 

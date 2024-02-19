@@ -16,19 +16,19 @@
          <children>
             <Pane fx:id="Pane_design" prefHeight="429.0" prefWidth="384.0">
                <children>
-                  <Text fill="#77bb58" layoutX="14.0" layoutY="170.0" lineSpacing="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Réference du  produit :" wrappingWidth="225.9840087890625">
+                  <Text fill="#77bb58" layoutX="14.0" layoutY="170.0" lineSpacing="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Réference du  produit * :" wrappingWidth="225.9840087890625">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Text>
                   <TextField fx:id="tRef" layoutX="70.0" layoutY="187.0" onKeyPressed="#onRefTextFieldKeyPressed" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #eff6ea; -fx-border-color: #bbddab; -fx-border-width: 0 0 2 0;" />
-                  <Text fill="#77bb58" layoutX="14.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Marque :">
+                  <Text fill="#77bb58" layoutX="14.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Marque * :">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Text>
                   <TextField fx:id="tMarque" editable="false" layoutX="74.0" layoutY="251.0" prefHeight="25.0" prefWidth="251.0" style="-fx-border-color: #bbddab; -fx-background-color: #eff6ea; -fx-border-width: 0 0 2 0;" />
-                  <Text fill="#77bb58" layoutX="20.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantité :">
+                  <Text fill="#77bb58" layoutX="20.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantité * :">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -49,12 +49,12 @@
                         <Font name="System Bold Italic" size="36.0" />
                      </font>
                   </Label>
-                  <Text fill="#77bb58" layoutX="14.0" layoutY="91.0" lineSpacing="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom : " wrappingWidth="225.9840087890625">
+                  <Text fill="#77bb58" layoutX="14.0" layoutY="91.0" lineSpacing="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom * : " wrappingWidth="225.9840087890625">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="tNom" layoutX="70.0" layoutY="106.0" onKeyPressed="#onRefTextFieldKeyPressed" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #eff6ea; -fx-border-color: #bbddab; -fx-border-width: 0 0 2 0;" />
+                  <TextField fx:id="tNom" layoutX="70.0" layoutY="106.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #eff6ea; -fx-border-color: #bbddab; -fx-border-width: 0 0 2 0;" />
                   <Button fx:id="btnSave" layoutX="401.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleAddStock" style="-fx-background-color: white;" textFill="WHITE" />
                </children>
             </Pane>
