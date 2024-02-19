@@ -104,10 +104,8 @@ public class conseilController implements Initializable {
                 id_conseil = newSelection.getId_conseil();
             }
         });
-        // Populate the status ComboBox
         ObservableList<String> statusOptions = FXCollections.observableArrayList("en attente", "terminé");
         statusComboBox.setItems(statusOptions);
-        // Add event handler to the ComboBox to filter data
         statusComboBox.setOnAction(event -> {
             String selectedStatus = (String) statusComboBox.getSelectionModel().getSelectedItem();
             if (selectedStatus != null) {
@@ -143,7 +141,6 @@ public class conseilController implements Initializable {
                 noteDistribution[note - 1]++; // Decrement by 1 to fit in array index
             }
         }
-
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Distribution des notes");
         for (int i = 0; i < 5; i++) {
@@ -165,17 +162,13 @@ public class conseilController implements Initializable {
     }
 
     private void filterData(String selectedStatus) {
-        // Get the current list of Conseil objects from the TableView
         ObservableList<Conseil> dataList = getConseils();
-        // Create a filtered list to hold Conseil objects matching the selected status
         ObservableList<Conseil> filteredList = FXCollections.observableArrayList();
-        // Iterate through the dataList and add Conseil objects that match the selected status
         for (Conseil conseil : dataList) {
             if (conseil.getStatut().equalsIgnoreCase(selectedStatus.trim())) {
                 filteredList.add(conseil);
             }
         }
-        // Set the filtered data to the TableView
         table.setItems(filteredList);
     }
 
@@ -323,6 +316,11 @@ public class conseilController implements Initializable {
 
     @FXML
     void updateConseil(ActionEvent event) {
+
+        if (tReponse.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir le champ.");
+            return; // Stop execution
+        }
         // Create an alert dialog for confirmation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -339,7 +337,7 @@ public class conseilController implements Initializable {
                     st.setString(1, tReponse.getText());
                     st.setInt(2, id_conseil);
                     st.executeUpdate();
-                    sendSMS("+21651600246", "Un conseil a été mis à jour avec succès");
+                    sendSMS("+21651600246", "Conseil a été mis à jour avec succès");
                     showConseils();
                     clear();
                 } catch (SQLException e) {
@@ -347,5 +345,13 @@ public class conseilController implements Initializable {
                 }
             }
         });
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
