@@ -76,7 +76,7 @@ public class AjoutConseilController implements Initializable {
             String insert = "INSERT INTO conseil(id_conseil, id_client, matricule, statut, demande, reponse, date_conseil) VALUES (?, ?, ?, ?, ?, ?, ?)";
             con = MyConnection.instance.getCnx();
             st = con.prepareStatement(insert);
-            st.setString(1, String.valueOf(6776));
+            st.setString(1, String.valueOf(671176));
             st.setString(2, String.valueOf(123123123));
             st.setInt(3, 321312312);
             st.setString(4, "en attente");
@@ -114,8 +114,8 @@ public class AjoutConseilController implements Initializable {
     private void sendEmail(String to, String subject, String demande, String dateConseil) {
         // SMTP server configuration
         String host = "smtp.gmail.com"; // SMTP server hostname
-        String username = "yassinetrabelsi110@gmail.com"; // SMTP username
-        String password = "qhkh yezb ynvm jghf"; // SMTP password
+        String username = "smartfoody.2024@gmail.com"; // SMTP username
+        String password = "apsp ytkl paob kzge"; // SMTP password
         // Email properties
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -134,11 +134,19 @@ public class AjoutConseilController implements Initializable {
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject(subject);
-            // Construct email body
-            String body = "Demande: " + demande + "\n" +
-                    "Date Conseil: " + dateConseil;
-            message.setText(body);
-            // Send the email
+            // Construct email body with HTML formatting
+            String body = "<html>"
+                    + "<body>"
+                    + "<p style='color:darkgreen;'>Bonjour,</p>"
+                    + "<p style='color:darkgreen;font-size:18px;'>Une nouvelle demande a été reçue :</p>"
+                    + "<p style='color:black;font-weight:bold;'>Objet: " + demande + "</p>"
+                    + "<p style='color:darkgreen;'font-weight:bold;'>Date de réception: " + dateConseil + "</p>"
+                    + "<p style='font-weight:bold;'>Veuillez consulter l'application pour la traiter.</p>"
+                    + "<p style='color:gray;'>Ceci est un message automatique. Merci de ne pas répondre.</p>"
+                    + "</body>"
+                    + "</html>";
+
+            message.setContent(body, "text/html");
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
