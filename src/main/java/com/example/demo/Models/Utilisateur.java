@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Utilisateur implements Comparable<Utilisateur>{
     private int id_utilisateur;
     private String nom,prenom,genre,email,mot_de_passe,role;
-    private int matricule;
+    private int num_tel,matricule;
     private String attestation,adresse,objectif;
 
     public int getId_utilisateur() {
@@ -56,6 +56,14 @@ public class Utilisateur implements Comparable<Utilisateur>{
         this.mot_de_passe = mot_de_passe;
     }
 
+    public int getNum_tel() {
+        return num_tel;
+    }
+
+    public void setNum_tel(int num_tel) {
+        this.num_tel = num_tel;
+    }
+
     public String getRole() {
         return role;
     }
@@ -99,34 +107,37 @@ public class Utilisateur implements Comparable<Utilisateur>{
     public Utilisateur() {
     }
 
-    public Utilisateur(String nom, String prenom, String genre, String email, String mdp, String role, int matricule, String attestation) {
+    public Utilisateur(String nom, String prenom, String genre, String email, String mdp, int num_tel,String role, int matricule, String attestation) {
         this.nom = nom;
         this.prenom = prenom;
         this.genre = genre;
         this.email = email;
         this.mot_de_passe = mdp;
+        this.num_tel = num_tel;
         this.role = role;
         this.matricule = matricule;
         this.attestation = attestation;
     }
 
-    public Utilisateur(String nom, String prenom, String genre, String email, String mdp, String role, String adresse, String objectif) {
+    public Utilisateur(String nom, String prenom, String genre, String email, String mdp,int num_tel, String role, String adresse, String objectif) {
         this.nom = nom;
         this.prenom = prenom;
         this.genre = genre;
         this.email = email;
         this.mot_de_passe = mdp;
+        this.num_tel = num_tel;
         this.role = role;
         this.adresse = adresse;
         this.objectif = objectif;
     }
 
-    public Utilisateur(String nom, String prenom, String genre, String email, String mot_de_passe, String role, int matricule, String attestation, String adresse, String objectif) {
+    public Utilisateur(String nom, String prenom, String genre, String email, String mot_de_passe,int num_tel, String role, int matricule, String attestation, String adresse, String objectif) {
         this.nom = nom;
         this.prenom = prenom;
         this.genre = genre;
         this.email = email;
         this.mot_de_passe = mot_de_passe;
+        this.num_tel = num_tel;
         this.role = role;
         this.matricule = matricule;
         this.attestation = attestation;
@@ -137,13 +148,16 @@ public class Utilisateur implements Comparable<Utilisateur>{
     @Override
     public String toString() {
         return "Utilisateur{" +
-                "id=" + id_utilisateur +
+                "id_utilisateur=" + id_utilisateur +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
-                ", role='" + role + '\'' +
                 ", genre='" + genre + '\'' +
                 ", email='" + email + '\'' +
-                ", mdp='" + mot_de_passe + '\'' +
+                ", mot_de_passe='" + mot_de_passe + '\'' +
+                ", role='" + role + '\'' +
+                ", num_tel=" + num_tel +
+                ", matricule=" + matricule +
+                ", attestation='" + attestation + '\'' +
                 ", adresse='" + adresse + '\'' +
                 ", objectif='" + objectif + '\'' +
                 '}';

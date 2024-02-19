@@ -68,6 +68,9 @@ public class RegisterController implements Initializable {
     private String genreChoisi;
 
     @FXML
+    private TextField tftel;
+
+    @FXML
     private ComboBox<String> choixVille;
 
     private String[] ville = {"Ariana","Béja","Ben Arous","Bizerte","Gabès","Gafsa","Jendouba","Kairouan","Kasserine","Kébili","Le Kef","Mahdia","La Manouba","Médenine","Monastir","Nabeul","Sfax","Sidi Bouzid","Siliana","Sousse","Tataouine","Tozeur","Tunis","Zaghouan"};
@@ -173,7 +176,7 @@ public class RegisterController implements Initializable {
     void addUser(ActionEvent event) {
 
         //Contrôle sur les champs vides
-        if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || villeChoisie == null ||tfrue.getText().isEmpty() || objectifChoisi == null) {
+        if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || villeChoisie == null || tftel.getText().isEmpty()  || tfrue.getText().isEmpty() || objectifChoisi == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
             alert.setHeaderText(null);
@@ -213,7 +216,27 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),tpwd.getText(), Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
+        //verifier que la longuer du num = 8 et que le champ comporte que des chiffres
+        try {
+            int tel = Integer.parseInt(tftel.getText());
+            if (tftel.getText().length() != 8) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Format de numéro de téléphone incorrect");
+                alert.setHeaderText(null);
+                alert.setContentText("Le numéro de téléphone doit contenir exactement 8 chiffres.");
+                alert.showAndWait();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Format de numéro de téléphone incorrect");
+            alert.setHeaderText(null);
+            alert.setContentText("Le numéro de téléphone ne doit contenir que des chiffres.");
+            alert.showAndWait();
+            return;
+        }
+
+        Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),tpwd.getText(), Integer.parseInt(tftel.getText()),Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);
 

@@ -73,11 +73,11 @@ public class dashboardController implements Initializable {
 
     @FXML
     private void stock() {
-        loadPage("/com/example/demo/s.fxml");
+
     }
     @FXML
     private void user() {
-        loadPage("/com/example/demo/utilisateur.fxml");
+        loadPage("/com/example/demo/gestionUser.fxml");
     }
     private void loadPage(String page) {
         try {

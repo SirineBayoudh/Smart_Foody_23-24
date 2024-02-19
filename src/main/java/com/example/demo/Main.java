@@ -14,16 +14,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Smart foody");
+        stage.setHeight(700);
+        stage.setWidth(1200);
         stage.setScene(scene);
         stage.show();
 
 
         MyConnection mc = MyConnection.getInstance();
-        Utilisateur u1 = new Utilisateur("Ben Hamida","Nourhene","femme","nourhene@esprit.tn","nourhene123", Role.Client.toString(),0,"","menzah1","perdre");
-        Utilisateur u2 = new Utilisateur("Selmi","Amine","homme","amine@esprit.tn","amine123",Role.Conseiller.toString(),14578962,"aaaaa","","");
+        //Utilisateur u1 = new Utilisateur("Ben Hamida","Nourhene","femme","nourhene@esprit.tn","nourhene123", Role.Client.toString(),0,"","menzah1","perdre");
+        //Utilisateur u2 = new Utilisateur("Selmi","Amine","homme","amine@esprit.tn","amine123",Role.Conseiller.toString(),14578962,"aaaaa","","");
 
         UserCrud ucd = new UserCrud();
 

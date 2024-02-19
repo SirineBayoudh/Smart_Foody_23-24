@@ -11,4 +11,5 @@ module com.example.demo {
     opens com.example.demo.Controllers to javafx.fxml;
     exports com.example.demo.Tools;
     opens com.example.demo.Tools to javafx.fxml;
+    opens com.example.demo.Models to javafx.base;
 }

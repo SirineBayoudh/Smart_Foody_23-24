@@ -17,7 +17,7 @@ public class UserCrud implements ICrud<Utilisateur>{
 
     @Override
     public void ajouterEntite(Utilisateur u) {
-        String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,role,matricule,attestation,adresse,objectif) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement pst = cnx.prepareStatement(requete);
             pst.setString(1, u.getNom());
@@ -25,11 +25,12 @@ public class UserCrud implements ICrud<Utilisateur>{
             pst.setString(3, u.getGenre());
             pst.setString(4, u.getEmail());
             pst.setString(5,u.getMot_de_passe());
-            pst.setString(6,u.getRole());
-            pst.setInt(7,u.getMatricule());
-            pst.setString(8,u.getAttestation());
-            pst.setString(9,u.getAdresse());
-            pst.setString(10, u.getObjectif());
+            pst.setInt(6,u.getNum_tel());
+            pst.setString(7,u.getRole());
+            pst.setInt(8,u.getMatricule());
+            pst.setString(9,u.getAttestation());
+            pst.setString(10,u.getAdresse());
+            pst.setString(11, u.getObjectif());
             pst.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -38,7 +39,7 @@ public class UserCrud implements ICrud<Utilisateur>{
 
     @Override
     public void modifierEntite(Utilisateur u) {
-        String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,mot_de_passe=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
+        String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,mot_de_passe=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
         try {
             PreparedStatement pst = cnx.prepareStatement(req);
             pst.setString(1, u.getNom());
@@ -46,11 +47,12 @@ public class UserCrud implements ICrud<Utilisateur>{
             pst.setString(3, u.getGenre());
             pst.setString(4, u.getEmail());
             pst.setString(5,u.getMot_de_passe());
-            pst.setString(6,u.getRole());
-            pst.setInt(7,u.getMatricule());
-            pst.setString(8,u.getAttestation());
-            pst.setString(9,u.getAdresse());
-            pst.setString(10, u.getObjectif());
+            pst.setInt(6,u.getNum_tel());
+            pst.setString(7,u.getRole());
+            pst.setInt(8,u.getMatricule());
+            pst.setString(9,u.getAttestation());
+            pst.setString(10,u.getAdresse());
+            pst.setString(11, u.getObjectif());
             pst.setInt(11, u.getId_utilisateur());
             pst.executeUpdate();
         } catch (SQLException e) {
@@ -90,11 +92,12 @@ public class UserCrud implements ICrud<Utilisateur>{
                 usr.setGenre(rs.getString(4));
                 usr.setEmail(rs.getString(5));
                 usr.setMot_de_passe(rs.getString(6));
-                usr.setRole(rs.getString(7));
-                usr.setMatricule(rs.getInt(8));
-                usr.setAttestation(rs.getString(9));
-                usr.setAdresse(rs.getString(10));
-                usr.setObjectif(rs.getString(11));
+                usr.setNum_tel(rs.getInt(7));
+                usr.setRole(rs.getString(8));
+                usr.setMatricule(rs.getInt(9));
+                usr.setAttestation(rs.getString(10));
+                usr.setAdresse(rs.getString(11));
+                usr.setObjectif(rs.getString(12));
                 ListU.add(usr);
             }
         } catch (SQLException e) {
@@ -117,5 +120,63 @@ public class UserCrud implements ICrud<Utilisateur>{
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Utilisateur> listerParNom(String nom){
+        List<Utilisateur> usersList= new ArrayList<>();
+        String req = "SELECT * FROM `utilisateur` WHERE `nom` = ?; ";
+        try {
+            PreparedStatement pst = cnx.prepareStatement(req);
+            pst.setString(1, nom.toString());
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                Utilisateur usr = new Utilisateur();
+                usr.setId_utilisateur(rs.getInt(1));
+                usr.setNom(rs.getString(2));
+                usr.setPrenom(rs.getString(3));
+                usr.setGenre(rs.getString(4));
+                usr.setEmail(rs.getString(5));
+                usr.setMot_de_passe(rs.getString(6));
+                usr.setNum_tel(rs.getInt(7));
+                usr.setRole(rs.getString(8));
+                usr.setMatricule(rs.getInt(9));
+                usr.setAttestation(rs.getString(10));
+                usr.setAdresse(rs.getString(11));
+                usr.setObjectif(rs.getString(12));
+                usersList.add(usr);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return usersList;
+    }
+
+    public List<Utilisateur> listeClients(String nom){
+        List<Utilisateur> usersList= new ArrayList<>();
+        String req = "SELECT * FROM `utilisateur` WHERE `role` = `client` ; ";
+        try {
+            PreparedStatement pst = cnx.prepareStatement(req);
+            pst.setString(1, nom.toString());
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                Utilisateur usr = new Utilisateur();
+                usr.setId_utilisateur(rs.getInt(1));
+                usr.setNom(rs.getString(2));
+                usr.setPrenom(rs.getString(3));
+                usr.setGenre(rs.getString(4));
+                usr.setEmail(rs.getString(5));
+                usr.setMot_de_passe(rs.getString(6));
+                usr.setNum_tel(rs.getInt(7));
+                usr.setRole(rs.getString(8));
+                usr.setMatricule(rs.getInt(9));
+                usr.setAttestation(rs.getString(10));
+                usr.setAdresse(rs.getString(11));
+                usr.setObjectif(rs.getString(12));
+                usersList.add(usr);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return usersList;
     }
 }

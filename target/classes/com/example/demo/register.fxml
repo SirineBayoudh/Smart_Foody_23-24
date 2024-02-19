@@ -50,13 +50,14 @@
                         <Image url="@Images/fermer-les-yeux.png" />
                     </image>
                 </ImageView>
-                <ComboBox fx:id="choixGenre" prefWidth="310.0" promptText="Genre" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-270.0" />
-                <ComboBox fx:id="choixVille" prefWidth="150.0" promptText="Ville" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-280.0" visibleRowCount="4" />
-                <TextField fx:id="tfrue" layoutX="10.0" layoutY="106.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="140.0" promptText="Rue" translateX="170.0" translateY="-328.0" />
-                <ComboBox fx:id="choixObjectif" prefWidth="310.0" promptText="Objectif" styleClass="combo-box" stylesheets="@css/style_login.css" translateY="-330.0" />
-                <Button fx:id="btnInscri" mnemonicParsing="false" onAction="#addUser" styleClass="login-form-container" stylesheets="@css/style_login.css" text="S'inscrire" translateX="35.0" translateY="-320.0" />
-                <Label text="Vous avez déjà un compte?" textFill="#fffefe" translateX="37.0" translateY="-330.0" />
-                <Label fx:id="linkConnexion" layoutX="10.0" layoutY="862.0" onMouseClicked="#redirectToLogin" text="Connexion" textFill="#56ab2f" translateX="210.0" translateY="-364.0" />
+                <ComboBox fx:id="choixGenre" prefWidth="150.0" promptText="Genre" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-265.0" />
+            <TextField fx:id="tftel" maxWidth="-Infinity" prefWidth="150.0" promptText="Num Tel" translateX="170.0" translateY="-314.0" />
+                <ComboBox fx:id="choixVille" prefWidth="150.0" promptText="Ville" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-305.0" visibleRowCount="4" />
+                <TextField fx:id="tfrue" layoutX="10.0" layoutY="106.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="140.0" promptText="Rue" translateX="170.0" translateY="-353.0" />
+                <ComboBox fx:id="choixObjectif" prefWidth="310.0" promptText="Objectif" styleClass="combo-box" stylesheets="@css/style_login.css" translateY="-345.0" />
+                <Button fx:id="btnInscri" mnemonicParsing="false" onAction="#addUser" styleClass="login-form-container" stylesheets="@css/style_login.css" text="S'inscrire" translateX="35.0" translateY="-330.0" />
+                <Label text="Vous avez déjà un compte?" textFill="#fffefe" translateX="37.0" translateY="-340.0" />
+                <Label fx:id="linkConnexion" layoutX="10.0" layoutY="862.0" onMouseClicked="#redirectToLogin" text="Connexion" textFill="#56ab2f" translateX="210.0" translateY="-374.0" />
             </children>
         </VBox>
     </children>
