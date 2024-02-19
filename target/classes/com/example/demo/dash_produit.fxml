@@ -1,50 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.DashProduitController">
    <children>
-      <VBox layoutX="14.0" layoutY="256.0" prefHeight="339.0" prefWidth="278.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="260.0">
+      <VBox fx:id="vboxFormulaire" layoutX="39.0" layoutY="291.0" prefHeight="349.0" prefWidth="278.0" spacing="8.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="291.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Marque" />
-            <TextField fx:id="tfMarque" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Categorie" wrappingWidth="72.12814331054688" />
-            <TextField fx:id="tfCategorie" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="prix" />
-            <TextField fx:id="tfPrix" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="critère" wrappingWidth="48.61016845703125" />
-            <TextField fx:id="tfCritere" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Image" />
-            <TextField fx:id="tfImage" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Objectif" wrappingWidth="44.21407699584961" />
-            <TextField fx:id="tfObjectif" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Marque">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Text>
+            <TextField fx:id="tfMarque" styleClass="text-field" stylesheets="@css/style_pageClient.css">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin></TextField>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Categorie" wrappingWidth="72.12814331054688">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Text>
+            <TextField fx:id="tfCategorie">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin></TextField>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="prix">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Text>
+            <TextField fx:id="tfPrix">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin></TextField>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="critère" wrappingWidth="48.61016845703125">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Text>
+            <TextField fx:id="tfCritere">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin></TextField>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Image">
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Text>
+            <TextField fx:id="tfImage">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin></TextField>
+            <Button fx:id="btnSelectImg" mnemonicParsing="false" onAction="#selectImage" style="-fx-background-color: #ffffff;" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="Selectionner une image " textFill="#56ab2f">
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="50.0" top="10.0" />
+               </VBox.margin></Button>
          </children>
+         <styleClass>
+            <String fx:value="chosen-fruit-card" />
+            <String fx:value="shadow" />
+         </styleClass>
       </VBox>
-      <TableView fx:id="table" layoutX="326.0" layoutY="260.0" onMouseClicked="#getData" prefHeight="200.0" prefWidth="659.0">
+      <TableView fx:id="table" layoutX="343.0" layoutY="329.0" onMouseClicked="#getData" prefHeight="249.0" prefWidth="536.0">
         <columns>
-          <TableColumn fx:id="colRef" prefWidth="75.0" text="Ref" />
-          <TableColumn fx:id="colMarque" prefWidth="99.20001220703125" text="Marque" />
-            <TableColumn fx:id="colCategorie" prefWidth="98.40005493164062" text="Categorie" />
-            <TableColumn fx:id="colPrix" prefWidth="58.4000244140625" text="Prix" />
-            <TableColumn fx:id="colCritere" prefWidth="69.60009765625" text="Critere" />
-            <TableColumn fx:id="colImage" minWidth="2.4000244140625" prefWidth="90.39996337890625" text="Image" />
-            <TableColumn fx:id="colObjectif" prefWidth="163.199951171875" text="Objectif" />
+          <TableColumn fx:id="colRef" minWidth="20.0" prefWidth="90.0" text="Ref" />
+          <TableColumn fx:id="colMarque" minWidth="20.0" prefWidth="90.0" text="Marque" />
+            <TableColumn fx:id="colCategorie" minWidth="20.0" prefWidth="90.0" text="Categorie" />
+            <TableColumn fx:id="colPrix" minWidth="20.0" prefWidth="90.0" text="Prix" />
+            <TableColumn fx:id="colCritere" minWidth="20.0" prefWidth="90.0" text="Critere" />
+            <TableColumn fx:id="colImage" minWidth="20.0" prefWidth="90.0" text="Image" />
         </columns>
       </TableView>
-      <ButtonBar layoutX="307.0" layoutY="519.0" prefHeight="40.0" prefWidth="475.0">
+      <ButtonBar layoutX="462.0" layoutY="610.0" prefHeight="40.0" prefWidth="310.0">
         <buttons>
-          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createProduit" text="ajouter" />
-            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifierProduit" text="modifier" />
-            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerProduit" text="supprimer" />
-            <Button fx:id="btnSupTout" mnemonicParsing="false" onAction="#suppToutProduit" text="supprimer tout" />
+          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createProduit" styleClass="search-button" stylesheets="@css/style_pageClient.css" text="Ajouter">
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
+            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifierProduit" styleClass="search-button" stylesheets="@css/style_pageClient.css" text="Modifier">
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
+            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerProduit" styleClass="search-button" stylesheets="@css/style_pageClient.css" text="Supprimer">
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
         </buttons>
       </ButtonBar>
+      <LineChart fx:id="lineChart" layoutX="25.0" layoutY="14.0" prefHeight="250.0" prefWidth="498.0" style="-fx-background-color: transparent;" title="Évolution des prix par catégorie">
+        <xAxis>
+          <CategoryAxis label="Categorie" side="BOTTOM" fx:id="xAxis" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxis" label="Prix" side="LEFT" tickLabelGap="0.0" upperBound="40.0" />
+        </yAxis>
+      </LineChart>
+      <TextField fx:id="searchField" layoutX="388.0" layoutY="266.0" onKeyReleased="#handleSearchFieldKeyPress" />
+      <ListView fx:id="suggestionList" layoutX="599.0" layoutY="110.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

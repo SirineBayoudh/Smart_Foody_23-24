@@ -41,3 +41,8 @@
     -fx-border-radius: 50%;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 3, 3);
 }
+
+.text-field.error {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+}

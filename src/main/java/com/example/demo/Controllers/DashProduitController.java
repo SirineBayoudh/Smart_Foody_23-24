@@ -7,13 +7,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,6 +41,10 @@ public class DashProduitController implements Initializable {
 
     @FXML
     private Button btnSupprimer;
+    @FXML
+    private Button btnSelectImg;
+    @FXML
+    private TextField searchField;
 
     @FXML
     private TableView<Produit> table;
@@ -49,6 +57,11 @@ public class DashProduitController implements Initializable {
 
     @FXML
     private TextField tfMarque;
+    @FXML
+    private VBox vboxFormulaire;
+
+    // Déclarez une liste observable pour stocker les suggestions
+    private ObservableList<String> suggestions = FXCollections.observableArrayList();
 
     @FXML
     private TextField tfPrix;
@@ -74,7 +87,46 @@ public class DashProduitController implements Initializable {
     @FXML
     private TableColumn<Produit, String > colImage;
     @FXML
-    private TableColumn<Produit, String> colObjectif;
+    private LineChart<String, Number> lineChart;
+    @FXML
+    private ListView<String> suggestionList;
+
+    // Méthode pour mettre à jour le LineChart avec les catégories et les prix les plus élevés
+    private void updateLineChart() {
+        String query = "SELECT categorie, MAX(prix) AS MaxPrix FROM produit GROUP BY categorie";
+        ObservableList<XYChart.Data<String, Number>> data = FXCollections.observableArrayList();
+        try {
+            PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String categorie = resultSet.getString("categorie"); // Utilisez le nom de la colonne tel qu'il apparaît dans votre requête SQL
+                double maxPrix = resultSet.getFloat("MaxPrix"); // Accédez à la colonne avec le nom "MaxPrix"
+                data.add(new XYChart.Data<>(categorie, maxPrix));
+                lineChart.getYAxis().setAutoRanging(false);
+                ((NumberAxis) lineChart.getYAxis()).setLowerBound(0);
+                ((NumberAxis) lineChart.getYAxis()).setUpperBound(50);
+                ((NumberAxis) lineChart.getYAxis()).setTickUnit(5);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // Effacez les données existantes et ajoutez les nouvelles données au LineChart
+        XYChart.Series<String, Number> series = new XYChart.Series<>(data);
+        lineChart.getData().clear();
+        lineChart.getData().add(series);
+    }
+    
+
+    @FXML
+    void selectImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            // Récupérez l'URL de l'image sélectionnée et affichez-la dans le champ texte
+            tfImage.setText(selectedFile.toURI().toString());
+        }
+    }
 
 
     private ObservableList<Produit> getProduits(){
@@ -92,7 +144,6 @@ public class DashProduitController implements Initializable {
                  st.setPrix(rs.getFloat("Prix"));
                  st.setImage(rs.getString("Image"));
                  st.setCritere(rs.getString("Critere"));
-                 st.setObj(rs.getString("Objectif"));
                  produits.add(st);
              }
          } catch (SQLException e) {
@@ -113,16 +164,61 @@ public class DashProduitController implements Initializable {
     }
     @FXML
     void createProduit(ActionEvent event) throws SQLException {
-        String insert = "insert into produit(Marque,Categorie,Prix,Critere,Image,Objectif) values(?,?,?,?,?,?)";
+        vboxFormulaire.setVisible(true);
+        String insert = "insert into produit(Marque,Categorie,Prix,Critere,Image) values(?,?,?,?,?)";
         con = MyConnection.getInstance();
         try{
             st = con.getCnx().prepareStatement(insert);
+            String imageUrl = tfImage.getText();
+            // Validation de la marque
+            // Validation de la marque
+            String marque = tfMarque.getText();
+            if (marque.isEmpty()) {
+                showAlert("Veuillez saisir une marque.");
+                return;
+            } else if (!marque.matches("[a-zA-Z]+")) {
+                showAlert("La marque ne doit contenir que des lettres.");
+                return;
+            }
+            String categorie = tfCategorie.getText();
+            if (categorie.isEmpty()) {
+                showAlert("Veuillez saisir une catégorie.");
+                return;
+            } else if (!categorie.matches("[a-zA-Z]+")) {
+                showAlert("La catégorie ne doit contenir que des lettres.");
+                return;
+            }
+
+            // Validation du critère
+            String critere = tfCritere.getText();
+            if (critere.isEmpty()) {
+                showAlert("Veuillez saisir un critère.");
+                return;
+            } else if (!critere.matches("[a-zA-Z]+")) {
+                showAlert("Le critère ne doit contenir que des lettres.");
+                return;
+            }
+            String prixText = tfPrix.getText();
+             if (prixText.isEmpty()) {
+                showAlert("Veuillez saisir un prix.");
+                return;
+            } else if (!prixText.matches("\\d+(\\.\\d+)?")) {
+                 showAlert("Le prix doit être un nombre décimal (float).");
+                 return;
+             }
+            if (isImageUrlUnique(imageUrl)) {
+                showAlert("L'URL de l'image doit être unique.");
+                return;
+            }else if (imageUrl.isEmpty()){
+                showAlert("le champs est vide . Veuillez selectionner une image.");
+                return;
+            }
             st.setString(1,tfMarque.getText());
             st.setString(2,tfCategorie.getText());
             st.setString(3, String.valueOf(Float.parseFloat(tfPrix.getText())));
             st.setString(4,tfCritere.getText());
             st.setString(5,tfImage.getText());
-            st.setString(6,tfObjectif.getText());
+
             // Utilisez executeUpdate() pour les requêtes de modification
             int rowsAffected = st.executeUpdate();
 
@@ -141,8 +237,26 @@ public class DashProduitController implements Initializable {
             e.printStackTrace(); // Imprimez la trace de l'exception
             throw new RuntimeException(e); // Lancez l'exception avec l'exception d'origine
         }
+        updateLineChart();
     }
-    @FXML
+    private boolean isImageUrlUnique(String imageUrl) throws SQLException {
+        String query = "SELECT COUNT(*) FROM produit WHERE Image = ?";
+        PreparedStatement statement = con.getCnx().prepareStatement(query);
+        statement.setString(1, imageUrl);
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        return count > 0;
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur de saisie");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+        @FXML
     void getData(MouseEvent event) {
     Produit produit = table.getSelectionModel().getSelectedItem();
     ref = produit.getRef();
@@ -158,7 +272,7 @@ public class DashProduitController implements Initializable {
 
     @FXML
     void modifierProduit(ActionEvent event) {
-        String update = "update produit set Marque = ? ,Categorie = ? ,Prix = ?,Critere = ? ,Image = ? ,Objectif = ? where ref = ?";
+        String update = "update produit set Marque = ? ,Categorie = ? ,Prix = ?,Critere = ? ,Image = ?  where ref = ?";
         con = MyConnection.getInstance();
         try{
             st = con.getCnx().prepareStatement(update);
@@ -167,8 +281,7 @@ public class DashProduitController implements Initializable {
             st.setString(3, String.valueOf(Float.parseFloat(tfPrix.getText())));
             st.setString(4,tfCritere.getText());
             st.setString(5,tfImage.getText());
-            st.setString(6,tfObjectif.getText());
-            st.setInt(7,ref);
+            st.setInt(6,ref);
             // Utilisez executeUpdate() pour les requêtes de modification
             int rowsAffected = st.executeUpdate();
 
@@ -187,11 +300,7 @@ public class DashProduitController implements Initializable {
             e.printStackTrace(); // Imprimez la trace de l'exception
             throw new RuntimeException(e); // Lancez l'exception avec l'exception d'origine
         }
-    }
-
-    @FXML
-    void suppToutProduit(ActionEvent event) {
-
+        updateLineChart();
     }
 
     @FXML
@@ -220,11 +329,35 @@ public class DashProduitController implements Initializable {
             e.printStackTrace(); // Imprimez la trace de l'exception
             throw new RuntimeException(e); // Lancez l'exception avec l'exception d'origine
         }
+        updateLineChart();
         }
+
+    @FXML
+    void handleSearchFieldKeyPress(KeyEvent event) {
+        String query = "SELECT marque FROM produit WHERE marque LIKE ?";
+        try {
+            PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query);
+            statement.setString(1, searchField.getText() + "%"); // Ajoutez '%' pour rechercher les noms de marque commençant par la lettre saisie
+            ResultSet resultSet = statement.executeQuery();
+
+            suggestionList.getItems().clear();
+            while (resultSet.next()) {
+                String suggestion = resultSet.getString("marque");
+                suggestions.add(suggestion);
+            }
+            suggestionList.getItems().addAll(suggestions);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    showProduits();
+
+        showProduits();
+        updateLineChart();
+
     }
 }

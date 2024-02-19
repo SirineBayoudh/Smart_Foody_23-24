@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
+<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
 <left>
     <VBox prefHeight="800.0" prefWidth="184.0">
         <children>
@@ -95,7 +95,7 @@
                         <Image url="@Images/homme.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btn1" layoutX="17.0" layoutY="230.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Produits" textFill="WHITE">
+                  <Button fx:id="btnProduit" layoutX="17.0" layoutY="230.0" mnemonicParsing="false" onAction="#produit" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Produits" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
