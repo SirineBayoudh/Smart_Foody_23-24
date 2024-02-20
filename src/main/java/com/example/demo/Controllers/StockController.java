@@ -28,9 +28,8 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Comparator;
 import java.util.ResourceBundle;
-
-//import static com.example.demo.Controllers.AlerteController.insertAlert;
 
 
 public class StockController implements Initializable{
@@ -101,7 +100,8 @@ public class StockController implements Initializable{
     private Pane pane_1;
     @FXML
     private Label countAllStock;
-
+    @FXML
+    private ScatterChart<String, Number> scatterChart;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -131,7 +131,7 @@ public class StockController implements Initializable{
         if (lowestStock != null) {
             lowestStockId = lowestStock.getId_s();
             String message = "le  stock : "+lowestStock.getId_s()+"quantité" + lowestStock.getQuantite();
-            //insertAlert(lowestStockId, new java.util.Date(), message);
+
             runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
         } else {
             runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
@@ -383,6 +383,7 @@ public class StockController implements Initializable{
             NomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
             tTotal.setCellValueFactory(new PropertyValueFactory<>("cout"));
             updateBarChart(list);
+            updateScatterChart(list);
 
 
         } else {
@@ -556,28 +557,28 @@ void getData(MouseEvent event) {
     /*****************************Stat *******************************/
     private void updateBarChart(ObservableList<Stock> stockData) {
         barchart.getData().clear();
-
+        stockData.sort(Comparator.comparingInt(Stock::getId_s));
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         for (Stock stock : stockData) {
             try {
                 int quantity = stock.getQuantite();
-                String referenceCategory = String.valueOf(stock.getProduitRef());
+                String id_s = String.valueOf(stock.getId_s());
 
                 // Utilisez BarChart.Data pour spécifier les valeurs des axes X et Y
-                BarChart.Data<String, Number> data = new BarChart.Data<>(referenceCategory, quantity);
+                BarChart.Data<String, Number> data = new BarChart.Data<>(id_s, quantity);
                 series.getData().add(data);
 
                 // Si vous avez besoin de personnaliser l'apparence des barres, vous pouvez le faire ici
                 Node bar = data.getNode();
                 // Ajoutez ici votre personnalisation de la barre (si nécessaire)
             } catch (NumberFormatException e) {
-                System.err.println("Invalid reference format: " + stock.getProduitRef());
+                System.err.println("Invalid reference format: " + stock.getId_s());
             }
         }
 
         barchart.getData().add(series);
-        barchart.setTitle("Quantités de stock par référence de produit");
-        barchart.getXAxis().setLabel("Référence du produit");
+        barchart.setTitle("Quantités de produit par stock");
+        barchart.getXAxis().setLabel("Id stock");
         barchart.getYAxis().setLabel("Quantité");
     }
 
@@ -601,6 +602,30 @@ void getData(MouseEvent event) {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    private void updateScatterChart(ObservableList<Stock> stockData) {
+        scatterChart.getData().clear();
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        for (Stock stock : stockData) {
+            try {
+                int quantite = stock.getQuantite();
+                int nbVendu = stock.getNbVendu();
+                String referenceCategory = String.valueOf(stock.getProduitRef());
+
+                // Utilisez ScatterChart.Data pour spécifier les valeurs des axes X et Y
+                ScatterChart.Data<String, Number> data = new ScatterChart.Data<>(referenceCategory, nbVendu);
+                series.getData().add(data);
+
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid reference format: " + stock.getProduitRef());
+            }
+        }
+
+        scatterChart.getData().add(series);
+        scatterChart.setTitle("Nombre vendu  par produit ");
+        scatterChart.getXAxis().setLabel("Référence du produit");
+        scatterChart.getYAxis().setLabel("Nombre vendu");
     }
 
 

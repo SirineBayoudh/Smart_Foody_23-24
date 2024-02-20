@@ -2,6 +2,7 @@ package com.example.demo;
 
 
 
+
 import com.example.demo.Controllers.StockController;
 import com.example.demo.Models.Stock;
 import javafx.application.Application;
@@ -35,8 +36,7 @@ public class Main extends Application {
 
     }
 
-
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         launch(args);
     }
 
