@@ -185,15 +185,15 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        // Vérifiez si l'e-mail est au format requis ****@esprit.tn
-        String emailPattern = "^[A-Za-z0-9._%+-]+@esprit\\.tn$";
+        // Vérifiez si l'e-mail est au format requis ****@*****
+        String emailPattern = "^.+@.+$";
         if (!temail.getText().matches(emailPattern)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Format d'e-mail incorrect");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez saisir une adresse e-mail valide au format ****@esprit.tn.");
+            alert.setContentText("Veuillez saisir une adresse e-mail valide.");
             alert.showAndWait();
-            return; // Arrête l'exécution de la méthode si le format de l'e-mail est incorrect
+            return;
         }
 
         //contrôle sur l'@ email existe déjà

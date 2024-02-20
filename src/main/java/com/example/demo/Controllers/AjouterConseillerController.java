@@ -69,14 +69,14 @@ public class AjouterConseillerController implements Initializable {
             return;
         }
 
-        String emailPattern = "^[A-Za-z0-9._%+-]+@esprit\\.tn$";
+        String emailPattern = "^.+@.+$";
         if (!tfemailc.getText().matches(emailPattern)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Format d'e-mail incorrect");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez saisir une adresse e-mail valide au format ****@esprit.tn.");
+            alert.setContentText("Veuillez saisir une adresse e-mail valide.");
             alert.showAndWait();
-            return; // Arrête l'exécution de la méthode si le format de l'e-mail est incorrect
+            return;
         }
 
         //contrôle sur l'@ email existe déjà
@@ -104,6 +104,17 @@ public class AjouterConseillerController implements Initializable {
             alert.setTitle("Format de numéro de téléphone incorrect");
             alert.setHeaderText(null);
             alert.setContentText("Le numéro de téléphone ne doit contenir que des chiffres.");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            int tel = Integer.parseInt(tfmatricule.getText());
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Format de matricule incorrect");
+            alert.setHeaderText(null);
+            alert.setContentText("Le champ matricule ne doit contenir que des chiffres.");
             alert.showAndWait();
             return;
         }
