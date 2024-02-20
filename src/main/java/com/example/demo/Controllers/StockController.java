@@ -28,6 +28,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+//import static com.example.demo.Controllers.AlerteController.insertAlert;
 
 
 public class StockController implements Initializable{
@@ -123,7 +124,6 @@ public class StockController implements Initializable{
         if (lowestStock != null) {
             lowestStockId = lowestStock.getId_s();
             String message = "le  stock : "+lowestStock.getId_s()+"quantité" + lowestStock.getQuantite();
-
             runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
         } else {
             runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));

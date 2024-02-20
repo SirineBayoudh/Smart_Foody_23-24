@@ -18,7 +18,7 @@
 <Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.StockController">
     <children>
         <!-- Le contenu spécifique de votre page de stocks -->
-        <TableView fx:id="stockTableView" layoutX="199.0" layoutY="282.0" onMouseClicked="#getData" prefHeight="333.0" prefWidth="737.0">
+        <TableView fx:id="stockTableView" layoutX="225.0" layoutY="282.0" onMouseClicked="#getData" prefHeight="333.0" prefWidth="715.0">
             <columns>
             <TableColumn fx:id="id_stockColumn" prefWidth="103.20001602172852" text="Id Stock" />
                 <TableColumn fx:id="NomColumn" minWidth="20.0" prefWidth="91.199951171875" text="Nom" />
@@ -49,7 +49,7 @@
       </ImageView>
       <Pane fx:id="pane_111" layoutX="653.0" layoutY="54.0" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
          <children>
-            <Label layoutX="39.0" layoutY="69.0" prefHeight="17.0" prefWidth="68.0" text="GO ON" textFill="#f2eaea">
+            <Label layoutX="39.0" layoutY="69.0" prefHeight="17.0" prefWidth="68.0" text="GO ON" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -72,24 +72,24 @@
          </image>
       </ImageView>
       <TextField fx:id="Trecherche" layoutX="684.0" layoutY="203.0" promptText="Rechercher :" />
-      <VBox fx:id="Vboxupdate" layoutX="5.0" layoutY="318.0" prefHeight="216.0" prefWidth="186.0" style="-fx-background-color: #77bb58;">
+      <VBox fx:id="Vboxupdate" layoutX="5.0" layoutY="318.0" prefHeight="216.0" prefWidth="207.0" style="-fx-background-color: #cce5c0;">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="500.0" layoutY="100.0" lineSpacing="1000.0" prefHeight="27.0" prefWidth="86.0" text="Modifier" textAlignment="RIGHT" textFill="WHITE" translateX="50.0">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="500.0" layoutY="100.0" lineSpacing="1000.0" prefHeight="27.0" prefWidth="86.0" text="Modifier" textAlignment="RIGHT" textFill="#5ba971" translateX="50.0">
                <font>
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
-            <Text fill="WHITE" lineSpacing="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  Id stock ">
+            <Text fill="WHITE" fontSmoothingType="LCD" lineSpacing="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  Id stock  :">
                <font>
                   <Font size="18.0" />
                </font></Text>
-            <TextField fx:id="Idfield" alignment="TOP_LEFT" editable="false" mouseTransparent="true" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text=" Réference du produit " wrappingWidth="181.72384643554688">
+            <TextField fx:id="Idfield" alignment="TOP_LEFT" editable="false" mouseTransparent="true" style="-fx-background-color: #eff6ea; -fx-border-color: #bbddab; -fx-border-width: 0 0 2 0;" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text=" Réference du produit :" wrappingWidth="191.32382202148438">
                <font>
                   <Font size="18.0" />
                </font></Text>
             <TextField fx:id="Refield" editable="false" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text=" Quantité  " wrappingWidth="121.5999984741211">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text=" Quantité  :" wrappingWidth="121.5999984741211">
                <font>
                   <Font size="18.0" />
                </font></Text>
