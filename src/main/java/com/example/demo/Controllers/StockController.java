@@ -282,7 +282,7 @@ public class StockController implements Initializable{
             if (rowsAffected > 0) {
                 System.out.println("Updated nbVendu for id_s " + idLigneCommande);
                 // Now fetch and print the updated nbVendu from the stock entry
-
+                printUpdatedNbVendu(connection, idLigneCommande);
             } else {
                 System.out.println("No rows were updated.");
             }
@@ -291,6 +291,27 @@ public class StockController implements Initializable{
         }
     }
 
+    private void printUpdatedNbVendu(Connection connection, int idLigneCommande) {
+        String selectQuery = "SELECT s.id_s, s.nbVendu " +
+                "FROM stock s " +
+                "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
+                "WHERE lc.id_lc = ?";
+
+        try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+            selectStatement.setInt(1, idLigneCommande);
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int id_s = resultSet.getInt("id_s");
+                int nbVendu = resultSet.getInt("nbVendu");
+                System.out.println("Updated nbVendu value for id_s " + id_s + ": " + nbVendu);
+            } else {
+                System.out.println("Failed to fetch updated nbVendu value.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public float calculateTotalValue(int ref_produit) {
         try {
