@@ -33,6 +33,9 @@ public class AjoutConseilController implements Initializable {
     private TextArea tDemande;
     @FXML
     private TextArea tNote;
+    @FXML
+    private TextArea foodLabel;
+
     int id_conseil=0;
     @FXML
     private TableColumn<Conseil, Integer> colidconseil;
@@ -50,9 +53,14 @@ public class AjoutConseilController implements Initializable {
     private TableView<Conseil> table;
     @FXML
     private Text quoteText;
+    @FXML
+    private Text foodInfoText;
     Connection con = null;
     PreparedStatement st = null;
     ResultSet rs = null;
+    @FXML
+    private TextArea foodName;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -278,5 +286,29 @@ public class AjoutConseilController implements Initializable {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur inattendue est apparue.");
         }
+    }
+
+    @FXML
+    private void searchFood(ActionEvent event) {
+        String foodName = foodLabel.getText();
+        if (foodName == null || foodName.isEmpty()){
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez saisir un nom d'aliment.");
+        }
+        else {
+            FoodCalorie foodCalorieService = new FoodCalorie();
+            try {
+                String calorieInfo = foodCalorieService.getFoodCalories(foodName);
+                foodInfoText.setText(calorieInfo);
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de l'obtention des calories.");
+            }
+        }
+    }
+
+    @FXML
+    void clear(MouseEvent event) {
+        foodLabel.setText(null);
+        foodInfoText.setText(null);
     }
 }

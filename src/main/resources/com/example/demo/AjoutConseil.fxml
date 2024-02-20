@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AjoutConseilController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clear" prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AjoutConseilController">
     <children>
         <TextArea fx:id="demandeLabel" layoutX="152.0" layoutY="73.0" prefHeight="142.0" prefWidth="202.0" promptText="Demande" style="-fx-border-color: #232323;" />
         <!--
@@ -48,7 +48,7 @@
             <Image url="@Images/plus.png" />
          </image>
       </ImageView>
-        <TableView fx:id="table" layoutX="577.0" layoutY="214.0" onMouseClicked="#getData" prefHeight="330.0" prefWidth="504.0" stylesheets="@css/table_view.css">
+        <TableView fx:id="table" layoutX="585.0" layoutY="312.0" onMouseClicked="#getData" prefHeight="231.0" prefWidth="504.0" stylesheets="@css/table_view.css">
             <columns>
                 <TableColumn fx:id="colidconseil" minWidth="20.0" prefWidth="64.79997253417969" style="-fx-background-color: #66b343;" text="ID Conseil" />
                 <TableColumn fx:id="colstatut" prefWidth="69.5999755859375" style="-fx-background-color: #66b343;" text="Statut" />
@@ -63,14 +63,14 @@
             <String fx:value="table-view" />
          </styleClass>
         </TableView>
-      <Text fill="#3c7720" layoutX="693.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des demandes envoyées">
+      <Text fill="#3c7720" layoutX="701.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des demandes envoyées">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
       <Pane layoutX="841.0" layoutY="36.0" prefHeight="107.0" prefWidth="246.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
          <children>
-              <Button layoutX="38.0" layoutY="54.0" onAction="#openChatBotWindow" prefHeight="36.0" prefWidth="170.0" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Ouvrir l'interface" textFill="WHITE">
+              <Button layoutX="38.0" layoutY="56.0" onAction="#openChatBotWindow" prefHeight="36.0" prefWidth="170.0" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Ouvrir l'interface" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -142,11 +142,32 @@
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
+        <Text fx:id="foodInfoText" fill="#3c7720" layoutX="849.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="217.87109375000023">
+            <font>
+                <Font name="System Bold Italic" size="14.0" />
+            </font>
+        </Text>
+        <Button layoutX="749.0" layoutY="223.0" onAction="#searchFood" prefHeight="30.0" prefWidth="85.0" styleClass="btn" stylesheets="@css/style_dash.css" text="Chercher">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
       <ImageView fitHeight="38.0" fitWidth="36.0" layoutX="540.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/main.png" />
          </image>
       </ImageView>
+      <TextArea fx:id="foodLabel" layoutX="614.0" layoutY="223.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="126.0" promptText="Food" style="-fx-border-color: #232323;" />
+      <Text fill="#3c7720" layoutX="704.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calories des aliments (100g)">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="24.0" fitWidth="20.0" layoutX="590.0" layoutY="228.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/8666693_search_icon.png" />
+         </image>
+      </ImageView>
+
     </children>
 
 </AnchorPane>

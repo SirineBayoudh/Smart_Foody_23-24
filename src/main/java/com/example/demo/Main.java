@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.Controllers.FoodCalorie;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/demo/dashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/demo/navbarre.fxml"));
         Scene scene = new Scene(root);
         stage.setHeight(700);
         stage.setWidth(1200);
