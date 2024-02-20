@@ -2,6 +2,7 @@ package com.example.demo.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 
 public class ChatBotController {
 
@@ -75,5 +76,10 @@ public class ChatBotController {
         } else {
             return "Je suis désolé, veuillez contacter l'administrateur pour obtenir des informations supplémentaires.";
         }
+    }
+
+    @FXML
+    void clear(MouseEvent event) {
+        chatArea.setText(null);
     }
 }

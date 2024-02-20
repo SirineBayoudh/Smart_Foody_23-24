@@ -250,9 +250,14 @@ public class AjoutConseilController implements Initializable {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir le champ.");
                 return;
             }
+            try{
             int noteValue = Integer.parseInt(tNote.getText());
             if (noteValue < 1 || noteValue > 5) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez saisir une note entre 1 et 5.");
+                return;
+            }
+            }catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez saisir une valeur numérique pour la note.");
                 return;
             }
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -274,6 +279,7 @@ public class AjoutConseilController implements Initializable {
                         } else {
                             showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de la mise à jour du conseil.");
                         }
+
                     } catch (SQLException e) {
                         e.printStackTrace();
                         System.out.println("SQLException occurred: " + e.getMessage());
