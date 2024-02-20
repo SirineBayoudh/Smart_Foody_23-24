@@ -53,7 +53,7 @@ public class UserCrud implements ICrud<Utilisateur>{
             pst.setString(9,u.getAttestation());
             pst.setString(10,u.getAdresse());
             pst.setString(11, u.getObjectif());
-            pst.setInt(11, u.getId_utilisateur());
+            pst.setInt(12, u.getId_utilisateur());
             pst.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

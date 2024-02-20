@@ -1,19 +1,19 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Models.Role;
 import com.example.demo.Models.Utilisateur;
 import com.example.demo.Tools.MyConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.skin.TableViewSkin;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GestionUserController implements Initializable {
@@ -72,10 +73,20 @@ public class GestionUserController implements Initializable {
 
     @FXML
     private TableColumn<Utilisateur, String> col_objectif;
+
+    @FXML
+    private Button btn_ajout;
+
+    @FXML
+    private Button btn_modif;
+
+    @FXML
+    private Button btn_supprimer;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         afficherUtilisateurs();
     }
+
 
     public ObservableList<Utilisateur> getUtilisateurs(){
         ObservableList<Utilisateur> utilisateurs = FXCollections.observableArrayList();
@@ -152,37 +163,87 @@ public class GestionUserController implements Initializable {
     private void modifierConseiller() {
         // Récupérer l'utilisateur sélectionné dans le TableView
         Utilisateur selectedUser = (Utilisateur) tableUser.getSelectionModel().getSelectedItem();
-        id = selectedUser.getId_utilisateur();
 
         if (selectedUser != null) {
-            // Charger le formulaire d'ajout
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/modifierConseiller.fxml"));
-            Parent root;
-            try {
-                root = loader.load();
-                ModifierConseillerController controller = loader.getController();
+            id = selectedUser.getId_utilisateur();
+            if (selectedUser.getRole().equals(Role.Client.toString())){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setContentText("Vous ne pouvez pas modifier un client");
+                alert.showAndWait();
+            }
+            else {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/modifierConseiller.fxml"));
+                Parent root;
+                try {
+                    root = loader.load();
+                    ModifierConseillerController controller = loader.getController();
 
-                // Remplir les champs du formulaire avec les données de l'utilisateur sélectionné
-                controller.initData(selectedUser);
+                    // Remplir les champs du formulaire avec les données de l'utilisateur sélectionné
+                    controller.initData(selectedUser);
 
-                // Afficher le formulaire d'ajout
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.show();
-                afficherUtilisateurs();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    // Afficher le formulaire d'ajout
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    afficherUtilisateurs();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
-            System.out.println("Veuillez sélectionner un utilisateur à modifier.");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez sélectionner un conseiller");
+            alert.showAndWait();
         }
     }
 
     @FXML
     void getData(MouseEvent event) {
         Utilisateur user =(Utilisateur) tableUser.getSelectionModel().getSelectedItem();
-        id = user.getId_utilisateur();
+        if (user != null) {
+            id = user.getId_utilisateur();
+        }
     }
+
+    @FXML
+    void supprimerConseiller(ActionEvent event) {
+        Utilisateur selectedUser = (Utilisateur) tableUser.getSelectionModel().getSelectedItem();
+
+        if (selectedUser != null) {
+            if (selectedUser.getRole().equals(Role.Client.toString())){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setContentText("Vous ne pouvez pas supprimer un client");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation de suppression");
+                alert.setHeaderText(null);
+                alert.setContentText("Êtes-vous sûr de vouloir supprimer ce conseiller ?");
+
+                ButtonType buttonTypeOui = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+                ButtonType buttonTypeNon = new ButtonType("Non", ButtonBar.ButtonData.NO);
+
+                alert.getButtonTypes().setAll(buttonTypeOui, buttonTypeNon);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == buttonTypeOui) {
+                    UserCrud usc = new UserCrud();
+                    usc.supprimerEntite(selectedUser);
+                    afficherUtilisateurs();
+                }
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez sélectionner un conseiller à supprimer.");
+            alert.showAndWait();
+        }
+    }
+
 
 }
 

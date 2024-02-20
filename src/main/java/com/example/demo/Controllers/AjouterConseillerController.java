@@ -125,5 +125,4 @@ public class AjouterConseillerController implements Initializable {
         tfmatricule.clear();
         tfattestation.clear();
     }
-
 }

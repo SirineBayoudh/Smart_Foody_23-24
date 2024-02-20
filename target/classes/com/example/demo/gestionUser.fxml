@@ -27,9 +27,9 @@
                   <TableColumn fx:id="col_objectif" prefWidth="79.199951171875" text="Objectif" />
               </columns>
             </TableView>
-            <Button mnemonicParsing="false" text="Supprimer" translateX="500.0" translateY="290.0" />
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifierConseiller" text="Modifier Conseiller" translateX="580.0" translateY="280.0" />
-            <Button layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#ajouterConseiller" text="Ajouter Conseiller" translateX="700.0" translateY="270.0" />
+            <Button fx:id="btn_supprimer" mnemonicParsing="false" onAction="#supprimerConseiller" text="Supprimer" translateX="500.0" translateY="290.0" />
+            <Button fx:id="btn_modif" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifierConseiller" text="Modifier Conseiller" translateX="580.0" translateY="280.0" />
+            <Button fx:id="btn_ajout" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#ajouterConseiller" text="Ajouter Conseiller" translateX="700.0" translateY="270.0" />
          </children>
       </AnchorPane>
    </children>
