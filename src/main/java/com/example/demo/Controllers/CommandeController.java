@@ -5,18 +5,45 @@ import com.example.demo.Tools.MyConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class CommandeController {
 
+    @FXML
+    private Pane pane_1;
+
+    @FXML
+    private Pane pane_2;
+
+    @FXML
+    private Pane pane_3;
+    @FXML
+    private TextField Trecherche;
+
+    @FXML
+    private Pane clickpane;
+
+    @FXML
+    private Label cmd;
+
+    @FXML
+    private Label cmdlivre;
+
+    @FXML
+    private Label cmdnonlivre;
     @FXML
     private TableView<Commande> commandeTableView;
 
@@ -24,7 +51,9 @@ public class CommandeController {
     private TableColumn<Commande, Integer> id_commandeColumn;
 
     @FXML
-    private TableColumn<Commande, Integer> id_lcColumn;
+    private TableColumn<Commande, String> etat;
+    @FXML
+    private TableColumn<Commande, Float> remise;
 
     @FXML
     private TableColumn<Commande, Date> date_commandeColumn;
@@ -52,41 +81,50 @@ public class CommandeController {
     public void initialize() {
         // Initialize the table columns
         id_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("id_commande"));
-        id_lcColumn.setCellValueFactory(new PropertyValueFactory<>("id_lc"));
         date_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("date_commande"));
         id_clientColumn.setCellValueFactory(new PropertyValueFactory<>("id_client"));
         total_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("total_commande"));
-        nbre_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("nbrecmdParclient"));
+        remise.setCellValueFactory(new PropertyValueFactory<>("remise"));
+        etat.setCellValueFactory(new PropertyValueFactory<>("etat"));
 
         // Set the items of the table view to the observable list
         commandeTableView.setItems(commandeList);
 
         // Load data into the observable list
-        AfficherCommandes();
+        onPane1Clicked();
+        List<Commande> commandesNonLivre = AfficherCommandes("Non Livre");
+        cmdlivre.setText(String.valueOf(commandesNonLivre.size()));
+        List<Commande> commandesLivre = AfficherCommandes("Livre");
+        cmdnonlivre.setText(String.valueOf(commandesLivre.size()));
+
+
     }
-// la méthodes qui selectionne tous les commandes passe a partir de base
-    private void AfficherCommandes() {
+    // la méthodes qui selectionne tous les commandes passe a partir de base
+    private List<Commande> AfficherCommandes(String etat) {
+        List<Commande> commandes = new ArrayList<>();
         try {
             // Création de la requête SELECT
             String query = "SELECT * FROM commande";
+            if (etat != null) {
+                query += " WHERE etat='" + etat + "'";
+            }
+            System.out.println("etat"+query);
 
             // Création de l'instruction et exécution de la requête
             Statement statement = cnx.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            // Clear the existing list before loading new data
-            commandeList.clear();
-
             // Remplissage de la liste observable avec les données récupérées
             while (resultSet.next()) {
                 Commande commande = new Commande();
                 commande.setId_commande(resultSet.getInt("id_commande"));
-                commande.setId_lc(resultSet.getInt("id_lc"));
                 commande.setDate_commande(resultSet.getDate("date_commande"));
                 commande.setId_client(resultSet.getInt("id_client"));
                 commande.setTotal_commande(resultSet.getFloat("totalecommande"));
-                commande.setNbrecmdParclient(resultSet.getInt("nbrecmdParclient"));
-                commandeList.add(commande);
+                commande.setRemise(resultSet.getFloat("remise"));
+                commande.setEtat(resultSet.getString("etat"));
+
+                commandes.add(commande);
             }
 
             // Fermeture des ressources
@@ -95,5 +133,36 @@ public class CommandeController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return commandes;
     }
+
+    @FXML
+    private void onPane1Clicked() {
+        List<Commande> commandes = AfficherCommandes(null);
+        ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
+        commandeList.clear();
+        commandeList.addAll(observableCommandes);
+        cmd.setText(String.valueOf(commandes.size()));
+    }
+
+    @FXML
+    private void onPane2Clicked() {
+        List<Commande> commandes = AfficherCommandes("Non Livre");
+        //cmdlivre.setText(String.valueOf(commandes.stream().filter(c -> "Non Livre".equals(c.getEtat())).count()));
+        ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
+        commandeList.clear();
+        commandeList.addAll(observableCommandes);
+
+    }
+
+    @FXML
+    private void onPane3Clicked() {
+        List<Commande> commandes = AfficherCommandes("Livre");
+        // cmdnonlivre.setText(String.valueOf(commandes.stream().filter(c -> "Livre".equals(c.getEtat())).count()));
+        ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
+        commandeList.clear();
+        commandeList.addAll(observableCommandes);
+
+    }
+
 }

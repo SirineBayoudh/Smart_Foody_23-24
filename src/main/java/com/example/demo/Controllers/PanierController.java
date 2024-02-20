@@ -1,5 +1,6 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.API.EmailUtil;
 import com.example.demo.Models.LigneCommande;
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -347,27 +349,34 @@ public class PanierController {
             pst.setInt(2, 14);
             pst.setFloat(3, (float) totale[0]);
             pst.setFloat(4, (float) remise[0]);
-            pst.setString(5, "en cours"); // Fournir une valeur pour le champ 'etat'
+            pst.setString(5, "en cours");
             pst.executeUpdate();
 
-            // Afficher une notification de commande réussie avec le style personnalisé
+            String emailClient = "saidifadhila24@gmail.com";
+            String sujetEmail = "Confirmation de commande";
+            String contenuEmail = "Votre commande a été passée avec succès. Merci de votre confiance.";
+
+            EmailUtil.envoyerEmail(emailClient, sujetEmail, contenuEmail);
+
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Commande passée");
             successAlert.setHeaderText(null);
-            successAlert.setContentText("La commande a été ajoutée avec succès.");
-
-            // Appliquer la classe CSS personnalisée à la boîte de dialogue
+            successAlert.setContentText("La commande a été ajoutée avec succès et un e-mail de confirmation a été envoyé.");
             successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
             successAlert.getDialogPane().getStyleClass().add("custom-alert");
-
             successAlert.showAndWait();
 
             System.out.println("Commande ajoutée avec succès");
             viderPanier(true);
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
+        } catch (MessagingException e) {
+            System.out.println("Erreur lors de l'envoi de l'email : " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+
 
 
 

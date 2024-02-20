@@ -31,12 +31,28 @@
     -fx-background-radius: 50px;
 }
 .pane_1{
+    -fx-background-color:#518dfb;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #518dfb;
+}
+.pane_2{
     -fx-background-color:#77bb58;
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
     -fx-border-style: solid;
     -fx-border-color: #77bb58;
+}
+.pane_3{
+    -fx-background-color:#F3c954;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #F3c954;
 }
 .ajouter_stock{
     -fx-background-color: #aad597;
