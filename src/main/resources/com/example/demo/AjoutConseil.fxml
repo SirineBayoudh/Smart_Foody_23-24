@@ -16,7 +16,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AjoutConseilController">
     <children>
-        <TextArea fx:id="demandeLabel" layoutX="191.0" layoutY="70.0" prefHeight="142.0" prefWidth="202.0" promptText="Demande" style="-fx-border-color: #232323;" />
+        <TextArea fx:id="demandeLabel" layoutX="152.0" layoutY="73.0" prefHeight="142.0" prefWidth="202.0" promptText="Demande" style="-fx-border-color: #232323;" />
         <!--
         <Label layoutX="22.0" layoutY="186.0" text="Note :" textFill="#56ab2f">
             <font>
@@ -34,21 +34,21 @@
             </items>
         </ChoiceBox>
         -->
-        <Text fill="#3c7720" layoutX="147.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajout d'une demande de conseil">
+        <Text fill="#3c7720" layoutX="108.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajout d'une demande de conseil">
             <font>
                 <Font name="System Bold Italic" size="20.0" />
             </font>
         </Text>
-      <Button fx:id="addBtn" layoutX="406.0" layoutY="173.0" mnemonicParsing="false" onAction="#ajoutConseil" prefHeight="38.0" prefWidth="102.0" styleClass="btn" stylesheets="@css/style_dash.css" text="        Ajouter">
+      <Button fx:id="addBtn" layoutX="367.0" layoutY="176.0" mnemonicParsing="false" onAction="#ajoutConseil" prefHeight="38.0" prefWidth="102.0" styleClass="btn" stylesheets="@css/style_dash.css" text="        Ajouter">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <ImageView fitHeight="26.0" fitWidth="40.0" layoutX="418.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="26.0" fitWidth="40.0" layoutX="379.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/plus.png" />
          </image>
       </ImageView>
-        <TableView fx:id="table" layoutX="613.0" layoutY="70.0" onMouseClicked="#getData" prefHeight="330.0" prefWidth="504.0" stylesheets="@css/table_view.css">
+        <TableView fx:id="table" layoutX="574.0" layoutY="73.0" onMouseClicked="#getData" prefHeight="330.0" prefWidth="504.0" stylesheets="@css/table_view.css">
             <columns>
                 <TableColumn fx:id="colidconseil" minWidth="20.0" prefWidth="64.79997253417969" style="-fx-background-color: #66b343;" text="ID Conseil" />
                 <TableColumn fx:id="colstatut" prefWidth="69.5999755859375" style="-fx-background-color: #66b343;" text="Statut" />
@@ -63,31 +63,31 @@
             <String fx:value="table-view" />
          </styleClass>
         </TableView>
-      <Text fill="#3c7720" layoutX="729.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des demandes envoyées">
+      <Text fill="#3c7720" layoutX="690.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des demandes envoyées">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
-      <Pane layoutX="697.0" layoutY="424.0" prefHeight="121.0" prefWidth="336.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+      <Pane layoutX="830.0" layoutY="429.0" prefHeight="122.0" prefWidth="246.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
          <children>
-              <Button layoutX="98.0" layoutY="61.0" onAction="#openChatBotWindow" prefHeight="36.0" prefWidth="170.0" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Ouvrir l'interface" textFill="WHITE">
+              <Button layoutX="38.0" layoutY="61.0" onAction="#openChatBotWindow" prefHeight="36.0" prefWidth="170.0" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Ouvrir l'interface" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <Text fill="WHITE" layoutX="75.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notre FAQ ChatBot">
+            <Text fill="WHITE" layoutX="51.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notre FAQ ChatBot" wrappingWidth="186.89453125">
                <font>
-                  <Font name="System Bold Italic" size="24.0" />
+                  <Font name="System Bold Italic" size="20.0" />
                </font>
             </Text>
-            <ImageView fitHeight="50.0" fitWidth="43.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="36.0" layoutX="8.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/chat-bot.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
-        <VBox fx:id="vboxUpdate" layoutX="191.0" layoutY="283.0" prefHeight="258.0" prefWidth="208.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+        <VBox fx:id="vboxUpdate" layoutX="152.0" layoutY="286.0" prefHeight="258.0" prefWidth="208.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
             <children>
                 <Pane prefHeight="2.0" prefWidth="208.0" />
                 <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Demande : ">
@@ -117,21 +117,31 @@
                     </VBox.margin></TextArea>
             </children>
         </VBox>
-        <Button fx:id="btnUpdate" layoutX="418.0" layoutY="487.0" mnemonicParsing="false" onAction="#updateConseil" prefHeight="40.0" prefWidth="102.0" styleClass="btn" stylesheets="@css/style_dash.css" text="       Envoyer">
+        <Button fx:id="btnUpdate" layoutX="379.0" layoutY="490.0" mnemonicParsing="false" onAction="#updateConseil" prefHeight="40.0" prefWidth="102.0" styleClass="btn" stylesheets="@css/style_dash.css" text="       Envoyer">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Text fill="#3c7720" layoutX="202.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Évaluer le conseiller">
+      <Text fill="#3c7720" layoutX="163.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Évaluer le conseiller">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
-      <ImageView fitHeight="90.0" fitWidth="26.0" layoutX="430.0" layoutY="494.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="90.0" fitWidth="26.0" layoutX="391.0" layoutY="497.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/editer.png" />
          </image>
       </ImageView>
+        <Text fx:id="quoteText" fill="#3c7720" layoutX="577.0" layoutY="473.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="226.650390625">
+            <font>
+                <Font name="System Bold Italic" size="13.0" />
+            </font>
+        </Text>
+      <Text fill="#3c7720" layoutX="577.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Citations de motivation ">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Text>
     </children>
 
 </AnchorPane>

@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.mail.*;
@@ -49,6 +50,8 @@ public class AjoutConseilController implements Initializable {
     private TableColumn<Conseil, String> colstatut;
     @FXML
     private TableView<Conseil> table;
+    @FXML
+    private Text quoteText;
     Connection con = null;
     PreparedStatement st = null;
     ResultSet rs = null;
@@ -63,6 +66,13 @@ public class AjoutConseilController implements Initializable {
                 id_conseil = newSelection.getId_conseil();
             }
         });
+        QuoteService quoteService = new QuoteService();
+        try {
+            String randomQuote = quoteService.getRandomQuote();
+            quoteText.setText(randomQuote);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
