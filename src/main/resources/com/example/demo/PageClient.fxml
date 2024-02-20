@@ -97,7 +97,7 @@
             </VBox>
          </top>
          <center>
-            <ScrollPane minViewportHeight="1500.0" prefHeight="1613.0" prefWidth="930.0" BorderPane.alignment="CENTER">
+            <ScrollPane prefHeight="1613.0" prefWidth="930.0" BorderPane.alignment="CENTER">
                <content>
                   <VBox prefHeight="1638.0" prefWidth="1000.0">
                      <children>
