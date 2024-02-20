@@ -103,7 +103,7 @@
                         <Font name="System Bold Italic" size="18.0" />
                     </font>
                 </Label>
-                <Label fx:id="countAllSTock" layoutX="78.0" layoutY="79.0" prefHeight="30.0" prefWidth="35.0" text=" 0" textFill="#f2eaea">
+                <Label fx:id="countAllStock" layoutX="78.0" layoutY="79.0" prefHeight="30.0" prefWidth="35.0" text=" 0" textFill="#f2eaea">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>

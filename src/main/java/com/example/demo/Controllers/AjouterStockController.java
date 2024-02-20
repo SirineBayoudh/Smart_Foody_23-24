@@ -137,7 +137,6 @@ public class AjouterStockController {
                 int ref = Integer.parseInt(tRef.getText());
                 int quantite = Integer.parseInt(tQnt.getText());
                 String nom = tNom.getText();
-                int nbVendu = 0;
 
                 Connection connection = MyConnection.getInstance().getCnx();
 
@@ -154,13 +153,13 @@ public class AjouterStockController {
                                 String marque = resultSet.getString("marque"); // Retrieve the 'marque' value from the result set
 
                                 // ajouter  stock entry avec   produits details
-                                String insertQuery = "INSERT INTO stock (ref_produit, marque, quantite,nom, nb_vendu) VALUES (?,?, ?, ?, ?)";
+                                String insertQuery = "INSERT INTO stock (ref_produit, marque, quantite,nom) VALUES (?,?, ?,  ?)";
                                 try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
                                     insertStatement.setInt(1, ref);
                                     insertStatement.setString(2, marque);
                                     insertStatement.setInt(3, quantite);
                                     insertStatement.setString(4, nom);
-                                    insertStatement.setInt(5, nbVendu);
+                                    //insertStatement.setInt(5, nbVendu);
                                     insertStatement.executeUpdate();
 
                                     // fermer window

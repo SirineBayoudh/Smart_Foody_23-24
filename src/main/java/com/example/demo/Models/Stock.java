@@ -9,6 +9,7 @@ public class Stock {
     private String Nom ;
     private int nbVendu;
     private  float cout ;
+    private LigneCommande ligneCommande;
     public Stock(int id_s, Produit produit, int quantite, String nom, int nbVendu, float cout) {
         this.id_s = id_s;
         this.produit = produit;
@@ -92,13 +93,29 @@ public class Stock {
     public String getProduitMarque() {
         return produit.getMarque();
     }
+    public LigneCommande getLigneCommande() {
+        return ligneCommande;
+    }
+
+    public void setLigneCommande(LigneCommande ligneCommande) {
+        this.ligneCommande = ligneCommande;
+    }
+
+    // Add a method to retrieve id_lc associated with a stock entry
+    public int getIdLigneCommande() {
+        return (ligneCommande != null) ? ligneCommande.getId_lc() : 0;
+    }
+
     @Override
     public String toString() {
         return "Stock{" +
                 "id_s=" + id_s +
                 ", produit=" + produit +
                 ", quantite=" + quantite +
+                ", Nom='" + Nom + '\'' +
                 ", nbVendu=" + nbVendu +
+                ", cout=" + cout +
+                ", ligneCommande=" + ligneCommande +
                 '}';
     }
 }

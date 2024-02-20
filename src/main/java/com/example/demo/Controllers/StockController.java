@@ -102,6 +102,7 @@ public class StockController implements Initializable{
     @FXML
     private Label countAllStock;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Trecherche.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -165,6 +166,7 @@ public class StockController implements Initializable{
                 lowestStock = new Stock();
                 lowestStock.setId_s(stock.getId_s());
                 lowestStock.setQuantite(stock.getQuantite());
+                lowestStock.setNbVendu(stock.getNbVendu());
 
             }
         }
@@ -228,7 +230,7 @@ public class StockController implements Initializable{
         try {
             Connection connection = MyConnection.getInstance().getCnx();
 
-            String selectQuery = "SELECT s.id_s, s.nom, p.ref AS ref_produit, p.marque, lc.id_lc, lc.quantite AS quantite_commandee, s.quantite, s.nb_vendu " +
+            String selectQuery = "SELECT s.id_s, s.nom, p.ref AS ref_produit, p.marque, lc.id_lc, lc.quantite AS quantite_commandee, s.quantite, s.nbVendu " +
                     "FROM stock s " +
                     "JOIN produit p ON s.ref_produit = p.ref " +
                     "LEFT JOIN ligne_commande lc ON p.ref = lc.ref_produit";
@@ -244,8 +246,7 @@ public class StockController implements Initializable{
                     int idLigneCommande = resultSet.getInt("id_lc");
                     int quantiteCommandee = resultSet.getInt("quantite_commandee");
                     int quantiteStock = resultSet.getInt("quantite");
-                    int nb_vendu = resultSet.getInt("nb_vendu");
-
+                    int nb_vendu = resultSet.getInt("nbVendu");
                     // Mettez à jour nb_vendu avec la quantité commandée
                     mettreAJourNbVendu(idLigneCommande);
 
@@ -267,20 +268,29 @@ public class StockController implements Initializable{
     public void mettreAJourNbVendu(int idLigneCommande) {
         String updateQuery = "UPDATE stock s " +
                 "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
-                "SET s.nb_vendu = lc.quantite " +
+                "SET s.nbVendu = lc.quantite " +
                 "WHERE lc.id_lc = ?";
 
         try {
             Connection connection = MyConnection.getInstance().getCnx();
-             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
 
             preparedStatement.setInt(1, idLigneCommande);
 
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Updated nbVendu for id_s " + idLigneCommande);
+                // Now fetch and print the updated nbVendu from the stock entry
+
+            } else {
+                System.out.println("No rows were updated.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     public float calculateTotalValue(int ref_produit) {
         try {
