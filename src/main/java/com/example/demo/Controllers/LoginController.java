@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 
+import com.example.demo.Models.Tentative;
 import com.example.demo.Tools.MyConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,8 +80,34 @@ public class LoginController implements Initializable {
                     throw new RuntimeException(e);
                 }
             }else {
-                Alert alert = new Alert(Alert.AlertType.WARNING,"Login error",ButtonType.OK);
-                alert.show();
+
+                String reqCheckEmail = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";
+                PreparedStatement pstEmail = cnx.prepareStatement(reqCheckEmail);
+                pstEmail.setString(1, temail.getText());
+                ResultSet rsCheckEmail = pstEmail.executeQuery();
+                rsCheckEmail.next();
+                int count = rsCheckEmail.getInt(1);
+                if (count > 0) {
+                    String reqUserId = "SELECT id_utilisateur FROM utilisateur WHERE email = ?";
+                    PreparedStatement pstUserId = cnx.prepareStatement(reqUserId);
+                    pstUserId.setString(1, temail.getText());
+                    ResultSet rsUserId = pstUserId.executeQuery();
+                    rsUserId.next();
+                    int userId = rsUserId.getInt("id_utilisateur");
+
+                    // Incrémenter le nombre de tentatives dans la classe Tentative
+                    Tentative tentative = new Tentative();
+                    tentative.setId_utilisateur(userId);
+                    tentative.setNb_tentatives(tentative.getNb_tentatives() + 1);
+
+                    System.out.println("Id:" + tentative.getId_utilisateur()+ " nb tentatives"+ tentative.getNb_tentatives());
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING,"Mot de passe erroné",ButtonType.OK);
+                    alert.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING,"Aucun compte n'est associé à cette adresse email",ButtonType.OK);
+                    alert.show();
+                }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
