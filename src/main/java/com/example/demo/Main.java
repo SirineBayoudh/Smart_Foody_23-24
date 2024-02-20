@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.Controllers.Encryptor;
 import com.example.demo.Controllers.UserCrud;
 import com.example.demo.Models.Role;
 import com.example.demo.Models.Utilisateur;
@@ -14,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Smart foody");
         stage.setHeight(700);
@@ -36,6 +37,12 @@ public class Main extends Application {
         //u1.setId_utilisateur(1);
         //u1.setAdresse("el menzah 1");
         //ucd.modifierEntite(u1);
+
+        Encryptor encryptor = new Encryptor();
+        //String password = "nourhene";
+        //System.out.println(encryptor.encryptString(password));
+        //Utilisateur u2 = new Utilisateur("ben","Mohamed","homme","mohamed@esprit.tn",encryptor.encryptString(password),1478569,Role.Client.toString(),0,"","zfjn","ezdg");
+        //ucd.ajouterEntite(u2);
 
 
     }

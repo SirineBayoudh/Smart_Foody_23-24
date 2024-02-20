@@ -16,6 +16,7 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,13 +56,14 @@ public class LoginController implements Initializable {
         this.tpwdshow.setText(tpwdshow);
     }
 
+    Encryptor encryptor = new Encryptor();
     public void login(){
         Connection cnx = MyConnection.getInstance().getCnx();
         String req = "SELECT * FROM utilisateur WHERE email = ? AND mot_de_passe =?";
         try{
             PreparedStatement pst = cnx.prepareStatement(req);
             pst.setString(1,temail.getText());
-            pst.setString(2,tpwd.getText());
+            pst.setString(2,encryptor.encryptString(tpwd.getText()));
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
@@ -82,6 +84,8 @@ public class LoginController implements Initializable {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
     }
 

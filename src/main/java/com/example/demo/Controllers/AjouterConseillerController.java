@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
 
 public class AjouterConseillerController implements Initializable {
@@ -54,8 +55,10 @@ public class AjouterConseillerController implements Initializable {
         choixGenrec.setOnAction(e -> genreChoisi = choixGenrec.getValue());
 
     }
+
+    Encryptor encryptor = new Encryptor();
     @FXML
-    void addConseiller(ActionEvent event) {
+    void addConseiller(ActionEvent event) throws NoSuchAlgorithmException {
 
         if (tfnomc.getText().isEmpty() || tfprenomc.getText().isEmpty() || tfemailc.getText().isEmpty() || tfmdpc.getText().isEmpty() || genreChoisi == null || tfnumtelc.getText().isEmpty()  || tfmatricule.getText().isEmpty() || tfattestation.getText().isEmpty() ) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -105,7 +108,7 @@ public class AjouterConseillerController implements Initializable {
             return;
         }
 
-        Utilisateur user = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),tfmdpc.getText(), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","");
+        Utilisateur user = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","");
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);
 

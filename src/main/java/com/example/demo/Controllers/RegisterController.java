@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javax.net.ssl.SSLSession;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -172,8 +173,9 @@ public class RegisterController implements Initializable {
         eyeOpenConfirm.setVisible(false);
     }
 
+    Encryptor encryptor = new Encryptor();
     @FXML
-    void addUser(ActionEvent event) {
+    void addUser(ActionEvent event) throws NoSuchAlgorithmException {
 
         //Contrôle sur les champs vides
         if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || villeChoisie == null || tftel.getText().isEmpty()  || tfrue.getText().isEmpty() || objectifChoisi == null) {
@@ -236,7 +238,7 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),tpwd.getText(), Integer.parseInt(tftel.getText()),Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
+        Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()),Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);
 
