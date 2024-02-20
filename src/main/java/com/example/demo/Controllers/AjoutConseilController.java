@@ -88,18 +88,17 @@ public class AjoutConseilController implements Initializable {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tout les champs.");
                 return; // Stop execution
             }
-            String insert = "INSERT INTO conseil(id_conseil, id_client, matricule, statut, demande, reponse, date_conseil) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String insert = "INSERT INTO conseil(id_client, matricule, statut, demande, reponse, date_conseil) VALUES (?, ?, ?, ?, ?, ?)";
             con = MyConnection.instance.getCnx();
             st = con.prepareStatement(insert);
-            st.setString(1, String.valueOf(671176));
-            st.setString(2, String.valueOf(123123123));
-            st.setInt(3, 321312312);
-            st.setString(4, "en attente");
-            st.setString(5, demandeLabel.getText());
-            st.setString(6, "");
+            st.setString(1, String.valueOf(1));
+            st.setInt(2, 1);
+            st.setString(3, "en attente");
+            st.setString(4, demandeLabel.getText());
+            st.setString(5, "");
             LocalDate currentDate = LocalDate.now();
             Date date = Date.valueOf(currentDate);
-            st.setObject(7, date);
+            st.setObject(6, date);
             int rowsAffected = st.executeUpdate();
             showConseils();
             if (rowsAffected > 0) {
@@ -170,7 +169,7 @@ public class AjoutConseilController implements Initializable {
 
     public ObservableList<Conseil> getConseils(){
         ObservableList<Conseil> conseils = FXCollections.observableArrayList();
-        String query="select * from conseil WHERE id_client='123123123'";
+        String query="select * from conseil WHERE id_client='1'";
         con = MyConnection.instance.getCnx();
         try {
             st = con.prepareStatement(query);
