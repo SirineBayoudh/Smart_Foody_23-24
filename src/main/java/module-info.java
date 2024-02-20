@@ -4,6 +4,7 @@ module com.example.demo {
 
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires org.json;
 
 
     opens com.example.demo to javafx.fxml;
