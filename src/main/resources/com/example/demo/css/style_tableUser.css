@@ -1,3 +1,9 @@
-.table-user {
+.card {
+    -fx-background-color: linear-gradient(to right, #19330e, #56ab2f);
+    -fx-background-radius: 5px;
+}
 
+.button {
+    -fx-background-color: #56AB2F;
+    -fx-padding: 10px 20px;
 }

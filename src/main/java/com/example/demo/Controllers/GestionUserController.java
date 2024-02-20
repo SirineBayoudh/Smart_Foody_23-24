@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -17,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.skin.TableViewSkin;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,12 +31,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GestionUserController implements Initializable {
-
-    @FXML
-    private PieChart piechart;
-
-    @FXML
-    private ScrollBar scroll;
 
     @FXML
     private TableView tableUser;
@@ -95,7 +91,16 @@ public class GestionUserController implements Initializable {
 
     private String roleChoisi;
 
+    @FXML
+    private PieChart genderPieChart;
+
     private ObservableList<Utilisateur> allUsers = FXCollections.observableArrayList();
+
+    @FXML
+    private Label totalClients;
+
+    @FXML
+    private Label totalConseillers;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -110,6 +115,55 @@ public class GestionUserController implements Initializable {
             String roleChoisi = choixRole.getValue();
             filtrer(roleChoisi);
         });
+
+        collectGenderData();
+        totalClient();
+    }
+
+    private void collectGenderData() {
+        int maleCount = 0;
+        int femaleCount = 0;
+
+        for (Utilisateur user : listUsers) {
+            if (user.getGenre().equalsIgnoreCase("Homme")) {
+                maleCount++;
+            } else if (user.getGenre().equalsIgnoreCase("Femme")) {
+                femaleCount++;
+            }
+        }
+
+        ObservableList<PieChart.Data> pieChartData =
+                FXCollections.observableArrayList(
+                        new PieChart.Data("Homme", maleCount),
+                        new PieChart.Data("Femme", femaleCount)
+                );
+
+        genderPieChart.setData(pieChartData);
+
+        for (final PieChart.Data data : genderPieChart.getData()) {
+            if (data.getName().equalsIgnoreCase("Homme")) {
+                data.getNode().setStyle("-fx-pie-color: #56ab2f;");
+            } else if (data.getName().equalsIgnoreCase("Femme")) {
+                data.getNode().setStyle("-fx-pie-color: #33661c;");
+            }
+        }
+
+    }
+
+    public void totalClient() {
+        int nbClients = 0;
+        int nbConseillers = 0;
+
+        for (Utilisateur user : listUsers) {
+            if (user.getRole().equalsIgnoreCase(Role.Client.toString())) {
+                nbClients++;
+            } else if (user.getRole().equals(Role.Conseiller.toString())) {
+                nbConseillers++;
+            }
+        }
+
+        totalClients.setText(String.valueOf(nbClients));
+        totalConseillers.setText(String.valueOf(nbConseillers));
 
     }
 
