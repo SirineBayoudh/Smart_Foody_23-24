@@ -60,6 +60,14 @@
     -fx-prompt-text-fill:white;
 }
 
+.progress-bar:progress {
+    -fx-background-color: linear-gradient(to right, green, yellow);
+}
+
+.progress-bar:track {
+    -fx-background-color: gray;
+}
+
 .combo-box .text-field .prompt-text {
     -fx-text-fill: white;
 }

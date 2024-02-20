@@ -108,7 +108,7 @@ public class ModifierConseillerController implements Initializable {
             PreparedStatement pst = cnx.prepareStatement(req);
             pst.setString(1, tfnomc.getText());
             pst.setString(2,tfprenomc.getText());
-            pst.setString(3, genreChoisi);
+            pst.setString(3, choixGenrec.getValue());
             pst.setString(4, tfemailc.getText());
             pst.setString(5,tfmdpc.getText());
             pst.setInt(6,Integer.parseInt(tfnumtelc.getText()));

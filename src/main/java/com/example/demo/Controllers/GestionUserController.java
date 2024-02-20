@@ -82,11 +82,36 @@ public class GestionUserController implements Initializable {
 
     @FXML
     private Button btn_supprimer;
+
+    @FXML
+    private TextField tfrecherche;
+
+    ObservableList<Utilisateur> listUsers = getUtilisateurs();
+
+    @FXML
+    private ComboBox<String> choixRole;
+
+    private String[] role = {"Tous","Client","Conseiller"};
+
+    private String roleChoisi;
+
+    private ObservableList<Utilisateur> allUsers = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         afficherUtilisateurs();
-    }
 
+        tfrecherche.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechercher(newValue);
+        });
+
+        choixRole.getItems().addAll(role);
+        choixRole.setOnAction(event -> {
+            String roleChoisi = choixRole.getValue();
+            filtrer(roleChoisi);
+        });
+
+    }
 
     public ObservableList<Utilisateur> getUtilisateurs(){
         ObservableList<Utilisateur> utilisateurs = FXCollections.observableArrayList();
@@ -118,7 +143,7 @@ public class GestionUserController implements Initializable {
     }
 
     public void afficherUtilisateurs(){
-        ObservableList<Utilisateur> listUsers = getUtilisateurs();
+
 
         col_id.setCellValueFactory(new PropertyValueFactory<Utilisateur,Integer>("id_utilisateur"));
         col_nom.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("nom"));
@@ -134,6 +159,43 @@ public class GestionUserController implements Initializable {
         col_objectif.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("objectif"));
 
         tableUser.setItems(listUsers);
+    }
+
+    private void rechercher(String searchText) {
+        if (allUsers.isEmpty()) {
+            allUsers.addAll(listUsers); // Remplir la liste de tous les utilisateurs s'il est vide
+        }
+
+        ObservableList<Utilisateur> ListFiltre = FXCollections.observableArrayList();
+
+        if (searchText.isEmpty()) {
+            tableUser.setItems(allUsers);
+        } else {
+            for (Utilisateur user : allUsers) {
+                String nom = user.getNom().toLowerCase();
+                searchText = searchText.toLowerCase().trim();
+
+                if (nom.contains(searchText)) {
+                    ListFiltre.add(user);
+                }
+            }
+            tableUser.setItems(ListFiltre);
+        }
+    }
+
+    private void filtrer(String roleChoisi) {
+        if (allUsers.isEmpty()) {
+            allUsers.addAll(listUsers);
+        }
+
+        ObservableList<Utilisateur> filteredUsers = FXCollections.observableArrayList();
+
+        for (Utilisateur user : allUsers) {
+            if (roleChoisi.equalsIgnoreCase("Tous") || user.getRole().equalsIgnoreCase(roleChoisi)) {
+                filteredUsers.add(user);
+            }
+        }
+        tableUser.setItems(filteredUsers);
     }
 
     @FXML

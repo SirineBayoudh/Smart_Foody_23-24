@@ -13,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -91,13 +93,9 @@ public class RegisterController implements Initializable {
     private Button btnInscri;
 
 
-    public void setTemail(String temail) {
-        this.temail.setText(temail);
-    }
+    Encryptor encryptor = new Encryptor();
 
-    public void setTpwd(String tpwd) {
-        this.tpwd.setText(tpwd);
-    }
+    ComplexiteMdp complx = new ComplexiteMdp();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -115,6 +113,7 @@ public class RegisterController implements Initializable {
 
         choixObjectif.getItems().addAll(objectif);
         choixObjectif.setOnAction(e -> objectifChoisi = choixObjectif.getValue());
+
     }
 
     @FXML
@@ -173,7 +172,6 @@ public class RegisterController implements Initializable {
         eyeOpenConfirm.setVisible(false);
     }
 
-    Encryptor encryptor = new Encryptor();
     @FXML
     void addUser(ActionEvent event) throws NoSuchAlgorithmException {
 
@@ -238,21 +236,38 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()),Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
-        UserCrud usc = new UserCrud();
-        usc.ajouterEntite(user);
+        complx.Calcul(tpwd.getText());
+        System.out.println(complx.getNb());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
-        try {
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-            //Pour fermer la fenêtre du login
-            Stage loginStage = (Stage) temail.getScene().getWindow();
-            loginStage.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(complx.getNb() <6){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Weak");
+            alert.showAndWait();
+            complx.setNb(0);
+        }else if (complx.getNb() >= 6 && complx.getNb() < 12){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Moyen");
+            alert.showAndWait();
+            complx.setNb(0);
+        } else if (complx.getNb() == 12){
+            Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()),Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
+            UserCrud usc = new UserCrud();
+            usc.ajouterEntite(user);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
+            try {
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+                //Pour fermer la fenêtre du login
+                Stage loginStage = (Stage) temail.getScene().getWindow();
+                loginStage.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -272,6 +287,5 @@ public class RegisterController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
 }
 
