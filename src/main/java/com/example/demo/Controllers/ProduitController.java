@@ -37,7 +37,7 @@ public class ProduitController {
             Button btnAjouter = new Button("Ajouter au panier");
 
             btnAjouter.setOnAction(event -> {
-                panierController.ajouterProduitAuPanier(produit.getRef());
+                panierController.ajouterProduitAuLigneCommande(produit.getRef());
                 // Ajouter ici tout code de traitement additionnel après l'ajout au panier
             });
 

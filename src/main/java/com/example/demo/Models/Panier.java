@@ -8,21 +8,17 @@ import java.util.List;
 
 public class Panier {
     private int id_panier;
-    private List<Produit> produits;
+    private int id_client;
     private float prixTotal;
     private float prixRemise;
 
     public Panier() {
-        this.produits = new ArrayList<>();
         this.prixTotal = 0;
         this.prixRemise = 0;
     }
 
-    public void ajouterProduit(Produit produit) {
-        produits.add(produit);
-        recalculerPrixTotal();
-    }
 
+/*
     public void supprimerProduit(String ref) {
         produits.removeIf(produit -> produit.getRef().equals(ref));
         recalculerPrixTotal();
@@ -40,22 +36,42 @@ public class Panier {
             prixTotal += produit.getPrix();
         }
     }
+*/
 
     // Getters et Setters
-    public List<Produit> getProduits() { return produits; }
-    public void setProduits(List<Produit> produits) { this.produits = produits; }
+
+
+    public int getId_panier() {
+        return id_panier;
+    }
+
+    public void setId_panier(int id_panier) {
+        this.id_panier = id_panier;
+    }
+
+    public int getId_client() {
+        return id_client;
+    }
+
+    public void setId_client(int id_client) {
+        this.id_client = id_client;
+    }
+
+    public void setPrixTotal(float prixTotal) {
+        this.prixTotal = prixTotal;
+    }
+
     public float getPrixTotal() { return prixTotal; }
     public float getPrixRemise() { return prixRemise; }
     public void setPrixRemise(float prixRemise) {
         this.prixRemise = prixRemise;
-        recalculerPrixTotal(); // Vous voudrez peut-être recalculer le total si la remise affecte le prix total
+        //recalculerPrixTotal(); // Vous voudrez peut-être recalculer le total si la remise affecte le prix total
     }
 
     @Override
     public String toString() {
         return "Panier{" +
                 "id_panier=" + id_panier +
-                ", produits=" + produits +
                 ", prixTotal=" + prixTotal +
                 ", prixRemise=" + prixRemise +
                 '}';

@@ -3,18 +3,28 @@ package com.example.demo.Models;
 
 public class LigneCommande {
     private int idLc;
-    private int idCommande;
+    private int idPanier;
     private int quantite;
     private String refProduit;
 
-    public LigneCommande(int idLc, int idCommande, int quantite, String refProduit) {
+    public LigneCommande(int idLc,int idPanier,  int quantite, String refProduit) {
         this.idLc = idLc;
-        this.idCommande = idCommande;
+        this.idPanier = idPanier;
         this.quantite = quantite;
         this.refProduit = refProduit;
     }
 
     // Getters et setters
+
+
+    public int getIdPanier() {
+        return idPanier;
+    }
+
+    public void setIdPanier(int idPanier) {
+        this.idPanier = idPanier;
+    }
+
     public int getIdLc() {
         return idLc;
     }
@@ -23,13 +33,6 @@ public class LigneCommande {
         this.idLc = idLc;
     }
 
-    public int getIdCommande() {
-        return idCommande;
-    }
-
-    public void setIdCommande(int idCommande) {
-        this.idCommande = idCommande;
-    }
 
     public int getQuantite() {
         return quantite;

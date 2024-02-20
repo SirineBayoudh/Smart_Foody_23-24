@@ -4,11 +4,14 @@ import java.util.Date;
 
 public class Commande {
     private int id_commande;
-    private int id_lc;
+
     private Date date_commande;
     private int id_client;
     private float total_commande;
-    private int nbrecmdParclient;
+    private float remise;
+
+    private String etat;
+
 
     public int getId_commande() {
         return id_commande;
@@ -18,13 +21,6 @@ public class Commande {
         this.id_commande = id_commande;
     }
 
-    public int getId_lc() {
-        return id_lc;
-    }
-
-    public void setId_lc(int id_lc) {
-        this.id_lc = id_lc;
-    }
 
     public Date getDate_commande() {
         return date_commande;
@@ -50,23 +46,30 @@ public class Commande {
         this.total_commande = total_commande;
     }
 
-    public int getNbrecmdParclient() {
-        return nbrecmdParclient;
+
+    public float getRemise() {
+        return remise;
     }
 
-    public void setNbrecmdParclient(int nbrecmdParclient) {
-        this.nbrecmdParclient = nbrecmdParclient;
+    public void setRemise(float remise) {
+        this.remise = remise;
+    }
+
+    public String getEtat() {
+        return etat;
+    }
+
+    public void setEtat(String etat) {
+        this.etat = etat;
     }
 
     public Commande() {
     }
 
-    public Commande(int id_commande, int id_lc, Date date_commande, int id_client, float total_commande, int nbrecmdParclient) {
+    public Commande(int id_commande, Date date_commande, int id_client, float total_commande) {
         this.id_commande = id_commande;
-        this.id_lc = id_lc;
         this.date_commande = date_commande;
         this.id_client = id_client;
         this.total_commande = total_commande;
-        this.nbrecmdParclient = nbrecmdParclient;
     }
 }

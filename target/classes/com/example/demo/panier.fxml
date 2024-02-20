@@ -10,9 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.Region?>
-<AnchorPane prefHeight="698.0" prefWidth="873.0" stylesheets="@css/style_panier.css" xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PanierController">
+<AnchorPane prefHeight="698.0" prefWidth="873.0" stylesheets="@css/style_panier.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PanierController">
     <children>
         <!-- Navbar -->
         <!-- Navbar -->
@@ -20,7 +18,7 @@
 
             <HBox prefHeight="34.0" prefWidth="797.0" styleClass="navbar-labels" HBox.hgrow="ALWAYS">
                 <!-- Bouton Fléché -->
-                <Button styleClass="arrow-button" onAction="#navbarre">
+                <Button onAction="#navbarre" styleClass="arrow-button">
                     <graphic>
                         <ImageView fitHeight="20.0" fitWidth="20.0">
                             <image>
@@ -47,7 +45,7 @@
                             <!-- Products will be added here dynamically -->
                         </VBox>
                     </ScrollPane>
-                    <Button fx:id="btnViderPanier" onAction="#viderPanier" styleClass="button-order" text="Vider le Panier">
+                    <Button fx:id="btnViderPanier" onAction="#appelerViderPanier" styleClass="button-order" text="Vider le Panier">
                         <VBox.margin>
                             <Insets left="180.0" />
                         </VBox.margin>
@@ -56,11 +54,11 @@
 
                 <!-- Pricing Section -->
                 <VBox prefHeight="474.0" prefWidth="444.0" styleClass="pricing-details" VBox.vgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Récapitulatif de Commande" />
-                    <Label styleClass="pricing-info" text="Sous-total: XXX €" />
-                    <Label styleClass="pricing-info" text="Remise: X%" />
-                    <Label styleClass="pricing-info" text="Total: XXX €" />
-                    <Button fx:id="btnValiderCommande" onAction="#chargerInterfaceCommande" styleClass="button-order" text="Valider la Commande" />
+                    <Label prefHeight="36.0" prefWidth="195.0" styleClass="section-title" text="Récapitulatif de Commande" />
+                    <Label fx:id="soustotaleid" styleClass="pricing-info" text="Sous-total:" />
+                    <Label fx:id="remiseid" styleClass="pricing-info" text="Remise:" />
+                    <Label fx:id="totaleid" styleClass="pricing-info" text="Total: " />
+                    <Button fx:id="btnValiderCommande" onAction="#ajouterCommande" prefHeight="35.0" prefWidth="165.0" styleClass="button-order" text="Valider la Commande" />
                 </VBox>
             </HBox>
         </VBox>
