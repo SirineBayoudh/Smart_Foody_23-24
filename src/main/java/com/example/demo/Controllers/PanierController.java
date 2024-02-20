@@ -1,6 +1,5 @@
 package com.example.demo.Controllers;
 
-import com.example.demo.API.EmailUtil;
 import com.example.demo.Models.LigneCommande;
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
@@ -68,64 +67,78 @@ public class PanierController {
     //////////**************************** Affiche les produits dans le panier en rejoignant les
     // tables `produit` et `panier` par `ref_produit`.***********************************************
     public List<LigneCommande> affichageProduitsDansLePanier() {
+        // Initialisation de la liste pour stocker les produits dans le panier
         List<LigneCommande> produits = new ArrayList<>();
+
+        // Requête SQL pour sélectionner les lignes de commande associées aux produits dans le panier
         String requete = "SELECT lc.* FROM produit p " +
                 "JOIN ligne_commande lc  ON p.ref = lc.ref_produit " +
                 "JOIN panier pa ON pa.id_panier = lc.id_panier";
-        try (Statement stm = cnx.createStatement()) {
-            try (ResultSet rs = stm.executeQuery(requete)) {
-                while (rs.next()) {
+
+        try (Statement stm = cnx.createStatement()) { // Création de l'objet Statement pour exécuter la requête
+            try (ResultSet rs = stm.executeQuery(requete)) { // Exécution de la requête et récupération des résultats dans un ResultSet
+                while (rs.next()) { // Itération sur chaque ligne du ResultSet
+                    // Création d'un nouvel objet LigneCommande avec les données récupérées et ajout à la liste de produits
                     produits.add(new LigneCommande(
-                            rs.getInt("id_lc"),
-                            rs.getInt("id_panier"),
-                            rs.getInt("quantite"),
-                            rs.getString("ref_produit")
+                            rs.getInt("id_lc"), // Récupération de l'identifiant de la ligne de commande
+                            rs.getInt("id_panier"), // Récupération de l'identifiant du panier
+                            rs.getInt("quantite"), // Récupération de la quantité
+                            rs.getString("ref_produit") // Récupération de la référence du produit
                     ));
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException e) { // Gestion des exceptions SQL
             System.out.println("Erreur lors de l'affichage des produits dans le panier : " + e.getMessage());
         }
+
+        // Retourne la liste des produits dans le panier
         return produits;
     }
 
+
     /////////////////////////////////////////////// Supprime un produit du panier///////////////////////////////////////////////
     public void supprimerProduitDuPanier(Integer id_lc) {
+        // Requête SQL pour supprimer une ligne de commande du panier en fonction de son identifiant
         String requete = "DELETE FROM ligne_commande WHERE id_lc = ?";
-        try (PreparedStatement pst = cnx.prepareStatement(requete)) {
-            pst.setInt(1, id_lc);
-            int affectedRows = pst.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Ligne de commande supprimé du panier");
+        try (PreparedStatement pst = cnx.prepareStatement(requete)) { // Création de l'objet PreparedStatement pour exécuter la requête SQL
+            pst.setInt(1, id_lc); // Définition du premier paramètre de la requête (identifiant de la ligne de commande)
+            int affectedRows = pst.executeUpdate(); // Exécution de la requête et récupération du nombre de lignes affectées
+            if (affectedRows > 0) { // Vérifie si des lignes ont été supprimées avec succès
+                System.out.println("Ligne de commande supprimée du panier"); // Affiche un message de confirmation
             } else {
-                System.out.println("Aucun produit avec la référence spécifiée trouvé dans le panier");
+                System.out.println("Aucun produit avec la référence spécifiée trouvé dans le panier"); // Affiche un message si aucune ligne n'a été supprimée
             }
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la suppression du produit du panier : " + e.getMessage());
+        } catch (SQLException e) { // Gestion des exceptions SQL
+            System.out.println("Erreur lors de la suppression du produit du panier : " + e.getMessage()); // Affiche un message d'erreur en cas d'échec de la suppression
         }
     }
 
+
     ///////////////////////////////// Affiche les produits dans le panier///////////////////////////////////////////////////////////
     public void afficherProduits() {
+        // Récupérer la liste des lignes de commande associées aux produits dans le panier
         List<LigneCommande> ligneCommandes = affichageProduitsDansLePanier();
+
+        // Nettoyer le conteneur des produits avant d'afficher les nouveaux produits
         productsContainer.getChildren().clear();
 
-
-        // Initialize the arrays with zeros
+        // Initialiser les tableaux avec des zéros pour les totaux
         sousTotale[0] = 0;
         remise[0] = 0;
         totale[0] = 0;
 
-        // Calculate the totals
+        // Calculer les totaux
         recalculate(sousTotale, remise, totale);
 
-
+        // Parcourir chaque ligne de commande dans la liste
         for (LigneCommande prod : ligneCommandes) {
+            // Requête SQL pour récupérer les détails du produit
             String requete = "SELECT p.* FROM produit p where  p.ref = ?";
             try (PreparedStatement pst = cnx.prepareStatement(requete)) {
                 pst.setString(1, prod.getRefProduit());
                 try (ResultSet rs = pst.executeQuery()) {
                     if (rs.next()) {
+                        // Création d'un objet Produit avec les détails récupérés de la base de données
                         Produit p = new Produit(
                                 rs.getString("ref"),
                                 rs.getString("marque"),
@@ -136,62 +149,73 @@ public class PanierController {
                                 rs.getString("critere")
                         );
 
+                        // Création d'une boîte HBox pour afficher les détails du produit
                         HBox productBox = new HBox(10);
                         Label labelProduit = new Label(p.getMarque() + " - " + p.getRef() + ": " + p.getPrix() + "€");
                         Spinner<Integer> quantiteSpinner = new Spinner<>(1, 100, prod.getQuantite(), 1);
                         quantiteSpinner.setEditable(true);
+
+                        // Mettre à jour le sous-total en fonction de la quantité sélectionnée
                         sousTotale[0] += p.getPrix() * quantiteSpinner.getValue();
-                        // Recalculate remise and totale
+                        // Recalculer la remise et le total
                         recalculate(sousTotale, remise, totale);
 
-
+                        // Création d'une icône de suppression pour supprimer le produit du panier
                         ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/com/example/demo/Images/delete.png")));
                         deleteIcon.setFitHeight(20);
                         deleteIcon.setFitWidth(20);
                         Button btnSupprimer = new Button("", deleteIcon);
                         btnSupprimer.setOnAction(event -> {
+                            // Appel de la méthode pour supprimer le produit du panier et rafraîchir l'affichage des produits
                             supprimerProduitDuPanier(prod.getIdLc());
                             afficherProduits();
-
-
                         });
+
+                        // Mettre à jour le sous-total lorsqu'il y a un changement dans la quantité
                         quantiteSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
                             sousTotale[0] += (newValue - oldValue) * p.getPrix();
+                            // Recalculer la remise et le total
                             recalculate(sousTotale, remise, totale);
-
                         });
 
+                        // Ajouter les éléments à la boîte de produit
                         productBox.getChildren().addAll(labelProduit, quantiteSpinner, btnSupprimer);
+                        // Ajouter la boîte de produit au conteneur de produits
                         productsContainer.getChildren().add(productBox);
                     }
                 }
             } catch (SQLException e) {
                 System.out.println("Erreur lors de l'affichage du produit dans le panier : " + e.getMessage());
             }
-
         }
     }
 
 
-    private void recalculate(double[] sousTotale, double[] remise, double[] totale) {
-        if (nbrCommande(14) > 3) {
-            remise[0] = 0.15; // 15% remise
-            totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]);
-        } else if (nbrCommande(14) > 9) {
-            remise[0] = 0.25; // 25% remise
-            totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]);
-        } else {
-            totale[0] = sousTotale[0];
-        }
-        if (remise[0] == 0) {
-            remiseid.setText("Aucune remise");
-        } else {
-            remiseid.setText(String.format("%.0f%% de remise", remise[0] * 100));
-        }
-
-        soustotaleid.setText(String.format("Sous-Totale : %.2f TND", sousTotale[0]));
-        totaleid.setText(String.format("Totale : %.2f TND", totale[0]));
+////////////////////////////////////////////recalculer les prix////////////////////// ///////////////////////
+private void recalculate(double[] sousTotale, double[] remise, double[] totale) {
+    // Vérifie le nombre de commandes pour l'article avec l'identifiant 14
+    if (nbrCommande(14) > 3) { // Si le nombre de commandes est supérieur à 3
+        remise[0] = 0.15; // Appliquer une remise de 15%
+        totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]); // Calculer le total avec la remise appliquée
+    } else if (nbrCommande(14) > 9) { // Sinon, si le nombre de commandes est supérieur à 9
+        remise[0] = 0.25; // Appliquer une remise de 25%
+        totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]); // Calculer le total avec la remise appliquée
+    } else { // Sinon
+        totale[0] = sousTotale[0]; // Le total reste inchangé sans remise
     }
+
+    // Afficher le libellé de la remise
+    if (remise[0] == 0) { // Si aucune remise n'est appliquée
+        remiseid.setText("Aucune remise"); // Afficher "Aucune remise"
+    } else { // Sinon
+        remiseid.setText(String.format("%.0f%% de remise", remise[0] * 100)); // Afficher le pourcentage de remise
+    }
+
+    // Afficher le sous-total et le total avec ou sans remise
+    soustotaleid.setText(String.format("Sous-Totale : %.2f TND", sousTotale[0]));
+    totaleid.setText(String.format("Totale : %.2f TND", totale[0]));
+}
+
 
     private Integer nbrCommande (int clientId){
         String query = "SELECT COUNT(*) AS commande FROM commande WHERE id_client = ?";
@@ -281,6 +305,90 @@ public class PanierController {
         return produits.size();
     }
 
+
+
+
+    // Ajoute  Commande ///////////////////////////////////////////////
+    public void ajouterCommande() {
+        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
+            pst.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+            pst.setInt(2, 14);
+            pst.setFloat(3, (float) totale[0]);
+            pst.setFloat(4, (float) remise[0]);
+            pst.setString(5, "en cours");
+            pst.executeUpdate();
+
+            String emailClient = "saidifadhila24@gmail.com";
+            String sujetEmail = "Confirmation de commande";
+            String contenuEmail = "Votre commande a été passée avec succès. Merci de votre confiance.";
+
+            EmailUtil.envoyerEmail(emailClient, sujetEmail, contenuEmail);
+
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Commande passée");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("La commande a été ajoutée avec succès et un e-mail de confirmation a été envoyé.");
+            successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+            successAlert.getDialogPane().getStyleClass().add("custom-alert");
+            successAlert.showAndWait();
+
+            System.out.println("Commande ajoutée avec succès");
+            viderPanier(true);
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
+        } catch (MessagingException e) {
+            System.out.println("Erreur lors de l'envoi de l'email : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void ajouterProduitAuLigneCommande(String refProduit) {
+        // Appeler la méthode pour ajouter un produit au panier, en supposant que 14 est l'identifiant du client
+        int idPanier = ajouterProduitAuPanier(14);
+
+        // Vérifier si l'ajout du produit au panier a réussi
+        if(idPanier != -1) { // Si l'identifiant du panier est différent de -1 (ce qui signifie que l'ajout au panier a réussi)
+            // Requête SQL pour vérifier si le produit existe déjà dans la table ligne_commande
+            String checkIfExistsQuery = "SELECT COUNT(*) FROM ligne_commande WHERE ref_produit = ?";
+            try (PreparedStatement pstCheck = cnx.prepareStatement(checkIfExistsQuery)) {
+                pstCheck.setString(1, refProduit);
+                ResultSet rs = pstCheck.executeQuery();
+                rs.next();
+                int count = rs.getInt(1);
+                if (count > 0) { // Si le produit existe déjà dans la table ligne_commande
+                    // Requête SQL pour mettre à jour la quantité du produit en incrémentant de 1
+                    String updateQuery = "UPDATE ligne_commande SET quantite = quantite + 1 WHERE ref_produit = ? AND id_panier = ?";
+                    try (PreparedStatement pstUpdate = cnx.prepareStatement(updateQuery)) {
+                        pstUpdate.setString(1, refProduit);
+                        pstUpdate.setInt(2, idPanier);
+                        pstUpdate.executeUpdate();
+                        System.out.println("Produit mis à jour dans le panier avec succès");
+                    } catch (SQLException e) {
+                        System.out.println("Erreur lors de la mise à jour du produit dans le panier : " + e.getMessage());
+                    }
+                } else { // Si le produit n'existe pas dans la table ligne_commande
+                    // Requête SQL pour insérer une nouvelle ligne_commande avec les valeurs par défaut
+                    String insertQuery = "INSERT INTO ligne_commande (id_panier, quantite, ref_produit) VALUES (?, 1, ?)";
+                    try (PreparedStatement pstInsert = cnx.prepareStatement(insertQuery)) {
+                        pstInsert.setInt(1, idPanier);
+                        pstInsert.setString(2, refProduit);
+                        pstInsert.executeUpdate();
+                        System.out.println("Produit ajouté au panier avec succès");
+                    } catch (SQLException e) {
+                        System.out.println("Erreur lors de l'ajout du produit au panier : " + e.getMessage());
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Erreur lors de la vérification de l'existence du produit dans le panier : " + e.getMessage());
+            }
+        }
+    }
+
+
+
     // Affiche les produits disponibles pour être ajoutés au panier juste pour le test dans l'intégration elle sera supprimé
     public List<Produit> afficherProduitDansPanier() {
         List<Produit> produits = new ArrayList<>();
@@ -339,86 +447,6 @@ public class PanierController {
         }
     }
 
-
-
-    // Ajoute  Commande ///////////////////////////////////////////////
-    public void ajouterCommande() {
-        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
-            pst.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-            pst.setInt(2, 14);
-            pst.setFloat(3, (float) totale[0]);
-            pst.setFloat(4, (float) remise[0]);
-            pst.setString(5, "en cours");
-            pst.executeUpdate();
-
-            String emailClient = "saidifadhila24@gmail.com";
-            String sujetEmail = "Confirmation de commande";
-            String contenuEmail = "Votre commande a été passée avec succès. Merci de votre confiance.";
-
-            EmailUtil.envoyerEmail(emailClient, sujetEmail, contenuEmail);
-
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Commande passée");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("La commande a été ajoutée avec succès et un e-mail de confirmation a été envoyé.");
-            successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
-            successAlert.getDialogPane().getStyleClass().add("custom-alert");
-            successAlert.showAndWait();
-
-            System.out.println("Commande ajoutée avec succès");
-            viderPanier(true);
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
-        } catch (MessagingException e) {
-            System.out.println("Erreur lors de l'envoi de l'email : " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-
-
-
-
-
-
-    public void ajouterProduitAuLigneCommande(String refProduit) {
-        int idPanier = ajouterProduitAuPanier(14);
-        if(idPanier!=-1){
-            String checkIfExistsQuery = "SELECT COUNT(*) FROM ligne_commande WHERE ref_produit = ?";
-            try (PreparedStatement pstCheck = cnx.prepareStatement(checkIfExistsQuery)) {
-                pstCheck.setString(1, refProduit);
-                ResultSet rs = pstCheck.executeQuery();
-                rs.next();
-                int count = rs.getInt(1);
-                if (count > 0) {
-                    // If the product exists, update the total by incrementing it by 1
-                    String updateQuery = "UPDATE ligne_commande  SET quantite= quantite+ 1 WHERE ref_produit = ? and id_panier=?";
-                    try (PreparedStatement pstUpdate = cnx.prepareStatement(updateQuery)) {
-                        pstUpdate.setString(1, refProduit);
-                        pstUpdate.setInt(2, idPanier);
-                        pstUpdate.executeUpdate();
-                        System.out.println("Produit mis à jour dans le panier avec succès");
-                    } catch (SQLException e) {
-                        System.out.println("Erreur lors de la mise à jour du produit dans le panier : " + e.getMessage());
-                    }
-                } else {
-                    // If the product doesn't exist, insert a new row with default values
-                    String insertQuery = "INSERT INTO ligne_commande (id_panier, quantite,ref_produit) VALUES (?, 1, ?)";
-                    try (PreparedStatement pstInsert = cnx.prepareStatement(insertQuery)) {
-                        pstInsert.setInt(1, idPanier);
-                        pstInsert.setString(2, refProduit);
-                        pstInsert.executeUpdate();
-                        System.out.println("Produit ajouté au panier avec succès");
-                    } catch (SQLException e) {
-                        System.out.println("Erreur lors de l'ajout du produit au panier : " + e.getMessage());
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println("Erreur lors de la vérification de l'existence du produit dans le panier : " + e.getMessage());
-            }
-        }
-    }
     // Méthodes de navigation//////////////////////////////////////////////////////////
 
     @FXML
