@@ -20,6 +20,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -95,6 +97,10 @@ public class StockController implements Initializable{
     private static StockController instance;
     @FXML
     private BarChart<String, Number> barchart;
+    @FXML
+    private Pane pane_1;
+    @FXML
+    private Label countAllStock;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -105,7 +111,7 @@ public class StockController implements Initializable{
         clickpane.setOnMouseClicked(event -> handlePaneClick(event));
         show();
         Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
-
+        updateTotalStockCount();
     }
     public static StockController getInstance() {
         if (instance == null) {
@@ -124,6 +130,7 @@ public class StockController implements Initializable{
         if (lowestStock != null) {
             lowestStockId = lowestStock.getId_s();
             String message = "le  stock : "+lowestStock.getId_s()+"quantité" + lowestStock.getQuantite();
+            //insertAlert(lowestStockId, new java.util.Date(), message);
             runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
         } else {
             runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
@@ -346,6 +353,7 @@ public class StockController implements Initializable{
             tTotal.setCellValueFactory(new PropertyValueFactory<>("cout"));
             updateBarChart(list);
 
+
         } else {
             System.out.println("TableView is null");
         }
@@ -366,6 +374,7 @@ void handleButtonAction(ActionEvent event) {
         stage.setScene(new Scene(root));
         stage.setOnHidden((WindowEvent windowEvent) -> {
             show(); // Update the table
+            updateTotalStockCount();
         });
         stage.show();
     } catch (IOException e) {
@@ -404,6 +413,7 @@ void handleButtonAction(ActionEvent event) {
                         st.setInt(1, id_s);
                         st.executeUpdate();
                         show();
+                        updateTotalStockCount();
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
@@ -538,6 +548,28 @@ void getData(MouseEvent event) {
         barchart.setTitle("Quantités de stock par référence de produit");
         barchart.getXAxis().setLabel("Référence du produit");
         barchart.getYAxis().setLabel("Quantité");
+    }
+
+    /******** Count nb stock **********/
+    private void updateTotalStockCount() {
+        try {
+            Connection connection = MyConnection.getInstance().getCnx();
+            String countQuery = "SELECT COUNT(id_s) AS totalStockCount FROM stock";
+
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(countQuery)) {
+
+                if (resultSet.next()) {
+                    int totalStockCount = resultSet.getInt("totalStockCount");
+
+                    // Mettez à jour l'étiquette avec le nouveau nombre total
+                    countAllStock.setText(" " + totalStockCount);
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

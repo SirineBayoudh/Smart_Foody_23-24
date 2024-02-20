@@ -20,40 +20,14 @@
                 <TableColumn fx:id="DateColoumn" prefWidth="122.4000244140625" text="Date" />
             </columns>
         </TableView>
-        <Pane fx:id="pane_1" layoutX="238.0" layoutY="54.0" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
-            <children>
-                <Label fx:id="labelTotalStock" layoutX="20.0" layoutY="25.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <Label layoutX="20.0" layoutY="52.0" prefHeight="17.0" prefWidth="68.0" text="GO ON" textFill="#f2eaea">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-            </children>
-        </Pane>
+
 
         <ImageView fitHeight="25.0" fitWidth="23.0" layoutX="841.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@Images/8666693_search_icon.png" />
             </image>
         </ImageView>
-        <Pane fx:id="pane_11" layoutX="454.0" layoutY="54.0" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
-            <children>
-                <Label layoutX="24.0" layoutY="61.0" prefHeight="17.0" prefWidth="68.0" text="GO ON" textFill="#f2eaea">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <Label layoutX="34.0" layoutY="34.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-            </children>
-        </Pane>
+
         <Pane fx:id="pane_111" layoutX="653.0" layoutY="54.0" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
             <children>
                 <Label layoutX="39.0" layoutY="69.0" prefHeight="17.0" prefWidth="68.0" text="GO ON" textFill="#f2eaea">

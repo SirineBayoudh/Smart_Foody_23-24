@@ -47,20 +47,6 @@
             <Image url="@Images/8666693_search_icon.png" />
          </image>
       </ImageView>
-      <Pane fx:id="pane_111" layoutX="653.0" layoutY="54.0" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
-         <children>
-            <Label layoutX="39.0" layoutY="69.0" prefHeight="17.0" prefWidth="68.0" text="GO ON" textFill="WHITE">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="5.0" layoutY="14.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <Label layoutX="845.0" layoutY="54.0" text="Admin">
          <font>
             <Font size="18.0" />
@@ -102,7 +88,7 @@
             <Image url="@Images/ajouter.png" />
          </image>
       </ImageView>
-      <BarChart fx:id="barchart" layoutX="202.0" layoutY="23.0" prefHeight="192.0" prefWidth="387.0">
+      <BarChart fx:id="barchart" layoutX="225.0" layoutY="24.0" prefHeight="192.0" prefWidth="387.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -110,6 +96,21 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
+        <Pane fx:id="pane_1" layoutX="23.0" layoutY="105.0" prefHeight="143.0" prefWidth="182.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+            <children>
+                <Label layoutX="1.0" layoutY="15.0" prefHeight="27.0" prefWidth="198.0" text="  Total de stock:" textFill="#faf1f1">
+                    <font>
+                        <Font name="System Bold Italic" size="16.0" />
+                    </font>
+                </Label>
+                <Label fx:id="countAllStock" layoutX="83.0" layoutY="72.0" prefHeight="30.0" prefWidth="35.0" text=" 0" textFill="#f2eaea">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </Pane>
 
-</children>
+
+    </children>
 </Pane>
