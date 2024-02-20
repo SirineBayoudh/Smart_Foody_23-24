@@ -13,7 +13,7 @@ import com.google.gson.JsonParser;
 public class FoodCalorie {
 
     private static final String API_URL = "https://api.calorieninjas.com/v1/nutrition?query=";
-    private static final String API_KEY = "loKcPg9+ANvuoq3nO+ikzw==ZdYlZ1IAZDp1pfE1";
+    private static final String API_KEY = "";
 
     public String getFoodCalories(String foodName) throws IOException {
         try {
