@@ -12,11 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -66,7 +64,7 @@ public class AjoutConseilController implements Initializable {
                 id_conseil = newSelection.getId_conseil();
             }
         });
-        QuoteService quoteService = new QuoteService();
+        Quote quoteService = new Quote();
         try {
             String randomQuote = quoteService.getRandomQuote();
             quoteText.setText(randomQuote);
@@ -78,7 +76,6 @@ public class AjoutConseilController implements Initializable {
     @FXML
     void ajoutConseil(ActionEvent event) {
         try {
-            // Check if any of the input fields are empty
             if (demandeLabel.getText().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez remplir tout les champs.");
                 return; // Stop execution

@@ -6,6 +6,7 @@ module com.example.demo {
     requires java.sql;
     requires java.mail;
     requires twilio;
+    requires com.google.gson;
 
     opens com.example.demo to javafx.fxml;
     opens com.example.demo.Models to javafx.base;

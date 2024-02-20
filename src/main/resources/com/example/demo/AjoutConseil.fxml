@@ -48,7 +48,7 @@
             <Image url="@Images/plus.png" />
          </image>
       </ImageView>
-        <TableView fx:id="table" layoutX="574.0" layoutY="73.0" onMouseClicked="#getData" prefHeight="330.0" prefWidth="504.0" stylesheets="@css/table_view.css">
+        <TableView fx:id="table" layoutX="577.0" layoutY="214.0" onMouseClicked="#getData" prefHeight="330.0" prefWidth="504.0" stylesheets="@css/table_view.css">
             <columns>
                 <TableColumn fx:id="colidconseil" minWidth="20.0" prefWidth="64.79997253417969" style="-fx-background-color: #66b343;" text="ID Conseil" />
                 <TableColumn fx:id="colstatut" prefWidth="69.5999755859375" style="-fx-background-color: #66b343;" text="Statut" />
@@ -63,14 +63,14 @@
             <String fx:value="table-view" />
          </styleClass>
         </TableView>
-      <Text fill="#3c7720" layoutX="690.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des demandes envoyées">
+      <Text fill="#3c7720" layoutX="693.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des demandes envoyées">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
-      <Pane layoutX="830.0" layoutY="429.0" prefHeight="122.0" prefWidth="246.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+      <Pane layoutX="841.0" layoutY="36.0" prefHeight="107.0" prefWidth="246.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
          <children>
-              <Button layoutX="38.0" layoutY="61.0" onAction="#openChatBotWindow" prefHeight="36.0" prefWidth="170.0" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Ouvrir l'interface" textFill="WHITE">
+              <Button layoutX="38.0" layoutY="54.0" onAction="#openChatBotWindow" prefHeight="36.0" prefWidth="170.0" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Ouvrir l'interface" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -132,16 +132,21 @@
             <Image url="@Images/editer.png" />
          </image>
       </ImageView>
-        <Text fx:id="quoteText" fill="#3c7720" layoutX="577.0" layoutY="473.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="226.650390625">
+        <Text fx:id="quoteText" fill="#3c7720" layoutX="577.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="235.0">
             <font>
                 <Font name="System Bold Italic" size="13.0" />
             </font>
         </Text>
-      <Text fill="#3c7720" layoutX="577.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Citations de motivation ">
+      <Text fill="#3c7720" layoutX="576.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Citation de motivation ">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
+      <ImageView fitHeight="38.0" fitWidth="36.0" layoutX="540.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/main.png" />
+         </image>
+      </ImageView>
     </children>
 
 </AnchorPane>

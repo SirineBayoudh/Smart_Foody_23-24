@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-public class QuoteService {
+public class Quote {
 
-    private static final String API_URL = "https://api.quotable.io/random?tags=inspirational";
+    private static final String API_URL = "https://api.quotable.io/random?tags=inspirational|motivational";
 
     public String getRandomQuote() throws IOException {
         try {
@@ -35,8 +37,10 @@ public class QuoteService {
                 in.close();
 
                 // Parse JSON response to get the quote
-                String jsonResponse = response.toString();
-                String quote = jsonResponse.substring(jsonResponse.indexOf("\"content\":\"") + 11, jsonResponse.indexOf("\",\"author\""));
+                JsonParser parser = new JsonParser();
+                JsonObject jsonResponse = parser.parse(response.toString()).getAsJsonObject();
+                String quote = jsonResponse.get("content").getAsString();
+
                 return quote;
             } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
                 System.out.println("No quotes found for the specified tags.");
