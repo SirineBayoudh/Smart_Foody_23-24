@@ -490,7 +490,10 @@ public class StockController implements Initializable {
             Idfield.setText(String.valueOf(selectedstock.getId_s()));
             Refield.setText(String.valueOf(selectedstock.getProduitRef()));
             Qntfield.setText(String.valueOf(selectedstock.getQuantite()));
-        } 
+        } else if (event.getClickCount() == 2) {
+            // Double-clic détecté, appeler la méthode pour exporter les données
+            exportStockToExcel();
+        }
     }
 
     @FXML
@@ -673,6 +676,20 @@ public class StockController implements Initializable {
 //            }
 //        }
 //    }
+private void exportStockToExcel() {
+    Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
+
+    if (selectedStock != null) {
+        String fileName = "StockReport_" + selectedStock.getId_s() + ".xlsx";
+        boolean success = ExcelExporter.exportStockToExcel(fileName, selectedStock);
+
+        if (success) {
+            showAlert("Export Excel réussi.");
+        } else {
+            showAlert("Erreur lors de l'export Excel.");
+        }
+    }
+}
 
 
 
