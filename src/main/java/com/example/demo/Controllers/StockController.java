@@ -32,8 +32,6 @@ import java.util.Comparator;
 import java.util.ResourceBundle;
 
 
-//import static com.example.demo.Controllers.AlerteController.insertAlert;
-
 
 public class StockController implements Initializable {
 
@@ -119,7 +117,7 @@ public class StockController implements Initializable {
         show();
         Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
         updateTotalStockCount();
-
+        btnExporterTout.setOnAction(event -> exporterToutesLesDonnees());
     }
 
     public static StockController getInstance() {
@@ -139,7 +137,7 @@ public class StockController implements Initializable {
         if (lowestStock != null) {
             lowestStockId = lowestStock.getId_s();
             String message = "le  stock : " + lowestStock.getId_s() + "quantité" + lowestStock.getQuantite();
-           //insertAlert(lowestStockId, new java.util.Date(), message);
+            //insertAlert(lowestStockId, new java.util.Date(), message);
             runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
         } else {
             runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
@@ -691,6 +689,23 @@ private void exportStockToExcel() {
     }
 }
 
+    @FXML
+    private void exporterToutesLesDonnees() {
+        // Récupérer la liste de tous les stocks à partir du TableView
+        ObservableList<Stock> allStocks = stockTableView.getItems();
+
+        // Générer un nom de fichier unique, par exemple, en ajoutant une horodatage
+        String fileName = "AllStocksReport_" + System.currentTimeMillis() + ".xlsx";
+
+        // Appeler la méthode d'exportation avec le nom de fichier et la liste de stocks
+        boolean success = ExcelExporter.exportAllStocksToExcel(fileName, allStocks);
+
+        if (success) {
+            showAlert("Export Excel réussi.");
+        } else {
+            showAlert("Erreur lors de l'export Excel.");
+        }
+    }
 
 
 }
