@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -54,6 +55,8 @@ public class ModifierConseillerController implements Initializable {
     private Utilisateur u;
 
     private int id;
+
+    Encryptor encryptor = new Encryptor();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -72,7 +75,16 @@ public class ModifierConseillerController implements Initializable {
 
         id = GestionUserController.getId();
 
-        String emailPattern = "^[A-Za-z0-9._%+-]+@esprit\\.tn$";
+        if (tfnomc.getText().isEmpty() || tfprenomc.getText().isEmpty() || tfemailc.getText().isEmpty() || tfmdpc.getText().isEmpty() || choixGenrec.getValue().isEmpty() || tfnumtelc.getText().isEmpty()  || tfmatricule.getText().isEmpty() || tfattestation.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Champs manquants");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez remplir tous les champs obligatoires.");
+            alert.showAndWait();
+            return;
+        }
+
+        String emailPattern = "^.+@.+$";
         if (!tfemailc.getText().matches(emailPattern)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Format d'e-mail incorrect");
@@ -101,6 +113,25 @@ public class ModifierConseillerController implements Initializable {
             return;
         }
 
+        try {
+            int matricule = Integer.parseInt(tfmatricule.getText());
+            if (tfmatricule.getText().length() != 6) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Format de matricule incorrect");
+                alert.setHeaderText(null);
+                alert.setContentText("Le champ matricule doit contenir exactement 6 chiffres.");
+                alert.showAndWait();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Format de matricule incorrect");
+            alert.setHeaderText(null);
+            alert.setContentText("Le champ matricule ne doit contenir que des chiffres.");
+            alert.showAndWait();
+            return;
+        }
+
         Connection  cnx = MyConnection.getInstance().getCnx();
 
         String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,mot_de_passe=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
@@ -110,7 +141,7 @@ public class ModifierConseillerController implements Initializable {
             pst.setString(2,tfprenomc.getText());
             pst.setString(3, choixGenrec.getValue());
             pst.setString(4, tfemailc.getText());
-            pst.setString(5,tfmdpc.getText());
+            pst.setString(5,encryptor.encryptString(tfmdpc.getText()));
             pst.setInt(6,Integer.parseInt(tfnumtelc.getText()));
             pst.setString(7,Role.Conseiller.toString());
             pst.setInt(8,Integer.parseInt(tfmatricule.getText()));
@@ -121,6 +152,8 @@ public class ModifierConseillerController implements Initializable {
             pst.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

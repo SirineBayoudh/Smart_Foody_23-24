@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="460.0" prefWidth="600.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.ModifierConseillerController">
     <children>
-        <Label layoutX="188.0" layoutY="34.0" style="-fx-font-weight: bold; -fx-alignment: center;" text="Ajouter un conseiller" textAlignment="CENTER" textFill="#56ab2f">
+        <Label layoutX="174.0" layoutY="38.0" style="-fx-font-weight: bold; -fx-alignment: center;" text="Modifier un conseiller" textAlignment="CENTER" textFill="#56ab2f">
             <font>
                 <Font size="23.0" />
             </font>

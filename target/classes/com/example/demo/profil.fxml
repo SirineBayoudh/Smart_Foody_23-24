@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.ProfilController">
+
+    <AnchorPane>
+        <!-- Ajustement de l'espacement entre les éléments de la HBox -->
+        <HBox prefHeight="75.0" prefWidth="902.0" spacing="30" styleClass="navbar" BorderPane.alignment="CENTER">
+            <children>
+                <!-- Ajustement de la taille des icônes pour une meilleure harmonie -->
+                <ImageView fitHeight="99.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+                    <image>
+                        <Image url="@Images/trans_logo.png" />
+                    </image>
+                </ImageView>
+                <!-- Réduction de la taille de police pour une meilleure intégration dans l'espace disponible -->
+                <Label styleClass="nav-item" text="Accueil">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" top="25.0" />
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="nav-item" text="Nos Produits">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" top="25.0" />
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="nav-item" text="Réclamation">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" top="25.0" />
+                    </HBox.margin>
+                </Label>
+                <Label styleClass="nav-item" text="Conseils">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" top="25.0" />
+                    </HBox.margin>
+                </Label>
+                <!-- Ajustement de la taille des icônes de navigation -->
+                <ImageView fitHeight="30.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon" translateX="20.0">
+                    <image>
+                        <Image url="@Images/panier2.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets left="20.0" top="25.0" />
+                    </HBox.margin>
+                </ImageView>
+                <ImageView fitHeight="29.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+                    <image>
+                        <Image url="@Images/user.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets left="20.0" top="25.0" />
+                    </HBox.margin>
+                </ImageView>
+            <ImageView fx:id="logoutIcon" fitHeight="32.0" fitWidth="29.0" layoutX="669.0" layoutY="35.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon" translateY="25.0">
+               <image>
+                  <Image url="@Images/deconnexion.png" />
+               </image>
+            </ImageView>
+            </children>
+        </HBox>
+    </AnchorPane>
+    <AnchorPane layoutX="-1.0" layoutY="99.0" prefHeight="498.0" prefWidth="902.0">
+      <children>
+         <AnchorPane prefHeight="498.0" prefWidth="219.0">
+            <children>
+               <Label prefHeight="26.0" prefWidth="45.0" text="Bonjour " translateX="10.0" translateY="25.0" />
+               <TextField fx:id="nomUser" editable="false" prefHeight="26.0" prefWidth="86.0" translateX="60.0" translateY="25.0" />
+               <Label prefHeight="18.0" prefWidth="186.0" text="Données personelles et adresses " translateX="10.0" translateY="120.0" />
+               <Label layoutX="10.0" layoutY="167.0" prefHeight="26.0" prefWidth="100.0" text="Se déconnecter" />
+            </children>
+         </AnchorPane>
+         <AnchorPane layoutX="219.0" prefHeight="498.0" prefWidth="681.0">
+            <children>
+               <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="433.0" prefWidth="570.0" styleClass="form-container" stylesheets="@css/style_profil.css">
+                  <children>
+                     <Label style="-fx-font-weight: bold;" text="Nom" translateX="20.0" translateY="15.0" />
+                     <TextField fx:id="tfnomp" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" />
+                     <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Prénom" translateX="300.0" translateY="-70.0" />
+                     <TextField fx:id="tfprenomp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-83.0" />
+                     <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Email" translateX="20.0" translateY="-85.0" />
+                     <TextField fx:id="tfemailp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-100.0" />
+                     <Label layoutX="10.0" layoutY="95.0" style="-fx-font-weight: bold;" text="Mot de passe" translateX="300.0" translateY="-168.0" />
+                     <PasswordField fx:id="tfmdpp" maxWidth="-Infinity" prefWidth="230.0" translateX="300.0" translateY="-183.0" />
+                     <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Genre" translateX="20.0" translateY="-185.0" />
+                     <ComboBox fx:id="choixGenrep" prefWidth="230.0" translateX="20.0" translateY="-200.0" />
+                     <TextField fx:id="tfnumtelp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-249.0" />
+                     <Label layoutX="10.0" layoutY="343.0" style="-fx-font-weight: bold;" text="Numéro de téléphone" translateX="300.0" translateY="-317.0" />
+                     <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Ville" translateX="20.0" translateY="-275.0" />
+                     <ComboBox fx:id="choixVillep" layoutX="10.0" layoutY="377.0" prefWidth="230.0" translateX="20.0" translateY="-290.0" />
+                     <Label layoutX="10.0" layoutY="509.0" style="-fx-font-weight: bold;" text="Rue" translateX="300.0" translateY="-358.0" />
+                     <TextField fx:id="tfruep" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
+                     <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Objectif" translateX="20.0" translateY="-370.0" />
+                     <ComboBox fx:id="choixObjectifp" layoutX="10.0" layoutY="544.0" prefWidth="230.0" translateX="20.0" translateY="-385.0" />
+                     <Button fx:id="btn_modif" maxWidth="-Infinity" mnemonicParsing="false" onAction="#modifierProfil" prefWidth="100.0" text="Modifier" translateX="350.0" translateY="-400.0" />
+                  </children>
+               </VBox>
+            </children>
+         </AnchorPane>
+      </children>
+    </AnchorPane>
+</AnchorPane>

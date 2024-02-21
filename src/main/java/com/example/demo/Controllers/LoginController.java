@@ -13,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -43,7 +42,15 @@ public class LoginController implements Initializable {
 
     String password;
 
-    private int id_user;
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public void setTemail(String temail) {
         this.temail.setText(temail);
@@ -67,9 +74,21 @@ public class LoginController implements Initializable {
             pst.setString(2,encryptor.encryptString(tpwd.getText()));
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
+
+                String reqUserId = "SELECT id_utilisateur FROM utilisateur WHERE email = ?";
+                PreparedStatement pstUserId = cnx.prepareStatement(reqUserId);
+                pstUserId.setString(1, temail.getText());
+                ResultSet rsUserId = pstUserId.executeQuery();
+                rsUserId.next();
+                userId = rsUserId.getInt("id_utilisateur");
+                MyConnection.getInstance().setUserId(userId);
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
                 try {
                     Parent root = loader.load();
+
+                    NavbarreController nv =loader.getController();
+
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
                     stage.show();

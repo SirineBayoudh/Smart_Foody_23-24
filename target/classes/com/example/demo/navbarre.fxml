@@ -8,9 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0"
-            prefWidth="902.0" stylesheets="@css/style_navbarre.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.demo.Controllers.NavbarreCotroller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="902.0" stylesheets="@css/style_navbarre.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.NavbarreController">
     <top>
         <!-- Ajustement de l'espacement entre les éléments de la HBox -->
         <HBox prefHeight="75.0" prefWidth="902.0" spacing="30" styleClass="navbar" BorderPane.alignment="CENTER">
@@ -30,7 +28,7 @@
                         <Insets left="20.0" top="25.0" />
                     </HBox.margin>
                 </Label>
-                <Label  styleClass="nav-item" text="Nos Produits">
+                <Label styleClass="nav-item" text="Nos Produits">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -55,8 +53,7 @@
                     </HBox.margin>
                 </Label>
                 <!-- Ajustement de la taille des icônes de navigation -->
-                <ImageView fitHeight="40.0" fitWidth="40.0"
-                           pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
                     <image>
                         <Image url="@Images/panier.png" />
                     </image>
@@ -64,7 +61,7 @@
                         <Insets left="20.0" top="25.0" />
                     </HBox.margin>
                 </ImageView>
-                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+                <ImageView fx:id="logoUser" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#redirectToProfil" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
                     <image>
                         <Image url="@Images/homme.png" />
                     </image>

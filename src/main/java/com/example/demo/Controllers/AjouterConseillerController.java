@@ -109,7 +109,15 @@ public class AjouterConseillerController implements Initializable {
         }
 
         try {
-            int tel = Integer.parseInt(tfmatricule.getText());
+            int matricule = Integer.parseInt(tfmatricule.getText());
+            if (tfmatricule.getText().length() != 6) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Format de matricule incorrect");
+                alert.setHeaderText(null);
+                alert.setContentText("Le champ matricule doit contenir exactement 6 chiffres.");
+                alert.showAndWait();
+                return;
+            }
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Format de matricule incorrect");

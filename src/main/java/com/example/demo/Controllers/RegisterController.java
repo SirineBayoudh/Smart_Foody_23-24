@@ -176,7 +176,7 @@ public class RegisterController implements Initializable {
     void addUser(ActionEvent event) throws NoSuchAlgorithmException {
 
         //Contrôle sur les champs vides
-        if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || villeChoisie == null || tftel.getText().isEmpty()  || tfrue.getText().isEmpty() || objectifChoisi == null) {
+        if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || genreChoisi == null || tftel.getText().isEmpty()  || villeChoisie == null || tfrue.getText().isEmpty() || objectifChoisi == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
             alert.setHeaderText(null);
