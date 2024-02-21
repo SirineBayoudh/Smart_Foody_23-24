@@ -33,7 +33,7 @@
         </TableView>
       <Button fx:id="btnupdate" layoutX="359.0" layoutY="617.0" mnemonicParsing="false" onAction="#UpdateStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="      Modifier" />
       <Button fx:id="btnsupprimer" layoutX="524.0" layoutY="617.0" mnemonicParsing="false" onAction="#deleteStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="     Supprimer" />
-        <Button fx:id="btnExporterTout" layoutX="696.0" layoutY="617.0" mnemonicParsing="false" onAction="#exporterToutesLesDonnees" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="Exporter Tout" />
+
 
         <ImageView fitHeight="23.0" fitWidth="35.0" layoutX="373.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
          <image>

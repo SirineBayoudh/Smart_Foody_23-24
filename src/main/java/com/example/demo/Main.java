@@ -4,6 +4,7 @@ package com.example.demo;
 
 
 //import com.example.demo.Controllers.AlerteController;
+
 import com.example.demo.Controllers.StockController;
 import com.example.demo.Models.Stock;
 import javafx.application.Application;
@@ -33,7 +34,6 @@ public class Main extends Application {
         stage.setTitle("Smart foody");
         stage.setScene(scene);
         stage.show();
-
 
         }
 

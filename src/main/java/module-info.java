@@ -9,6 +9,8 @@ module com.example.demo {
     requires itextpdf;
     requires java.desktop;
     requires xmlworker;
+    requires poi;
+    requires poi.ooxml;
 
     opens com.example.demo to javafx.fxml;
     opens com.example.demo.Models to javafx.base;
