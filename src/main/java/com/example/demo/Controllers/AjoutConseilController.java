@@ -35,7 +35,8 @@ public class AjoutConseilController implements Initializable {
     private TextArea tNote;
     @FXML
     private TextArea foodLabel;
-
+    @FXML
+    private Button btnUpdate;
     int id_conseil=0;
     @FXML
     private TableColumn<Conseil, Integer> colidconseil;
@@ -66,6 +67,7 @@ public class AjoutConseilController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MyConnection.getInstance();
         showConseils();
+        btnUpdate.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
         // capturing id_conseil of selected item in the table
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -279,7 +281,6 @@ public class AjoutConseilController implements Initializable {
                         } else {
                             showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de la mise à jour du conseil.");
                         }
-
                     } catch (SQLException e) {
                         e.printStackTrace();
                         System.out.println("SQLException occurred: " + e.getMessage());
