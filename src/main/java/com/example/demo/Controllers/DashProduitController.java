@@ -26,10 +26,11 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DashProduitController implements Initializable {
-    MyConnection con =null;
-    PreparedStatement st =null;
+    MyConnection con = null;
+    PreparedStatement st = null;
     ResultSet rs = null;
-    int ref=0;
+    int ref = 0;
+
 
     @FXML
     private Button btnAjouter;
@@ -39,6 +40,8 @@ public class DashProduitController implements Initializable {
 
     @FXML
     private Button btnSupprimer;
+    @FXML
+    private Label labelTotalProduits;
 
     @FXML
     private TableView<Produit> table;
@@ -75,7 +78,7 @@ public class DashProduitController implements Initializable {
     @FXML
     private TableColumn<Produit, Integer> colRef;
     @FXML
-    private TableColumn<Produit, String > colImage;
+    private TableColumn<Produit, String> colImage;
     @FXML
     private LineChart<String, Number> lineChart;
 
@@ -102,6 +105,7 @@ public class DashProduitController implements Initializable {
         lineChart.getData().clear();
         lineChart.getData().add(series);
     }
+
     @FXML
     void selectImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -111,45 +115,47 @@ public class DashProduitController implements Initializable {
             tfImage.setText(selectedFile.toURI().toString());
         }
     }
-    private ObservableList<Produit> getProduits(){
+
+    private ObservableList<Produit> getProduits() {
         ObservableList<Produit> produits = FXCollections.observableArrayList();
-         String query = "SELECT * from produit";
-         con = MyConnection.getInstance();
-         try{
-             st = con.getCnx().prepareStatement(query);
-             rs =st.executeQuery();
-             while (rs.next()){
-                 Produit st = new Produit();
-                 st.setRef(rs.getInt("Ref"));
-                 st.setMarque(rs.getString("Marque"));
-                 st.setCategorie(rs.getString("Categorie"));
-                 st.setPrix(rs.getFloat("Prix"));
-                 st.setImage(rs.getString("Image"));
-                 st.setCritere(rs.getString("Critere"));
-                 produits.add(st);
-             }
-         } catch (SQLException e) {
-             throw new RuntimeException(e);
-         }
-         return produits;
+        String query = "SELECT * from produit";
+        con = MyConnection.getInstance();
+        try {
+            st = con.getCnx().prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Produit st = new Produit();
+                st.setRef(rs.getInt("Ref"));
+                st.setMarque(rs.getString("Marque"));
+                st.setCategorie(rs.getString("Categorie"));
+                st.setPrix(rs.getFloat("Prix"));
+                st.setImage(rs.getString("Image"));
+                st.setCritere(rs.getString("Critere"));
+                produits.add(st);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return produits;
     }
 
-    public void showProduits(){
+    public void showProduits() {
         ObservableList<Produit> list = getProduits();
         table.setItems(list);
-        colRef.setCellValueFactory(new PropertyValueFactory<Produit,Integer>("ref"));
-        colMarque.setCellValueFactory(new PropertyValueFactory<Produit,String>("marque"));
-        colCategorie.setCellValueFactory(new PropertyValueFactory<Produit,String>("categorie"));
-        colPrix.setCellValueFactory(new PropertyValueFactory<Produit,Float>("prix"));
-        colImage.setCellValueFactory(new PropertyValueFactory<Produit,String >("image"));
-        colCritere.setCellValueFactory(new PropertyValueFactory<Produit,String>("critere"));
+        colRef.setCellValueFactory(new PropertyValueFactory<Produit, Integer>("ref"));
+        colMarque.setCellValueFactory(new PropertyValueFactory<Produit, String>("marque"));
+        colCategorie.setCellValueFactory(new PropertyValueFactory<Produit, String>("categorie"));
+        colPrix.setCellValueFactory(new PropertyValueFactory<Produit, Float>("prix"));
+        colImage.setCellValueFactory(new PropertyValueFactory<Produit, String>("image"));
+        colCritere.setCellValueFactory(new PropertyValueFactory<Produit, String>("critere"));
     }
+
     @FXML
     void createProduit(ActionEvent event) throws SQLException {
         vboxFormulaire.setVisible(true);
         String insert = "insert into produit(Marque,Categorie,Prix,Critere,Image) values(?,?,?,?,?)";
         con = MyConnection.getInstance();
-        try{
+        try {
             st = con.getCnx().prepareStatement(insert);
             String imageUrl = tfImage.getText();
             String marque = tfMarque.getText();
@@ -177,25 +183,25 @@ public class DashProduitController implements Initializable {
                 return;
             }
             String prixText = tfPrix.getText();
-             if (prixText.isEmpty()) {
+            if (prixText.isEmpty()) {
                 showAlert("Veuillez saisir un prix.");
                 return;
             } else if (!prixText.matches("\\d+(\\.\\d+)?")) {
-                 showAlert("Le prix doit être un nombre décimal (float).");
-                 return;
-             }
+                showAlert("Le prix doit être un nombre décimal (float).");
+                return;
+            }
             if (isImageUrlUnique(imageUrl)) {
                 showAlert("L'URL de l'image doit être unique.");
                 return;
-            }else if (imageUrl.isEmpty()){
+            } else if (imageUrl.isEmpty()) {
                 showAlert("le champs est vide . Veuillez selectionner une image.");
                 return;
             }
-            st.setString(1,tfMarque.getText());
-            st.setString(2,tfCategorie.getText());
+            st.setString(1, tfMarque.getText());
+            st.setString(2, tfCategorie.getText());
             st.setString(3, String.valueOf(Float.parseFloat(tfPrix.getText())));
-            st.setString(4,tfCritere.getText());
-            st.setString(5,tfImage.getText());
+            st.setString(4, tfCritere.getText());
+            st.setString(5, tfImage.getText());
             int rowsAffected = st.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Produit ajouté avec succès !");
@@ -209,12 +215,20 @@ public class DashProduitController implements Initializable {
             } else {
                 System.out.println("Échec de l'ajout du produit !");
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
         updateLineChart();
+        updateTotalProduitsLabel();
     }
+
+    private void updateTotalProduitsLabel() {
+        getData(); // Vous n'avez plus besoin de capturer la valeur retournée
+        int totalProduits = getTotalProduits();
+        labelTotalProduits.setText("Total des produits : " + totalProduits);
+    }
+
     private boolean isImageUrlUnique(String imageUrl) throws SQLException {
         String query = "SELECT COUNT(*) FROM produit WHERE Image = ?";
         PreparedStatement statement = con.getCnx().prepareStatement(query);
@@ -232,95 +246,117 @@ public class DashProduitController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-        @FXML
-    void getData(MouseEvent event) {
-            Produit produit = table.getSelectionModel().getSelectedItem();
-            if (produit != null) {
-                ref = produit.getRef();
-                tfMarque.setText(produit.getMarque());
-                float prix = produit.getPrix();
-                String prixString = String.valueOf(prix);
-                tfPrix.setText(prixString);
-                tfCritere.setText(produit.getCritere());
-                btnAjouter.setDisable(true);
-                btnModifier.setDisable(false);
-                btnSupprimer.setDisable(false);
-            }
+
+    @FXML
+    void getData() {
+        Produit produit = table.getSelectionModel().getSelectedItem();
+        if (produit != null) {
+            ref = produit.getRef();
+            tfMarque.setText(produit.getMarque());
+            float prix = produit.getPrix();
+            String prixString = String.valueOf(prix);
+            tfPrix.setText(prixString);
+            tfCritere.setText(produit.getCritere());
+            btnAjouter.setDisable(true);
+            btnModifier.setDisable(false);
+            btnSupprimer.setDisable(false);
+        }
     }
 
     @FXML
     void modifierProduit(ActionEvent event) {
         String update = "update produit set Marque = ? ,Prix = ?,Critere = ?   where ref = ?";
         con = MyConnection.getInstance();
-        try{
-            st = con.getCnx().prepareStatement(update);
-            st.setString(1,tfMarque.getText());
-            st.setString(2, String.valueOf(Float.parseFloat(tfPrix.getText())));
-            st.setString(3,tfCritere.getText());
-            st.setInt(4,ref);
-            String marque = tfMarque.getText();
-            if(!marque.matches("[a-zA-Z]+")) {
-                showAlert("La marque ne doit contenir que des lettres.");
-                return;
-            }
-            String critere = tfCritere.getText();
-            if (!critere.matches("[a-zA-Z]+")) {
-                showAlert("Le critère ne doit contenir que des lettres.");
-                return;
-            }
-            String prixText = tfPrix.getText();
-            if (!prixText.matches("\\d+(\\.\\d+)?")) {
-                showAlert("Le prix doit être un nombre décimal (float).");
-                return;
-            }
-            int rowsAffected = st.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Produit modifié avec succès !");
-                showProduits();
-                tfMarque.clear();
-                tfPrix.clear();
-                tfCritere.clear();
-            } else {
-                System.out.println("Échec de la modification du produit !");
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        updateLineChart();
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation de modification");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier ce produit ?");
+        confirmationAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            st = con.getCnx().prepareStatement(update);
+                            st.setString(1, tfMarque.getText());
+                            st.setString(2, String.valueOf(Float.parseFloat(tfPrix.getText())));
+                            st.setString(3, tfCritere.getText());
+                            st.setInt(4, ref);
+                            String marque = tfMarque.getText();
+                            if (!marque.matches("[a-zA-Z]+")) {
+                                showAlert("La marque ne doit contenir que des lettres.");
+                                return;
+                            }
+                            String critere = tfCritere.getText();
+                            if (!critere.matches("[a-zA-Z]+")) {
+                                showAlert("Le critère ne doit contenir que des lettres.");
+                                return;
+                            }
+                            String prixText = tfPrix.getText();
+                            if (!prixText.matches("\\d+(\\.\\d+)?")) {
+                                showAlert("Le prix doit être un nombre décimal (float).");
+                                return;
+                            }
+                            int rowsAffected = st.executeUpdate();
+                            if (rowsAffected > 0) {
+                                System.out.println("Produit modifié avec succès !");
+                                showProduits();
+                                tfMarque.clear();
+                                tfPrix.clear();
+                                tfCritere.clear();
+                            } else {
+                                System.out.println("Échec de la modification du produit !");
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                        }
+                        updateLineChart();
+                    }
+                }
+        );
     }
 
     @FXML
     void supprimerProduit(ActionEvent event) {
         String delete = "delete from produit where ref = ?";
         con = MyConnection.getInstance();
-        try {
-            st = con.getCnx().prepareStatement(delete);
-            st.setInt(1, ref);
-            int rowsAffected = st.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Produit supprimé avec succès !");
-                showProduits();
-            } else {
-                System.out.println("Échec de la suppression du produit !");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-        updateLineChart();
-        }
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation de suppression");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Êtes-vous sûr de vouloir supprimer ce produit ?");
+        confirmationAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        try {
+                            st = con.getCnx().prepareStatement(delete);
+                            st.setInt(1, ref);
+                            int rowsAffected = st.executeUpdate();
+                            if (rowsAffected > 0) {
+                                System.out.println("Produit supprimé avec succès !");
+                                showProduits();
+                            } else {
+                                System.out.println("Échec de la suppression du produit !");
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                        }
+                        updateLineChart();
+                    }
+                }
+        );
+        updateTotalProduitsLabel();
+    }
+
     @FXML
     void filterByCategory(ActionEvent event) {
         String selectedCategory = categoryFilterComboBox.getValue();
         ObservableList<Produit> filteredList = FXCollections.observableArrayList();
-        for (Produit produit : table.getItems()) {
-            if (produit.getCategorie().equals(selectedCategory)) {
+        for (Produit produit : getProduits()) {
+            if (produit.getCategorie().equals(selectedCategory) || selectedCategory == null) {
                 filteredList.add(produit);
             }
         }
         table.setItems(filteredList);
     }
+
     private ObservableList<String> getCategoriesFromDatabase() {
         ObservableList<String> categories = FXCollections.observableArrayList();
         String query = "SELECT DISTINCT Categorie FROM produit";
@@ -337,6 +373,22 @@ public class DashProduitController implements Initializable {
         return categories;
     }
 
+    private int getTotalProduits() {
+        String query = "SELECT COUNT(*) AS total FROM produit";
+        con = MyConnection.getInstance();
+        try {
+            st = con.getCnx().prepareStatement(query);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         showProduits();
@@ -346,5 +398,8 @@ public class DashProduitController implements Initializable {
         btnSupprimer.setDisable(true);
         ObservableList<String> categories = getCategoriesFromDatabase();
         categoryFilterComboBox.setItems(categories);
+        int totalProduits = getTotalProduits();
+        labelTotalProduits.setText("Total des produits :\n " + totalProduits);
+
     }
 }

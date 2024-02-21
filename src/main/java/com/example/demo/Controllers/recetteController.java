@@ -1,10 +1,16 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Models.Produit;
+import com.example.demo.Models.Recette;
+import com.example.demo.Tools.MyConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.io.BufferedReader;
@@ -12,8 +18,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,13 +34,28 @@ public class recetteController {
 
     @FXML
     private TextField ingredientField;
+    @FXML
+    private ListView<Produit> recommendedProductsListView;
 
     @FXML
     private Label resultatLabel;
+    private static final String API_KEY = "00ede7fd4ca64d31aad4408625c0947b";
 
     @FXML
-    private Button searchButton;
-    private static final String API_KEY = "00ede7fd4ca64d31aad4408625c0947b";
+    void initialize() {
+        // Récupérer l'objectif de l'utilisateur
+        String objectifUtilisateur = getObjectifUtilisateur();
+        String critereProduit = "sans glucose";
+
+        // Si l'objectif de l'utilisateur est récupéré avec succès
+        if (objectifUtilisateur != null) {
+            // Afficher les produits recommandés en fonction de l'objectif de l'utilisateur
+            fetchAndDisplayRecommendedProducts(objectifUtilisateur,critereProduit);
+        } else {
+            System.out.println("ss");
+        }
+    }
+
 
     @FXML
     void search(ActionEvent event) {
@@ -123,4 +150,61 @@ public class recetteController {
             return "Instructions not available";
         }
     }
+
+    private String getObjectifUtilisateur() {
+        String objectif = null;
+        String query = "SELECT objectif FROM utilisateur WHERE id_utilisateur = ?";
+
+        try (PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query)) {
+            int idUtilisateur = 1;
+            statement.setInt(1, idUtilisateur);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    objectif = resultSet.getString("objectif");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return objectif;
+    }
+
+    private void fetchAndDisplayRecommendedProducts(String objectifUtilisateur, String critereProduit) {
+        ObservableList<Produit> produitsRecommandes = FXCollections.observableArrayList();
+
+        // Requête SQL pour récupérer les produits recommandés en fonction de l'objectif de l'utilisateur et du critère des produits
+        String query = "SELECT * FROM produit WHERE id_utilisateur IN (SELECT id_utilisateur  FROM utilisateur WHERE objectif = ?)";
+        // Si un critère est spécifié, ajoutez-le à la requête SQL
+        if (critereProduit != null && !critereProduit.isEmpty()) {
+            query += " AND critere = ?";
+        }
+
+        try (PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query)) {
+            // Définir le paramètre pour l'objectif de l'utilisateur
+            statement.setString(1, objectifUtilisateur);
+            // Si un critère est spécifié, définissez également le paramètre pour le critère
+            if (critereProduit != null && !critereProduit.isEmpty()) {
+                statement.setString(2, critereProduit);
+            }
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Produit produit = new Produit();
+                    produit.setMarque(resultSet.getString("marque"));
+                    produit.setCategorie(resultSet.getString("categorie"));
+                    // Ajouter le produit recommandé à la liste observable
+                    produitsRecommandes.add(produit);
+                }
+            }
+            // Afficher les produits recommandés dans une autre ListView ou tout autre composant de votre interface utilisateur
+            recommendedProductsListView.setItems(produitsRecommandes);
+        } catch (SQLException e) {
+            // Gérer les exceptions
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

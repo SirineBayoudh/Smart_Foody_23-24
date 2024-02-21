@@ -129,6 +129,18 @@
             <Font name="Cambria" size="12.0" />
          </font>
       </Label>
+      <Label fx:id="labelTotalProduits" layoutX="635.0" layoutY="71.0" prefHeight="135.0" prefWidth="157.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" textAlignment="CENTER" textFill="WHITE">
+         <styleClass>
+            <String fx:value="chosen-fruit-card" />
+            <String fx:value="shadow" />
+         </styleClass>
+         <font>
+            <Font name="Cambria" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
       
    </children>
 </AnchorPane>

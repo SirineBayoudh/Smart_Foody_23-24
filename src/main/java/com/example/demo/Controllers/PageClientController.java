@@ -6,10 +6,7 @@ import com.example.demo.Tools.MyConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -34,6 +31,8 @@ public class PageClientController {
 
     @FXML
     private URL location;
+    @FXML
+    private ListView<String> suggestionsListView;
 
     @FXML
     private GridPane imagesGrid;
@@ -51,6 +50,7 @@ public class PageClientController {
     private Label fruitPriceLabel;
     @FXML
     private TextField searchResultTextField;
+
 
     @FXML
     private void searchProducts() {
@@ -108,6 +108,19 @@ public class PageClientController {
             } else {
                 // Réinitialiser l'affichage des produits pour afficher uniquement les produits de la catégorie sélectionnée
                 displayProductsByCategory(newValue);
+            }
+        });
+        // Initialise la liste des suggestions avec une liste vide
+        suggestionsListView.setItems(FXCollections.observableArrayList());
+
+        // Ajoute un écouteur sur le champ de recherche pour détecter les changements de texte
+        searchResultTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                // Exécute une recherche dans la base de données et met à jour les suggestions
+                updateSuggestions(newValue);
+            } else {
+                // Efface la liste des suggestions si le champ de recherche est vide
+                suggestionsListView.getItems().clear();
             }
         });
     }
@@ -222,6 +235,22 @@ public class PageClientController {
             }
         } else {
             System.out.println("Le produit est null ou l'URL de l'image est null.");
+        }
+    }
+    private void updateSuggestions(String searchQuery) {
+        try {
+            String sql = "SELECT marque FROM produit WHERE marque LIKE ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, searchQuery + "%");
+            ResultSet resultSet = statement.executeQuery();
+
+            ObservableList<String> suggestions = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                suggestions.add(resultSet.getString("marque"));
+            }
+            suggestionsListView.setItems(suggestions);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

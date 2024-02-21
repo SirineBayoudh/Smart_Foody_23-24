@@ -2,22 +2,30 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.recetteController">
    <children>
-      <Button fx:id="searchButton" layoutX="392.0" layoutY="54.0" mnemonicParsing="false" onAction="#search" text="searchButton" />
-      <TextField fx:id="ingredientField" layoutX="141.0" layoutY="54.0" promptText="ingredientField" />
-      <ScrollPane layoutX="23.0" layoutY="150.0" prefHeight="502.0" prefWidth="1154.0">
+      <Button fx:id="searchButton" layoutX="1074.0" layoutY="54.0" mnemonicParsing="false" onAction="#search" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="searchButton" />
+      <TextField fx:id="ingredientField" layoutX="912.0" layoutY="54.0" promptText="ingredientField" styleClass="text-field" stylesheets="@css/style_pageClient.css" />
+      <ScrollPane layoutX="559.0" layoutY="114.0" prefHeight="538.0" prefWidth="622.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="502.0" prefWidth="1140.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="502.0" prefWidth="1137.0">
                <children>
-                  <Label fx:id="resultatLabel" layoutX="6.0" prefHeight="480.0" prefWidth="1124.0" text="resultLabel" />
+                  <Label fx:id="resultatLabel" layoutY="-2.0" prefHeight="506.0" prefWidth="607.0" />
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
+      <Label layoutX="559.0" layoutY="58.0" text="Pour avoir une idée de recette vous pouvez tapé un ingrédient : " textFill="#56ab2f">
+         <font>
+            <Font name="Cambria" size="13.0" />
+         </font>
+      </Label>
+      <ListView fx:id="recommendedProductsListView" layoutX="93.0" layoutY="151.0" prefHeight="302.0" prefWidth="283.0" />
    </children>
 </AnchorPane>
