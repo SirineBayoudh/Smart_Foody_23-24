@@ -6,6 +6,8 @@ module com.example.demo {
     requires java.sql;
     requires quartz;
     requires twilio;
+    requires itextpdf;
+    requires java.desktop;
 
     opens com.example.demo to javafx.fxml;
     opens com.example.demo.Models to javafx.base;

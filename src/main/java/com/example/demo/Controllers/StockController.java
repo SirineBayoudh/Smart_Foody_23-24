@@ -31,8 +31,10 @@ import java.sql.*;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
+//import static com.example.demo.Controllers.AlerteController.insertAlert;
 
-public class StockController implements Initializable{
+
+public class StockController implements Initializable {
 
     @FXML
     private Button bntAnuuler;
@@ -68,7 +70,7 @@ public class StockController implements Initializable{
     @FXML
     private TableColumn<Stock, Integer> id_stockColumn;
     @FXML
-    private TableColumn<Stock, Integer>   NomColumn;
+    private TableColumn<Stock, Integer> NomColumn;
 
 
     @FXML
@@ -78,7 +80,7 @@ public class StockController implements Initializable{
     private TableColumn<Stock, Integer> nbVenduColumn;
     @FXML
     private TextField tRef;
- int id_s=0;
+    int id_s = 0;
     @FXML
     private TextField Idfield;
 
@@ -102,6 +104,9 @@ public class StockController implements Initializable{
     private Label countAllStock;
     @FXML
     private ScatterChart<String, Number> scatterChart;
+    @FXML
+    private Button btnExporterTout;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -113,7 +118,9 @@ public class StockController implements Initializable{
         show();
         Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
         updateTotalStockCount();
+
     }
+
     public static StockController getInstance() {
         if (instance == null) {
             instance = new StockController();
@@ -130,13 +137,14 @@ public class StockController implements Initializable{
 
         if (lowestStock != null) {
             lowestStockId = lowestStock.getId_s();
-            String message = "le  stock : "+lowestStock.getId_s()+"quantité" + lowestStock.getQuantite();
-
+            String message = "le  stock : " + lowestStock.getId_s() + "quantité" + lowestStock.getQuantite();
+            //insertAlert(lowestStockId, new java.util.Date(), message);
             runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
         } else {
             runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
         }
     }
+
     private void runLater(Runnable runnable) {
         Platform.runLater(runnable);
     }
@@ -155,6 +163,7 @@ public class StockController implements Initializable{
 
         alert.showAndWait();
     }
+
     public static Stock findLowestStock(ObservableList<Stock> stockData) {
         Stock lowestStock = null;
         int minQuantity = Integer.MAX_VALUE;
@@ -172,9 +181,11 @@ public class StockController implements Initializable{
         }
         return lowestStock;
     }
+
     public int getLowestStockId() {
         return lowestStockId;
     }
+
     @FXML
     private void handlePaneClick(MouseEvent event) {
         // annuler select in the TableView when the Pane is clicked
@@ -223,7 +234,6 @@ public class StockController implements Initializable{
 //
 //        return stockData;
 //    }
-
     public ObservableList<Stock> displayAllStock() {
         ObservableList<Stock> stockData = FXCollections.observableArrayList();
 
@@ -370,7 +380,6 @@ public class StockController implements Initializable{
     }
 
 
-
     public void show() {
         ObservableList<Stock> list = displayAllStock();
         if (stockTableView != null) {
@@ -392,31 +401,33 @@ public class StockController implements Initializable{
     }
 
 
-@FXML
-void handleButtonAction(ActionEvent event) {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Ajouter_stock.fxml"));
-        Parent root = loader.load();
-        AjouterStockController ajouterStockController = loader.getController();
-        // Pass the StockController instance
-        ajouterStockController.setStockController(this);
+    @FXML
+    void handleButtonAction(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Ajouter_stock.fxml"));
+            Parent root = loader.load();
+            AjouterStockController ajouterStockController = loader.getController();
+            // Pass the StockController instance
+            ajouterStockController.setStockController(this);
 
-        Stage stage = new Stage();
-        stage.setTitle("Ajouter stock");
-        stage.setScene(new Scene(root));
-        stage.setOnHidden((WindowEvent windowEvent) -> {
-            show(); // Update the table
-            updateTotalStockCount();
-        });
-        stage.show();
-    } catch (IOException e) {
-        e.printStackTrace();
-        System.out.println("Error du chargement Ajouter_stock.fxml");
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter stock");
+            stage.setScene(new Scene(root));
+            stage.setOnHidden((WindowEvent windowEvent) -> {
+                show(); // Update the table
+                updateTotalStockCount();
+            });
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error du chargement Ajouter_stock.fxml");
+        }
     }
-}
+
     public void updateTotalValue(float totalValue) {
         tTotal.setText(String.valueOf(totalValue));
     }
+
     @FXML
     void deleteStock(ActionEvent event) {
         Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
@@ -454,20 +465,36 @@ void handleButtonAction(ActionEvent event) {
         }
     }
 
-/******************************Update*******************/
-@FXML
-void getData(MouseEvent event) {
+    /******************************Update*******************/
+//@FXML
+//void getData(MouseEvent event) {
+//
+//    Vboxupdate.visibleProperty().unbind();
+//    Vboxupdate.setVisible(event.getClickCount() == 1);
+//
+//    if (event.getClickCount() == 1) {
+//        Stock selectedstock= stockTableView.getSelectionModel().getSelectedItem();
+//        Idfield.setText(String.valueOf(selectedstock.getId_s()));
+//        Refield.setText(String.valueOf(selectedstock.getProduitRef()));
+//        Qntfield.setText(String.valueOf(selectedstock.getQuantite()));
+//    }
+//}
+    @FXML
+    void getData(MouseEvent event) {
+        Vboxupdate.visibleProperty().unbind();
+        Vboxupdate.setVisible(event.getClickCount() == 1);
 
-    Vboxupdate.visibleProperty().unbind();
-    Vboxupdate.setVisible(event.getClickCount() == 1);
-
-    if (event.getClickCount() == 1) {
-        Stock selectedstock= stockTableView.getSelectionModel().getSelectedItem();
-        Idfield.setText(String.valueOf(selectedstock.getId_s()));
-        Refield.setText(String.valueOf(selectedstock.getProduitRef()));
-        Qntfield.setText(String.valueOf(selectedstock.getQuantite()));
+        if (event.getClickCount() == 1) {
+            Stock selectedstock = stockTableView.getSelectionModel().getSelectedItem();
+            Idfield.setText(String.valueOf(selectedstock.getId_s()));
+            Refield.setText(String.valueOf(selectedstock.getProduitRef()));
+            Qntfield.setText(String.valueOf(selectedstock.getQuantite()));
+        } else if (event.getClickCount() == 2) {
+            // Double-clic détecté, appeler la méthode pour exporter les données
+         //   exportStockToPDF();
+        }
     }
-}
+
     @FXML
     void UpdateStock(ActionEvent event) {
         Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
@@ -516,20 +543,21 @@ void getData(MouseEvent event) {
             return false;
         }
     }
-        private void showAlert(String message){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information");
-            alert.setHeaderText(null);
-            alert.setContentText(message);
 
-            DialogPane dialogPane = alert.getDialogPane();
-            dialogPane.getStylesheets().add(
-                    getClass().getResource("/com/example/demo/css/style_dash.css").toExternalForm()
-            );
-            dialogPane.getStyleClass().add("custom-alert");
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
 
-            alert.showAndWait();
-        }
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(
+                getClass().getResource("/com/example/demo/css/style_dash.css").toExternalForm()
+        );
+        dialogPane.getStyleClass().add("custom-alert");
+
+        alert.showAndWait();
+    }
 
 
     /*****************Recherche************/
@@ -554,6 +582,7 @@ void getData(MouseEvent event) {
         stockTableView.getItems().clear();
         stockTableView.getItems().addAll(filteredList);
     }
+
     /*****************************Stat *******************************/
     private void updateBarChart(ObservableList<Stock> stockData) {
         barchart.getData().clear();
@@ -603,6 +632,7 @@ void getData(MouseEvent event) {
             e.printStackTrace();
         }
     }
+
     private void updateScatterChart(ObservableList<Stock> stockData) {
         scatterChart.getData().clear();
 
@@ -617,16 +647,21 @@ void getData(MouseEvent event) {
                 ScatterChart.Data<String, Number> data = new ScatterChart.Data<>(referenceCategory, nbVendu);
                 series.getData().add(data);
 
+                // Si vous avez besoin de personnaliser l'apparence des points, vous pouvez le faire ici
+                Node point = data.getNode();
+                // Ajoutez ici votre personnalisation du point (si nécessaire)
             } catch (NumberFormatException e) {
                 System.err.println("Invalid reference format: " + stock.getProduitRef());
             }
         }
 
         scatterChart.getData().add(series);
-        scatterChart.setTitle("Nombre vendu  par produit ");
+        scatterChart.setTitle("Nombre vendu  par produit");
         scatterChart.getXAxis().setLabel("Référence du produit");
-        scatterChart.getYAxis().setLabel("Nombre vendu");
+        scatterChart.getYAxis().setLabel("NbVendu");
     }
+
+
 
 
 }

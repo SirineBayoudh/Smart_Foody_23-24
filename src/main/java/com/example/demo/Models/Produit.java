@@ -9,6 +9,10 @@ public class Produit {
     private String critere ;
 
     private String objectif ;
+
+    public Produit() {
+    }
+
     public Produit(int ref, String marque, String categorie, float prix) {
         this.ref = ref;
         this.marque = marque;

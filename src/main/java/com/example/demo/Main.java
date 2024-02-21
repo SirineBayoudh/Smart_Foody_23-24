@@ -3,6 +3,7 @@ package com.example.demo;
 
 
 
+//import com.example.demo.Controllers.AlerteController;
 import com.example.demo.Controllers.StockController;
 import com.example.demo.Models.Stock;
 import javafx.application.Application;
@@ -34,18 +35,18 @@ public class Main extends Application {
         stage.show();
 
 
-    }
+        }
 
         public static void main(String[] args) {
-        launch(args);
+            launch(args);
+        }
+
+        private static void showNotification(String title, String message, Alert.AlertType alertType) {
+            Alert alert = new Alert(alertType);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
     }
 
-    private static void showNotification(String title, String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-}

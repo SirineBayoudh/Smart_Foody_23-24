@@ -10,6 +10,7 @@ public class Stock {
     private int nbVendu;
     private  float cout ;
     private LigneCommande ligneCommande;
+
     public Stock(int id_s, Produit produit, int quantite, String nom, int nbVendu, float cout) {
         this.id_s = id_s;
         this.produit = produit;
