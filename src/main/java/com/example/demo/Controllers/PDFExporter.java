@@ -2,6 +2,7 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.Stock;
 import com.itextpdf.text.*;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -30,10 +31,17 @@ public class PDFExporter {
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
 
-            document.add(new Paragraph("Stock Report"));
-            document.add(new Paragraph("Référence Produit: " + stock.getProduitRef()));
-            document.add(new Paragraph("Marque: " + stock.getProduitMarque()));
-            document.add(new Paragraph("Quantité: " + stock.getQuantite()));
+            String htmlContent = "<strong><h2 style='text-align: center; color: #56ab2f;font-size:30px;font-family:bold;'>Rapport sur le stock "+stock.getNom()+"</h2></strong>"+"<br></br>"+
+                    "<p><span style='color: #77bb58;'>Id stock: </span> " + stock.getId_s() + "</p>" +
+                    "<p><span style='color: #77bb58;'>Nom: </span> " + stock.getNom()+ "</p>" +
+                    "<p><span style='color: #77bb58;'>Référence Produit: </span> " + stock.getProduitRef() + "</p>" +
+                    "<p><span style='color: #77bb58;'>Marque:</span>" + stock.getProduitMarque() + "</p>" +
+                    "<p><span style='color: #77bb58;'>Quantité:</span>" + stock.getQuantite() + "</p>"+
+                    "<p><span style='color: #77bb58;'>Nombre vendus: </span> " + stock.getNbVendu() + "</p>" +
+                    "<p><span style='color: #77bb58;'>Cout total: </span> " + stock.getCout() + "</p>" ;
+
+            HTMLWorker htmlWorker = new HTMLWorker(document);
+            htmlWorker.parse(new StringReader(htmlContent));
 
             document.close();
 
@@ -47,10 +55,10 @@ public class PDFExporter {
             e.printStackTrace();
             System.err.println("Erreur lors de l'export PDF.");
             return false; // Indicateur d'échec
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
-
-
 public static boolean exportAllStocksToPDF(String fileName, ObservableList<Stock> allStocks) {
     try {
         Document document = new Document();
@@ -59,7 +67,7 @@ public static boolean exportAllStocksToPDF(String fileName, ObservableList<Stock
         document.open();
         Font boldFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
         // Ajouter le titre avec le style CSS
-        Paragraph title = new Paragraph("All Stocks Report",boldFont);
+        Paragraph title = new Paragraph("Rapport de stock ",boldFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(10);  // Ajouter un espace après le titre
 
