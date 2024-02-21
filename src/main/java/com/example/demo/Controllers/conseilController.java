@@ -267,8 +267,13 @@ public class conseilController implements Initializable {
                 try {
                     st = con.prepareStatement(delete);
                     st.setInt(1, id_conseil);
-                    st.executeUpdate();
+                    int rowsAffected = st.executeUpdate();
                     showConseils();
+                    if (rowsAffected > 0) {
+                        showAlert(Alert.AlertType.INFORMATION, "Succès", "Conseil supprimé avec succès.");
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de la suppression du conseil.");
+                    }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
