@@ -494,4 +494,9 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
             e.printStackTrace();
         }
     }
+
+
+
+
+
 }
