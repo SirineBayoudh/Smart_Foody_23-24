@@ -134,7 +134,7 @@ public class StockController implements Initializable {
         show();
         Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
         updateTotalStockCount();
-
+        btnExporterTout.setOnAction(event -> exporterToutesLesDonnees());
     }
 
     public static StockController getInstance() {
@@ -693,6 +693,23 @@ public class StockController implements Initializable {
     }
 
 
+    @FXML
+    private void exporterToutesLesDonnees() {
+        // Récupérer la liste de tous les stocks à partir du TableView
+        ObservableList<Stock> allStocks = stockTableView.getItems();
+
+        // Générer un nom de fichier unique, par exemple, en ajoutant une horodatage
+        String fileName = "AllStocksReport_" + System.currentTimeMillis() + ".pdf";
+
+        // Appeler la méthode d'exportation avec le nom de fichier et la liste de stocks
+        boolean success = PDFExporter.exportAllStocksToPDF(fileName, allStocks);
+
+        if (success) {
+            showAlert("Export PDF réussi.");
+        } else {
+            showAlert("Erreur lors de l'export PDF.");
+        }
+    }
 
 }
 
