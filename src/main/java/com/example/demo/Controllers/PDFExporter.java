@@ -4,9 +4,7 @@ import com.example.demo.Models.Stock;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import javafx.collections.ObservableList;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -30,12 +28,30 @@ public class PDFExporter {
 
             System.out.println("Export PDF réussi.");
 
+            // Ouvrir le fichier PDF avec l'application par défaut
+            openPDFFile(fileName);
 
             return true; // Indicateur de succès
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
             System.err.println("Erreur lors de l'export PDF.");
             return false; // Indicateur d'échec
+        }
+    }
+
+
+    private static void openPDFFile(String fileName) {
+        try {
+            File file = new File(fileName);
+
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                Desktop.getDesktop().open(file);
+            } else {
+                System.out.println("Impossible d'ouvrir le fichier. Veuillez le faire manuellement.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de l'ouverture du fichier PDF.");
         }
     }
 
