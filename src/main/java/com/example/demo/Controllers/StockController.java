@@ -30,7 +30,9 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Comparator;
 import java.util.ResourceBundle;
-
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 //import static com.example.demo.Controllers.AlerteController.insertAlert;
 
 
@@ -106,7 +108,21 @@ public class StockController implements Initializable {
     private ScatterChart<String, Number> scatterChart;
     @FXML
     private Button btnExporterTout;
+    private static final String ACCOUNT_SID = "your_account_sid";
+    private static final String AUTH_TOKEN = "your_auth_token";
+    private static final String FROM_PHONE_NUMBER = "your_twilio_phone_number";
 
+    public void sendSMS(String toPhoneNumber, String message) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+        Message twilioMessage = Message.creator(
+                new PhoneNumber("+92150166"), // To phone number
+                new PhoneNumber(FROM_PHONE_NUMBER), // From Twilio phone number
+                message
+        ).create();
+
+        System.out.println("SMS sent: " + twilioMessage.getSid());
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -491,7 +507,7 @@ public class StockController implements Initializable {
             Qntfield.setText(String.valueOf(selectedstock.getQuantite()));
         } else if (event.getClickCount() == 2) {
             // Double-clic détecté, appeler la méthode pour exporter les données
-         //   exportStockToPDF();
+            exportStockToPDF();
         }
     }
 
@@ -661,6 +677,20 @@ public class StockController implements Initializable {
         scatterChart.getYAxis().setLabel("NbVendu");
     }
 
+    private void exportStockToPDF() {
+        Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedStock != null) {
+            String fileName = "StockReport_" + selectedStock.getId_s() + ".pdf";
+            boolean success = PDFExporter.exportStockToPDF(fileName, selectedStock);
+
+            if (success) {
+                showAlert("Export PDF réussi.");
+            } else {
+                showAlert("Erreur lors de l'export PDF.");
+            }
+        }
+    }
 
 
 
