@@ -15,6 +15,12 @@ public class Produit {
         this.image = image;
     }
 
+    public Produit(String marque, String categorie, String imageUrl) {
+        this.marque = marque;
+        this.categorie=categorie;
+        this.image = image;
+    }
+
     public String getMarque() {
         return marque;
     }

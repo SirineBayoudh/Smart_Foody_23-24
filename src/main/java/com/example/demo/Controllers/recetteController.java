@@ -8,10 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -24,18 +21,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 
 public class recetteController {
+    @FXML
+    private GridPane recommendedProductsGridPane;
 
     @FXML
     private TextField ingredientField;
+
     @FXML
-    private ListView<Produit> recommendedProductsListView;
+    private ScrollPane recommendedProductsScrollPane;
+    int column=0;
+    int row=0;
+
+    @FXML
+    private VBox recommendedProductsVBox;
+
 
     @FXML
     private Label resultatLabel;
@@ -43,16 +53,11 @@ public class recetteController {
 
     @FXML
     void initialize() {
-        // Récupérer l'objectif de l'utilisateur
         String objectifUtilisateur = getObjectifUtilisateur();
-        String critereProduit = "sans glucose";
-
-        // Si l'objectif de l'utilisateur est récupéré avec succès
         if (objectifUtilisateur != null) {
-            // Afficher les produits recommandés en fonction de l'objectif de l'utilisateur
-            fetchAndDisplayRecommendedProducts(objectifUtilisateur,critereProduit);
+            fetchAndDisplayRecommendedProducts(objectifUtilisateur);
         } else {
-            System.out.println("ss");
+            System.out.println("Impossible de récupérer l'objectif de l'utilisateur.");
         }
     }
 
@@ -154,9 +159,8 @@ public class recetteController {
     private String getObjectifUtilisateur() {
         String objectif = null;
         String query = "SELECT objectif FROM utilisateur WHERE id_utilisateur = ?";
-
         try (PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query)) {
-            int idUtilisateur = 1;
+            int idUtilisateur = 1; // Remplacer 1 par l'ID de l'utilisateur connecté
             statement.setInt(1, idUtilisateur);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -166,45 +170,76 @@ public class recetteController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return objectif;
     }
 
-    private void fetchAndDisplayRecommendedProducts(String objectifUtilisateur, String critereProduit) {
-        ObservableList<Produit> produitsRecommandes = FXCollections.observableArrayList();
+    private void fetchAndDisplayRecommendedProducts(String objectifUtilisateur) {
+        List<Produit> produitsRecommandes = getRecommendedProducts(objectifUtilisateur);
+        if (produitsRecommandes != null && !produitsRecommandes.isEmpty()) {
+            for (Produit produit : produitsRecommandes) {
+                String imageUrl = produit.getImage();
+                System.out.println("Image URL from database: " + imageUrl); // Vérifier l'URL récupérée depuis la base de données
+                ImageView imageView = createProductImageView(imageUrl);
+                if (imageView != null) {
 
-        // Requête SQL pour récupérer les produits recommandés en fonction de l'objectif de l'utilisateur et du critère des produits
-        String query = "SELECT * FROM produit WHERE id_utilisateur IN (SELECT id_utilisateur  FROM utilisateur WHERE objectif = ?)";
-        // Si un critère est spécifié, ajoutez-le à la requête SQL
-        if (critereProduit != null && !critereProduit.isEmpty()) {
-            query += " AND critere = ?";
-        }
-
-        try (PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query)) {
-            // Définir le paramètre pour l'objectif de l'utilisateur
-            statement.setString(1, objectifUtilisateur);
-            // Si un critère est spécifié, définissez également le paramètre pour le critère
-            if (critereProduit != null && !critereProduit.isEmpty()) {
-                statement.setString(2, critereProduit);
-            }
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Produit produit = new Produit();
-                    produit.setMarque(resultSet.getString("marque"));
-                    produit.setCategorie(resultSet.getString("categorie"));
-                    // Ajouter le produit recommandé à la liste observable
-                    produitsRecommandes.add(produit);
+                    recommendedProductsGridPane.add(imageView, column, row);
+                    column++;
+                    if (column == 2) {
+                        column = 0;
+                        row++;
+                    }
+                } else {
+                    System.out.println("ImageView is null for image URL: " + imageUrl);
                 }
             }
-            // Afficher les produits recommandés dans une autre ListView ou tout autre composant de votre interface utilisateur
-            recommendedProductsListView.setItems(produitsRecommandes);
-        } catch (SQLException e) {
-            // Gérer les exceptions
-            e.printStackTrace();
+        } else {
+            resultatLabel.setText("Aucun produit recommandé trouvé.");
         }
     }
 
+    private ImageView createProductImageView(String imageUrl) {
+        ImageView imageView = new ImageView();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            try {
+                Image image = new Image(imageUrl);
+                imageView.setImage(image);
+                // Ajuster la taille de l'image
+                imageView.setFitWidth(100); // Largeur souhaitée
+                imageView.setFitHeight(100); // Hauteur souhaitée
+                // Ajouter d'autres propriétés à l'ImageView si nécessaire
+            } catch (Exception e) {
+                System.err.println("Erreur lors du chargement de l'image à partir de l'URL : " + imageUrl);
+                e.printStackTrace();
+            }
+        } else {
+            System.err.println("URL de l'image incorrecte : " + imageUrl);
+        }
+        return imageView;
+    }
 
+    private List<Produit> getRecommendedProducts(String objectifUtilisateur) {
+        List<Produit> produitsRecommandes = new ArrayList<>();
 
+        try {
+            // Sélectionner tous les produits dont l'objectif correspond à celui de l'utilisateur
+            String sql = "SELECT * FROM produit WHERE objectif = ?";
+            PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(sql);
+            statement.setString(1, objectifUtilisateur);
+            System.out.println("ss");
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String marque = resultSet.getString("Marque");
+                String categorie = resultSet.getString("Categorie");
+                String imageUrl = resultSet.getString("Image");
+
+                Produit produit = new Produit(marque, categorie, imageUrl);
+                produitsRecommandes.add(produit);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // À améliorer pour une gestion plus robuste des exceptions
+        }
+
+        return produitsRecommandes;
+    }
 }
