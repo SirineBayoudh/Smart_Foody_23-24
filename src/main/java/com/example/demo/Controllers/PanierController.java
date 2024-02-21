@@ -192,15 +192,18 @@ public class PanierController {
 
 
 ////////////////////////////////////////////recalculer les prix////////////////////// ///////////////////////
-private void recalculate(double[] sousTotale, double[] remise, double[] totale) {
+private void recalculate(double[]  sousTotale, double[] remise, double[] totale) {
     // Vérifie le nombre de commandes pour l'article avec l'identifiant 14
     if (nbrCommande(14) > 3) { // Si le nombre de commandes est supérieur à 3
         remise[0] = 0.15; // Appliquer une remise de 15%
         totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]); // Calculer le total avec la remise appliquée
-    } else if (nbrCommande(14) > 9) { // Sinon, si le nombre de commandes est supérieur à 9
+    } else if (nbrCommande(14) > 5) { // Sinon, si le nombre de commandes est supérieur à 9
         remise[0] = 0.25; // Appliquer une remise de 25%
         totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]); // Calculer le total avec la remise appliquée
-    } else { // Sinon
+    } else if (nbrCommande(14) > 10) { // Sinon, si le nombre de commandes est supérieur à 9
+        remise[0] = 0.50; // Appliquer une remise de 25%
+        totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]); // Calculer le total avec la remise appliquée
+    }else { // Sinon
         totale[0] = sousTotale[0]; // Le total reste inchangé sans remise
     }
 
@@ -342,6 +345,23 @@ private void recalculate(double[] sousTotale, double[] remise, double[] totale) 
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
