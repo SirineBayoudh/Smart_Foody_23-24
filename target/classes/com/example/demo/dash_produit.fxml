@@ -9,6 +9,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -19,7 +20,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.DashProduitController">
    <children>
-      <VBox fx:id="vboxFormulaire" layoutX="39.0" layoutY="291.0" prefHeight="349.0" prefWidth="278.0" spacing="8.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="291.0">
+      <VBox fx:id="vboxFormulaire" layoutX="39.2" layoutY="291.0" prefHeight="350.0" prefWidth="278.0" spacing="8.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="291.0">
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Marque">
                <VBox.margin>
@@ -50,10 +51,11 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Text>
-            <TextField fx:id="tfPrix">
+            <Spinner fx:id="tfPrix" editable="true"  max="100" min="0" prefHeight="26.0" prefWidth="234.0">
                <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin></TextField>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </Spinner>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="critère" wrappingWidth="48.61016845703125">
                <VBox.margin>
                   <Insets left="30.0" />
@@ -89,30 +91,42 @@
             <String fx:value="shadow" />
          </styleClass>
       </VBox>
-      <TableView fx:id="table" layoutX="343.0" layoutY="329.0" onMouseClicked="#getData" prefHeight="249.0" prefWidth="536.0">
+      <TableView fx:id="table" layoutX="343.0" layoutY="329.0" onMouseClicked="#getData" prefHeight="250.0" prefWidth="550.0">
         <columns>
-          <TableColumn fx:id="colRef" minWidth="20.0" prefWidth="90.0" text="Ref" />
-          <TableColumn fx:id="colMarque" minWidth="20.0" prefWidth="90.0" text="Marque" />
-            <TableColumn fx:id="colCategorie" minWidth="20.0" prefWidth="90.0" text="Categorie" />
-            <TableColumn fx:id="colPrix" minWidth="20.0" prefWidth="90.0" text="Prix" />
-            <TableColumn fx:id="colCritere" minWidth="20.0" prefWidth="90.0" text="Critere" />
-            <TableColumn fx:id="colImage" minWidth="20.0" prefWidth="90.0" text="Image" />
+          <TableColumn fx:id="colRef" minWidth="20.0" prefWidth="76.79998779296875" text="Ref" />
+          <TableColumn fx:id="colMarque" minWidth="20.0" prefWidth="98.39999389648438" text="Marque" />
+            <TableColumn fx:id="colCategorie" minWidth="20.0" prefWidth="103.20001220703125" text="Categorie" />
+            <TableColumn fx:id="colPrix" minWidth="20.0" prefWidth="86.39996337890625" text="Prix" />
+            <TableColumn fx:id="colCritere" minWidth="20.0" prefWidth="96.0" text="Critere" />
+            <TableColumn fx:id="colImage" minWidth="20.0" prefWidth="81.5999755859375" text="Image" />
         </columns>
       </TableView>
-      <ButtonBar layoutX="462.0" layoutY="610.0" prefHeight="40.0" prefWidth="310.0">
+      <ButtonBar layoutX="378.0" layoutY="610.0" prefHeight="40.0" prefWidth="394.0">
         <buttons>
-          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createProduit" styleClass="search-button" stylesheets="@css/style_pageClient.css" text="Ajouter">
+          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createProduit" stylesheets="@css/style_pageClient.css" text="Ajouter" textFill="WHITE">
                <font>
                   <Font name="Cambria" size="15.0" />
-               </font></Button>
-            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifierProduit" styleClass="search-button" stylesheets="@css/style_pageClient.css" text="Modifier">
+               </font>
+               <styleClass>
+                  <String fx:value="search-button" />
+                  <String fx:value="shadow" />
+               </styleClass></Button>
+            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifierProduit" stylesheets="@css/style_pageClient.css" text="Modifier" textFill="WHITE">
                <font>
                   <Font name="Cambria" size="15.0" />
-               </font></Button>
-            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerProduit" styleClass="search-button" stylesheets="@css/style_pageClient.css" text="Supprimer">
+               </font>
+               <styleClass>
+                  <String fx:value="search-button" />
+                  <String fx:value="shadow" />
+               </styleClass></Button>
+            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerProduit" prefHeight="30.0" prefWidth="118.0" stylesheets="@css/style_pageClient.css" text="Supprimer" textFill="WHITE">
                <font>
                   <Font name="Cambria" size="15.0" />
-               </font></Button>
+               </font>
+               <styleClass>
+                  <String fx:value="search-button" />
+                  <String fx:value="shadow" />
+               </styleClass></Button>
         </buttons>
       </ButtonBar>
       <LineChart fx:id="lineChart" layoutX="25.0" layoutY="14.0" prefHeight="250.0" prefWidth="498.0" style="-fx-background-color: transparent;" title="Évolution des prix par catégorie">
@@ -129,7 +143,7 @@
             <Font name="Cambria" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="labelTotalProduits" layoutX="635.0" layoutY="71.0" prefHeight="135.0" prefWidth="157.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="labelTotalProduits" layoutX="581.0" layoutY="71.0" prefHeight="135.0" prefWidth="157.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" textAlignment="CENTER" textFill="WHITE">
          <styleClass>
             <String fx:value="chosen-fruit-card" />
             <String fx:value="shadow" />

@@ -53,12 +53,19 @@ public class recetteController {
 
     @FXML
     void initialize() {
-        String objectifUtilisateur = getObjectifUtilisateur();
+        /*String objectifUtilisateur = getObjectifUtilisateur();
         if (objectifUtilisateur != null) {
             fetchAndDisplayRecommendedProducts(objectifUtilisateur);
         } else {
             System.out.println("Impossible de récupérer l'objectif de l'utilisateur.");
-        }
+        }*/
+       /* int userId = 1; // Remplacer 1 par l'ID de l'utilisateur actuellement connecté
+        String userGoal = getCurrentUserGoal(userId);
+        if (userGoal != null) {
+            showRecommendedProducts(userGoal);
+        } else {
+            System.out.println("Impossible de récupérer l'objectif de l'utilisateur.");
+        }*/
     }
 
 
@@ -156,7 +163,7 @@ public class recetteController {
         }
     }
 
-    private String getObjectifUtilisateur() {
+    /*private String getObjectifUtilisateur() {
         String objectif = null;
         String query = "SELECT objectif FROM utilisateur WHERE id_utilisateur = ?";
         try (PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query)) {
@@ -215,9 +222,9 @@ public class recetteController {
             System.err.println("URL de l'image incorrecte : " + imageUrl);
         }
         return imageView;
-    }
+    }*/
 
-    private List<Produit> getRecommendedProducts(String objectifUtilisateur) {
+    /*private List<Produit> getRecommendedProducts(String objectifUtilisateur) {
         List<Produit> produitsRecommandes = new ArrayList<>();
 
         try {
@@ -241,5 +248,100 @@ public class recetteController {
         }
 
         return produitsRecommandes;
+    }*/
+
+    /*private String getCurrentUserGoal(int userId) {
+        String userGoal = null;
+        String query = "SELECT Objectif FROM Utilisateur WHERE Id = ?";
+        try {
+            PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                userGoal = resultSet.getString("Objectif");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userGoal;
     }
+    void showRecommendedProducts() {
+        String userGoal = getCurrentUserGoal(); // Obtenez l'objectif de l'utilisateur actuellement connecté
+
+        ObservableList<Produit> recommendedProducts = FXCollections.observableArrayList();
+        for (Produit produit : getRecommendedProducts()) {
+            if (produit.getObjectif().equals(userGoal)) { // Comparer l'objectif du produit avec l'objectif de l'utilisateur
+                recommendedProducts.add(produit);
+            }
+        }
+
+        recommendedProductsGridPane.getChildren().clear(); // Effacer les anciens produits recommandés
+        int row = 0;
+        int col = 0;
+        for (Produit produit : recommendedProducts) {
+            Label nameLabel = new Label(produit.getMarque());
+            Label goalLabel = new Label(produit.getObjectif());
+
+            recommendedProductsGridPane.add(nameLabel, col, row);
+            recommendedProductsGridPane.add(goalLabel, col + 1, row);
+
+            // Augmenter la ligne ou la colonne pour afficher les produits suivants
+            if (col == 1) {
+                col = 0;
+                row++;
+            } else {
+                col++;
+            }
+        }
+    }*/
+
+    private String getCurrentUserGoal(int userId) {
+        String userGoal = null;
+        String query = "SELECT Objectif FROM Utilisateur WHERE Id = ?";
+        try {
+            PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                userGoal = resultSet.getString("Objectif");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userGoal;
+    }
+
+    /*void showRecommendedProducts(String userGoal) {
+        ObservableList<Produit> recommendedProducts = FXCollections.observableArrayList();
+        for (Produit produit : getRecommendedProducts()) {
+            if (produit.getObjectif().equals(userGoal)) { // Comparer l'objectif du produit avec l'objectif de l'utilisateur
+                recommendedProducts.add(produit);
+            }
+        }*/
+
+       /* recommendedProductsGridPane.getChildren().clear(); // Effacer les anciens produits recommandés
+        int row = 0;
+        int col = 0;
+        for (Produit produit : recommendedProducts) {
+            Label nameLabel = new Label(produit.getMarque());
+            Label goalLabel = new Label(produit.getObjectif());
+
+            recommendedProductsGridPane.add(nameLabel, col, row);
+            recommendedProductsGridPane.add(goalLabel, col + 1, row);
+
+            // Augmenter la ligne ou la colonne pour afficher les produits suivants
+            if (col == 1) {
+                col = 0;
+                row++;
+            } else {
+                col++;
+            }
+        }
+    }
+
+    // Cette méthode doit être implémentée pour récupérer les produits recommandés depuis la base de données
+    private ObservableList<Produit> getRecommendedProducts() {
+        // Implémenter la logique pour récupérer les produits recommandés depuis la base de données
+        return FXCollections.observableArrayList();
+    }*/
 }

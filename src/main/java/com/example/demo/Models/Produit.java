@@ -9,6 +9,7 @@ public class Produit {
     private  String obj;
     private String critere;
 
+
     public Produit(String marque, Float prix, String image) {
         this.marque = marque;
         this.prix = prix;
