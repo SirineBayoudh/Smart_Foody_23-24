@@ -241,10 +241,12 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
 
     }
     @FXML
+
+    ///////////////////////////////////////// Vide le panier/////////////////////////////////////////////////////
     private void appelerViderPanier(ActionEvent event) {
         viderPanier(false); // Appel de la méthode viderPanier avec false pour indiquer que la commande n'est pas validée
     }
-    ///////////////////////////////////////// Vide le panier/////////////////////////////////////////////////////
+
     public void viderPanier(boolean commandeValidee) {
         int nombreProduits = obtenirNombreProduitsDansLePanier();
 
@@ -432,7 +434,7 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
         }
         return produits;
     }
-
+///ajouter le produit avec l id de client dans le panier
     public int ajouterProduitAuPanier(int id_client) {
         String checkIfExistsQuery = "SELECT id_panier FROM panier WHERE id_client = ?";
         try (PreparedStatement pstCheck = cnx.prepareStatement(checkIfExistsQuery)) {
