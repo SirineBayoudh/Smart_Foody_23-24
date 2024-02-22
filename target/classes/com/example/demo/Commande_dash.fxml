@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="clickpane" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.CommandeController">
+<Pane fx:id="clickpane" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.CommandeController">
     <children>
 
         <Pane fx:id="pane_1" layoutX="238.0" layoutY="54.0" onMouseClicked="#onPane1Clicked" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1">
@@ -37,15 +37,31 @@
                 <Image url="@Images/8666693_search_icon.png" />
             </image>
         </ImageView>
-
-        <Pane fx:id="pane_3" layoutX="443.0" layoutY="54.0" onMouseClicked="#onPane3Clicked" prefHeight="121.0" prefWidth="149.0" styleClass="pane_3">
+        <Pane fx:id="pane_2" layoutX="448.0" layoutY="54.0" onMouseClicked="#onPane2Clicked" prefHeight="121.0" prefWidth="155.0" styleClass="pane_2">
+            <children>
+                <Label fx:id="cmdnonlivre" layoutX="21.0" layoutY="34.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="21.0" layoutY="61.0" prefHeight="27.0" prefWidth="108.0" text="Non Livrés" textFill="#f2eaea">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            </children>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Pane>
+        <Pane fx:id="pane_3" layoutX="653.0" layoutY="54.0" onMouseClicked="#onPane3Clicked" prefHeight="121.0" prefWidth="149.0" styleClass="pane_3">
             <children>
                 <Label fx:id="cmdlivre" layoutX="21.0" layoutY="34.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <Label layoutX="41.0" layoutY="61.0" prefHeight="27.0" prefWidth="108.0" text="Non Livrés" textFill="#f2eaea">
+                <Label layoutX="21.0" layoutY="61.0" prefHeight="27.0" prefWidth="108.0" text="Livrés" textFill="#f2eaea">
                     <font>
                         <Font size="18.0" />
                     </font>
@@ -65,7 +81,7 @@
                 <Image url="@Images/utilisateur.png" />
             </image>
         </ImageView>
-        <TextField fx:id="recherche" layoutX="684.0" layoutY="203.0" promptText="Rechercher :" />
+        <TextField fx:id="searchField" layoutX="684.0" layoutY="203.0" promptText="Rechercher :" />
 
         <Pane />
         <TableView fx:id="commandeTableView" layoutX="84.0" layoutY="299.0" prefHeight="269.0" prefWidth="813.0">
@@ -78,23 +94,6 @@
                 <TableColumn fx:id="etat" prefWidth="202.0" text="Etat" />
             </columns>
         </TableView>
-        <Pane fx:id="pane_2" layoutX="652.0" layoutY="54.0" onMouseClicked="#onPane2Clicked" prefHeight="121.0" prefWidth="155.0" styleClass="pane_2">
-            <children>
-                <Label fx:id="cmdnonlivre" layoutX="21.0" layoutY="34.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-                <Label layoutX="21.0" layoutY="61.0" prefHeight="27.0" prefWidth="108.0" text=" Livrés" textFill="#f2eaea">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
-            </children>
-            <cursor>
-                <Cursor fx:constant="HAND" />
-            </cursor>
-        </Pane>
 
     </children>
     <stylesheets>

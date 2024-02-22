@@ -2,7 +2,6 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.Commande;
 import com.example.demo.Tools.MyConnection;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -23,10 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CommandeController {
 
-    public TextField recherche;
     @FXML
     private Pane pane_1;
 
@@ -35,6 +35,8 @@ public class CommandeController {
 
     @FXML
     private Pane pane_3;
+    @FXML
+    private TextField searchField;
 
     @FXML
     private Pane clickpane;
@@ -75,7 +77,6 @@ public class CommandeController {
 
     // Connexion à la base de données
     private Connection cnx;
-    private TextField searchField;
 
     // Constructeur
     public CommandeController() {
@@ -83,7 +84,6 @@ public class CommandeController {
     }
 
     public void initialize() {
-        // Initialize the table columns
         id_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("id_commande"));
         date_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("date_commande"));
         id_clientColumn.setCellValueFactory(new PropertyValueFactory<>("id_client"));
@@ -93,18 +93,51 @@ public class CommandeController {
 
         // Set the items of the table view to the observable list
         commandeTableView.setItems(commandeList);
-        this.searchField = recherche;
+
         // Load data into the observable list
         onPane1Clicked();
+        dynamicSearch();
         List<Commande> commandesNonLivre = AfficherCommandes("Non Livre");
         cmdlivre.setText(String.valueOf(commandesNonLivre.size()));
         List<Commande> commandesLivre = AfficherCommandes("Livre");
         cmdnonlivre.setText(String.valueOf(commandesLivre.size()));
-        try {
-            dynamicSearch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+
+
+
+    }
+
+    private void dynamicSearch()  {
+        ObservableList<Commande> commandeLists = FXCollections.observableArrayList();
+        commandeLists.addAll(AfficherCommandes(null));
+
+        FilteredList<Commande> filteredData = new FilteredList<>(commandeLists, b -> true);
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(g -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Customize the format as needed
+                String formattedDate = dateFormat.format(g.getDate_commande());
+
+                if (formattedDate.toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+
+                } else if (Integer.toString(g.getId_commande()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+
+                } else {
+                    return false;
+                }
+
+            });
+        });
+        SortedList<Commande> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(commandeTableView.comparatorProperty());
+        commandeTableView.setItems(sortedData);
 
     }
     // la méthodes qui selectionne tous les commandes passe a partir de base
@@ -116,7 +149,7 @@ public class CommandeController {
             if (etat != null) {
                 query += " WHERE etat='" + etat + "'";
             }
-            System.out.println("etat"+query);
+            System.out.println("etat" + query);
 
             // Création de l'instruction et exécution de la requête
             Statement statement = cnx.createStatement();
@@ -151,12 +184,14 @@ public class CommandeController {
         commandeList.clear();
         commandeList.addAll(observableCommandes);
         cmd.setText(String.valueOf(commandes.size()));
+
     }
 
     @FXML
     private void onPane2Clicked() {
+
         List<Commande> commandes = AfficherCommandes("Livre");
-        cmdnonlivre.setText(String.valueOf(commandes.stream().filter(c -> "Livre".equals(c.getEtat())).count()));
+        // cmdnonlivre.setText(String.valueOf(commandes.stream().filter(c -> "Livre".equals(c.getEtat())).count()));
         ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
         commandeList.clear();
         commandeList.addAll(observableCommandes);
@@ -166,53 +201,14 @@ public class CommandeController {
 
     @FXML
     private void onPane3Clicked() {
-
-
         List<Commande> commandes = AfficherCommandes("Non Livre");
-        cmdlivre.setText(String.valueOf(commandes.stream().filter(c -> "Non Livre".equals(c.getEtat())).count()));
+        //cmdlivre.setText(String.valueOf(commandes.stream().filter(c -> "Non Livre".equals(c.getEtat())).count()));
         ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
         commandeList.clear();
         commandeList.addAll(observableCommandes);
 
-    }
-
-    private void dynamicSearch() throws SQLException {
-        ObservableList<Commande> commandeLists = FXCollections.observableArrayList();
-        commandeLists.addAll(AfficherCommandes(null));
-
-        FilteredList<Commande> filteredData = new FilteredList<>(commandeLists, b -> true);
-
-        recherche.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(g -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Customize the format as needed
-                String formattedDate = dateFormat.format(g.getDate_commande());
-
-                if (formattedDate.toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true;
-
-                } else if (Integer.toString(g.getId_commande()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true;
-
-                } else {
-                    return false;
-                }
-
-            });
-        });
-        SortedList<Commande> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(commandeTableView.comparatorProperty());
-        commandeTableView.setItems(sortedData);
 
     }
-
-
-
-
 
 
 }
