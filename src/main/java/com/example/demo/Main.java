@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Smart foody");
         //stage.setHeight(700);

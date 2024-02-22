@@ -20,6 +20,7 @@ import javafx.scene.control.skin.TableViewSkin;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -140,13 +141,13 @@ public class GestionUserController implements Initializable {
 
         genderPieChart.setData(pieChartData);
 
-        for (final PieChart.Data data : genderPieChart.getData()) {
+        /*for (final PieChart.Data data : genderPieChart.getData()) {
             if (data.getName().equalsIgnoreCase("Homme")) {
                 data.getNode().setStyle("-fx-pie-color: #56ab2f;");
             } else if (data.getName().equalsIgnoreCase("Femme")) {
                 data.getNode().setStyle("-fx-pie-color: #33661c;");
             }
-        }
+        }*/
 
     }
 
@@ -260,6 +261,12 @@ public class GestionUserController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
+
+            AjouterConseillerController aj = loader.getController();
+            aj.setGestionUserController(this);
+            stage.setOnHidden((WindowEvent windowEvent) -> {
+                afficherUtilisateurs();
+            });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -298,11 +305,16 @@ public class GestionUserController implements Initializable {
                     // Remplir les champs du formulaire avec les données de l'utilisateur sélectionné
                     controller.initData(selectedUser);
 
-                    // Afficher le formulaire d'ajout
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
                     stage.show();
-                    afficherUtilisateurs();
+
+                   // ModifierConseillerController mc = loader.getController();
+                    controller.setGestionUserController(this);
+                    stage.setOnHidden((WindowEvent windowEvent) -> {
+                        afficherUtilisateurs();
+                    });
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -349,7 +361,6 @@ public class GestionUserController implements Initializable {
                 if (result.isPresent() && result.get() == buttonTypeOui) {
                     UserCrud usc = new UserCrud();
                     usc.supprimerEntite(selectedUser);
-                    afficherUtilisateurs();
                 }
             }
         } else {

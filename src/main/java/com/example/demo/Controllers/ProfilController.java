@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ProfilController implements Initializable {
@@ -174,33 +175,46 @@ public class ProfilController implements Initializable {
 
         Connection cnx = MyConnection.getInstance().getCnx();
 
-        String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,mot_de_passe=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
-        try {
-            PreparedStatement pst = cnx.prepareStatement(req);
-            pst.setString(1, tfnomp.getText());
-            pst.setString(2,tfprenomp.getText());
-            pst.setString(3, choixGenrep.getValue());
-            pst.setString(4, tfemailp.getText());
-            pst.setString(5,encryptor.encryptString(tfmdpp.getText()));
-            pst.setInt(6,Integer.parseInt(tfnumtelp.getText()));
-            pst.setString(7, Role.Conseiller.toString());
-            pst.setInt(8,0);
-            pst.setString(9,"");
-            pst.setString(10,choixVillep.getValue() + "," + tfruep);
-            pst.setString(11, choixObjectifp.getValue());
-            pst.setInt(12, idUtilisateurConnecte);
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de modification");
+        alert.setHeaderText(null);
+        alert.setContentText("Êtes-vous sûr de vouloir modifier votre profil ?");
+
+        ButtonType buttonTypeOui = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeNon = new ButtonType("Non", ButtonBar.ButtonData.NO);
+
+        alert.getButtonTypes().setAll(buttonTypeOui, buttonTypeNon);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonTypeOui) {
+            String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,mot_de_passe=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
+            try {
+                PreparedStatement pst = cnx.prepareStatement(req);
+                pst.setString(1, tfnomp.getText());
+                pst.setString(2,tfprenomp.getText());
+                pst.setString(3, choixGenrep.getValue());
+                pst.setString(4, tfemailp.getText());
+                pst.setString(5,encryptor.encryptString(tfmdpp.getText()));
+                pst.setInt(6,Integer.parseInt(tfnumtelp.getText()));
+                pst.setString(7, Role.Conseiller.toString());
+                pst.setInt(8,0);
+                pst.setString(9,"");
+                pst.setString(10,choixVillep.getValue() + "," + tfruep);
+                pst.setString(11, choixObjectifp.getValue());
+                pst.setInt(12, idUtilisateurConnecte);
+                pst.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Modification réussie");
-        alert.setHeaderText(null);
-        alert.setContentText("Vos informations ont été mises à jour avec succès.");
-        alert.showAndWait();
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        alert2.setTitle("Modification réussie");
+        alert2.setHeaderText(null);
+        alert2.setContentText("Vos informations ont été mises à jour avec succès.");
+        alert2.showAndWait();
 
     }
     @FXML

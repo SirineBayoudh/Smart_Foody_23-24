@@ -48,6 +48,12 @@ public class AjouterConseillerController implements Initializable {
     @FXML
     private Button btn_refresh;
 
+    private GestionUserController gestionUserController;
+
+    public void setGestionUserController(GestionUserController gestionUserController) {
+        this.gestionUserController = gestionUserController;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -130,6 +136,8 @@ public class AjouterConseillerController implements Initializable {
         Utilisateur user = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","");
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);
+
+        gestionUserController.afficherUtilisateurs();
 
         Stage loginStage = (Stage) tfemailc.getScene().getWindow();
         loginStage.close();

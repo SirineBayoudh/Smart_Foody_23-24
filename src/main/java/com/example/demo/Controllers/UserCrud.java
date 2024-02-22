@@ -11,6 +11,12 @@ public class UserCrud implements ICrud<Utilisateur>{
 
     static Connection cnx;
 
+    private GestionUserController gestionUserController;
+
+    public void setGestionUserController(GestionUserController gestionUserController) {
+        this.gestionUserController = gestionUserController;
+    }
+
     public UserCrud() {
         cnx = MyConnection.getInstance().getCnx();
     }

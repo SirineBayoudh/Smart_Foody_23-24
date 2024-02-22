@@ -242,13 +242,13 @@ public class RegisterController implements Initializable {
         if(complx.getNb() <6){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
-            alert.setContentText("Weak");
+            alert.setContentText("Mot de passe faible");
             alert.showAndWait();
             complx.setNb(0);
         }else if (complx.getNb() >= 6 && complx.getNb() < 12){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
-            alert.setContentText("Moyen");
+            alert.setContentText("Mot de passe moyen");
             alert.showAndWait();
             complx.setNb(0);
         } else if (complx.getNb() == 12){
