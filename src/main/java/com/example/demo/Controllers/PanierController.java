@@ -314,39 +314,7 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
 
 
     // Ajoute  Commande ///////////////////////////////////////////////
-    public void ajouterCommande() {
-        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
-            pst.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-            pst.setInt(2, 14);
-            pst.setFloat(3, (float) totale[0]);
-            pst.setFloat(4, (float) remise[0]);
-            pst.setString(5, "en cours");
-            pst.executeUpdate();
 
-            String emailClient = "saidifadhila24@gmail.com";
-            String sujetEmail = "Confirmation de commande";
-            String contenuEmail = "Votre commande a été passée avec succès. Merci de votre confiance.";
-
-            EmailUtil.envoyerEmail(emailClient, sujetEmail, contenuEmail);
-
-            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Commande passée");
-            successAlert.setHeaderText(null);
-            successAlert.setContentText("La commande a été ajoutée avec succès et un e-mail de confirmation a été envoyé.");
-            successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
-            successAlert.getDialogPane().getStyleClass().add("custom-alert");
-            successAlert.showAndWait();
-
-            System.out.println("Commande ajoutée avec succès");
-            viderPanier(true);
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
-        } catch (MessagingException e) {
-            System.out.println("Erreur lors de l'envoi de l'email : " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
 
 
@@ -474,7 +442,7 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
     @FXML
     private void chargerInterfaceCommande(ActionEvent event) {
         try {
-            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/pitest/fxml/commande.fxml"));
+            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/Commande_client.fxml"));
             Scene commandeScene = new Scene(commandeParent);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(commandeScene);
@@ -483,6 +451,46 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
             e.printStackTrace();
         }
     }
+    public void viderPanier() {
+        int nombreProduits = obtenirNombreProduitsDansLePanier();
+
+        // Si le panier n'est pas vide, afficher la boîte de dialogue de confirmation
+        if (nombreProduits > 0) {
+            Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationDialog.setTitle("Confirmation");
+            confirmationDialog.setHeaderText("Confirmation de vidage du panier");
+            confirmationDialog.setContentText("Êtes-vous sûr de vouloir vider votre panier ?");
+
+            confirmationDialog.getButtonTypes().setAll(ButtonType.CANCEL, ButtonType.OK);
+            confirmationDialog.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+            confirmationDialog.getDialogPane().getStyleClass().add("custom-alert");
+            confirmationDialog.getDialogPane().lookupButton(ButtonType.OK).getStyleClass().add("ok-button");
+            confirmationDialog.getDialogPane().lookupButton(ButtonType.CANCEL).getStyleClass().add("cancel-button");
+
+            confirmationDialog.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    String requete = "DELETE FROM panier";
+                    String requete1 = "DELETE FROM ligne_commande";
+                    try (Statement statement = cnx.createStatement()) {
+                        int rowCount = statement.executeUpdate(requete);
+                        statement.executeUpdate(requete1);
+                        if (rowCount > 0) {
+                            System.out.println("Le panier a été vidé avec succès.");
+                            afficherProduits();
+                        } else {
+                            System.out.println("Le panier est déjà vide.");
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("Erreur lors de la suppression des éléments du panier : " + e.getMessage());
+                    }
+                } else {
+                    System.out.println("Opération annulée.");
+                }
+            });
+        }
+    }
+
+
 
     public void navbarre() {
         try {

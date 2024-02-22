@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="clickpane" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.CommandeController">
+<Pane fx:id="clickpane" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.CommandeClientController">
     <children>
 
         <Pane fx:id="pane_1" layoutX="238.0" layoutY="54.0" onMouseClicked="#onPane1Clicked" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1">

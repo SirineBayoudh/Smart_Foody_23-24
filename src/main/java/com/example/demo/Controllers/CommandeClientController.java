@@ -2,24 +2,18 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.Commande;
 import com.example.demo.Tools.MyConnection;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
-import com.stripe.param.checkout.SessionCreateParams;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+import javax.mail.MessagingException;
 import java.sql.*;
-import java.util.*;
 import java.util.Date;
 
 import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement;
@@ -99,8 +93,9 @@ public class CommandeClientController {
     }
 
     public void initialize() {
-//
-        // Initialize the table columns
+
+
+
         int idUtilisateur = 1; // Supposons que l'utilisateur connecté ait l'id 1
 
         try {
@@ -144,10 +139,8 @@ public class CommandeClientController {
         } catch (SQLException e) {
             System.out.println("Erreur lors de la récupération des informations de l'utilisateur : " + e.getMessage());
         }
-
-
-//
     }
+
     // Méthode appelée lorsque l'utilisateur valide la livraison
     @FXML
     public void ajouterCommande() {
@@ -164,7 +157,7 @@ public class CommandeClientController {
             String sujetEmail = "Confirmation de commande";
             String contenuEmail = "Votre commande a été passée avec succès. Merci de votre confiance.";
 
-            // EmailUtil.envoyerEmail(emailClient, sujetEmail, contenuEmail);
+            EmailUtil.envoyerEmail(emailClient, sujetEmail, contenuEmail);
 
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Commande passée");
@@ -178,12 +171,17 @@ public class CommandeClientController {
             panierController.viderPanier(true);
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
-
+        } catch (MessagingException e) {
+            System.out.println("Erreur lors de l'envoi de l'email : " + e.getMessage());
+            e.printStackTrace();
         }
     }
     private void appelerViderPanier(ActionEvent event) {
         panierController.viderPanier(false); // Appel de la méthode viderPanier avec false pour indiquer que la commande n'est pas validée
     }
+    // la méthodes qui selectionne tous les commandes passe a partir de base
+
+
 
 
     public void payer() {

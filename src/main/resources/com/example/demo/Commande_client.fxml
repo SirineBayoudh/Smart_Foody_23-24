@@ -16,10 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="698.0" prefWidth="902.0" stylesheets="@css/style_commande.css"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.demo.Controllers.CommandeClientController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="902.0" stylesheets="@css/style_commande.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.CommandeClientController">
 
     <top>
         <!-- Ajustement de l'espacement entre les éléments de la HBox -->
@@ -140,4 +137,3 @@
         </GridPane>
     </center>
 </BorderPane>
-

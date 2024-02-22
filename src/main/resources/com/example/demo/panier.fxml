@@ -45,7 +45,7 @@
                             <!-- Products will be added here dynamically -->
                         </VBox>
                     </ScrollPane>
-                    <Button fx:id="btnViderPanier" onAction="#appelerViderPanier" styleClass="button-order" text="Vider le Panier">
+                    <Button fx:id="btnViderPanier" onAction="#viderPanier" styleClass="button-order" text="Vider le Panier">
                         <VBox.margin>
                             <Insets left="180.0" />
                         </VBox.margin>
@@ -58,7 +58,7 @@
                     <Label fx:id="soustotaleid" styleClass="pricing-info" text="Sous-total:" />
                     <Label fx:id="remiseid" styleClass="pricing-info" text="Remise:" />
                     <Label fx:id="totaleid" styleClass="pricing-info" text="Total: " />
-                    <Button fx:id="btnValiderCommande" onAction="#ajouterCommande" prefHeight="35.0" prefWidth="165.0" styleClass="button-order" text="Valider la Commande" />
+                    <Button fx:id="btnValiderCommande" onAction="#chargerInterfaceCommande" prefHeight="35.0" prefWidth="165.0" styleClass="button-order" text="Valider la Commande" />
                 </VBox>
             </HBox>
         </VBox>
