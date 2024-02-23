@@ -148,8 +148,13 @@ public class recetteController {
                 // Afficher ou stocker ces informations selon vos besoins
                 System.out.println("Produit trouvé - Nom: " + nomProduit + ", Prix: " + prixProduit);
 
-                // Afficher l'image avec un bouton
-                afficherImage(nomProduit, imagePath);
+                // Afficher l'image
+                afficherImage(imagePath);
+
+                // Vous pouvez également ajouter le nom et le prix à votre interface utilisateur
+                Label labelNomProduit = new Label(nomProduit);
+                Label labelPrixProduit = new Label(String.valueOf(prixProduit));
+                recommendedProductsVBox.getChildren().addAll(labelNomProduit, labelPrixProduit);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,22 +163,14 @@ public class recetteController {
     }
 
     // Méthode pour afficher une image à partir d'un chemin d'accès
-    void afficherImage(String nomProduit, String urlImage) {
+    void afficherImage(String urlImage) {
         try {
             // Charger l'image
             Image image = new Image(urlImage);
 
             // Créer un ImageView pour afficher l'image
             ImageView imageView = new ImageView(image);
-
-            // Créer un bouton pour afficher la recette
             Button button = new Button("Voir la recette");
-
-            // Ajouter un événement de clic au bouton pour afficher la recette
-            button.setOnAction(event -> {
-                // Afficher les recettes pour ce produit
-                getRecipesByIngredient(nomProduit);
-            });
 
             // Définir la taille maximale de l'image (vous pouvez ajuster ces valeurs selon vos besoins)
             double maxWidth = 100; // Largeur maximale en pixels
@@ -188,8 +185,17 @@ public class recetteController {
                 imageView.setFitHeight(image.getHeight() / scale);
             }
 
-            // Ajouter l'imageView et le bouton à votre interface utilisateur
-            recommendedProductsVBox.getChildren().addAll(imageView, button);
+            // Ajouter un événement de clic à l'imageView pour afficher la recette du produit
+            imageView.setOnMouseClicked(event -> {
+                // Récupérer le nom du produit à partir de l'URL ou de toute autre source si nécessaire
+                String nomProduit = "Nom du produit";
+
+                // Afficher les recettes pour ce produit
+                getRecipesByIngredient(nomProduit);
+            });
+
+            // Ajouter l'imageView à votre interface utilisateur
+            recommendedProductsVBox.getChildren().add(imageView);
         } catch (Exception e) {
             e.printStackTrace();
             // Gérer l'exception
@@ -256,7 +262,6 @@ public class recetteController {
         }
         return recipes;
     }
-
 
 
     private String getCookingInstructionsForRecipe(int recipeId) {
