@@ -106,7 +106,7 @@
             </ImageView>
             <ImageView fitHeight="26.0" fitWidth="15.0" layoutX="399.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true" translateX="330.0">
                <image>
-                  <Image url="@Images/corbeille.png" />
+                  <Image url="@Images/poubelle-de-recyclage.png" />
                </image>
             </ImageView>
          </children>

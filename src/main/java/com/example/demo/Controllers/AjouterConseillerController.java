@@ -2,6 +2,7 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.Role;
 import com.example.demo.Models.Utilisateur;
+import com.example.demo.Tools.MyConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,6 +11,9 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AjouterConseillerController implements Initializable {
@@ -132,18 +136,36 @@ public class AjouterConseillerController implements Initializable {
             alert.showAndWait();
             return;
         }
+        Connection cnx = MyConnection.getInstance().getCnx();
 
-        Utilisateur user = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","");
-        UserCrud usc = new UserCrud();
-        usc.ajouterEntite(user);
+        Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","");
+        String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        try{
+            PreparedStatement pst = cnx.prepareStatement(requete);
+            pst.setString(1, u.getNom());
+            pst.setString(2,u.getPrenom());
+            pst.setString(3, u.getGenre());
+            pst.setString(4, u.getEmail());
+            pst.setString(5,u.getMot_de_passe());
+            pst.setInt(6,u.getNum_tel());
+            pst.setString(7,u.getRole());
+            pst.setInt(8,u.getMatricule());
+            pst.setString(9,u.getAttestation());
+            pst.setString(10,u.getAdresse());
+            pst.setString(11, u.getObjectif());
+            pst.setInt(12,u.getTentative());
+            pst.executeUpdate();
+
+            gestionUserController.afficherUtilisateurs();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Conseiller ajouté");
         alert.setHeaderText(null);
         alert.setContentText("Conseiller ajouté avec succès");
         alert.showAndWait();
-
-        gestionUserController.afficherUtilisateurs();
 
         Stage loginStage = (Stage) tfemailc.getScene().getWindow();
         loginStage.close();

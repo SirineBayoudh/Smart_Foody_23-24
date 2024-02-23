@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 public class GestionUserController implements Initializable {
 
     @FXML
-    private TableView tableUser;
+    public TableView tableUser;
 
     @FXML
     private TableColumn<Utilisateur, Integer> col_id;
@@ -86,7 +86,7 @@ public class GestionUserController implements Initializable {
     @FXML
     private TextField tfrecherche;
 
-    ObservableList<Utilisateur> listUsers = getUtilisateurs();
+
 
     @FXML
     private ComboBox<String> choixRole;
@@ -127,6 +127,7 @@ public class GestionUserController implements Initializable {
     }
 
     private void collectGenderData() {
+        ObservableList<Utilisateur> listUsers = getUtilisateurs();
         int maleCount = 0;
         int femaleCount = 0;
 
@@ -175,6 +176,7 @@ public class GestionUserController implements Initializable {
     }
 
     public void totalClient() {
+        ObservableList<Utilisateur> listUsers = getUtilisateurs();
         int nbClients = 0;
         int nbConseillers = 0;
 
@@ -221,7 +223,7 @@ public class GestionUserController implements Initializable {
     }
 
     public void afficherUtilisateurs(){
-
+        ObservableList<Utilisateur> listUsers = getUtilisateurs();
 
         col_id.setCellValueFactory(new PropertyValueFactory<Utilisateur,Integer>("id_utilisateur"));
         col_nom.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("nom"));
@@ -240,6 +242,7 @@ public class GestionUserController implements Initializable {
     }
 
     private void rechercher(String searchText) {
+        ObservableList<Utilisateur> listUsers = getUtilisateurs();
         if (allUsers.isEmpty()) {
             allUsers.addAll(listUsers); // Remplir la liste de tous les utilisateurs s'il est vide
         }
@@ -262,6 +265,7 @@ public class GestionUserController implements Initializable {
     }
 
     private void filtrer(String roleChoisi) {
+        ObservableList<Utilisateur> listUsers = getUtilisateurs();
         if (allUsers.isEmpty()) {
             allUsers.addAll(listUsers);
         }
@@ -323,19 +327,18 @@ public class GestionUserController implements Initializable {
                 Parent root;
                 try {
                     root = loader.load();
-                    ModifierConseillerController controller = loader.getController();
+                    ModifierConseillerController mc = loader.getController();
 
                     // Remplir les champs du formulaire avec les données de l'utilisateur sélectionné
-                    controller.initData(selectedUser);
+                    mc.initData(selectedUser);
 
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
                     stage.show();
 
-                   // ModifierConseillerController mc = loader.getController();
-                    controller.setGestionUserController(this);
+                    mc.setGestionUserController(this);
                     stage.setOnHidden((WindowEvent windowEvent) -> {
-                        afficherUtilisateurs();
+                            afficherUtilisateurs();
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -360,6 +363,7 @@ public class GestionUserController implements Initializable {
     @FXML
     void supprimerConseiller(ActionEvent event) {
         Utilisateur selectedUser = (Utilisateur) tableUser.getSelectionModel().getSelectedItem();
+        ObservableList<Utilisateur> listUsers = getUtilisateurs();
 
         if (selectedUser != null) {
             if (selectedUser.getRole().equals(Role.Client.toString())){
@@ -386,7 +390,7 @@ public class GestionUserController implements Initializable {
                         PreparedStatement pst = cnx.prepareStatement(req);
                         pst.setInt(1, selectedUser.getId_utilisateur());
                         pst.executeUpdate();
-                        listUsers.remove(selectedUser);
+                        afficherUtilisateurs();
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     }

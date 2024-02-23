@@ -171,7 +171,8 @@ public class ModifierConseillerController implements Initializable {
                 pst.setInt(12, id);
                 pst.executeUpdate();
 
-                gestionUserController.afficherUtilisateurs();
+                gestionUserController.tableUser.getItems().setAll(gestionUserController.getUtilisateurs());
+
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             } catch (NoSuchAlgorithmException e) {
@@ -185,8 +186,6 @@ public class ModifierConseillerController implements Initializable {
         alert2.setHeaderText(null);
         alert2.setContentText("Les informations du conseiller ont été mises à jour avec succès.");
         alert2.showAndWait();
-
-
 
         Stage loginStage = (Stage) tfemailc.getScene().getWindow();
         loginStage.close();
