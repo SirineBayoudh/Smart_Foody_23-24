@@ -97,7 +97,7 @@
          </AnchorPane>
          <BorderPane fx:id="centerPane" layoutX="253.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="507.0" prefWidth="680.0">
             <top>
-               <AnchorPane fx:id="infosForm" prefHeight="498.0" prefWidth="681.0" BorderPane.alignment="CENTER">
+               <AnchorPane fx:id="infosForm" prefHeight="498.0" prefWidth="681.0" visible="false" BorderPane.alignment="CENTER">
                   <children>
                      <VBox layoutX="47.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="433.0" prefWidth="570.0" styleClass="form-container" stylesheets="@css/style_profil.css">
                         <children>
@@ -129,10 +129,32 @@
                      <VBox prefHeight="312.0" prefWidth="544.0" styleClass="form-container" stylesheets="@css/style_profil.css">
                         <children>
                            <Label text="Ancien mot de passe" translateX="30.0" translateY="100.0" />
-                           <PasswordField fx:id="ancienMDP" maxWidth="-Infinity" prefWidth="150.0" translateX="30.0" translateY="100.0" />
+                           <PasswordField fx:id="ancienMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="100.0" />
                            <Label text="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
-                           <PasswordField fx:id="nouveauMDP" maxWidth="-Infinity" prefWidth="150.0" translateX="350.0" translateY="15.0" />
+                           <PasswordField fx:id="nouveauMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionN" prefWidth="150.0" translateX="350.0" translateY="15.0" />
                            <Button fx:id="modifierMDP" mnemonicParsing="false" onAction="#modifierMDP" text="Modifier" translateX="400.0" translateY="35.0" />
+                           <ImageView fx:id="eyeClosedA" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#Close_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-90.0">
+                              <image>
+                                 <Image url="@Images/visibilite_noir.png" />
+                              </image>
+                           </ImageView>
+                           <ImageView fx:id="eyeOpenA" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="233.0" onMouseClicked="#Open_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-128.0">
+                              <image>
+                                 <Image url="@Images/fermer-les-yeux-noir.png" />
+                              </image>
+                           </ImageView>
+                           <ImageView fx:id="eyeClosedN" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="233.0" onMouseClicked="#Close_Eye_OnClickN" pickOnBounds="true" preserveRatio="true" translateX="502.0" translateY="-183.0">
+                              <image>
+                                 <Image url="@Images/visibilite_noir.png" />
+                              </image>
+                           </ImageView>
+                           <ImageView fx:id="eyeOpenN" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="280.0" onMouseClicked="#Open_Eye_OnClickN" pickOnBounds="true" preserveRatio="true" translateX="502.0" translateY="-220.0">
+                              <image>
+                                 <Image url="@Images/fermer-les-yeux-noir.png" />
+                              </image>
+                           </ImageView>
+                           <TextField fx:id="ancienMDPshow" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="-275.0" />
+                           <TextField fx:id="nouveauMDPshow" layoutX="10.0" layoutY="419.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionN" prefWidth="150.0" promptText="Mot de passe actuel" translateX="350.0" translateY="-325.0" />
                         </children>
                      </VBox>
                   </children>

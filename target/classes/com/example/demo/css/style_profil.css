@@ -38,14 +38,6 @@
     -fx-padding: 10px 20px;
 }
 
-.form-container Button:hover {
-    -fx-background-color: white;
-    -fx-pref-width: 250;
-    -fx-backgroun-radius: 30 0 0 30;
-    -fx-alignment: center;
-    -fx-padding: 10px 20px;
-}
-
 .form-container Pane {
     -fx-alignment: center;
 }

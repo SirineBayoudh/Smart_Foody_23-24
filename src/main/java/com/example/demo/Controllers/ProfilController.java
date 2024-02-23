@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -95,7 +96,30 @@ public class ProfilController implements Initializable {
     private PasswordField ancienMDP;
 
     @FXML
+    private TextField ancienMDPshow;
+
+    String ancienPwd;
+
+    @FXML
+    private ImageView eyeClosedA;
+
+    @FXML
+    private ImageView eyeOpenA;
+
+    @FXML
     private PasswordField nouveauMDP;
+
+    @FXML
+    private TextField nouveauMDPshow;
+
+    String nouveauPwd;
+
+    @FXML
+    private ImageView eyeClosedN;
+
+
+    @FXML
+    private ImageView eyeOpenN;
 
     @FXML
     private Button modifierMDP;
@@ -123,6 +147,62 @@ public class ProfilController implements Initializable {
         infosForm.setVisible(false);
     }
 
+    @FXML
+    void HidePasswordOnActionA(KeyEvent event) {
+        ancienPwd = ancienMDP.getText();
+        ancienMDPshow.setText(ancienPwd);
+    }
+
+    @FXML
+    void ShowPasswordOnActionA(KeyEvent event) {
+        ancienPwd = ancienMDPshow.getText();
+        ancienMDP.setText(ancienPwd);
+    }
+
+    @FXML
+    void Close_Eye_OnClickA(MouseEvent event) {
+        ancienMDPshow.setVisible(true);
+        eyeOpenA.setVisible(true);
+        ancienMDP.setVisible(false);
+        eyeClosedA.setVisible(false);
+    }
+
+    @FXML
+    void Open_Eye_OnClickA(MouseEvent event) {
+        ancienMDP.setVisible(true);
+        eyeClosedA.setVisible(true);
+        ancienMDPshow.setVisible(false);
+        eyeOpenA.setVisible(false);
+    }
+
+    @FXML
+    void HidePasswordOnActionN(KeyEvent event) {
+        nouveauPwd = nouveauMDP.getText();
+        nouveauMDPshow.setText(nouveauPwd);
+    }
+
+    @FXML
+    void ShowPasswordOnActionN(KeyEvent event) {
+        nouveauPwd = nouveauMDPshow.getText();
+        nouveauMDP.setText(nouveauPwd);
+    }
+
+    @FXML
+    void Close_Eye_OnClickN(MouseEvent event) {
+        nouveauMDPshow.setVisible(true);
+        eyeOpenN.setVisible(true);
+        nouveauMDP.setVisible(false);
+        eyeClosedN.setVisible(false);
+    }
+
+    @FXML
+    void Open_Eye_OnClickN(MouseEvent event) {
+        nouveauMDP.setVisible(true);
+        eyeClosedN.setVisible(true);
+        nouveauMDPshow.setVisible(false);
+        eyeOpenN.setVisible(false);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         choixGenrep.getItems().addAll(genre);
@@ -141,6 +221,12 @@ public class ProfilController implements Initializable {
 
         infosForm.setVisible(false);
         pwdForm.setVisible(false);
+
+        ancienMDPshow.setVisible(false);
+        eyeOpenA.setVisible(false);
+
+        nouveauMDPshow.setVisible(false);
+        eyeOpenN.setVisible(false);
     }
 
 
