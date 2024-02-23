@@ -3,6 +3,8 @@ package com.example.demo.Controllers;
 import com.example.demo.Models.Role;
 import com.example.demo.Models.Utilisateur;
 import com.example.demo.Controllers.UserCrud;
+import com.example.demo.Tools.MyConnection;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,11 @@ import javax.net.ssl.SSLSession;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -97,6 +104,27 @@ public class RegisterController implements Initializable {
 
     ComplexiteMdp complx = new ComplexiteMdp();
 
+    private ArrayList<String> objectifList = new ArrayList<>();
+
+    private void chargerOptionsObjectif() {
+        Connection cnx = MyConnection.getInstance().getCnx();
+
+        String req = "SELECT libelle FROM objectif";
+
+        try {
+            PreparedStatement pst = cnx.prepareStatement(req);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                objectifList.add(rs.getString("libelle"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors du chargement des options d'objectif : " + e.getMessage());
+        }
+
+        choixObjectif.setItems(FXCollections.observableArrayList(objectifList));
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tpwdshow.setVisible(false);
@@ -111,7 +139,7 @@ public class RegisterController implements Initializable {
         choixVille.getItems().addAll(ville);
         choixVille.setOnAction(e -> villeChoisie = choixVille.getValue());
 
-        choixObjectif.getItems().addAll(objectif);
+        chargerOptionsObjectif();
         choixObjectif.setOnAction(e -> objectifChoisi = choixObjectif.getValue());
 
     }
