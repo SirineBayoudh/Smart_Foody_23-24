@@ -110,7 +110,7 @@
                         <Image url="@Images/notification.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btnUser" layoutX="16.0" layoutY="172.0" mnemonicParsing="false" onAction="#user" onMouseClicked="#stock" prefHeight="46.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="     Utilisateurs" textFill="#f7f7f7">
+                  <Button fx:id="btnUser" layoutX="16.0" layoutY="172.0" mnemonicParsing="false" onAction="#user" prefHeight="46.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="     Utilisateurs" textFill="#f7f7f7">
                      <font>
                         <Font size="15.0" />
                      </font>

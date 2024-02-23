@@ -76,12 +76,16 @@ public class dashboardController implements Initializable {
 
     @FXML
     private void stock() {
-
+        clear();
     }
     @FXML
     private void user() {
-        btnUser.setStyle("-fx-text-fill: WHITE;-fx-border-color: WHITE;-fx-font-size: 14px;-fx-border-width: 2px;-fx-font-weight: bold;-fx-background-color: #aad597; -fx-border-radius: 20px;");
+        clear();
+        btnUser.setTextFill(Color.BLACK);
         loadPage("/com/example/demo/gestionUser.fxml");
+    }
+    public void clear() {
+        btnUser.setTextFill(Color.WHITE);
     }
     private void loadPage(String page) {
         try {

@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 
@@ -27,6 +29,21 @@ import java.util.ResourceBundle;
 public class ProfilController implements Initializable {
 
     @FXML
+    private BorderPane centerPane;
+
+    @FXML
+    private AnchorPane infosForm;
+
+    @FXML
+    private AnchorPane pwdForm;
+
+    @FXML
+    private Label infos;
+
+    @FXML
+    private Label infosmdp;
+
+    @FXML
     private Label prenomUser;
 
     @FXML
@@ -38,8 +55,6 @@ public class ProfilController implements Initializable {
     @FXML
     private TextField tfemailp;
 
-    @FXML
-    private PasswordField tfmdpp;
 
     @FXML
     private ComboBox<String> choixGenrep;
@@ -76,6 +91,15 @@ public class ProfilController implements Initializable {
 
     private int idUtilisateurConnecte;
 
+    @FXML
+    private PasswordField ancienMDP;
+
+    @FXML
+    private PasswordField nouveauMDP;
+
+    @FXML
+    private Button modifierMDP;
+
     public Label getPrenomUser() {
         return prenomUser;
     }
@@ -85,6 +109,20 @@ public class ProfilController implements Initializable {
     }
 
     Encryptor encryptor = new Encryptor();
+    ComplexiteMdp complx = new ComplexiteMdp();
+    Connection cnx = MyConnection.getInstance().getCnx();
+    @FXML
+    void infosUser(MouseEvent event) {
+        infosForm.setVisible(true);
+        pwdForm.setVisible(false);
+    }
+
+    @FXML
+    void mdpUser(MouseEvent event) {
+        pwdForm.setVisible(true);
+        infosForm.setVisible(false);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         choixGenrep.getItems().addAll(genre);
@@ -101,6 +139,8 @@ public class ProfilController implements Initializable {
 
         System.out.println(idUtilisateurConnecte);
 
+        infosForm.setVisible(false);
+        pwdForm.setVisible(false);
     }
 
 
@@ -117,7 +157,6 @@ public class ProfilController implements Initializable {
                 tfprenomp.setText(rs.getString(3));
                 choixGenrep.setValue(rs.getString(4));
                 tfemailp.setText(rs.getString(5));
-                tfmdpp.setText(rs.getString(6));
                 tfnumtelp.setText(rs.getString(7));
 
                 String adresse = rs.getString(11);
@@ -135,7 +174,7 @@ public class ProfilController implements Initializable {
     @FXML
     void modifierProfil(ActionEvent event) {
 
-        if (tfnomp.getText().isEmpty() || tfprenomp.getText().isEmpty() || tfemailp.getText().isEmpty() || tfmdpp.getText().isEmpty() || choixGenrep.getValue().isEmpty() || tfnumtelp.getText().isEmpty()  || choixVillep.getValue().isEmpty() ||  tfruep.getText().isEmpty() || choixObjectifp.getValue().isEmpty()) {
+        if (tfnomp.getText().isEmpty() || tfprenomp.getText().isEmpty() || tfemailp.getText().isEmpty() || choixGenrep.getValue().isEmpty() || tfnumtelp.getText().isEmpty()  || choixVillep.getValue().isEmpty() ||  tfruep.getText().isEmpty() || choixObjectifp.getValue().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
             alert.setHeaderText(null);
@@ -187,26 +226,23 @@ public class ProfilController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == buttonTypeOui) {
-            String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,mot_de_passe=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
+            String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
             try {
                 PreparedStatement pst = cnx.prepareStatement(req);
                 pst.setString(1, tfnomp.getText());
                 pst.setString(2,tfprenomp.getText());
                 pst.setString(3, choixGenrep.getValue());
                 pst.setString(4, tfemailp.getText());
-                pst.setString(5,encryptor.encryptString(tfmdpp.getText()));
-                pst.setInt(6,Integer.parseInt(tfnumtelp.getText()));
-                pst.setString(7, Role.Client.toString());
-                pst.setInt(8,0);
-                pst.setString(9,"");
-                pst.setString(10,choixVillep.getValue() + "," + tfruep.getText());
-                pst.setString(11, choixObjectifp.getValue());
-                pst.setInt(12, idUtilisateurConnecte);
+                pst.setInt(5,Integer.parseInt(tfnumtelp.getText()));
+                pst.setString(6, Role.Client.toString());
+                pst.setInt(7,0);
+                pst.setString(8,"");
+                pst.setString(9,choixVillep.getValue() + "," + tfruep.getText());
+                pst.setString(10, choixObjectifp.getValue());
+                pst.setInt(11, idUtilisateurConnecte);
                 pst.executeUpdate();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
             }
         }
 
@@ -215,6 +251,89 @@ public class ProfilController implements Initializable {
         alert2.setHeaderText(null);
         alert2.setContentText("Vos informations ont été mises à jour avec succès.");
         alert2.showAndWait();
+
+    }
+
+    @FXML
+    void modifierMDP(ActionEvent event) throws SQLException, NoSuchAlgorithmException {
+
+        String reqMDP = "SELECT mot_de_passe FROM utilisateur WHERE id_utilisateur = ?";
+        PreparedStatement pstMDP = cnx.prepareStatement(reqMDP);
+        pstMDP.setString(1, String.valueOf(MyConnection.getInstance().getUserId()));
+        ResultSet rsMDP = pstMDP.executeQuery();
+        rsMDP.next();
+        String mdp = rsMDP.getString("mot_de_passe");
+
+        // Comparer l'ancien mot de passe saisi avec le mot de passe actuel de l'utilisateur
+        if (!encryptor.encryptString(ancienMDP.getText()).equals(mdp)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mot de passe incorrect");
+            alert.setHeaderText(null);
+            alert.setContentText("L'ancien mot de passe saisi est incorrect.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (ancienMDP.getText().isEmpty() || nouveauMDP.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Champs manquants");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez remplir tous les champs obligatoires.");
+            alert.showAndWait();
+            return;
+        }
+
+        complx.Calcul(nouveauMDP.getText());
+
+        if(complx.getNb() <6){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Mot de passe faible");
+            alert.showAndWait();
+            complx.setNb(0);
+        }else if (complx.getNb() >= 6 && complx.getNb() < 12){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Mot de passe moyen");
+            alert.showAndWait();
+            complx.setNb(0);
+        } else if (complx.getNb() == 12){
+
+            Connection cnx = MyConnection.getInstance().getCnx();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de modification");
+            alert.setHeaderText(null);
+            alert.setContentText("Êtes-vous sûr de vouloir modifier votre profil ?");
+
+            ButtonType buttonTypeOui = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+            ButtonType buttonTypeNon = new ButtonType("Non", ButtonBar.ButtonData.NO);
+
+            alert.getButtonTypes().setAll(buttonTypeOui, buttonTypeNon);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == buttonTypeOui) {
+                String req = "UPDATE utilisateur SET mot_de_passe=? WHERE id_utilisateur=?";
+                try {
+                    PreparedStatement pst = cnx.prepareStatement(req);
+                    pst.setString(1, encryptor.encryptString(nouveauMDP.getText()));
+                    pst.setInt(2, idUtilisateurConnecte);
+                    pst.executeUpdate();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+            alert2.setTitle("Modification réussie");
+            alert2.setHeaderText(null);
+            alert2.setContentText("Vos informations ont été mises à jour avec succès.");
+            alert2.showAndWait();
+        }
+
+
 
     }
     @FXML
