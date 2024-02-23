@@ -24,6 +24,7 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -102,6 +103,8 @@ public class GestionUserController implements Initializable {
 
     @FXML
     private Label totalConseillers;
+
+    static Connection cnx = MyConnection.instance.getCnx();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -314,7 +317,6 @@ public class GestionUserController implements Initializable {
                     stage.setOnHidden((WindowEvent windowEvent) -> {
                         afficherUtilisateurs();
                     });
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -359,8 +361,15 @@ public class GestionUserController implements Initializable {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == buttonTypeOui) {
-                    UserCrud usc = new UserCrud();
-                    usc.supprimerEntite(selectedUser);
+                    String req = "DELETE FROM `utilisateur` WHERE `id_utilisateur`=?";
+                    try {
+                        PreparedStatement pst = cnx.prepareStatement(req);
+                        pst.setInt(1, selectedUser.getId_utilisateur());
+                        pst.executeUpdate();
+                        listUsers.remove(selectedUser);
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
         } else {
