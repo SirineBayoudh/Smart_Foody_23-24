@@ -23,7 +23,7 @@ public class UserCrud implements ICrud<Utilisateur>{
 
     @Override
     public void ajouterEntite(Utilisateur u) {
-        String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement pst = cnx.prepareStatement(requete);
             pst.setString(1, u.getNom());
@@ -37,6 +37,7 @@ public class UserCrud implements ICrud<Utilisateur>{
             pst.setString(9,u.getAttestation());
             pst.setString(10,u.getAdresse());
             pst.setString(11, u.getObjectif());
+            pst.setInt(12,u.getTentative());
             pst.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -66,6 +66,8 @@ public class LoginController implements Initializable {
     }
 
     Encryptor encryptor = new Encryptor();
+
+    public int nbTentatives= 0;
     public void login(){
         Connection cnx = MyConnection.getInstance().getCnx();
         String req = "SELECT * FROM utilisateur WHERE email = ? AND mot_de_passe =?";
@@ -137,17 +139,25 @@ public class LoginController implements Initializable {
                     pstUserId.setString(1, temail.getText());
                     ResultSet rsUserId = pstUserId.executeQuery();
                     rsUserId.next();
-                    int userId = rsUserId.getInt("id_utilisateur");
+                    userId = rsUserId.getInt("id_utilisateur");
 
-                    // Incrémenter le nombre de tentatives dans la classe Tentative
-                    Tentative tentative = new Tentative();
-                    tentative.setId_utilisateur(userId);
-                    tentative.setNb_tentatives(tentative.getNb_tentatives() + 1);
+                    nbTentatives++;
 
-                    System.out.println("Id:" + tentative.getId_utilisateur()+ " nb tentatives"+ tentative.getNb_tentatives());
+                    System.out.println("Id:" + userId+ " nb tentatives"+ nbTentatives);
 
                     Alert alert = new Alert(Alert.AlertType.WARNING,"Mot de passe erroné",ButtonType.OK);
                     alert.show();
+                    if(nbTentatives == 3 ){
+                        String requete = "UPDATE utilisateur SET tentative=? WHERE id_utilisateur=?";
+                        try{
+                            PreparedStatement pstTentative = cnx.prepareStatement(requete);
+                            pstTentative.setInt(1, nbTentatives);
+                            pstTentative.setInt(2,userId);
+                            pstTentative.executeUpdate();
+                        } catch (SQLException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING,"Aucun compte n'est associé à cette adresse email",ButtonType.OK);
                     alert.show();

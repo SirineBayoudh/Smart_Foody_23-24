@@ -8,6 +8,8 @@ public class Utilisateur implements Comparable<Utilisateur>{
     private int num_tel,matricule;
     private String attestation,adresse,objectif;
 
+    private int tentative;
+
     public int getId_utilisateur() {
         return id_utilisateur;
     }
@@ -102,6 +104,14 @@ public class Utilisateur implements Comparable<Utilisateur>{
 
     public void setObjectif(String objectif) {
         this.objectif = objectif;
+    }
+
+    public int getTentative() {
+        return tentative;
+    }
+
+    public void setTentative(int tentative) {
+        this.tentative = tentative;
     }
 
     public Utilisateur() {
