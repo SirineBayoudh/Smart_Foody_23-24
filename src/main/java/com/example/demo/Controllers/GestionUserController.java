@@ -3,6 +3,7 @@ package com.example.demo.Controllers;
 import com.example.demo.Models.Role;
 import com.example.demo.Models.Utilisateur;
 import com.example.demo.Tools.MyConnection;
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -143,6 +145,24 @@ public class GestionUserController implements Initializable {
                 );
 
         genderPieChart.setData(pieChartData);
+
+        for (final PieChart.Data data : pieChartData) {
+            Node node = data.getNode();
+            Tooltip tooltip = new Tooltip(String.format("%.1f%%", (data.getPieValue() / (maleCount + femaleCount)) * 100));
+            PauseTransition pause = new PauseTransition(Duration.seconds(0.1));
+            pause.setOnFinished(e -> {
+                tooltip.show(node, node.localToScreen(0, 0).getX() + node.getBoundsInLocal().getWidth() / 2, node.localToScreen(0, 0).getY() + node.getBoundsInLocal().getHeight() / 2);
+            });
+
+            node.setOnMouseEntered(event -> {
+                pause.playFromStart();
+            });
+
+            node.setOnMouseExited(event -> {
+                tooltip.hide();
+                pause.stop();
+            });
+        }
 
         /*for (final PieChart.Data data : genderPieChart.getData()) {
             if (data.getName().equalsIgnoreCase("Homme")) {
