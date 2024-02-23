@@ -1,9 +1,15 @@
 package com.example.demo.Controllers;
 
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.example.demo.Models.Produit;
 import com.example.demo.Models.Stock;
 import com.example.demo.Tools.MyConnection;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.Version;
+import com.restfb.types.FacebookType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,15 +31,24 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.*;
 import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
 
 public class StockController implements Initializable {
+
+    @FXML
+    private Button btnEuro;
+    @FXML
+    private Button btnDollar;
 
     @FXML
     private Button bntAnuuler;
@@ -65,11 +80,11 @@ public class StockController implements Initializable {
     private TableColumn<Stock, Integer> refProduitColumn;
 
     @FXML
-    private TableColumn<Stock, Integer> marqueColumn;
+    private TableColumn<Stock, String> marqueColumn;
     @FXML
     private TableColumn<Stock, Integer> id_stockColumn;
     @FXML
-    private TableColumn<Stock, Integer> NomColumn;
+    private TableColumn<Stock, String> NomColumn;
 
 
     @FXML
@@ -77,6 +92,7 @@ public class StockController implements Initializable {
 
     @FXML
     private TableColumn<Stock, Integer> nbVenduColumn;
+
     @FXML
     private TextField tRef;
     int id_s = 0;
@@ -89,7 +105,7 @@ public class StockController implements Initializable {
     @FXML
     private TextField Refield;
     @FXML
-    private TableColumn<?, ?> tTotal;
+    private TableColumn<Stock, Integer> tTotal;
     @FXML
     private Pane clickpane;
     private int lowestStockId;
@@ -118,6 +134,13 @@ public class StockController implements Initializable {
         Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
         updateTotalStockCount();
         btnExporterTout.setOnAction(event -> exporterToutesLesDonnees());
+        btnEuro.setOnAction(event -> {
+            convertCostToEuro(event); // Appeler la méthode de conversion
+        });
+        btnDollar.setOnAction(event -> {
+            convertCostToDollar(event); // Appeler la méthode de conversion
+        });
+
     }
 
     public static StockController getInstance() {
@@ -127,41 +150,41 @@ public class StockController implements Initializable {
         return instance;
     }
 
-    public void checkStockAndDisplayLowestQuantity() {
+//    public void checkStockAndDisplayLowestQuantity() {
+//
+//        ObservableList<Stock> stockData = displayAllStock();
+//
+//        // petite quantite
+//        Stock lowestStock = findLowestStock(stockData);
+//
+//        if (lowestStock != null) {
+//            lowestStockId = lowestStock.getId_s();
+//            String message = "le  stock : " + lowestStock.getId_s() + "quantité" + lowestStock.getQuantite();
+//            //insertAlert(lowestStockId, new java.util.Date(), message);
+//            runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
+//        } else {
+//            runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
+//        }
+//    }
 
-        ObservableList<Stock> stockData = displayAllStock();
-
-        // petite quantite
-        Stock lowestStock = findLowestStock(stockData);
-
-        if (lowestStock != null) {
-            lowestStockId = lowestStock.getId_s();
-            String message = "le  stock : " + lowestStock.getId_s() + "quantité" + lowestStock.getQuantite();
-            //insertAlert(lowestStockId, new java.util.Date(), message);
-            runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
-        } else {
-            runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
-        }
-    }
-
-    private void runLater(Runnable runnable) {
-        Platform.runLater(runnable);
-    }
-
-    private void showNotification(String title, String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(
-                getClass().getResource("/com/example/demo/css/style_dash.css").toExternalForm()
-        );
-        dialogPane.getStyleClass().add("custom-alert");
-
-        alert.showAndWait();
-    }
+//    private void runLater(Runnable runnable) {
+//        Platform.runLater(runnable);
+//    }
+//
+//    private void showNotification(String title, String message, Alert.AlertType alertType) {
+//        Alert alert = new Alert(alertType);
+//        alert.setTitle(title);
+//        alert.setHeaderText(null);
+//        alert.setContentText(message);
+//
+//        DialogPane dialogPane = alert.getDialogPane();
+//        dialogPane.getStylesheets().add(
+//                getClass().getResource("/com/example/demo/css/style_dash.css").toExternalForm()
+//        );
+//        dialogPane.getStyleClass().add("custom-alert");
+//
+//        alert.showAndWait();
+//    }
 
     public static Stock findLowestStock(ObservableList<Stock> stockData) {
         Stock lowestStock = null;
@@ -181,15 +204,16 @@ public class StockController implements Initializable {
         return lowestStock;
     }
 
-    public int getLowestStockId() {
-        return lowestStockId;
-    }
+  //  public int getLowestStockId() {
+//        return lowestStockId;
+//    }
 
     @FXML
     private void handlePaneClick(MouseEvent event) {
         // annuler select in the TableView when the Pane is clicked
         stockTableView.getSelectionModel().clearSelection();
-
+        tTotal.setText("cout");
+       show();
         // Clear other fields
         Qntfield.setText(null);
         Idfield.setText(null);
@@ -382,6 +406,7 @@ public class StockController implements Initializable {
     public void show() {
         ObservableList<Stock> list = displayAllStock();
         if (stockTableView != null) {
+
             stockTableView.setItems(list);
             refProduitColumn.setCellValueFactory(new PropertyValueFactory<>("produitRef"));
             marqueColumn.setCellValueFactory(new PropertyValueFactory<>("produitMarque"));
@@ -390,6 +415,7 @@ public class StockController implements Initializable {
             id_stockColumn.setCellValueFactory(new PropertyValueFactory<>("id_s"));
             NomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
             tTotal.setCellValueFactory(new PropertyValueFactory<>("cout"));
+
             updateBarChart(list);
             updateScatterChart(list);
 
@@ -494,43 +520,110 @@ public class StockController implements Initializable {
         }
     }
 
-    @FXML
-    void UpdateStock(ActionEvent event) {
-        Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
+//    @FXML
+//    void UpdateStock(ActionEvent event) {
+//        Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
+//
+//        if (selectedStock == null) {
+//
+//            showAlert("Veuillez sélectionner un élément.");
+//        } else {
+//            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//            alert.setTitle("Confirmation Dialog");
+//            alert.setHeaderText(null);
+//            alert.setContentText("Vous êtes sur de modifier le stock ? ");
+//
+//            alert.showAndWait().ifPresent(response -> {
+//                if (response == ButtonType.OK) {
+//                    if (!isInteger(Qntfield.getText())) {
+//                        showAlert("La quantité doit être un entier.");
+//                        return;
+//                    }
+//                    String update = "update stock set quantite = ? where id_s = ?";
+//                    Connection connection = MyConnection.getInstance().getCnx();
+//
+//                    try {
+//                        PreparedStatement st = connection.prepareStatement(update);
+//                        st.setInt(1, Integer.parseInt(Qntfield.getText())); // Convert the String to int
+//                        st.setInt(2, Integer.parseInt(Idfield.getText())); //
+//
+//                        st.executeUpdate();
+//                        show();
+//
+//                    } catch (SQLException | NumberFormatException e) {
+//                        e.printStackTrace();
+//
+//                    }
+//                }
+//
+//            });
+//        }
+//    }
+@FXML
+void UpdateStock(ActionEvent event) {
+    Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
-        if (selectedStock == null) {
+    if (selectedStock == null) {
+        showAlert("Veuillez sélectionner un élément.");
+    } else {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Vous êtes sûr de modifier le stock ? ");
 
-            showAlert("Veuillez sélectionner un élément.");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText(null);
-            alert.setContentText("Vous êtes sur de modifier le stock ? ");
-
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    if (!isInteger(Qntfield.getText())) {
-                        showAlert("La quantité doit être un entier.");
-                        return;
-                    }
-                    String update = "update stock set quantite = ? where id_s = ?";
-                    Connection connection = MyConnection.getInstance().getCnx();
-
-                    try {
-                        PreparedStatement st = connection.prepareStatement(update);
-                        st.setInt(1, Integer.parseInt(Qntfield.getText())); // Convert the String to int
-                        st.setInt(2, Integer.parseInt(Idfield.getText())); //
-
-                        st.executeUpdate();
-                        show();
-
-                    } catch (SQLException | NumberFormatException e) {
-                        e.printStackTrace();
-
-                    }
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                if (!isInteger(Qntfield.getText())) {
+                    showAlert("La quantité doit être un entier.");
+                    return;
                 }
+                String update = "update stock set quantite = ? where id_s = ?";
+                Connection connection = MyConnection.getInstance().getCnx();
 
-            });
+                try {
+                    int newQuantite = Integer.parseInt(Qntfield.getText());
+
+                    PreparedStatement st = connection.prepareStatement(update);
+                    st.setInt(1, newQuantite);
+                    st.setInt(2, Integer.parseInt(Idfield.getText()));
+
+                    st.executeUpdate();
+
+                    if (newQuantite > selectedStock.getNbVendu()) {
+                        // Remplacez YOUR_ACCESS_TOKEN par votre jeton d'accès Facebook
+                        String accessToken = "EAANLAmpI2JEBO6VBMfXbdLY3ZCXRKxZAv6TZAQ3rYdcGQ9h2cD2Son0b6a8v57wQsqHvmeieNdokk5EyhSOjKxMcRSZAEK4QFXN38XhdbwZAluZAs9wZAqK2xZCWfyZCmDFZBUkJZC5ZCTrFRy3aMoSXmJ6cfqFSGk5Rt5D32DgAj95hxDHjT9LofKe0icqZA0UeZBsEfvzSZCcz5gkjRDhDgNiDPf1AZC4ZD";
+                        FacebookClient facebookClient = new DefaultFacebookClient(accessToken, Version.VERSION_19_0);
+
+                        // Construire le message pour la publication sur Facebook
+                        String facebookMessage = "Le stock du produit "+selectedStock.getProduitMarque()+ " est de retour ";
+
+
+                        // Publier sur Facebook directement depuis StockController
+                        postStatusUpdate(facebookClient, facebookMessage);
+                    }
+
+                    show();
+
+                } catch (SQLException | NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+}
+
+    private void postStatusUpdate(FacebookClient facebookClient, String message) {
+        try {
+            // Créer un paramètre avec le message
+            Parameter messageParam = Parameter.with("message", message);
+
+            // Publier la mise à jour du statut sur le fil d'actualité de l'utilisateur
+            FacebookType response = facebookClient.publish("me/feed", FacebookType.class, messageParam);
+
+            // Afficher l'ID du message nouvellement créé
+            System.out.println("Posted message ID: " + response.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -706,7 +799,116 @@ private void exportStockToExcel() {
             showAlert("Erreur lors de l'export Excel.");
         }
     }
+    /**********************************************/
+//    @FXML
+//    void convertCostToEuro(ActionEvent event) {
+//        try {
+//            // Récupérez tous les éléments de la table de stock
+//            List<Stock> allStocks = displayAllStock(); // Remplacez cela par votre méthode pour récupérer tous les stocks
+//
+//            // Obtenez la ligne sélectionnée dans la TableView
+//            Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
+//
+//            if (selectedStock != null) {
+//                // Calculer le coût en euros pour la ligne sélectionnée
+//
+//                double exchangeRateTNDToEuro =  ExchangeRateApiUtil.getExchangeRate("TND", "EUR");
+//
+//                // Calculer le coût en dollars pour la ligne sélectionnée
+//                double coutEuro = selectedStock.getCout() / exchangeRateTNDToEuro;
+//                // Afficher une alerte avec le coutEuro
+//                String formattedCoutEuro = String.format("%.2f", coutEuro);
+//
+//                showAlert("Cout en Euro", "Taux de change TND - Euro  : " + exchangeRateTNDToEuro + "\nLe coût de stock " +  selectedStock.getId_s() + " en Euro est de " + formattedCoutEuro + "€");
+//
+//            } else {
+//                // Aucune ligne sélectionnée, affichez un message ou une alerte appropriée
+//                showAlert("Aucune sélection", "Veuillez sélectionner une ligne.");
+//            }
+//
+//            // Mettez à jour la TableView pour refléter les modifications
+//            show();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+    @FXML
+    void convertCostToEuro(ActionEvent event) {
+        try {
+            // Obtenez tous les éléments de la TableView
+            ObservableList<Stock> allStocks = stockTableView.getItems();
 
+            // Calculer le taux de change TND vers Euro
+            double exchangeRateTNDToEuro = ExchangeRateApiUtil.getExchangeRate("TND", "EUR");
+
+            // Parcourir tous les éléments et mettre à jour la colonne "cout"
+            for (Stock stock : allStocks) {
+                double coutEuro = stock.getCout() / exchangeRateTNDToEuro;
+             stock.setCout((float) coutEuro) ;
+            }
+            tTotal.setText("Cout en Euro");
+            // Mettez à jour la TableView pour refléter les modifications
+            stockTableView.refresh();
+            System.out.println(exchangeRateTNDToEuro);
+            // Afficher une alerte ou un message pour informer de la conversion
+            showAlert("Conversion en Euro", "Les coûts ont été convertis avec succès en Euro.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+
+    void convertCostToDollar(ActionEvent event) {
+        try {
+            // Récupérez tous les éléments de la TableView
+            ObservableList<Stock> allStocks = stockTableView.getItems();
+
+            // Obtenez le taux de change de Dinar tunisien vers Dollar
+            double exchangeRateTNDToUSD = ExchangeRateApiUtil.getExchangeRate("TND", "USD");
+
+            // Parcourir tous les éléments et mettre à jour la colonne "cout"
+            for (Stock stock : allStocks) {
+                double coutUSD = stock.getCout() / exchangeRateTNDToUSD;
+                stock.setCout((float) coutUSD);
+            }
+            tTotal.setText("Cout en Dollar");
+            // Mettez à jour la TableView pour refléter les modifications
+            stockTableView.refresh();
+            System.out.println(exchangeRateTNDToUSD);
+            // Afficher une alerte ou un message pour informer de la conversion
+            showAlert("Conversion en Dollar", "Les coûts ont été convertis avec succès en Dollar.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void updateStockCostInEuro(int stockId, double coutEuro) {
+        try {
+            Connection connection = MyConnection.getInstance().getCnx();
+            String updateQuery = "UPDATE stock SET cout = ? WHERE id_s = ?";
+            try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                updateStatement.setDouble(1, coutEuro);
+                updateStatement.setInt(2, stockId);
+                updateStatement.executeUpdate();
+
+                System.out.println("Mise à jour réussie dans la base de données.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 

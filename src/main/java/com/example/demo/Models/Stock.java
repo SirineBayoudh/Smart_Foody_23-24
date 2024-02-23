@@ -1,5 +1,5 @@
 package com.example.demo.Models;
-
+import javafx.beans.property.*;
 
 public class Stock {
     private int id_s;
@@ -8,24 +8,40 @@ public class Stock {
 
     private String Nom ;
     private int nbVendu;
-    private  float cout ;
-    private LigneCommande ligneCommande;
+    private final FloatProperty cout = new SimpleFloatProperty();
 
     public Stock(int id_s, Produit produit, int quantite, String nom, int nbVendu, float cout) {
         this.id_s = id_s;
         this.produit = produit;
         this.quantite = quantite;
-        Nom = nom;
+        this.Nom = nom;
         this.nbVendu = nbVendu;
-        this.cout = cout;
+        this.cout.set(cout); // Initialisez la propriété observable cout avec la valeur fournie
     }
-    public Stock(int id_s, Produit produit, int quantite, int nbVendu, float cout) {
-        this.id_s = id_s;
-        this.produit = produit;
-        this.quantite = quantite;
-        this.nbVendu = nbVendu;
-        this.cout = cout;
+
+    // Ajoutez les méthodes getters et setters uniquement pour la propriété cout
+
+    public FloatProperty coutProperty() {
+        return cout;
     }
+
+    private LigneCommande ligneCommande;
+
+//    public Stock(int id_s, Produit produit, int quantite, String nom, int nbVendu, float cout) {
+//        this.id_s = id_s;
+//        this.produit = produit;
+//        this.quantite = quantite;
+//        Nom = nom;
+//        this.nbVendu = nbVendu;
+//        this.cout = cout;
+//    }
+//    public Stock(int id_s, Produit produit, int quantite, int nbVendu, float cout) {
+//        this.id_s = id_s;
+//        this.produit = produit;
+//        this.quantite = quantite;
+//        this.nbVendu = nbVendu;
+//        this.cout = cout;
+//    }
 
     public Stock() {
     }
@@ -47,12 +63,13 @@ public class Stock {
         Nom = nom;
     }
     public float getCout() {
-        return cout;
+        return cout.get();
     }
 
     public void setCout(float cout) {
-        this.cout = cout;
+        this.cout.set(cout);
     }
+
 
     public int getId_s() {
         return id_s;
@@ -119,4 +136,17 @@ public class Stock {
                 ", ligneCommande=" + ligneCommande +
                 '}';
     }
+    private String coutWithSymbol; // Nouvelle propriété pour stocker le coût avec le symbole de l'euro
+
+    // ... Autres méthodes
+
+    public void setCoutWithSymbol(String coutWithSymbol) {
+        this.coutWithSymbol = coutWithSymbol;
+    }
+
+    public String getCoutWithSymbol() {
+        return coutWithSymbol;
+    }
+
+
 }

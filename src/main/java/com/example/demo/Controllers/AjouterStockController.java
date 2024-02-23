@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -40,6 +41,8 @@ public class AjouterStockController {
     @FXML
     private TextField tRef;
     @FXML
+    private ComboBox<String> refComboBox;
+    @FXML
     private TextField tNom;
     private StockController stockController;
 
@@ -51,7 +54,6 @@ public class AjouterStockController {
     @FXML
     void handleAddStock(ActionEvent event) {
         createStock(event);
-
         // calcul total
         int ref_produit = Integer.parseInt(tRef.getText());
         float totalValue = calculateTotalValue(ref_produit);
@@ -59,7 +61,7 @@ public class AjouterStockController {
         // Update StockController
         if (stockController != null) {
             stockController.show(); // mis a jour table
-            stockController.updateTotalValue(totalValue); // Update total value
+            stockController.updateTotalValue(totalValue); // Update total value cout
         }
 
         // fermeture de  AjouterStockController window
@@ -94,36 +96,36 @@ public class AjouterStockController {
         }
     }
 
-    @FXML
-    private void fetchMarque() {
-        int ref = Integer.parseInt(tRef.getText());
-
-        try {
-            Connection connection = MyConnection.getInstance().getCnx();
-
-            // produit existe
-            if (isProductExists(ref)) {
-                // detail produit  (fetch)
-                String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
-                try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
-                    selectStatement.setInt(1, ref);
-                    ResultSet resultSet = selectStatement.executeQuery();
-
-                    // if produit existe , set  'marque' value in the tMarque TextField
-                    if (resultSet.next()) {
-                        String marque = resultSet.getString("marque");
-                        tMarque.setText(marque);
-                    }
-                }
-            } else {
-                // supprimer tmarque textfield if produit n'existe pas
-                tMarque.clear();
-                System.out.println("Product does not exist. Please add the product first.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    @FXML
+//    private void fetchMarque() {
+//        int ref = Integer.parseInt(tRef.getText());
+//
+//        try {
+//            Connection connection = MyConnection.getInstance().getCnx();
+//
+//            // produit existe
+//            if (isProductExists(ref)) {
+//                // detail produit  (fetch)
+//                String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
+//                try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+//                    selectStatement.setInt(1, ref);
+//                    ResultSet resultSet = selectStatement.executeQuery();
+//
+//                    // if produit existe , set  'marque' value in the tMarque TextField
+//                    if (resultSet.next()) {
+//                        String marque = resultSet.getString("marque");
+//                        tMarque.setText(marque);
+//                    }
+//                }
+//            } else {
+//                // supprimer tmarque textfield if produit n'existe pas
+//                tMarque.clear();
+//                System.out.println("Product does not exist. Please add the product first.");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * A-3 methode ajout avec nb vendu initialiser à 0
@@ -131,68 +133,73 @@ public class AjouterStockController {
 
 
     @FXML
+
     private void createStock(ActionEvent event) {
         if (validateInputs()) {
             try {
-                int ref = Integer.parseInt(tRef.getText());
-                int quantite = Integer.parseInt(tQnt.getText());
-                String nom = tNom.getText();
+                String selectedRef = refComboBox.getValue();
 
-                Connection connection = MyConnection.getInstance().getCnx();
+                // Vérifiez si une référence est sélectionnée
+                if (selectedRef != null && !selectedRef.isEmpty()) {
+                    int ref = Integer.parseInt(selectedRef);
+                    int quantite = Integer.parseInt(tQnt.getText());
+                    String nom = tNom.getText();
 
-                if (isProductExists(ref)) {
-                    // verifier l'existance du ref dans stock
-                    if (!isStockEntryExists(ref)) {
-                        String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
-                        try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
-                            selectStatement.setInt(1, ref);
-                            ResultSet resultSet = selectStatement.executeQuery();
+                    Connection connection = MyConnection.getInstance().getCnx();
 
-                            // produit existe ,ajouter  stock entry
-                            if (resultSet.next()) {
-                                String marque = resultSet.getString("marque"); // Retrieve the 'marque' value from the result set
+                    if (isProductExists(ref)) {
+                        // Vérifiez l'existence de la référence dans le stock
+                        if (!isStockEntryExists(ref)) {
+                            // Produit existe, ajoutez une entrée de stock
+                            String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
+                            try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+                                selectStatement.setInt(1, ref);
+                                ResultSet resultSet = selectStatement.executeQuery();
 
-                                // ajouter  stock entry avec   produits details
-                                String insertQuery = "INSERT INTO stock (ref_produit, marque, quantite,nom) VALUES (?,?, ?, ?)";
-                                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
-                                    insertStatement.setInt(1, ref);
-                                    insertStatement.setString(2, marque);
-                                    insertStatement.setInt(3, quantite);
-                                    insertStatement.setString(4, nom);
-                                    //insertStatement.setInt(5, nbVendu);
-                                    insertStatement.executeUpdate();
+                                // Si le produit existe, ajoutez une entrée de stock avec les détails du produit
+                                if (resultSet.next()) {
+                                    String marque = resultSet.getString("marque");
 
-                                    // fermer window
-                                    Stage stage = (Stage) btnSave.getScene().getWindow();
-                                    stage.close();
+                                    String insertQuery = "INSERT INTO stock (ref_produit, marque, quantite, nom) VALUES (?, ?, ?, ?)";
+                                    try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                        insertStatement.setInt(1, ref);
+                                        insertStatement.setString(2, marque);
+                                        insertStatement.setInt(3, quantite);
+                                        insertStatement.setString(4, nom);
+                                        insertStatement.executeUpdate();
 
-                                    showAlert("Stock ajouté avec succés!", "Succés", Alert.AlertType.INFORMATION);
+                                        // Fermez la fenêtre
+                                        Stage stage = (Stage) btnSave.getScene().getWindow();
+                                        stage.close();
+
+                                        showAlert("Stock ajouté avec succès !", "Succès", Alert.AlertType.INFORMATION);
+                                    }
                                 }
                             }
+                        } else {
+                            showAlert("Référence déjà existante.", "Référence existe", Alert.AlertType.WARNING);
                         }
                     } else {
-                        showAlert("Réference déja existante.", "Réference existe", Alert.AlertType.WARNING);
+                        showAlert("Produit inexistant, veuillez ajouter le produit.", "Produit introuvable", Alert.AlertType.WARNING);
                     }
-                } else {
-                    showAlert("Produit inexistant, veuillez ajouter le produit.", "Produit introuvable", Alert.AlertType.WARNING);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                showAlert("erreur d'ajout du stock.", "Error", Alert.AlertType.ERROR);
+                showAlert("Erreur d'ajout du stock.", "Error", Alert.AlertType.ERROR);
             }
         }
     }
 
     @FXML
     private boolean validateInputs() {
-        if (tRef.getText().isEmpty() || tQnt.getText().isEmpty() || tNom.getText().isEmpty()|| tMarque.getText().isEmpty()) {
+        if ( tQnt.getText().isEmpty() || tNom.getText().isEmpty()|| tMarque.getText().isEmpty()) {
             showAlert1("Erreur", "Les champs sont obligatoires.", Alert.AlertType.ERROR);
             return false;
         }
 
         try {
             // Validate if tRef, tQnt type  int
-            Integer.parseInt(tRef.getText());
+
             Integer.parseInt(tQnt.getText());
             // Validate if tNom type String
             String nomValue = tNom.getText();
@@ -259,9 +266,49 @@ public class AjouterStockController {
 
     @FXML
     void initialize() {
-
+        loadProductReferences();
+        refComboBox.setOnAction(event -> {
+            // Appelez la méthode pour récupérer la marque lorsqu'une référence est sélectionnée
+            fetchMarque();
+        });
 
     }
+    @FXML
+    private void fetchMarque() {
+        String selectedRef = refComboBox.getValue();
+
+        // Vérifiez si une référence est sélectionnée
+        if (selectedRef != null && !selectedRef.isEmpty()) {
+            int ref = Integer.parseInt(selectedRef);
+
+            try {
+                Connection connection = MyConnection.getInstance().getCnx();
+
+                // Produit existe
+                if (isProductExists(ref)) {
+                    // Détail du produit (fetch)
+                    String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
+                    try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+                        selectStatement.setInt(1, ref);
+                        ResultSet resultSet = selectStatement.executeQuery();
+
+                        // Si le produit existe, définissez la valeur 'marque' dans le champ tMarque
+                        if (resultSet.next()) {
+                            String marque = resultSet.getString("marque");
+                            tMarque.setText(marque);
+                        }
+                    }
+                } else {
+                    // Supprimez le champ tMarque si le produit n'existe pas
+                    tMarque.clear();
+                    System.out.println("Le produit n'existe pas. Veuillez d'abord ajouter le produit.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
     private float calculateTotalValue(int ref_produit) {
@@ -296,5 +343,25 @@ public class AjouterStockController {
         return 0.0f;
     }
 
+    private void loadProductReferences() {
+        try {
+            Connection connection = MyConnection.getInstance().getCnx();
+            String query = "SELECT ref FROM produit";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                // Nettoyez d'abord le ComboBox
+                refComboBox.getItems().clear();
+
+                // Ajoutez chaque référence au ComboBox
+                while (resultSet.next()) {
+                    String reference = resultSet.getString("ref");
+                    refComboBox.getItems().add(reference);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

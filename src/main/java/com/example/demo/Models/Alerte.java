@@ -10,18 +10,28 @@ public class Alerte {
     private int id_stock;
     private String description_alerte;
     private Date date;
+  private Boolean Type ;
 
+    private String typeString;
+    public Alerte(int id_alerte, int id_stock, Date date, Boolean type) {
+        this.id_alerte = id_alerte;
+        this.id_stock = id_stock;
+        this.date = date;
+        this.Type = type;
+    }
     public Alerte(int id_alerte, int id_stock, Date date) {
         this.id_alerte = id_alerte;
         this.id_stock = id_stock;
         this.date = date;
     }
 
-    public Alerte(int id_alerte, int id_stock, String description_alerte, Date date) {
+    public Alerte(int id_alerte, int id_stock, String description_alerte, Date date,Boolean type) {
         this.id_alerte = id_alerte;
         this.id_stock = id_stock;
         this.description_alerte = description_alerte;
         this.date = date;
+        this.Type = type;
+        this.typeString = (type != null && type) ? "lue" : "non lue";
     }
 
     public Alerte(int id_stock, Date date) {
@@ -59,6 +69,20 @@ public class Alerte {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+    public String getTypeString() {
+        return typeString;
+    }
+
+    public void setTypeString(String typeString) {
+        this.typeString = typeString;
+    }
+    public Boolean isType() {
+        return Type;
+    }
+
+    public void setType(Boolean type) {
+        Type = type;
     }
 
 }

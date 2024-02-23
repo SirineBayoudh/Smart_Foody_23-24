@@ -26,14 +26,14 @@
                 <TableColumn fx:id="refProduitColumn" prefWidth="143.20001220703125" text="Réference du produits" />
                 <TableColumn fx:id="quantiteColumn" prefWidth="77.5999755859375" text="Quantité" />
             <TableColumn fx:id="nbVenduColumn" minWidth="0.0" prefWidth="130.39996337890625" text="Nombre vendus" />
-            <TableColumn fx:id="tTotal" prefWidth="76.800048828125" text="cout" />
-                <TableColumn fx:id="marqueColumn" prefWidth="115.9998779296875" text="Marque" />
+            <TableColumn fx:id="tTotal" prefWidth="113.5999755859375" text="cout" />
+                <TableColumn fx:id="marqueColumn" text="Marque" />
 
             </columns>
         </TableView>
       <Button fx:id="btnupdate" layoutX="359.0" layoutY="617.0" mnemonicParsing="false" onAction="#UpdateStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="      Modifier" />
       <Button fx:id="btnsupprimer" layoutX="524.0" layoutY="617.0" mnemonicParsing="false" onAction="#deleteStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="     Supprimer" />
-
+        <Button fx:id="btnExporterTout" layoutX="696.0" layoutY="617.0" mnemonicParsing="false" onAction="#exporterToutesLesDonnees" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="Exporter Tout" />
 
         <ImageView fitHeight="23.0" fitWidth="35.0" layoutX="373.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -122,6 +122,14 @@
                 <NumberAxis label="Quantité Vendue" side="LEFT" />
             </yAxis>
         </ScatterChart>
+        <Button fx:id="btnEuro" layoutX="607.0" layoutY="243.0" mnemonicParsing="false" onAction="#convertCostToEuro" prefHeight="35.0" prefWidth="61.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
+
+        <Button fx:id="btnDollar" layoutX="244.0" layoutY="633.0" mnemonicParsing="false" onAction="#convertCostToDollar" text="Dollar" />
+      <ImageView fitHeight="25.0" fitWidth="48.0" layoutX="625.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/euro.png" />
+         </image>
+      </ImageView>
 
 
     </children>

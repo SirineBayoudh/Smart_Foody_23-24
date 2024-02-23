@@ -9,15 +9,16 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.AlerteController">
+<Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AlerteController">
     <children>
         <!-- Le contenu spécifique de votre page de stocks -->
-        <TableView fx:id="AlerteTableView" layoutX="202.0" layoutY="257.0" onMouseClicked="#Alerte" prefHeight="383.0" prefWidth="715.0">
+        <TableView fx:id="AlerteTableView" layoutX="78.0" layoutY="236.0" onMouseClicked="#getData" prefHeight="383.0" prefWidth="830.0">
             <columns>
                 <TableColumn fx:id="id_alerteColumn" prefWidth="103.20001602172852" text="Id Alerte" />
                 <TableColumn fx:id="idstockCoulmn" minWidth="20.0" prefWidth="163.20001220703125" text="Id Stock" />
             <TableColumn fx:id="DescriptionCoulumn" prefWidth="324.0" text="Description" />
-                <TableColumn fx:id="DateColoumn" prefWidth="122.4000244140625" text="Date" />
+                <TableColumn fx:id="DateColoumn" prefWidth="122.20001220703125" text="Date" />
+            <TableColumn fx:id="TypeCoulumn" prefWidth="114.79998779296875" text="Type" />
             </columns>
         </TableView>
 

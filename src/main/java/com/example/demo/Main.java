@@ -5,6 +5,7 @@ package com.example.demo;
 
 //import com.example.demo.Controllers.AlerteController;
 
+import com.example.demo.Controllers.AlerteController;
 import com.example.demo.Controllers.StockController;
 import com.example.demo.Models.Stock;
 import javafx.application.Application;
@@ -34,19 +35,74 @@ public class Main extends Application {
         stage.setTitle("Smart foody");
         stage.setScene(scene);
         stage.show();
+        AlerteController alerteController = new AlerteController();
 
-        }
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+        scheduler.start();
 
-        public static void main(String[] args) {
-            launch(args);
-        }
+        JobDetail job = newJob(BankTransferJob.class)
+                .withIdentity("bank-transfer")
+                .build();
 
-        private static void showNotification(String title, String message, Alert.AlertType alertType) {
-            Alert alert = new Alert(alertType);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        }
+        JobDataMap jobDataMap = job.getJobDataMap();
+        jobDataMap.put("alerteController", alerteController);
+
+        Trigger cronTrigger = newTrigger()
+                .withIdentity("cron-trigger")
+                .startNow()
+                .withSchedule(simpleSchedule().simpleSchedule().withIntervalInSeconds(600).repeatForever())
+                .build();
+
+        scheduler.scheduleJob(job, cronTrigger);
     }
 
+    public static class    BankTransferJob implements Job {
+
+        @Override
+        public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+            // Use JobDataMap to retrieve the AlerteController instance
+            JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+            AlerteController alerteController = (AlerteController) jobDataMap.get("alerteController");
+
+            if (alerteController != null) {
+                StockController stockController = StockController.getInstance();
+                Stock lowestStock = stockController.findLowestStock(stockController.displayAllStock());
+
+                if (lowestStock != null) {
+                    String message = "Le stock avec l'ID " + lowestStock.getId_s() + " contient la plus petite quantité : " + lowestStock.getQuantite();
+                    alerteController.insertAlert(lowestStock.getId_s(), new Date(), message,false);
+                    System.out.println(lowestStock.getNbVendu());
+                    System.out.println(lowestStock.getId_s());
+                    //
+                    System.out.println(lowestStock.getQuantite());
+                    //
+                    // affichage de notification
+                    Platform.runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
+
+                    // Check if nbVendu equals quantite
+                    if (lowestStock.getNbVendu() == lowestStock.getQuantite()) {
+                        System.out.println("en cours");
+                        // Send SMS
+                        alerteController.sendSMS("+21692150166", "Stock terminé");
+                    }
+                } else {
+                    Platform.runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
+                }
+            } else {
+                System.err.println("AlerteController is null. Make sure it's properly set before scheduling the job.");
+            }
+        }
+
+            public static void main (String[]args){
+                launch(args);
+            }
+
+            private static void showNotification (String title, String message, Alert.AlertType alertType){
+                Alert alert = new Alert(alertType);
+                alert.setTitle(title);
+                alert.setHeaderText(null);
+                alert.setContentText(message);
+                alert.showAndWait();
+            }
+        }
+    }

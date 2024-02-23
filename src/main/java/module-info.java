@@ -11,6 +11,8 @@ module com.example.demo {
     requires xmlworker;
     requires poi;
     requires poi.ooxml;
+    requires restfb;
+    requires com.google.gson;
 
     opens com.example.demo to javafx.fxml;
     opens com.example.demo.Models to javafx.base;
