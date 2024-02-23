@@ -90,7 +90,7 @@ public class LoginController implements Initializable {
                 rsRole.next();
                 String role = rsRole.getString("role");
                 System.out.println(role);
-                if(role.equals(Role.Admin)){
+                if(role.equalsIgnoreCase("Admin")){
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/dashboard.fxml"));
                     try {
                         Parent root = loader.load();

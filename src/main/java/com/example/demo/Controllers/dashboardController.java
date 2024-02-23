@@ -29,6 +29,9 @@ public class dashboardController implements Initializable {
     @FXML
     private Text tt;
 
+    @FXML
+    private Button btnUser;
+
     private boolean isClicked = false;
 
     @FXML
@@ -77,6 +80,7 @@ public class dashboardController implements Initializable {
     }
     @FXML
     private void user() {
+        btnUser.setStyle("-fx-text-fill: WHITE;-fx-border-color: WHITE;-fx-font-size: 14px;-fx-border-width: 2px;-fx-font-weight: bold;-fx-background-color: #aad597; -fx-border-radius: 20px;");
         loadPage("/com/example/demo/gestionUser.fxml");
     }
     private void loadPage(String page) {
