@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 
+import com.example.demo.Models.Role;
 import com.example.demo.Models.Tentative;
 import com.example.demo.Tools.MyConnection;
 import javafx.fxml.FXML;
@@ -74,7 +75,6 @@ public class LoginController implements Initializable {
             pst.setString(2,encryptor.encryptString(tpwd.getText()));
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
-
                 String reqUserId = "SELECT id_utilisateur FROM utilisateur WHERE email = ?";
                 PreparedStatement pstUserId = cnx.prepareStatement(reqUserId);
                 pstUserId.setString(1, temail.getText());
@@ -83,20 +83,45 @@ public class LoginController implements Initializable {
                 userId = rsUserId.getInt("id_utilisateur");
                 MyConnection.getInstance().setUserId(userId);
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
-                try {
-                    Parent root = loader.load();
+                String reqRole = "SELECT role FROM utilisateur WHERE email = ?";
+                PreparedStatement pstRole = cnx.prepareStatement(reqRole);
+                pstRole.setString(1, temail.getText());
+                ResultSet rsRole = pstRole.executeQuery();
+                rsRole.next();
+                String role = rsRole.getString("role");
+                System.out.println(role);
+                if(role.equals(Role.Admin)){
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/dashboard.fxml"));
+                    try {
+                        Parent root = loader.load();
 
-                    NavbarreController nv =loader.getController();
+                        dashboardController dash = loader.getController();
 
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                    //Pour fermer la fenêtre du login
-                    Stage loginStage = (Stage) temail.getScene().getWindow();
-                    loginStage.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                        //Pour fermer la fenêtre du login
+                        Stage loginStage = (Stage) temail.getScene().getWindow();
+                        loginStage.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
+                    try {
+                        Parent root = loader.load();
+
+                        NavbarreController nv = loader.getController();
+
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                        //Pour fermer la fenêtre du login
+                        Stage loginStage = (Stage) temail.getScene().getWindow();
+                        loginStage.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }else {
 

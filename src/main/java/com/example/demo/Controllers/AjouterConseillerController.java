@@ -137,6 +137,12 @@ public class AjouterConseillerController implements Initializable {
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conseiller ajouté");
+        alert.setHeaderText(null);
+        alert.setContentText("Conseiller ajouté avec succès");
+        alert.showAndWait();
+
         gestionUserController.afficherUtilisateurs();
 
         Stage loginStage = (Stage) tfemailc.getScene().getWindow();

@@ -85,16 +85,16 @@
                   <String fx:value="column-header-background" />
                </styleClass>
             </TableView>
-            <Button fx:id="btn_supprimer" mnemonicParsing="false" onAction="#supprimerConseiller" stylesheets="@css/style_tableUser.css" text="   Supprimer Conseiller" translateX="390.0" translateY="290.0" />
+            <Button fx:id="btn_ajout" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#ajouterConseiller" stylesheets="@css/style_tableUser.css" text="   Ajouter Conseiller" translateX="385.0" translateY="270.0" />
             <Button fx:id="btn_modif" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifierConseiller" stylesheets="@css/style_tableUser.css" text="   Modifier Conseiller" translateX="550.0" translateY="280.0" />
-            <Button fx:id="btn_ajout" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#ajouterConseiller" stylesheets="@css/style_tableUser.css" text="   Ajouter Conseiller" translateX="700.0" translateY="270.0" />
+            <Button fx:id="btn_supprimer" mnemonicParsing="false" onAction="#supprimerConseiller" stylesheets="@css/style_tableUser.css" text="   Supprimer Conseiller" translateX="720.0" translateY="290.0" />
             <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="164.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/rechercher.png" />
                </image>
             </ImageView>
             <ComboBox fx:id="choixRole" layoutX="222.0" layoutY="2.0" prefWidth="150.0" promptText="Filtrer" />
-            <ImageView fitHeight="26.0" fitWidth="15.0" layoutX="726.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="15.0" layoutX="380.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true" translateX="35.0">
                <image>
                   <Image url="@Images/plus.png" />
                </image>
@@ -104,7 +104,7 @@
                   <Image url="@Images/crayon.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="26.0" fitWidth="15.0" layoutX="399.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="26.0" fitWidth="15.0" layoutX="399.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true" translateX="330.0">
                <image>
                   <Image url="@Images/corbeille.png" />
                </image>

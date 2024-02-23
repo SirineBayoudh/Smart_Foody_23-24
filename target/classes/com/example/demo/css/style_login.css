@@ -1,5 +1,5 @@
 .login-container {
-    -fx-background-color: #1B1B1B;
+    -fx-background-color: white;
 }
 
 .login-form-container {
@@ -15,19 +15,19 @@
 .login-form-container TextField {
     -fx-pref-height: 35;
     -fx-font-size: 1.2em;
-    -fx-border-color: transparent transparent white transparent;
+    -fx-border-color: transparent transparent #56AB2F transparent;
     -fx-background-color: transparent;
     -fx-border-width: 0 0 1 0;
-    -fx-text-fill: white;
+    -fx-text-fill: #56AB2F;
 }
 
 .login-form-container PasswordField {
     -fx-pref-height: 35;
     -fx-font-size: 1.2em;
-    -fx-border-color: transparent transparent white transparent;
+    -fx-border-color: transparent transparent #56AB2F transparent;
     -fx-background-color: transparent;
     -fx-border-width: 0 0 1 0;
-    -fx-text-fill: white;
+    -fx-text-fill: #56AB2F;
 }
 
 
@@ -46,10 +46,10 @@
 .login-form-container ComboBox {
     -fx-pref-height: 35;
     -fx-font-size: 1.2em;
-    -fx-border-color: transparent transparent white transparent;
+    -fx-border-color: transparent transparent #56AB2F transparent;
     -fx-background-color: transparent;
     -fx-border-width: 0 0 1 0;
-    -fx-prompt-text-fill:white;
+    -fx-prompt-text-fill:#56AB2F;
 }
 
 .progress-bar:progress {
@@ -61,5 +61,5 @@
 }
 
 .combo-box .text-field .prompt-text {
-    -fx-text-fill: white;
+    -fx-text-fill: #56AB2F;
 }

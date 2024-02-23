@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Smart foody");
         //stage.setHeight(700);
@@ -23,10 +23,12 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
+        Encryptor encryptor = new Encryptor();
 
         MyConnection mc = MyConnection.getInstance();
+        //String password = "Admin123";
         //Utilisateur u1 = new Utilisateur("Ben Hamida","Nourhene","femme","nourhene@esprit.tn","nourhene123", Role.Client.toString(),0,"","menzah1","perdre");
-        //Utilisateur u2 = new Utilisateur("Selmi","Amine","homme","amine@esprit.tn","amine123",Role.Conseiller.toString(),14578962,"aaaaa","","");
+        //Utilisateur u2 = new Utilisateur("DevAholics","Admin","homme","admin@esprit.tn",encryptor.encryptString(password),98654145,Role.Admin.toString(),0,"","","");
 
         UserCrud ucd = new UserCrud();
 
@@ -38,7 +40,6 @@ public class Main extends Application {
         //u1.setAdresse("el menzah 1");
         //ucd.modifierEntite(u1);
 
-        Encryptor encryptor = new Encryptor();
         //String password = "nourhene";
         //System.out.println(encryptor.encryptString(password));
         //Utilisateur u2 = new Utilisateur("ben","Mohamed","homme","mohamed@esprit.tn",encryptor.encryptString(password),1478569,Role.Client.toString(),0,"","zfjn","ezdg");
