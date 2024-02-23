@@ -7,6 +7,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
@@ -20,7 +21,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.DashProduitController">
    <children>
-      <VBox fx:id="vboxFormulaire" layoutX="39.2" layoutY="291.0" prefHeight="350.0" prefWidth="278.0" spacing="8.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="291.0">
+      <VBox fx:id="vboxFormulaire" layoutX="40.0" layoutY="255.0" prefHeight="440.0" prefWidth="278.0" spacing="8.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="255.0">
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Marque">
                <VBox.margin>
@@ -51,9 +52,10 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Text>
-            <Spinner fx:id="tfPrix" editable="true"  max="100" min="0" prefHeight="26.0" prefWidth="234.0">
+            <Spinner fx:id="tfPrix" editable="true" initialValue="50" max="100" min="0" prefHeight="26.0" prefWidth="234.0">
                <VBox.margin>
                   <Insets left="20.0" />
+                  
                </VBox.margin>
             </Spinner>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="critère" wrappingWidth="48.61016845703125">
@@ -63,10 +65,10 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Text>
-            <TextField fx:id="tfCritere">
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin></TextField>
+            <CheckBox fx:id="checkboxCritere1" mnemonicParsing="false" text="sans gluten" />
+            <CheckBox fx:id="checkboxCritere2" mnemonicParsing="false" text="sans glucose" />
+            <CheckBox fx:id="checkboxCritere3" mnemonicParsing="false" text="sans lactose" />
+            <CheckBox fx:id="checkboxCritere4" mnemonicParsing="false" text="protein" />
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Image">
                <VBox.margin>
                   <Insets left="30.0" />

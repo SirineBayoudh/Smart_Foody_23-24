@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane prefHeight="637.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.objectifController">
+   <children>
+      <TableView fx:id="ObjectifTableView" layoutX="411.0" layoutY="194.0" prefHeight="371.0" prefWidth="508.0">
+        <columns>
+            <TableColumn fx:id="colIdObj" minWidth="0.0" prefWidth="156.79998779296875" text="ID_obj" />
+          <TableColumn fx:id="colLibelle" prefWidth="141.5999755859375" text="Libelle" />
+          <TableColumn fx:id="colCritere" minWidth="0.0" prefWidth="156.79998779296875" text="Critere" />
+        </columns>
+      </TableView>
+      <VBox layoutX="51.0" layoutY="309.0" prefHeight="163.0" prefWidth="250.0">
+         <children>
+            <Label prefHeight="18.0" prefWidth="57.0" text="libelle" />
+            <ComboBox fx:id="tfLibelle" prefWidth="150.0" />
+            <Label prefHeight="18.0" prefWidth="82.0" text="Critere" />
+            <CheckBox fx:id="tfCritere1" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="sans gluten" />
+            <CheckBox fx:id="tfCritere2" mnemonicParsing="false" text="sans glucose" />
+            <CheckBox fx:id="tfCritere3" mnemonicParsing="false" text="sans lactose" />
+            <CheckBox fx:id="tfCritere4" mnemonicParsing="false" text="protein" />
+         </children>
+      </VBox>
+      <ButtonBar layoutX="91.0" layoutY="525.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createObjectif" text="ajouter" />
+            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#updateObjectif" text="modifier" />
+            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerObjectif" text="supprimer" />
+        </buttons>
+      </ButtonBar>
+   </children>
+</AnchorPane>

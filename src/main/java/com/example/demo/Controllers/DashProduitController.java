@@ -61,6 +61,17 @@ public class DashProduitController implements Initializable {
     private VBox vboxFormulaire;
     @FXML
     private ComboBox<String> categoryFilterComboBox;
+    @FXML
+    private CheckBox checkboxCritere1;
+
+    @FXML
+    private CheckBox checkboxCritere2;
+
+    @FXML
+    private CheckBox checkboxCritere3;
+
+    @FXML
+    private CheckBox checkboxCritere4;
 
     @FXML
     private Spinner<Float> tfPrix;
@@ -172,7 +183,7 @@ public class DashProduitController implements Initializable {
             return;
         }
 
-        String insert = "insert into produit(Marque,Categorie,Prix,Critere,Image) values(?,?,?,?,?)";
+        String insert = "INSERT INTO produit(Marque, Categorie, Prix, Critere, Image) VALUES (?, ?, ?, ?, ?)";
         con = MyConnection.getInstance();
         try {
             st = con.getCnx().prepareStatement(insert);
@@ -193,26 +204,39 @@ public class DashProduitController implements Initializable {
                 showAlert("La catégorie ne doit contenir que des lettres.");
                 return;
             }
-            String critere = tfCritere.getText();
+            // Récupérer les critères sélectionnés depuis les CheckBox
+            StringBuilder critereBuilder = new StringBuilder();
+            if (checkboxCritere1.isSelected()) {
+                critereBuilder.append(checkboxCritere1.getText()).append(",");
+            }
+            if (checkboxCritere2.isSelected()) {
+                critereBuilder.append(checkboxCritere2.getText()).append(",");
+            }
+            if (checkboxCritere3.isSelected()) {
+                critereBuilder.append(checkboxCritere3.getText()).append(",");
+            }
+            if (checkboxCritere4.isSelected()) {
+                critereBuilder.append(checkboxCritere4.getText()).append(",");
+            }
+            // Supprimer la dernière virgule et l'espace s'il y en a
+            String critere = critereBuilder.toString().trim();
             if (critere.isEmpty()) {
-                showAlert("Veuillez saisir un critère.");
-                return;
-            } else if (!critere.matches("[a-zA-Z]+")) {
-                showAlert("Le critère ne doit contenir que des lettres.");
+                showAlert("Veuillez sélectionner au moins un critère.");
                 return;
             }
+
             if (isImageUrlUnique(imageUrl)) {
                 showAlert("L'URL de l'image doit être unique.");
                 return;
             } else if (imageUrl.isEmpty()) {
-                showAlert("le champs est vide . Veuillez selectionner une image.");
+                showAlert("Le champ est vide. Veuillez sélectionner une image.");
                 return;
             }
-            st.setString(1, tfMarque.getText());
-            st.setString(2, tfCategorie.getText());
+            st.setString(1, marque);
+            st.setString(2, categorie);
             st.setFloat(3, prixFloatValue);
-            st.setString(4, tfCritere.getText());
-            st.setString(5, tfImage.getText());
+            st.setString(4, critere);
+            st.setString(5, imageUrl);
             int rowsAffected = st.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Produit ajouté avec succès !");
@@ -220,7 +244,8 @@ public class DashProduitController implements Initializable {
                 tfMarque.clear();
                 tfCategorie.clear();
                 //tfPrix.getValueFactory().setValue(0,0);
-                tfCritere.clear();
+                // Ne pas effacer les CheckBox pour permettre à l'utilisateur de conserver sa sélection
+                // tfCritere.clear();
                 tfImage.clear();
                 //btnModifier.setVisible(true);
             } else {
@@ -234,6 +259,7 @@ public class DashProduitController implements Initializable {
         updateTotalProduitsLabel();
         updateCategoryFilter();
     }
+
 
     private void updateTotalProduitsLabel() {
         getData(); // Vous n'avez plus besoin de capturer la valeur retournée
@@ -265,7 +291,31 @@ public class DashProduitController implements Initializable {
         if (produit != null) {
             ref = produit.getRef();
             tfMarque.setText(produit.getMarque());
-            tfCritere.setText(produit.getCritere());
+            //tfCritere.setText(produit.getCritere());
+            // Obtenez la liste des critères de produit
+            String critere = produit.getCritere();
+
+            // Séparez les critères en fonction du délimiteur (par exemple, une virgule)
+            String[] critereArray = critere.split(", ");
+
+            // Cochez les cases à cocher correspondantes en fonction des critères
+            for (String c : critereArray) {
+                switch (c) {
+                    case "sans gluten":
+                        checkboxCritere1.setSelected(true);
+                        break;
+                    case "sans glucose":
+                        checkboxCritere2.setSelected(true);
+                        break;
+                    case "sans lactose":
+                        checkboxCritere3.setSelected(true);
+                        break;
+                    case "protein":
+                        checkboxCritere4.setSelected(true);
+                        break;
+                    // Ajoutez d'autres cas pour chaque critère si nécessaire
+                }
+            }
             tfCategorie.setText(produit.getCategorie());
             btnAjouter.setDisable(true);
             btnModifier.setDisable(false);
@@ -277,56 +327,70 @@ public class DashProduitController implements Initializable {
 
     @FXML
     void modifierProduit(ActionEvent event) {
-        String update = "update produit set Marque = ? ,Categorie = ?,Critere = ?   where ref = ?";
+        String update = "UPDATE produit SET Marque = ?, Categorie = ?, Prix = ?, Critere = ? WHERE ref = ?";
         con = MyConnection.getInstance();
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation de modification");
         confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier ce produit ?");
-        confirmationAlert.showAndWait().ifPresent(response -> {
-                    if (response == ButtonType.OK) {
-                        try {
-                            st = con.getCnx().prepareStatement(update);
-                            st.setString(1, tfMarque.getText());
-                            //st.setString(2, String.valueOf(Float.parseFloat(tfPrix.getValue().toString())));
-                            st.setString(2, tfCategorie.getText());
-                            st.setString(3, tfCritere.getText());
-                            st.setInt(4, ref);
-                            String marque = tfMarque.getText();
-                            if (!marque.matches("[a-zA-Z]+")) {
-                                showAlert("La marque ne doit contenir que des lettres.");
-                                return;
-                            }
-                            String critere = tfCritere.getText();
-                            if (!critere.matches("[a-zA-Z]+")) {
-                                showAlert("Le critère ne doit contenir que des lettres.");
-                                return;
-                            }
-                            String categorie = tfCategorie.getText();
-                            if (!categorie.matches("[a-zA-Z]+")) {
-                                showAlert("Le prix ne doit contenir que des lettres.");
-                                return;
-                            }
-                            int rowsAffected = st.executeUpdate();
-                            if (rowsAffected > 0) {
-                                System.out.println("Produit modifié avec succès !");
-                                showProduits();
-                                tfMarque.clear();
-                                //tfPrix.clear();
-                                tfCritere.clear();
-                                tfCategorie.clear();
-                            } else {
-                                System.out.println("Échec de la modification du produit !");
-                            }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            throw new RuntimeException(e);
-                        }
-                        updateLineChart();
 
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    st = con.getCnx().prepareStatement(update);
+                    st.setString(1, tfMarque.getText());
+                    st.setString(2, tfCategorie.getText());
+
+                    // Récupérer la valeur du prix du Spinner en tant que Float
+                    Number prixValue = tfPrix.getValue();
+                    Float prixFloatValue = prixValue != null ? prixValue.floatValue() : null;
+                    if (prixFloatValue == null) {
+                        showAlert("Veuillez saisir un prix valide.");
+                        return;
                     }
+                    st.setFloat(3, prixFloatValue);
+
+                    // Construire la chaîne de critères en fonction des cases cochées
+                    StringBuilder critereBuilder = new StringBuilder();
+                    if (checkboxCritere1.isSelected()) {
+                        critereBuilder.append("sans gluten").append(",");
+                    }
+                    if (checkboxCritere2.isSelected()) {
+                        critereBuilder.append("sans glucose").append(",");
+                    }
+                    if (checkboxCritere3.isSelected()) {
+                        critereBuilder.append("sans lactose").append(",");
+                    }
+                    if (checkboxCritere4.isSelected()) {
+                        critereBuilder.append("protein").append(",");
+                    }
+                    //st.setString(4, critereBuilder);
+                    st.setString(4, critereBuilder.toString());
+
+                    st.setInt(5, ref);
+
+                    int rowsAffected = st.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Produit modifié avec succès !");
+                        showProduits();
+                        tfMarque.clear();
+                        tfCategorie.clear();
+                        tfPrix.getValueFactory().setValue(0f);
+                        tfImage.clear();
+                        checkboxCritere1.setSelected(false); // Décocher la première case à cocher
+                        checkboxCritere2.setSelected(false); // Décocher la deuxième case à cocher
+                        checkboxCritere3.setSelected(false);
+                        checkboxCritere4.setSelected(false);
+                    } else {
+                        System.out.println("Échec de la modification du produit !");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
-        );
+                updateLineChart();
+            }
+        });
 
         btnAjouter.setDisable(false);
         updateCategoryFilter();
@@ -351,7 +415,10 @@ public class DashProduitController implements Initializable {
                                 showProduits();
                                 tfMarque.clear();
                                 //tfPrix.clear();
-                                tfCritere.clear();
+                                checkboxCritere1.setSelected(false); // Décocher la première case à cocher
+                                checkboxCritere2.setSelected(false); // Décocher la deuxième case à cocher
+                                checkboxCritere3.setSelected(false);
+                                checkboxCritere4.setSelected(false);
                                 tfCategorie.clear();
                             } else {
                                 System.out.println("Échec de la suppression du produit !");
