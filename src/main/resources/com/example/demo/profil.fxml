@@ -89,9 +89,9 @@
          <AnchorPane prefHeight="498.0" prefWidth="219.0">
             <children>
                <Label prefHeight="26.0" prefWidth="45.0" text="Bonjour " translateX="10.0" translateY="25.0" />
-               <TextField fx:id="nomUser" editable="false" prefHeight="26.0" prefWidth="86.0" translateX="60.0" translateY="25.0" />
                <Label prefHeight="18.0" prefWidth="186.0" text="Données personelles et adresses " translateX="10.0" translateY="120.0" />
                <Label layoutX="10.0" layoutY="167.0" prefHeight="26.0" prefWidth="100.0" text="Se déconnecter" />
+               <Label fx:id="prenomUser" layoutX="60.0" layoutY="29.0" prefHeight="18.0" prefWidth="54.0" />
             </children>
          </AnchorPane>
          <AnchorPane layoutX="219.0" prefHeight="498.0" prefWidth="681.0">

@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 public class ProfilController implements Initializable {
 
     @FXML
-    private TextField nomUser;
+    private Label prenomUser;
 
     @FXML
     private TextField tfnomp;
@@ -76,12 +76,12 @@ public class ProfilController implements Initializable {
 
     private int idUtilisateurConnecte;
 
-    public TextField getNomUser() {
-        return nomUser;
+    public Label getPrenomUser() {
+        return prenomUser;
     }
 
-    public void setNomUser(String nomUser) {
-        this.nomUser.setText(nomUser);
+    public void setPrenomUser(String prenomUser) {
+        this.prenomUser.setText(prenomUser);
     }
 
     Encryptor encryptor = new Encryptor();
@@ -112,7 +112,7 @@ public class ProfilController implements Initializable {
             pst.setInt(1, idUtilisateur);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                nomUser.setText(rs.getString(2));
+                prenomUser.setText(rs.getString(3));
                 tfnomp.setText(rs.getString(2));
                 tfprenomp.setText(rs.getString(3));
                 choixGenrep.setValue(rs.getString(4));
