@@ -753,20 +753,7 @@ void UpdateStock(ActionEvent event) {
         scatterChart.getYAxis().setLabel("NbVendu");
     }
 
-//    private void exportStockToPDF() {
-//        Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
-//
-//        if (selectedStock != null) {
-//            String fileName = "StockReport_" + selectedStock.getId_s() + ".pdf";
-//            boolean success = PDFExporter.exportStockToPDF(fileName, selectedStock);
-//
-//            if (success) {
-//                showAlert("Export PDF réussi.");
-//            } else {
-//                showAlert("Erreur lors de l'export PDF.");
-//            }
-//        }
-//    }
+
 private void exportStockToExcel() {
     Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
@@ -800,39 +787,7 @@ private void exportStockToExcel() {
         }
     }
     /**********************************************/
-//    @FXML
-//    void convertCostToEuro(ActionEvent event) {
-//        try {
-//            // Récupérez tous les éléments de la table de stock
-//            List<Stock> allStocks = displayAllStock(); // Remplacez cela par votre méthode pour récupérer tous les stocks
-//
-//            // Obtenez la ligne sélectionnée dans la TableView
-//            Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
-//
-//            if (selectedStock != null) {
-//                // Calculer le coût en euros pour la ligne sélectionnée
-//
-//                double exchangeRateTNDToEuro =  ExchangeRateApiUtil.getExchangeRate("TND", "EUR");
-//
-//                // Calculer le coût en dollars pour la ligne sélectionnée
-//                double coutEuro = selectedStock.getCout() / exchangeRateTNDToEuro;
-//                // Afficher une alerte avec le coutEuro
-//                String formattedCoutEuro = String.format("%.2f", coutEuro);
-//
-//                showAlert("Cout en Euro", "Taux de change TND - Euro  : " + exchangeRateTNDToEuro + "\nLe coût de stock " +  selectedStock.getId_s() + " en Euro est de " + formattedCoutEuro + "€");
-//
-//            } else {
-//                // Aucune ligne sélectionnée, affichez un message ou une alerte appropriée
-//                showAlert("Aucune sélection", "Veuillez sélectionner une ligne.");
-//            }
-//
-//            // Mettez à jour la TableView pour refléter les modifications
-//            show();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+
     @FXML
     void convertCostToEuro(ActionEvent event) {
         try {
@@ -853,7 +808,6 @@ private void exportStockToExcel() {
             System.out.println(exchangeRateTNDToEuro);
             // Afficher une alerte ou un message pour informer de la conversion
             showAlert("Conversion en Euro", "Les coûts ont été convertis avec succès en Euro.");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -894,21 +848,6 @@ private void exportStockToExcel() {
         alert.showAndWait();
     }
 
-    private void updateStockCostInEuro(int stockId, double coutEuro) {
-        try {
-            Connection connection = MyConnection.getInstance().getCnx();
-            String updateQuery = "UPDATE stock SET cout = ? WHERE id_s = ?";
-            try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
-                updateStatement.setDouble(1, coutEuro);
-                updateStatement.setInt(2, stockId);
-                updateStatement.executeUpdate();
-
-                System.out.println("Mise à jour réussie dans la base de données.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
 
