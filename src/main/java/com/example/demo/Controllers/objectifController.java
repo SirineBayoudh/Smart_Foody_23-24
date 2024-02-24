@@ -166,7 +166,9 @@ public class objectifController {
             throw new RuntimeException(e);
         }
         loadObjectifs();
-        //updateLineChart();
+        lineChart.getData().clear(); // Supprimer les données existantes
+        lineChart.getData().addAll(updateLineChart()); // Ajouter les nouvelles données mises à jour
+
     }
 
     @FXML
@@ -332,7 +334,8 @@ public class objectifController {
             }
         });
         loadObjectifs();
-        //updateLineChart();
+        lineChart.getData().clear(); // Supprimer les données existantes
+        lineChart.getData().addAll(updateLineChart()); // Ajouter les nouvelles données mises à jour
     }
 
 
@@ -374,7 +377,8 @@ public class objectifController {
             }
         });
         loadObjectifs();
-        //updateLineChart();
+        lineChart.getData().clear(); // Supprimer les données existantes
+        lineChart.getData().addAll(updateLineChart()); // Ajouter les nouvelles données mises à jour
     }
 
     private Optional<ButtonType> afficherAlerte(String titre, String message, Alert.AlertType type) {
