@@ -120,11 +120,16 @@
                         <Image url="@Images/notification.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btnObjectif" layoutX="66.0" layoutY="614.0" mnemonicParsing="false" onAction="#Objectif" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Objectif" textFill="WHITE">
+                  <Button fx:id="btnObjectif" layoutX="8.0" layoutY="614.0" mnemonicParsing="false" onAction="#Objectif" prefHeight="44.0" prefWidth="158.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Objectif" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
+                  <ImageView fitHeight="33.0" fitWidth="37.0" layoutX="25.0" layoutY="617.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/goal.png" />
+                     </image>
+                  </ImageView>
                     <!-- Autres boutons et images... -->
                 </children>
 
