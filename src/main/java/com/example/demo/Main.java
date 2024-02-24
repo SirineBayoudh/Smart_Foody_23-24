@@ -6,6 +6,7 @@ package com.example.demo;
 //import com.example.demo.Controllers.AlerteController;
 
 import com.example.demo.Controllers.AlerteController;
+import com.example.demo.Controllers.LanguageManager;
 import com.example.demo.Controllers.StockController;
 import com.example.demo.Models.Stock;
 import javafx.application.Application;
@@ -19,6 +20,7 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.util.Date;
+import java.util.Locale;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -31,7 +33,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
         Scene scene = new Scene(root);
         stage.setHeight(700);
-        stage.setWidth(1200);
+        stage.setWidth(1000);
         stage.setTitle("Smart foody");
         stage.setScene(scene);
         stage.show();

@@ -42,12 +42,14 @@ import java.net.URL;
 import java.sql.*;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 
 
-public class StockController implements Initializable {
-
+public class StockController implements Initializable , LanguageObserver{
+    @FXML
+    private TextField tst;
     @FXML
     private Button btnEuro;
     @FXML
@@ -59,10 +61,9 @@ public class StockController implements Initializable {
     private TextField Trecherche;
     @FXML
     private Button btnsupprimer;
+    @FXML private VBox Vboxupdate;
     @FXML
-    private VBox Vboxupdate;
-    @FXML
-    private Button btnupdate;
+    private static Button btnupdate;
     @FXML
     private Button btnSave;
 
@@ -123,13 +124,29 @@ public class StockController implements Initializable {
     @FXML
     private ScatterChart<String, Number> scatterChart;
     @FXML
+    private TextField tstTotal;
+
+    @FXML
+    private TextField tstadd;
+
+    @FXML
+    private TextField tstdelete;
+
+    @FXML
+    private TextField tstexport;
+
+    @FXML
+    private TextField tstsmodif;
+    @FXML
     private Button btnExporterTout;
     private static final String ACCOUNT_SID = "AC65cc060d1e8324522666575b59ffd53b";
     private static final String AUTH_TOKEN = "679c30c3da2210f88b2d0b9355f6f708 ";
     private static final String FROM_PHONE_NUMBER = "+18607820963";
+    private LanguageManager languageManager = LanguageManager.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        languageManager.addObserver(this);
         Trecherche.textProperty().addListener((observable, oldValue, newValue) -> {
             filterData(newValue);
         });
@@ -911,8 +928,31 @@ private void exportStockToExcel() {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    public void updateLabels() {
+        // Update other labels in StockController...
+         // You can customize this based on your needs
+        // Update btnupdate text based on language
+        id_stockColumn.setText(LanguageManager.getInstance().getText("id_stockColumn"));
+        NomColumn.setText(LanguageManager.getInstance().getText("NomColumn"));
+        refProduitColumn.setText(LanguageManager.getInstance().getText("refProduitColumn"));
+        marqueColumn.setText(LanguageManager.getInstance().getText("marqueColumn"));
+        quantiteColumn.setText(LanguageManager.getInstance().getText("quantiteColumn"));
+        nbVenduColumn.setText(LanguageManager.getInstance().getText("nbVenduColumn"));
+        tTotal.setText(LanguageManager.getInstance().getText("tTotal"));
+        //btnupdate.setText(LanguageManager.getInstance().getText("btnupdate"));
+        tstdelete.setText(LanguageManager.getInstance().getText("tstdelete"));
+        tstadd.setText(LanguageManager.getInstance().getText("tstadd"));
+        tstsmodif.setText(LanguageManager.getInstance().getText("tstsmodif"));
+        tstexport.setText(LanguageManager.getInstance().getText("tstexport"));
+        tstTotal.setText(LanguageManager.getInstance().getText("tstTotal"));
+        //Trecherche.setText(LanguageManager.getInstance().getText("Trecherche"));
+    }
 
 
+    @Override
+    public void onLanguageChanged() {
+        updateLabels();
+    }
 }
 
 

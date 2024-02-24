@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AlerteController {
+public class AlerteController implements LanguageObserver {
 
     @FXML
     private ResourceBundle resources;
@@ -67,8 +67,11 @@ public class AlerteController {
     @FXML
     private Pane pane_111;
 
+
+    private LanguageManager languageManager = LanguageManager.getInstance();
     @FXML
     void initialize() {
+        languageManager.addObserver(this);
         loadAlerts();
         DateColoumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         id_alerteColumn.setCellValueFactory(new PropertyValueFactory<>("id_alerte"));
@@ -212,6 +215,18 @@ public class AlerteController {
         }
     }
 
+    public void updateLabels() {
+        // Update other labels in StockController...
+        // You can customize this based on your needs
+        // Update btnupdate text based on language
+      id_alerteColumn.setText(LanguageManager.getInstance().getText("id_alerteColumn"));
 
+    }
+
+
+    @Override
+    public void onLanguageChanged() {
+        updateLabels();
+    }
 
 }

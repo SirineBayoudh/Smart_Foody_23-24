@@ -19,21 +19,21 @@
 <Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.StockController">
     <children>
         <!-- Le contenu spécifique de votre page de stocks -->
-        <TableView fx:id="stockTableView" layoutX="224.0" layoutY="285.0" onMouseClicked="#getData" prefHeight="325.0" prefWidth="732.0">
+        <TableView fx:id="stockTableView" layoutX="211.0" layoutY="279.0" onMouseClicked="#getData" prefHeight="329.0" prefWidth="740.0">
             <columns>
             <TableColumn fx:id="id_stockColumn" prefWidth="103.20001602172852" text="Id Stock" />
                 <TableColumn fx:id="NomColumn" minWidth="20.0" prefWidth="91.199951171875" text="Nom" />
                 <TableColumn fx:id="refProduitColumn" prefWidth="143.20001220703125" text="Réference du produits" />
+                <TableColumn fx:id="marqueColumn" text="Marque" />
                 <TableColumn fx:id="quantiteColumn" prefWidth="77.5999755859375" text="Quantité" />
             <TableColumn fx:id="nbVenduColumn" minWidth="0.0" prefWidth="130.39996337890625" text="Nombre vendus" />
             <TableColumn fx:id="tTotal" prefWidth="113.5999755859375" text="cout" />
-                <TableColumn fx:id="marqueColumn" text="Marque" />
 
             </columns>
         </TableView>
-      <Button fx:id="btnupdate" layoutX="359.0" layoutY="617.0" mnemonicParsing="false" onAction="#UpdateStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="      Modifier" />
-      <Button fx:id="btnsupprimer" layoutX="524.0" layoutY="617.0" mnemonicParsing="false" onAction="#deleteStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="     Supprimer" />
-        <Button fx:id="btnExporterTout" layoutX="696.0" layoutY="617.0" mnemonicParsing="false" onAction="#exporterToutesLesDonnees" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="Exporter Tout" />
+      <Button fx:id="btnupdate" layoutX="359.0" layoutY="617.0" mnemonicParsing="false" onAction="#UpdateStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+      <Button fx:id="btnsupprimer" layoutX="524.0" layoutY="617.0" mnemonicParsing="false" onAction="#deleteStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+        <Button fx:id="btnExporterTout" layoutX="696.0" layoutY="617.0" mnemonicParsing="false" onAction="#exporterToutesLesDonnees" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
 
         <ImageView fitHeight="23.0" fitWidth="35.0" layoutX="373.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -46,7 +46,7 @@
          </image>
       </ImageView>
 
-      <ImageView fitHeight="25.0" fitWidth="23.0" layoutX="888.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="23.0" fitWidth="19.0" layoutX="916.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/8666693_search_icon.png" />
          </image>
@@ -61,7 +61,7 @@
             <Image url="@Images/thumbnail_image.png" />
          </image>
       </ImageView>
-      <TextField fx:id="Trecherche" layoutX="728.0" layoutY="240.0" promptText="Rechercher :" />
+      <TextField fx:id="Trecherche" layoutX="755.0" layoutY="216.0" promptText="Rechercher :" />
       <VBox fx:id="Vboxupdate" layoutX="5.0" layoutY="318.0" prefHeight="216.0" prefWidth="207.0" style="-fx-background-color: #cce5c0;">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="500.0" layoutY="100.0" lineSpacing="1000.0" prefHeight="27.0" prefWidth="86.0" text="Modifier" textAlignment="RIGHT" textFill="#5ba971" translateX="50.0">
@@ -86,8 +86,8 @@
             <TextField fx:id="Qntfield" />
          </children>
       </VBox>
-      <Button fx:id="ajouter_stock" layoutX="195.0" layoutY="230.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" prefWidth="139.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text=" Ajouter" />
-      <ImageView fitHeight="45.0" fitWidth="55.0" layoutX="203.0" layoutY="230.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="ajouter_stock" layoutX="201.0" layoutY="237.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+      <ImageView fitHeight="28.0" fitWidth="45.0" layoutX="211.0" layoutY="240.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/ajouter.png" />
          </image>
@@ -112,9 +112,10 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
+            <TextField fx:id="tstTotal" layoutX="29.0" layoutY="58.0" prefHeight="28.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="  Total de stock" />
             </children>
         </Pane>
-        <ScatterChart fx:id="scatterChart" layoutX="573.0" layoutY="24.0" prefHeight="206.0" prefWidth="310.0">
+        <ScatterChart fx:id="scatterChart" layoutX="576.0" layoutY="17.0" prefHeight="206.0" prefWidth="310.0">
             <xAxis>
                 <CategoryAxis label="ID Stock" side="BOTTOM" />
             </xAxis>
@@ -122,14 +123,22 @@
                 <NumberAxis label="Quantité Vendue" side="LEFT" />
             </yAxis>
         </ScatterChart>
-        <Button fx:id="btnEuro" layoutX="607.0" layoutY="243.0" mnemonicParsing="false" onAction="#convertCostToEuro" prefHeight="35.0" prefWidth="61.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
-
-        <Button fx:id="btnDollar" layoutX="244.0" layoutY="633.0" mnemonicParsing="false" onAction="#convertCostToDollar" text="Dollar" />
-      <ImageView fitHeight="25.0" fitWidth="48.0" layoutX="625.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
+        <Button fx:id="btnEuro" layoutX="785.0" layoutY="248.0" mnemonicParsing="false" onAction="#convertCostToEuro" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
+      <ImageView fitHeight="13.0" fitWidth="12.0" layoutX="793.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/euro.png" />
          </image>
       </ImageView>
+      <Button fx:id="btnDollar" layoutX="815.0" layoutY="248.0" mnemonicParsing="false" onAction="#convertCostToDollar" prefHeight="25.0" prefWidth="35.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
+      <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="825.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/do.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tstdelete" layoutX="567.0" layoutY="623.0" prefHeight="12.0" prefWidth="70.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="supprimer" />
+      <TextField fx:id="tstexport" layoutX="728.0" layoutY="622.0" prefHeight="25.0" prefWidth="86.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="Exporter Tout" />
+      <TextField fx:id="tstadd" layoutX="247.0" layoutY="243.0" prefHeight="12.0" prefWidth="70.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="Add" />
+      <TextField fx:id="tstsmodif" layoutX="405.0" layoutY="623.0" prefHeight="12.0" prefWidth="70.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="Modifier" />
 
 
     </children>
