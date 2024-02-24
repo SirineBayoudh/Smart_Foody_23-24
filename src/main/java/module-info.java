@@ -14,4 +14,8 @@ module com.example.demo {
     exports com.example.demo.Tools;
     opens com.example.demo.Tools to javafx.fxml;
     opens com.example.demo.Models to javafx.base;
+    requires jdk.jpackage;
+    requires java.desktop;
+    requires itextpdf; // Ajoutez cette ligne pour accéder à jdk.jpackage
+
 }

@@ -21,7 +21,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.DashProduitController">
    <children>
-      <VBox fx:id="vboxFormulaire" layoutX="40.0" layoutY="255.0" prefHeight="440.0" prefWidth="278.0" spacing="8.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="255.0">
+      <VBox fx:id="vboxFormulaire" layoutX="40.0" layoutY="241.0" prefHeight="407.0" prefWidth="278.0" spacing="5.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="241.0">
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Marque">
                <VBox.margin>
@@ -52,7 +52,7 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Text>
-            <Spinner fx:id="tfPrix" editable="true" initialValue="50" max="100" min="0" prefHeight="26.0" prefWidth="234.0">
+            <Spinner fx:id="tfPrix" editable="true" initialValue="0" max="100" min="0" prefHeight="26.0" prefWidth="234.0">
                <VBox.margin>
                   <Insets left="20.0" />
                   
@@ -65,10 +65,22 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Text>
-            <CheckBox fx:id="checkboxCritere1" mnemonicParsing="false" text="sans gluten" />
-            <CheckBox fx:id="checkboxCritere2" mnemonicParsing="false" text="sans glucose" />
-            <CheckBox fx:id="checkboxCritere3" mnemonicParsing="false" text="sans lactose" />
-            <CheckBox fx:id="checkboxCritere4" mnemonicParsing="false" text="protein" />
+            <CheckBox fx:id="checkboxCritere1" mnemonicParsing="false" text="sans gluten" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></CheckBox>
+            <CheckBox fx:id="checkboxCritere2" mnemonicParsing="false" text="sans glucose" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></CheckBox>
+            <CheckBox fx:id="checkboxCritere3" mnemonicParsing="false" text="sans lactose" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></CheckBox>
+            <CheckBox fx:id="checkboxCritere4" mnemonicParsing="false" text="protein" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></CheckBox>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Image">
                <VBox.margin>
                   <Insets left="30.0" />
@@ -131,21 +143,13 @@
                </styleClass></Button>
         </buttons>
       </ButtonBar>
-      <LineChart fx:id="lineChart" layoutX="25.0" layoutY="14.0" prefHeight="250.0" prefWidth="498.0" style="-fx-background-color: transparent;" title="Évolution des prix par catégorie">
-        <xAxis>
-          <CategoryAxis label="Categorie" side="BOTTOM" tickLabelFill="#56ab2f" fx:id="xAxis" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis fx:id="yAxis" label="Prix" side="LEFT" tickLabelFill="#56ab2f" tickLabelGap="0.0" upperBound="40.0" />
-        </yAxis>
-      </LineChart>
       <ComboBox fx:id="categoryFilterComboBox" layoutX="686.0" layoutY="291.0" onAction="#filterByCategory" prefHeight="0.0" prefWidth="150.0" styleClass="comboBox" stylesheets="@css/style_pageClient.css" />
       <Label layoutX="537.0" layoutY="296.0" text="Filtrer par Catégorie : " textFill="#56ab2f">
          <font>
             <Font name="Cambria" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="labelTotalProduits" layoutX="581.0" layoutY="71.0" prefHeight="135.0" prefWidth="157.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="labelTotalProduits" layoutX="543.0" layoutY="43.0" prefHeight="124.0" prefWidth="174.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" textAlignment="CENTER" textFill="WHITE">
          <styleClass>
             <String fx:value="chosen-fruit-card" />
             <String fx:value="shadow" />
@@ -157,6 +161,39 @@
             <Insets left="20.0" />
          </padding>
       </Label>
+      <LineChart fx:id="linechart2" layoutX="40.0" layoutY="30.0" prefHeight="208.0" prefWidth="475.0" style="-fx-background-color: transparent;" title="Évolution des prix par catégorie">
+        <xAxis>
+          <CategoryAxis label="Catégorie" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Prix" side="LEFT">
+               <tickLabelFont>
+                  <Font name="Cambria" size="8.0" />
+               </tickLabelFont>
+            </NumberAxis>
+        </yAxis>
+      </LineChart>
+      <Label fx:id="labelSommePrixProduit" layoutX="738.0" layoutY="43.0" prefHeight="124.0" prefWidth="186.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <styleClass>
+            <String fx:value="shadow" />
+            <String fx:value="chosen-fruit-card" />
+         </styleClass>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </Label>
+      <Button fx:id="buttonExporterPDF" layoutX="698.0" layoutY="238.0" mnemonicParsing="false" onAction="#exporterFichierPDF" prefHeight="30.0" prefWidth="126.0" stylesheets="@css/style_pageClient.css" text="exporter en PDF" textFill="WHITE">
+         <font>
+            <Font name="Cambria" size="14.0" />
+         </font>
+         <styleClass>
+            <String fx:value="add-btn" />
+            <String fx:value="shadow" />
+         </styleClass>
+      </Button>
       
    </children>
 </AnchorPane>

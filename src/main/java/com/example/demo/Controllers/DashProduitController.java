@@ -1,13 +1,21 @@
 package com.example.demo.Controllers;
+import java.awt.Desktop;
+import java.io.*;
+
+import com.itextpdf.text.*;
 
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -22,11 +30,18 @@ import javafx.util.converter.FloatStringConverter;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
 
 public class DashProduitController implements Initializable {
     MyConnection con = null;
@@ -95,7 +110,25 @@ public class DashProduitController implements Initializable {
     private TableColumn<Produit, String> colImage;
     @FXML
     private LineChart<String, Number> lineChart;
+    @FXML
+    private LineChart<String, Number> linechart2;
+    @FXML
+    private Label labelSommePrixProduit;
 
+    private float getTotalPrixProduits() {
+        String query = "SELECT SUM(Prix) AS totalPrix FROM produit";
+        con = MyConnection.getInstance();
+        try {
+            st = con.getCnx().prepareStatement(query);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat("totalPrix");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0f; // Retourne 0 si aucun produit trouvé ou en cas d'erreur
+    }
 
 
     private void updateLineChart() {
@@ -108,18 +141,22 @@ public class DashProduitController implements Initializable {
                 String categorie = resultSet.getString("categorie");
                 double maxPrix = resultSet.getFloat("MaxPrix");
                 data.add(new XYChart.Data<>(categorie, maxPrix));
-                lineChart.getYAxis().setAutoRanging(false);
-                lineChart.setStyle("-fx-text-fill: #56ab2f");
-                ((NumberAxis) lineChart.getYAxis()).setLowerBound(0);
-                ((NumberAxis) lineChart.getYAxis()).setUpperBound(50);
-                ((NumberAxis) lineChart.getYAxis()).setTickUnit(5);
+                CategoryAxis xAxis = new CategoryAxis();
+                NumberAxis yAxis = new NumberAxis();
+                xAxis.setLabel("Catgorie");
+                yAxis.setLabel("Prix");
+                linechart2.getYAxis().setAutoRanging(false);
+                linechart2.setStyle("-fx-text-fill: #56ab2f");
+                ((NumberAxis) linechart2.getYAxis()).setLowerBound(0);
+                ((NumberAxis) linechart2.getYAxis()).setUpperBound(50);
+                ((NumberAxis) linechart2.getYAxis()).setTickUnit(5);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         XYChart.Series<String, Number> series = new XYChart.Series<>(data);
-        lineChart.getData().clear();
-        lineChart.getData().add(series);
+        linechart2.getData().clear();
+        linechart2.getData().add(series);
     }
 
     @FXML
@@ -343,7 +380,7 @@ public class DashProduitController implements Initializable {
 
                     // Récupérer la valeur du prix du Spinner en tant que Float
                     Number prixValue = tfPrix.getValue();
-                    Float prixFloatValue = prixValue != null ? prixValue.floatValue() : null;
+                    Float prixFloatValue = prixValue != null ? Float.parseFloat(prixValue.toString()) : null;
                     if (prixFloatValue == null) {
                         showAlert("Veuillez saisir un prix valide.");
                         return;
@@ -375,7 +412,7 @@ public class DashProduitController implements Initializable {
                         showProduits();
                         tfMarque.clear();
                         tfCategorie.clear();
-                        tfPrix.getValueFactory().setValue(0f);
+                        //tfPrix.getValueFactory().setValue(0f);
                         tfImage.clear();
                         checkboxCritere1.setSelected(false); // Décocher la première case à cocher
                         checkboxCritere2.setSelected(false); // Décocher la deuxième case à cocher
@@ -456,6 +493,7 @@ public class DashProduitController implements Initializable {
         ObservableList<String> categories = getCategoriesFromDatabase();
         categoryFilterComboBox.setItems(categories);
     }
+
     private ObservableList<String> getCategoriesFromDatabase() {
         ObservableList<String> categories = FXCollections.observableArrayList();
         categories.add("Tout"); // Ajout de l'option "Tout"
@@ -500,7 +538,100 @@ public class DashProduitController implements Initializable {
         categoryFilterComboBox.setItems(categories);
         int totalProduits = getTotalProduits();
         labelTotalProduits.setText("Total des produits :\n " + totalProduits);
+        labelSommePrixProduit.setText("Total des prix des produits :\n" + getTotalPrixProduits());
 
 
     }
-}
+
+    @FXML
+    void exporterFichierPDF(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le fichier PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier PDF", "*.pdf"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            String filePath = file.getAbsolutePath();
+            if (exporterProduitsVersPDF(filePath)) {
+                // Affichage d'un message de confirmation à l'utilisateur
+                showAlert(Alert.AlertType.INFORMATION, "Exportation réussie", "Les données ont été exportées avec succès vers " + filePath);
+
+                // Ouvrir le fichier PDF
+                openPDFFile(filePath);
+            } else {
+                // Affichage d'un message d'erreur à l'utilisateur
+                showAlert(Alert.AlertType.ERROR, "Erreur d'exportation", "Une erreur s'est produite lors de l'exportation des données.");
+            }
+        }
+    }
+
+    private void openPDFFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                Desktop.getDesktop().open(file);
+            } else {
+                System.out.println("Impossible d'ouvrir le fichier. Veuillez le faire manuellement.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de l'ouverture du fichier PDF.");
+        }
+    }
+        private boolean exporterProduitsVersPDF(String filePath) {
+            Document document = null;
+            try {
+                FileOutputStream fileOut = new FileOutputStream(filePath);
+                document = new Document();
+                PdfWriter.getInstance(document, fileOut);
+                document.open();
+
+                ObservableList<Produit> produits = table.getItems();
+
+                // Créer un tableau avec 6 colonnes pour les données des produits
+                PdfPTable table = new PdfPTable(6);
+
+                // Ajouter les en-têtes de colonne
+                String[] headers = {"Ref", "Marque", "Catégorie", "Prix", "Critère", "Image"};
+                for (String header : headers) {
+                    PdfPCell headerCell = new PdfPCell(new Phrase(header));
+                    headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    headerCell.setBackgroundColor(new BaseColor(136, 171, 47));
+                    table.addCell(headerCell);
+                }
+
+                // Ajouter les données de chaque produit dans le tableau
+                for (Produit produit : produits) {
+                    table.addCell(String.valueOf(produit.getRef()));
+                    table.addCell(produit.getMarque());
+                    table.addCell(produit.getCategorie());
+                    table.addCell(String.valueOf(produit.getPrix()));
+                    table.addCell(produit.getCritere());
+                    table.addCell(produit.getImage());
+                }
+
+                // Ajouter le tableau au document PDF
+                document.add(table);
+
+                System.out.println("Export PDF réussi.");
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Erreur lors de l'export PDF.");
+                return false;
+            } finally {
+                if (document != null) {
+                    document.close();
+                }
+            }
+        }
+
+
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    }
