@@ -83,6 +83,10 @@ public class dashboardController implements Initializable {
     private void user() {
 
     }
+    @FXML
+    void Objectif(ActionEvent event) {
+        loadPage("/com/example/demo/objectif.fxml");
+    }
     private void loadPage(String page) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(page));

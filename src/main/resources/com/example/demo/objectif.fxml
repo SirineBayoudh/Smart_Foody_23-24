@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.CheckBox?>
@@ -9,34 +14,105 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="637.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.objectifController">
    <children>
-      <TableView fx:id="ObjectifTableView" layoutX="411.0" layoutY="194.0" prefHeight="371.0" prefWidth="508.0">
+      <TableView fx:id="ObjectifTableView" layoutX="408.0" layoutY="319.0" prefHeight="286.0" prefWidth="508.0">
         <columns>
             <TableColumn fx:id="colIdObj" minWidth="0.0" prefWidth="156.79998779296875" text="ID_obj" />
           <TableColumn fx:id="colLibelle" prefWidth="141.5999755859375" text="Libelle" />
           <TableColumn fx:id="colCritere" minWidth="0.0" prefWidth="156.79998779296875" text="Critere" />
         </columns>
       </TableView>
-      <VBox layoutX="51.0" layoutY="309.0" prefHeight="163.0" prefWidth="250.0">
+      <VBox layoutX="75.0" layoutY="319.0" prefHeight="233.0" prefWidth="250.0" style="-fx-background-color: #56ab2f;" styleClass="chosen-fruit-card" stylesheets="@css/style_pageClient.css">
          <children>
-            <Label prefHeight="18.0" prefWidth="57.0" text="libelle" />
-            <ComboBox fx:id="tfLibelle" prefWidth="150.0" />
-            <Label prefHeight="18.0" prefWidth="82.0" text="Critere" />
-            <CheckBox fx:id="tfCritere1" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="sans gluten" />
-            <CheckBox fx:id="tfCritere2" mnemonicParsing="false" text="sans glucose" />
-            <CheckBox fx:id="tfCritere3" mnemonicParsing="false" text="sans lactose" />
-            <CheckBox fx:id="tfCritere4" mnemonicParsing="false" text="protein" />
+            <Label prefHeight="18.0" prefWidth="57.0" text="Libelle" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Label>
+            <ComboBox fx:id="tfLibelle" prefHeight="26.0" prefWidth="211.0" style="-fx-background-color: #ffffff;" styleClass="comboBox" stylesheets="@css/style_pageClient.css">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin></ComboBox>
+            <Label prefHeight="18.0" prefWidth="82.0" text="Critere" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Label>
+            <CheckBox fx:id="tfCritere1" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="sans gluten" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="tfCritere2" mnemonicParsing="false" text="sans glucose" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="tfCritere3" mnemonicParsing="false" text="sans lactose" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="tfCritere4" mnemonicParsing="false" text="protein" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
          </children>
       </VBox>
-      <ButtonBar layoutX="91.0" layoutY="525.0" prefHeight="40.0" prefWidth="200.0">
+      <ButtonBar layoutX="31.0" layoutY="565.0" prefHeight="40.0" prefWidth="339.0">
         <buttons>
-          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createObjectif" text="ajouter" />
-            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#updateObjectif" text="modifier" />
-            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerObjectif" text="supprimer" />
+          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createObjectif" stylesheets="@css/style_pageClient.css" text="Ajouter" textFill="WHITE">
+               <styleClass>
+                  <String fx:value="add-btn" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
+            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#updateObjectif" stylesheets="@css/style_pageClient.css" text="Modifier" textFill="WHITE">
+               <styleClass>
+                  <String fx:value="add-btn" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
+            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerObjectif" stylesheets="@css/style_pageClient.css" text="Supprimer" textFill="WHITE">
+               <styleClass>
+                  <String fx:value="add-btn" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
         </buttons>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
       </ButtonBar>
+      <LineChart fx:id="lineChart" layoutX="31.0" layoutY="14.0" prefHeight="278.0" prefWidth="498.0" title="Évolution des critères par Objectif">
+        <xAxis>
+          <CategoryAxis label="Libellé" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Critère" side="LEFT" />
+        </yAxis>
+      </LineChart>
    </children>
 </AnchorPane>

@@ -120,6 +120,11 @@
                         <Image url="@Images/notification.png" />
                      </image>
                   </ImageView>
+                  <Button fx:id="btnObjectif" layoutX="66.0" layoutY="614.0" mnemonicParsing="false" onAction="#Objectif" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Objectif" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
                     <!-- Autres boutons et images... -->
                 </children>
 

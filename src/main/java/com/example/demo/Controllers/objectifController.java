@@ -9,10 +9,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +33,12 @@ public class objectifController {
     private TableView<Objectif> ObjectifTableView;
     @FXML
     private Button btnAjouter;
+
+    @FXML
+    private Button btnModifier;
+
+    @FXML
+    private Button btnSupprimer;
     @FXML
     private CheckBox tfCritere1;
 
@@ -52,10 +63,61 @@ public class objectifController {
 
     @FXML
     private TableColumn<Objectif, String> colLibelle;
+    @FXML
+    private LineChart<String, Number> lineChart;
+
+    private ObservableList<XYChart.Series<String, Number>> updateLineChart() {
+        String query = "SELECT libelle, listCritere FROM objectif ";
+        ObservableList<XYChart.Series<String, Number>> data = FXCollections.observableArrayList();
+        try {
+            PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String libelle = resultSet.getString("libelle");
+                String critereString = resultSet.getString("listCritere");
+                int critereCount = calculateCheckedCriteria(critereString);
+                XYChart.Series<String, Number> series = new XYChart.Series<>();
+                series.setName(libelle);
+                series.getData().add(new XYChart.Data<>(libelle, critereCount));
+                data.add(series);
+            }
+            NumberAxis yAxis = (NumberAxis) lineChart.getYAxis();
+            yAxis.setAutoRanging(false);
+            yAxis.setLowerBound(0);
+            yAxis.setUpperBound(4);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+        private int calculateCheckedCriteria(String listCritere) {
+        // Compteur pour stocker le nombre de critères cochés
+        int count = 0;
+
+        // Vérifier chaque critère et incrémenter le compteur si présent dans la chaîne listCritere
+        for (ListCritere critere : ListCritere.values()) {
+            if (listCritere.contains(critere.name())) {
+                count++;
+            }
+        }
+
+        return count;
+    }
 
 
     @FXML
     void createObjectif(ActionEvent event) {
+        if (tfLibelle.getValue() == null) {
+            afficherAlerte("Erreur", "Veuillez sélectionner un libellé !", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Vérifier si au moins un critère est sélectionné
+        if (!tfCritere1.isSelected() && !tfCritere2.isSelected() && !tfCritere3.isSelected() && !tfCritere4.isSelected()) {
+            afficherAlerte("Erreur", "Veuillez sélectionner au moins un critère !", Alert.AlertType.ERROR);
+            return;
+        }
         String insert = "INSERT INTO objectif(libelle, listCritere) VALUES(?, ?)";
         con = MyConnection.getInstance();
         try {
@@ -91,6 +153,11 @@ public class objectifController {
             int rowsAffected = st.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Objectif ajouté avec succès !");
+                tfLibelle.setValue(null);
+                tfCritere1.setSelected(false);
+                tfCritere2.setSelected(false);
+                tfCritere3.setSelected(false);
+                tfCritere4.setSelected(false);
             } else {
                 System.out.println("Échec de l'ajout de l'objectif !");
             }
@@ -99,6 +166,7 @@ public class objectifController {
             throw new RuntimeException(e);
         }
         loadObjectifs();
+        //updateLineChart();
     }
 
     @FXML
@@ -110,6 +178,26 @@ public class objectifController {
         tfLibelle.setOnAction(event -> {
             String libelle = tfLibelle.getValue();
             System.out.println("Objectif sélectionné : " + libelle);
+        });
+        btnModifier.setDisable(true);
+        btnSupprimer.setDisable(true);
+
+        // Ajouter un listener pour le TableView pour activer les boutons "Modifier" et "Supprimer" lorsque
+        // une ligne est sélectionnée
+        ObjectifTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                // Activer les boutons "Modifier" et "Supprimer"
+                btnModifier.setDisable(false);
+                btnSupprimer.setDisable(false);
+                // Désactiver le bouton "Ajouter"
+                btnAjouter.setDisable(true);
+            } else {
+                // Aucune ligne sélectionnée, désactiver les boutons "Modifier" et "Supprimer"
+                btnModifier.setDisable(true);
+                btnSupprimer.setDisable(true);
+                // Activer le bouton "Ajouter"
+                btnAjouter.setDisable(false);
+            }
         });
         colIdObj.setCellValueFactory(new PropertyValueFactory<>("id_obj"));
         colLibelle.setCellValueFactory(new PropertyValueFactory<>("libelle"));
@@ -130,6 +218,9 @@ public class objectifController {
             }
         });
         loadObjectifs();
+        ObservableList<XYChart.Series<String, Number>> data = updateLineChart();
+        lineChart.getData().addAll(data);
+
     }
 
     private void loadObjectifs() {
@@ -160,6 +251,7 @@ public class objectifController {
         ObservableList<Objectif> observableObjectifs = FXCollections.observableArrayList();
         observableObjectifs.addAll(objectifs);
         ObjectifTableView.setItems(observableObjectifs);
+        //updateLineChart();
     }
 
     private List<ListCritere> mapCritereStringToList(String[] critereArray) {
@@ -239,6 +331,8 @@ public class objectifController {
                 }
             }
         });
+        loadObjectifs();
+        //updateLineChart();
     }
 
 
@@ -280,6 +374,7 @@ public class objectifController {
             }
         });
         loadObjectifs();
+        //updateLineChart();
     }
 
     private Optional<ButtonType> afficherAlerte(String titre, String message, Alert.AlertType type) {
@@ -288,6 +383,7 @@ public class objectifController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         return alert.showAndWait();
+
     }
 
 
