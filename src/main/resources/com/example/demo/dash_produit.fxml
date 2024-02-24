@@ -185,7 +185,7 @@
             <Insets left="10.0" />
          </padding>
       </Label>
-      <Button fx:id="buttonExporterPDF" layoutX="698.0" layoutY="238.0" mnemonicParsing="false" onAction="#exporterFichierPDF" prefHeight="30.0" prefWidth="126.0" stylesheets="@css/style_pageClient.css" text="exporter en PDF" textFill="WHITE">
+      <Button fx:id="buttonExporterPDF" layoutX="698.0" layoutY="238.0" mnemonicParsing="false" onAction="#exporterFichierPDF" prefHeight="30.0" prefWidth="126.0" stylesheets="@css/style_pageClient.css" text="Exporter en PDF" textFill="WHITE">
          <font>
             <Font name="Cambria" size="14.0" />
          </font>

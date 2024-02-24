@@ -4,6 +4,13 @@ import com.example.demo.Models.ListCritere;
 import com.example.demo.Models.Objectif;
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -15,13 +22,20 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,6 +79,145 @@ public class objectifController {
     private TableColumn<Objectif, String> colLibelle;
     @FXML
     private LineChart<String, Number> lineChart;
+
+    @FXML
+    private ComboBox<String> critereFilterCombobox;
+
+    @FXML
+    void exportFichierPDF(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le fichier PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichier PDF", "*.pdf"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            String filePath = file.getAbsolutePath();
+            if (exporterObjectifsVersPDF(filePath)) {
+                // Affichage d'un message de confirmation à l'utilisateur
+                showAlert(Alert.AlertType.INFORMATION, "Exportation réussie", "Les données ont été exportées avec succès vers " + filePath);
+
+                // Ouvrir le fichier PDF
+                openPDFFile(filePath);
+            } else {
+                // Affichage d'un message d'erreur à l'utilisateur
+                showAlert(Alert.AlertType.ERROR, "Erreur d'exportation", "Une erreur s'est produite lors de l'exportation des données.");
+            }
+        }
+    }
+
+    private void openPDFFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                Desktop.getDesktop().open(file);
+            } else {
+                System.out.println("Impossible d'ouvrir le fichier. Veuillez le faire manuellement.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de l'ouverture du fichier PDF.");
+        }
+    }
+    private boolean exporterObjectifsVersPDF(String filePath) {
+        Document document = null;
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            document = new Document();
+            PdfWriter.getInstance(document, fileOut);
+            document.open();
+
+            ObservableList<Objectif> objectifs = ObjectifTableView.getItems();
+
+            // Créer un tableau avec 3 colonnes pour les données des objectifs
+            PdfPTable table = new PdfPTable(3);
+
+            // Ajouter les en-têtes de colonne
+            String[] headers = {"ID", "Libellé", "Critères"};
+            for (String header : headers) {
+                PdfPCell headerCell = new PdfPCell(new Phrase(header));
+                headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                headerCell.setBackgroundColor(new BaseColor(136, 171, 47));
+                table.addCell(headerCell);
+            }
+
+            // Ajouter les données de chaque objectif dans le tableau
+            for (Objectif objectif : objectifs) {
+                table.addCell(String.valueOf(objectif.getId_obj()));
+                table.addCell(objectif.getLibelle());
+                table.addCell(objectif.getListCritereAsString());
+            }
+
+            // Ajouter le tableau au document PDF
+            document.add(table);
+
+            System.out.println("Export PDF réussi.");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de l'export PDF.");
+            return false;
+        } finally {
+            if (document != null) {
+                document.close();
+            }
+        }
+    }
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    @FXML
+    void filterByCritere(ActionEvent event) {
+        String selectedCritere = critereFilterCombobox.getValue();
+        ObservableList<Objectif> filteredList = FXCollections.observableArrayList();
+
+        if ("Tout".equals(selectedCritere)) {
+            filteredList.addAll(getObjectifs()); // Charger tous les objectifs sans filtre
+        } else {
+            ListCritere critereEnum = ListCritere.valueOf(selectedCritere); // Convertir la chaîne en énumération
+
+            for (Objectif objectif : getObjectifs()) {
+                if (objectif.getListCritere().contains(critereEnum)) {
+                    filteredList.add(objectif);
+                }
+            }
+        }
+
+        // Mettre à jour le TableView avec la liste filtrée d'objectifs
+        ObjectifTableView.setItems(filteredList);
+    }
+
+    private ObservableList<Objectif> getObjectifs() {
+        ObservableList<Objectif> objectifs = FXCollections.observableArrayList();
+        // Remplacez ce code avec votre propre logique pour récupérer les objectifs depuis la base de données
+        // ou depuis une autre source de données
+        try {
+            String query = "SELECT id_obj, libelle, listCritere FROM objectif";
+            con = MyConnection.getInstance();
+            st = con.getCnx().prepareStatement(query);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                String libelle = rs.getString("libelle");
+                String listCritereString = rs.getString("listCritere");
+                Integer id_obj = rs.getInt("id_obj");
+
+                // Convertir la chaîne de critères en une liste d'énumérations ListCritere
+                List<ListCritere> listCritere = mapCritereStringToList(listCritereString.split(", "));
+
+                // Créer un nouvel objet Objectif avec la liste de critères
+                objectifs.add(new Objectif(id_obj, libelle, listCritere));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        return objectifs;
+    }
 
     private ObservableList<XYChart.Series<String, Number>> updateLineChart() {
         String query = "SELECT libelle, listCritere FROM objectif ";
@@ -153,11 +306,7 @@ public class objectifController {
             int rowsAffected = st.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Objectif ajouté avec succès !");
-                tfLibelle.setValue(null);
-                tfCritere1.setSelected(false);
-                tfCritere2.setSelected(false);
-                tfCritere3.setSelected(false);
-                tfCritere4.setSelected(false);
+                resetForm();
             } else {
                 System.out.println("Échec de l'ajout de l'objectif !");
             }
@@ -180,6 +329,16 @@ public class objectifController {
         tfLibelle.setOnAction(event -> {
             String libelle = tfLibelle.getValue();
             System.out.println("Objectif sélectionné : " + libelle);
+        });
+        critereFilterCombobox.getItems().add("Tout");
+        critereFilterCombobox.getItems().addAll(Arrays.stream(ListCritere.values())
+                .map(Enum::toString)
+                .collect(Collectors.toList()));
+
+
+        // Ajoutez un gestionnaire d'événements pour capturer la sélection de l'utilisateur
+        critereFilterCombobox.setOnAction(event -> {
+            filterByCritere(event); // Appeler la méthode de filtrage lorsque l'utilisateur sélectionne un critère
         });
         btnModifier.setDisable(true);
         btnSupprimer.setDisable(true);
@@ -324,6 +483,7 @@ public class objectifController {
                         afficherAlerte("Succès", "Objectif mis à jour avec succès !", Alert.AlertType.INFORMATION);
                         // Rafraîchir la TableView après la mise à jour
                         loadObjectifs();
+                        resetForm();
                     } else {
                         afficherAlerte("Erreur", "Échec de la mise à jour de l'objectif !", Alert.AlertType.ERROR);
                     }
@@ -367,6 +527,7 @@ public class objectifController {
                         afficherAlerte("Succès", "Objectif supprimé avec succès !", Alert.AlertType.INFORMATION);
                         // Rafraîchir la TableView après la suppression
                         loadObjectifs();
+                        resetForm();
                     } else {
                         afficherAlerte("Erreur", "Échec de la suppression de l'objectif !", Alert.AlertType.ERROR);
                     }
@@ -388,6 +549,15 @@ public class objectifController {
         alert.setContentText(message);
         return alert.showAndWait();
 
+    }
+
+    private void resetForm() {
+        tfLibelle.setValue(null);
+        tfCritere1.setSelected(false);
+        tfCritere2.setSelected(false);
+        tfCritere3.setSelected(false);
+        tfCritere4.setSelected(false);
+        // Réinitialiser d'autres champs du formulaire si nécessaire
     }
 
 
