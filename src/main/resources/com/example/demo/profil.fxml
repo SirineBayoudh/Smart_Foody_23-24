@@ -131,7 +131,7 @@
                            <Label text="Ancien mot de passe" translateX="30.0" translateY="100.0" />
                            <PasswordField fx:id="ancienMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="100.0" />
                            <Label text="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
-                           <PasswordField fx:id="nouveauMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionN" prefWidth="150.0" translateX="350.0" translateY="15.0" />
+                           <PasswordField fx:id="nouveauMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
                            <Button fx:id="modifierMDP" mnemonicParsing="false" onAction="#modifierMDP" text="Modifier" translateX="400.0" translateY="35.0" />
                            <ImageView fx:id="eyeClosedA" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#Close_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-90.0">
                               <image>
@@ -154,7 +154,7 @@
                               </image>
                            </ImageView>
                            <TextField fx:id="ancienMDPshow" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="-275.0" />
-                           <TextField fx:id="nouveauMDPshow" layoutX="10.0" layoutY="419.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionN" prefWidth="150.0" promptText="Mot de passe actuel" translateX="350.0" translateY="-325.0" />
+                           <TextField fx:id="nouveauMDPshow" layoutX="10.0" layoutY="419.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="-325.0" />
                         </children>
                      </VBox>
                   </children>

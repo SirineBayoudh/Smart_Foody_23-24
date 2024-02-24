@@ -141,7 +141,7 @@ public class Utilisateur implements Comparable<Utilisateur>{
         this.objectif = objectif;
     }
 
-    public Utilisateur(String nom, String prenom, String genre, String email, String mot_de_passe,int num_tel, String role, int matricule, String attestation, String adresse, String objectif) {
+    public Utilisateur(String nom, String prenom, String genre, String email, String mot_de_passe,int num_tel, String role, int matricule, String attestation, String adresse, String objectif, int tentative) {
         this.nom = nom;
         this.prenom = prenom;
         this.genre = genre;
@@ -153,6 +153,7 @@ public class Utilisateur implements Comparable<Utilisateur>{
         this.attestation = attestation;
         this.adresse = adresse;
         this.objectif = objectif;
+        this.tentative = tentative;
     }
 
     @Override

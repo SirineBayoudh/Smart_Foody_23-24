@@ -239,6 +239,9 @@ public class GestionUserController implements Initializable {
         col_objectif.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("objectif"));
 
         tableUser.setItems(listUsers);
+
+        collectGenderData();
+        totalClient();
     }
 
     private void rechercher(String searchText) {

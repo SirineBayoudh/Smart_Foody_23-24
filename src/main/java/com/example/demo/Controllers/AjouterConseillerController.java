@@ -138,7 +138,7 @@ public class AjouterConseillerController implements Initializable {
         }
         Connection cnx = MyConnection.getInstance().getCnx();
 
-        Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","");
+        Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","",0);
         String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement pst = cnx.prepareStatement(requete);

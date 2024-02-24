@@ -9,13 +9,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -30,6 +34,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
@@ -99,6 +104,15 @@ public class RegisterController implements Initializable {
     @FXML
     private Button btnInscri;
 
+    @FXML
+    private AnchorPane anchorPane;
+
+    @FXML
+    private Label verifCaptcha;
+
+    public boolean captcha = false;
+
+    private String generatedWord;
 
     Encryptor encryptor = new Encryptor();
 
@@ -201,6 +215,51 @@ public class RegisterController implements Initializable {
     }
 
     @FXML
+    void verifierCaptcha(MouseEvent event) {
+        // Générer un mot aléatoire composé de chiffres et de lettres
+        generatedWord = generateRandomWord();
+
+        // Créer une image avec le mot généré
+        ImageView captchaImage = createCaptchaImage(generatedWord);
+
+        // Champ de texte pour que l'utilisateur entre le mot du captcha
+        TextField captchaInput = new TextField();
+        captchaInput.setPromptText("Entrez le mot suivant");
+        captchaInput.setEditable(true);
+
+        // Bouton pour vérifier le captcha
+        Button verifyButton = new Button("Vérifier");
+        verifyButton.setOnAction(e -> {
+            String userInput = captchaInput.getText();
+            if (userInput.equals(generatedWord)) {
+                captcha = true;
+            } else {
+                showAlert("Erreur: Captcha incorrect!");
+                captcha = false;
+            }
+        });
+
+        anchorPane.setPadding(new Insets(10));
+
+        captchaImage.setFitWidth(180);
+        captchaImage.setFitHeight(60);
+
+        AnchorPane.setTopAnchor(captchaImage, -5.0);
+        AnchorPane.setLeftAnchor(captchaImage, -10.0);
+
+        captchaInput.setPrefWidth(170.0);
+        AnchorPane.setTopAnchor(captchaInput, -5.0);
+        AnchorPane.setLeftAnchor(captchaInput, 170.0);
+
+        verifyButton.setMaxWidth(120.0);
+        verifyButton.setMinHeight(30.0);
+        AnchorPane.setTopAnchor(verifyButton, 35.0);
+        AnchorPane.setRightAnchor(verifyButton, 30.0);
+
+        anchorPane.getChildren().addAll( captchaImage, captchaInput, verifyButton);
+    }
+
+    @FXML
     void addUser(ActionEvent event) throws NoSuchAlgorithmException {
 
         //Contrôle sur les champs vides
@@ -264,41 +323,72 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        complx.Calcul(tpwd.getText());
-        System.out.println(complx.getNb());
-
-        if(complx.getNb() <6){
+        if(!captcha){
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText(null);
-            alert.setContentText("Mot de passe faible");
+            alert.setContentText("Veuillez choisir correctement le code captcha");
             alert.showAndWait();
-            complx.setNb(0);
-        }else if (complx.getNb() >= 6 && complx.getNb() < 12){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText(null);
-            alert.setContentText("Mot de passe moyen");
-            alert.showAndWait();
-            complx.setNb(0);
-        } else if (complx.getNb() == 12){
-            Utilisateur user = new Utilisateur(tnom.getText(),tprenom.getText(),genreChoisi,temail.getText(),encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()),Role.Client.toString(),0,"",villeChoisie + ", " + tfrue.getText(),objectifChoisi);
-            UserCrud usc = new UserCrud();
-            usc.ajouterEntite(user);
+        }else {
+            complx.Calcul(tpwd.getText());
+            System.out.println(complx.getNb());
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
-            try {
-                Parent root = loader.load();
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.show();
-                //Pour fermer la fenêtre du login
-                Stage loginStage = (Stage) temail.getScene().getWindow();
-                loginStage.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if(complx.getNb() <6){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setContentText("Mot de passe faible");
+                alert.showAndWait();
+                complx.setNb(0);
+            }else if (complx.getNb() >= 6 && complx.getNb() < 12){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setContentText("Mot de passe moyen");
+                alert.showAndWait();
+                complx.setNb(0);
+            } else if (complx.getNb() == 12){
+                Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), 0, "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0);
+                UserCrud usc = new UserCrud();
+                usc.ajouterEntite(user);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
+                try {
+                    Parent root = loader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    //Pour fermer la fenêtre du login
+                    Stage loginStage = (Stage) temail.getScene().getWindow();
+                    loginStage.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
 
+    private String generateRandomWord() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
+
+    private ImageView createCaptchaImage(String word) {
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image("https://dummyimage.com/200x50/000/fff&text=" + word)); // Ceci est un exemple pour générer une image dynamiquement avec le mot
+        return imageView;
+    }
+
+    // Méthode pour afficher une alerte
+    private void showAlert(String message) {
+        Stage alertStage = new Stage();
+        VBox alertLayout = new VBox(10);
+        alertLayout.getChildren().add(new Label(message));
+        Scene scene = new Scene(alertLayout, 200, 100);
+        alertStage.setScene(scene);
+        alertStage.show();
+    }
 
     @FXML
     void redirectToLogin(MouseEvent event) {
