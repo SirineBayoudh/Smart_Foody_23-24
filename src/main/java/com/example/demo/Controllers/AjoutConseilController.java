@@ -2,6 +2,10 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.Conseil;
 import com.example.demo.Tools.MyConnection;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +17,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javax.mail.*;
@@ -22,10 +31,39 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import com.dynamsoft.dbr.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.stream.Stream;
+
+import com.google.gson.Gson;
+import javafx.util.Duration;
 
 public class AjoutConseilController implements Initializable {
+    @FXML
+    private ImageView productImage;
+
+    @FXML
+    private Text marqueLabel;
+    @FXML
+    private Text productLabel;
+    @FXML
+    private Text barcodeLabel;
+    @FXML
+    private TextArea calLabel;
 
     @FXML
     private TextArea demandeLabel;
@@ -37,6 +75,8 @@ public class AjoutConseilController implements Initializable {
     private TextArea foodLabel;
     @FXML
     private Button btnUpdate;
+    @FXML
+    private StackPane pane;
     int id_conseil=0;
     @FXML
     private TableColumn<Conseil, Integer> colidconseil;
@@ -61,12 +101,62 @@ public class AjoutConseilController implements Initializable {
     ResultSet rs = null;
     @FXML
     private TextArea foodName;
+    public class Store {
+        public String name;
+        public String price;
+        public String link;
+        public String currency;
+        public String currency_symbol;
+    }
+
+    public class Review {
+        public String name;
+        public String rating;
+        public String title;
+        public String review;
+        public String date;
+    }
+
+    public class Product {
+        public String barcode_number;
+        public String barcode_formats;
+        public String mpn;
+        public String model;
+        public String asin;
+        public String title;
+        public String category;
+        public String manufacturer;
+        public String brand;
+        public String[] contributors;
+        public String age_group;
+        public String ingredients;
+        public String nutrition_facts;
+        public String color;
+        public String format;
+        public String multipack;
+        public String size;
+        public String length;
+        public String width;
+        public String height;
+        public String weight;
+        public String release_date;
+        public String description;
+        public Object[] features;
+        public String[] images;
+        public AjoutConseilController.Store[] stores;
+        public AjoutConseilController.Review[] reviews;
+    }
+
+    public class RootObject {
+        public AjoutConseilController.Product[] products;
+    }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MyConnection.getInstance();
         showConseils();
+        setborder(pane);
         btnUpdate.disableProperty().bind(table.getSelectionModel().selectedItemProperty().isNull());
         // capturing id_conseil of selected item in the table
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -131,7 +221,7 @@ public class AjoutConseilController implements Initializable {
         // SMTP server configuration
         String host = "smtp.gmail.com"; // SMTP server hostname
         String username = "smartfoody.2024@gmail.com"; // SMTP username
-        String password = "apsp ytkl paob kzge"; // SMTP password
+        String password = ""; // SMTP password
         // Email properties
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -153,12 +243,14 @@ public class AjoutConseilController implements Initializable {
             // Construct email body with HTML formatting
             String body = "<html>"
                     + "<body>"
-                    + "<p style='color:darkgreen;'>Bonjour,</p>"
+                    + "<div style='width: 500px;background-color: #aad597; padding: 20px;'>"
+                    + "<p style='color:darkgreen;font-size:14px;'>Bonjour,</p>"
                     + "<p style='color:darkgreen;font-size:18px;'>Une nouvelle demande a été reçue :</p>"
-                    + "<p style='color:black;font-weight:bold;'>Objet: " + demande + "</p>"
-                    + "<p style='color:darkgreen;'font-weight:bold;'>Date de réception: " + dateConseil + "</p>"
+                    + "<p style='color:black;font-weight:bold;font-size:16px;'>Objet: " + demande + "</p>"
+                    + "<p style='color:darkgreen;'font-weight:bold;font-size:16px;'>Date de réception: " + dateConseil + "</p>"
                     + "<p style='font-weight:bold;'>Veuillez consulter l'application pour la traiter.</p>"
                     + "<p style='color:gray;'>Ceci est un message automatique. Merci de ne pas répondre.</p>"
+                    + "</div>"
                     + "</body>"
                     + "</html>";
 
@@ -316,5 +408,99 @@ public class AjoutConseilController implements Initializable {
     void clear(MouseEvent event) {
         foodLabel.setText(null);
         foodInfoText.setText(null);
+    }
+
+    @FXML
+    public void selectImage() {
+        barcodeLabel.setText(null);
+        productLabel.setText(null);
+        marqueLabel.setText(null);
+        calLabel.setText(null);
+        Stage stage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Image File");
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            try {
+                Image image = new Image(new FileInputStream(file));
+                ImageView imageView = new ImageView(image);
+                String barcode = readBarcode(file);
+                barcodeLabel.setText(barcode);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String readBarcode(File file) {
+        try {
+            // Initialize Dynamsoft Barcode Reader
+            BarcodeReader.initLicense("");
+            BarcodeReader dbr = new BarcodeReader();
+
+            // Decode barcode from the selected image file
+            TextResult[] results = dbr.decodeFile(file.getAbsolutePath(), "");
+
+            // Extract and return the barcode text
+            if (results != null && results.length > 0) {
+                System.out.println(results[0].barcodeText);
+                try {
+                    URL url = new URL("https://api.barcodelookup.com/v3/products?barcode="+results[0].barcodeText+"&formatted=y&key=");
+                    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String str = "";
+                    String data = "";
+                    while (null != (str= br.readLine())) {
+                        data+=str;
+                    }
+
+                    Gson g = new Gson();
+
+                    AjoutConseilController.RootObject value = g.fromJson(data, AjoutConseilController.RootObject.class);
+
+                    String barcode = value.products[0].barcode_number;
+
+                    String name = value.products[0].title;
+                    productLabel.setText(name);
+
+                    String marque = value.products[0].brand;
+                    marqueLabel.setText(marque);
+
+                    String cal = value.products[0].nutrition_facts;
+                    calLabel.setText(cal);
+
+                    //System.out.println("Entire Response:");
+                    //System.out.println(data);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return results[0].barcodeText;
+            } else {
+                return "No barcode found";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
+    }
+
+    private void setborder(StackPane pane) {
+
+        Color[] colors = Stream.of("#3c7720", "#bbddab", "#88c46d", "#66b343", "#56ab2f", "#448825", "#33661c", "56ab2f", "#19330e")
+                .map(Color::web)
+                .toArray(Color[]::new);
+
+        List<Border> list = new ArrayList<>();
+
+        int mills[] = {-50};
+        KeyFrame keyFrames[]  = Stream.iterate(0, i -> i+1)
+                .limit(100)
+                .map(i -> new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop[]{new Stop(0, colors[i%colors.length]), new Stop(1, colors[(i+1)%colors.length])}))
+                .map(lg -> new Border(new BorderStroke(lg, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(2))))
+                .map(b -> new KeyFrame(Duration.millis(mills[0]+=200), new KeyValue(pane.borderProperty(), b, Interpolator.EASE_IN)))
+                .toArray(KeyFrame[]::new);
+
+        Timeline timeline = new Timeline(keyFrames);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 }

@@ -12,7 +12,7 @@ public class EmailSender {
         String host = "smtp.gmail.com";
         int port = 587; // Change this to your SMTP server port
         String username = "smartfoody.2024@gmail.com"; // SMTP username
-        String password = "apsp ytkl paob kzge"; // SMTP password
+        String password = ""; // SMTP password
 
         // Set mail properties
         Properties properties = new Properties();

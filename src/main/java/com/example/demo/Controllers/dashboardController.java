@@ -27,6 +27,8 @@ public class dashboardController implements Initializable {
     @FXML
     private BorderPane centerPane;
     @FXML
+    private Button btnConseil;
+    @FXML
     private Text tt;
 
     private boolean isClicked = false;
@@ -68,14 +70,19 @@ public class dashboardController implements Initializable {
     private void dashboard() {
         centerPane.setCenter(innerPane);
         btn_home.getStyleClass().add("btn_home");
-
     }
     @FXML
     private void stock() {
+        clear();
     }
     @FXML
     private void conseil() {
+        clear();
+        btnConseil.setTextFill(Color.BLACK);
         loadPage("/com/example/demo/conseil.fxml");
+    }
+    public void clear(){
+        btnConseil.setTextFill(Color.WHITE);
     }
     @FXML
     private void user() {

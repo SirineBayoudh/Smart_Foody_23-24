@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Models.Conseil;
+import com.example.demo.Models.Utilisateur;
 import com.example.demo.Tools.MyConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +36,8 @@ import javafx.scene.control.Pagination;
 public class conseilController implements Initializable {
     private final String ACCOUNT_SID = "AC288eedcef6012dbb4dd8c8951813655b";
     private final String AUTH_TOKEN = "";
+    @FXML
+    private Label nom;
     @FXML
     private Button btnDelete;
     @FXML
@@ -92,6 +95,8 @@ public class conseilController implements Initializable {
         MyConnection.getInstance();
         showConseils();
         setupPagination();
+        Utilisateur user1 = new Utilisateur(1,"Trabelsi","Yassine");
+        nom.setText(user1.getNom()+" "+user1.getPrenom());
         // vboxUpdate form is visible only if there is a selection in the table
         vboxUpdate.visibleProperty().bind(table.getSelectionModel().selectedItemProperty().isNotNull());
         // delete, update, and clear buttons are only enabled when there is a selection in the table

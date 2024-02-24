@@ -7,6 +7,8 @@ module com.example.demo {
     requires java.mail;
     requires twilio;
     requires com.google.gson;
+    requires java.desktop;
+    requires dbr;
 
     opens com.example.demo to javafx.fxml;
     opens com.example.demo.Models to javafx.base;

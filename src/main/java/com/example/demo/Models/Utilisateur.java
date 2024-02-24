@@ -1,6 +1,12 @@
 package com.example.demo.Models;
 
 public class Utilisateur {
+    public Utilisateur(int id_utilisateur, String nom, String prenom) {
+        this.id_utilisateur = id_utilisateur;
+        this.nom = nom;
+        this.prenom = prenom;
+    }
+
     private int id_utilisateur;
     private String nom;
     private String prenom;
