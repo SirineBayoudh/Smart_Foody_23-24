@@ -105,7 +105,7 @@
             <String fx:value="shadow" />
          </styleClass>
       </VBox>
-      <TableView fx:id="table" layoutX="343.0" layoutY="329.0" onMouseClicked="#getData" prefHeight="250.0" prefWidth="550.0" stylesheets="@css/table_view.css">
+      <TableView fx:id="table" layoutX="343.0" layoutY="329.0" onMouseClicked="#getData" prefHeight="250.0" prefWidth="550.0">
         <columns>
           <TableColumn fx:id="colRef" minWidth="20.0" prefWidth="76.79998779296875" text="Ref" />
           <TableColumn fx:id="colMarque" minWidth="20.0" prefWidth="98.39999389648438" text="Marque" />

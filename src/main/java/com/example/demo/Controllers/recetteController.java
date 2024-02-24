@@ -1,5 +1,6 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Main;
 import com.example.demo.Models.Produit;
 import com.example.demo.Models.Recette;
 import com.example.demo.Tools.MyConnection;
@@ -17,15 +18,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +40,17 @@ public class recetteController {
     PreparedStatement st = null;
     @FXML
     private GridPane recommendedProductsGridPane;
+    @FXML
+    private VBox chosenFruitCard;
+
+    @FXML
+    private ImageView fruitImg;
+
+    @FXML
+    private Label fruitNameLabel;
+
+    @FXML
+    private Label fruitPriceLabel;
 
     @FXML
     private TextField ingredientField;
@@ -51,7 +66,7 @@ public class recetteController {
 
     @FXML
     private Label resultatLabel;
-    private static final String API_KEY = "00ede7fd4ca64d31aad4408625c0947b";
+    private static final String API_KEY = "e701aafe487049789b44f77762dfec88";
 
     @FXML
     void initialize() {
@@ -115,52 +130,88 @@ public class recetteController {
             stCriteresObjectif.setString(1, objectifUtilisateur);
             ResultSet rsCriteresObjectif = stCriteresObjectif.executeQuery();
 
-            while (rsCriteresObjectif.next()) {
-                critereObjectif.add(rsCriteresObjectif.getString("listCritere"));
+            if (rsCriteresObjectif.next()) {
+                String listCritere = rsCriteresObjectif.getString("listCritere");
+                critereObjectif.addAll(Arrays.asList(listCritere.split(",")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
             // Gérer l'exception
         }
 
-        // Construire la requête pour récupérer les produits correspondant aux critères de l'objectif de l'utilisateur
-        String selectProduits = "SELECT * FROM produit WHERE ";
+        // Construire la requête pour sélectionner les produits correspondant à au moins un critère de l'objectif
+        StringBuilder selectProduitsBuilder = new StringBuilder("SELECT * FROM produit WHERE ");
         List<String> conditions = new ArrayList<>();
 
         for (String critere : critereObjectif) {
-            conditions.add("Critere LIKE '%" + critere + "%'");
+            conditions.add("Critere LIKE '%" + critere.trim() + "%'");
         }
 
-        selectProduits += String.join(" AND ", conditions);
+        if (!conditions.isEmpty()) {
+            selectProduitsBuilder.append("(").append(String.join(" OR ", conditions)).append(")");
 
-        // Exécuter la requête pour récupérer les produits correspondants
-        try {
-            PreparedStatement stProduits = con.getCnx().prepareStatement(selectProduits);
-            ResultSet rsProduits = stProduits.executeQuery();
+            try {
+                PreparedStatement stProduits = con.getCnx().prepareStatement(selectProduitsBuilder.toString());
+                ResultSet rsProduits = stProduits.executeQuery();
 
-            // Afficher les produits correspondants
-            while (rsProduits.next()) {
-                // Récupérer le nom, le prix et l'image de chaque produit
-                String nomProduit = rsProduits.getString("Marque");
-                double prixProduit = rsProduits.getDouble("Prix");
-                String imagePath = rsProduits.getString("Image");
+                // Créer un conteneur pour les images horizontales
+                HBox hboxProduits = new HBox();
+                hboxProduits.setSpacing(40);
 
-                // Afficher ou stocker ces informations selon vos besoins
-                System.out.println("Produit trouvé - Nom: " + nomProduit + ", Prix: " + prixProduit);
+                // Compteur pour suivre le nombre de produits ajoutés
+                int produitCounter = 0;
 
-                // Afficher l'image
-                afficherImage(imagePath);
+                // Afficher les produits correspondants
+                while (rsProduits.next()) {
+                    // Récupérer le nom, le prix et l'image de chaque produit
+                    String nomProduit = rsProduits.getString("Marque");
+                    double prixProduit = rsProduits.getDouble("Prix");
+                    String imagePath = rsProduits.getString("Image");
 
-                // Vous pouvez également ajouter le nom et le prix à votre interface utilisateur
-                Label labelNomProduit = new Label(nomProduit);
-                Label labelPrixProduit = new Label(String.valueOf(prixProduit));
-                recommendedProductsVBox.getChildren().addAll(labelNomProduit, labelPrixProduit);
+                    // Créer un ImageView pour afficher l'image
+                    ImageView imageView = new ImageView(new Image(imagePath));
+                    imageView.setOnMouseClicked(event -> {
+                        // Récupérer les détails du produit à partir de la base de données ou de toute autre source
+                        Produit produit = fetchProductDetailsFromDatabase(imagePath,con.getCnx());
+
+                        // Afficher les détails du produit
+                        setChosenFruit(produit);
+                    });
+
+                    // Définir la taille maximale de l'image
+                    imageView.setFitWidth(180);
+                    imageView.setFitHeight(180);
+
+                    // Ajouter l'imageView à la HBox
+                    hboxProduits.getChildren().add(imageView);
+
+                    // Incrémenter le compteur de produits
+                    produitCounter++;
+
+                    // Si nous avons ajouté 5 produits, ajouter la HBox au VBox et réinitialiser la HBox
+                    if (produitCounter == 5) {
+                        recommendedProductsVBox.getChildren().add(hboxProduits);
+                        hboxProduits = new HBox();
+                        produitCounter = 0; // Réinitialiser le compteur de produits
+                    }
+                }
+
+                // Ajouter la dernière HBox si elle contient moins de 5 produits
+                if (!hboxProduits.getChildren().isEmpty()) {
+                    recommendedProductsVBox.getChildren().add(hboxProduits);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Gérer l'exception
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Gérer l'exception
+        } else {
+            System.out.println("Aucun critère trouvé pour l'objectif de l'utilisateur.");
         }
     }
+
+
+
 
     // Méthode pour afficher une image à partir d'un chemin d'accès
     void afficherImage(String urlImage) {
@@ -253,7 +304,7 @@ public class recetteController {
             reader.close();
 
             JSONArray jsonArray = new JSONArray(response.toString());
-            for (int i = 0; i < jsonArray.length(); i++) {
+            for (int i = 0; i < 4; i++) {
                 JSONObject recipe = jsonArray.getJSONObject(i);
                 recipes.add(recipe);
             }
@@ -287,7 +338,14 @@ public class recetteController {
                 for (int j = 0; j < steps.length(); j++) {
                     JSONObject stepDetail = steps.getJSONObject(j);
                     String stepInstruction = stepDetail.getString("step");
+                    // Remplacer chaque point par un point suivi d'un retour à la ligne
+                    stepInstruction = stepInstruction.replaceAll("\\.", ".\n");
                     instructions.append(stepInstruction).append("\n");
+                    if (j == 0) {
+                        instructions.append("**").append(stepInstruction).append("\n");
+                    } else {
+                        instructions.append(stepInstruction).append("\n");
+                    }
                 }
             }
             return instructions.toString();
@@ -296,6 +354,43 @@ public class recetteController {
             return "Instructions not available";
         }
     }
+
+    private void setChosenFruit(Produit produit) {
+        if (produit != null && produit.getImage() != null) {
+            fruitNameLabel.setText(produit.getMarque());
+            fruitPriceLabel.setText(produit.getPrix() + Main.CURRENCY);
+            // Vérifier si l'URL de l'image n'est pas null avant de créer l'objet Image
+            if (produit.getImage() != null) {
+                javafx.scene.image.Image image = new Image(produit.getImage(), 200, 200, true, true);
+                fruitImg.setImage(image);
+                chosenFruitCard.setStyle("   -fx-background-radius: 30;");
+            } else {
+                System.out.println("L'URL de l'image est null.");
+            }
+        } else {
+            System.out.println("Le produit est null ou l'URL de l'image est null.");
+        }
+    }
+    private Produit fetchProductDetailsFromDatabase(String imageUrl, Connection connection) {
+        Produit produit = null;
+        try {
+            String sql = "SELECT * FROM produit WHERE image=?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, imageUrl);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String marque = resultSet.getString("marque");
+                float prix = resultSet.getFloat("prix");
+
+                produit = new Produit(marque, prix, imageUrl);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return produit;
+    }
+
+
 
 
 

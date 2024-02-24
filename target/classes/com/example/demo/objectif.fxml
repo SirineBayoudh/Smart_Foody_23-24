@@ -18,7 +18,7 @@
 
 <AnchorPane prefHeight="637.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.objectifController">
    <children>
-      <TableView fx:id="ObjectifTableView" layoutX="408.0" layoutY="317.0" prefHeight="288.0" prefWidth="508.0" styleClass="track-background" stylesheets="@css/table_view.css">
+      <TableView fx:id="ObjectifTableView" layoutX="408.0" layoutY="317.0" prefHeight="288.0" prefWidth="508.0">
         <columns>
             <TableColumn fx:id="colIdObj" minWidth="0.0" prefWidth="156.79998779296875" text="ID_obj" />
           <TableColumn fx:id="colLibelle" prefWidth="172.800048828125" text="Libelle" />

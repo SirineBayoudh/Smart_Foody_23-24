@@ -1,5 +1,6 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Main;
 import com.example.demo.Models.ListCritere;
 import com.example.demo.Models.Objectif;
 import com.example.demo.Models.Produit;
@@ -23,7 +24,11 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.awt.*;
@@ -68,7 +73,7 @@ public class objectifController {
     @FXML
     private ComboBox<String> tfLibelle;
 
-    private String[] objectif = {"Bien être", "prise de poids", "Perte de poids", "Prise de masse musculaire"};
+    private String[] objectif = {"Bien être", "Prise de poids", "Perte de poids", "Prise de masse musculaire"};
     @FXML
     private TableColumn<Objectif, String> colCritere;
 
@@ -559,6 +564,7 @@ public class objectifController {
         tfCritere4.setSelected(false);
         // Réinitialiser d'autres champs du formulaire si nécessaire
     }
+
 
 
 }
