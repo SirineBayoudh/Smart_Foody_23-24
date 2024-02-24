@@ -219,7 +219,7 @@ public class ProfilController implements Initializable {
 
         System.out.println(idUtilisateurConnecte);
 
-        infosForm.setVisible(false);
+        infosForm.setVisible(true);
         pwdForm.setVisible(false);
 
         ancienMDPshow.setVisible(false);

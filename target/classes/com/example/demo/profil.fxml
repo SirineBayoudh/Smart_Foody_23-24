@@ -102,7 +102,7 @@
                      <VBox layoutX="47.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="433.0" prefWidth="570.0" styleClass="form-container" stylesheets="@css/style_profil.css">
                         <children>
                            <Label style="-fx-font-weight: bold;" text="Nom" translateX="20.0" translateY="15.0" />
-                           <TextField fx:id="tfnomp" editable="false" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" />
+                           <TextField fx:id="tfnomp" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" />
                            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Prénom" translateX="300.0" translateY="-70.0" />
                            <TextField fx:id="tfprenomp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-83.0" />
                            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Email" translateX="20.0" translateY="-85.0" />
