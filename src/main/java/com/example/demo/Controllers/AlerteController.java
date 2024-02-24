@@ -220,7 +220,10 @@ public class AlerteController implements LanguageObserver {
         // You can customize this based on your needs
         // Update btnupdate text based on language
       id_alerteColumn.setText(LanguageManager.getInstance().getText("id_alerteColumn"));
-
+      idstockCoulmn.setText(LanguageManager.getInstance().getText("idstockCoulmn"));
+        DescriptionCoulumn.setText(LanguageManager.getInstance().getText("DescriptionCoulumn"));
+        TypeCoulumn.setText(LanguageManager.getInstance().getText("TypeCoulumn"));
+        DateColoumn.setText(LanguageManager.getInstance().getText("DateColoumn"));
     }
 
 

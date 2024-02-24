@@ -33,7 +33,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
         Scene scene = new Scene(root);
         stage.setHeight(700);
-        stage.setWidth(1000);
+        stage.setWidth(1300);
         stage.setTitle("Smart foody");
         stage.setScene(scene);
         stage.show();

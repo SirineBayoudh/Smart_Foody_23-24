@@ -16,10 +16,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.StockController">
+<Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="674.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.StockController">
     <children>
         <!-- Le contenu spécifique de votre page de stocks -->
-        <TableView fx:id="stockTableView" layoutX="211.0" layoutY="279.0" onMouseClicked="#getData" prefHeight="329.0" prefWidth="740.0">
+        <TableView fx:id="stockTableView" layoutX="221.0" layoutY="285.0" onMouseClicked="#getData" prefHeight="323.0" prefWidth="712.0">
             <columns>
             <TableColumn fx:id="id_stockColumn" prefWidth="103.20001602172852" text="Id Stock" />
                 <TableColumn fx:id="NomColumn" minWidth="20.0" prefWidth="91.199951171875" text="Nom" />
@@ -27,7 +27,7 @@
                 <TableColumn fx:id="marqueColumn" text="Marque" />
                 <TableColumn fx:id="quantiteColumn" prefWidth="77.5999755859375" text="Quantité" />
             <TableColumn fx:id="nbVenduColumn" minWidth="0.0" prefWidth="130.39996337890625" text="Nombre vendus" />
-            <TableColumn fx:id="tTotal" prefWidth="113.5999755859375" text="cout" />
+            <TableColumn fx:id="tTotal" prefWidth="82.4000244140625" text="cout" />
 
             </columns>
         </TableView>
@@ -123,14 +123,14 @@
                 <NumberAxis label="Quantité Vendue" side="LEFT" />
             </yAxis>
         </ScatterChart>
-        <Button fx:id="btnEuro" layoutX="785.0" layoutY="248.0" mnemonicParsing="false" onAction="#convertCostToEuro" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
-      <ImageView fitHeight="13.0" fitWidth="12.0" layoutX="793.0" layoutY="255.0" pickOnBounds="true" preserveRatio="true">
+        <Button fx:id="btnEuro" layoutX="845.0" layoutY="255.0" mnemonicParsing="false" onAction="#convertCostToEuro" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
+      <ImageView fitHeight="13.0" fitWidth="12.0" layoutX="853.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/euro.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnDollar" layoutX="815.0" layoutY="248.0" mnemonicParsing="false" onAction="#convertCostToDollar" prefHeight="25.0" prefWidth="35.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
-      <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="825.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="btnDollar" layoutX="882.0" layoutY="255.0" mnemonicParsing="false" onAction="#convertCostToDollar" prefHeight="25.0" prefWidth="35.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
+      <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="892.0" layoutY="259.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/do.jpg" />
          </image>
