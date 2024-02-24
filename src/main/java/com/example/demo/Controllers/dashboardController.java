@@ -175,6 +175,7 @@ public class dashboardController implements Initializable , LanguageObserver{
         btn221.setText(languageManager.getText("btn221"));
         btn1.setText(languageManager.getText("btn1"));
         btn11.setText(languageManager.getText("btn11"));
+        btn2211.setText(languageManager.getText("btn2211"));
         // Mettez à jour d'autres libellés du dashboardController...
     }
     @FXML

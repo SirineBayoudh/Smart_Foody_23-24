@@ -1,11 +1,17 @@
 .root{
     -fx-background-color:#EAEEF4;
 }
-
+.background {
+    /* Fallback color */
+    -fx-background-color: #56ab2f;
+    -fx-background-color: linear-gradient(to bottom right, #56ab2f, #a8e063);
+}
 .side_ankerpane{
     -fx-background-color:#56AB2F;
     -fx-background-color: linear-gradient(to bottom right, #56ab2f, #a8e063);
     -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
 }
 
 .inner_pane{
@@ -17,7 +23,6 @@
 
 .btn_home{
     -fx-background-color: #aad597;
-
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
@@ -38,6 +43,17 @@
     -fx-border-style: solid;
     -fx-border-color: #77bb58;
 }
+.pane_1:hover {
+    -fx-background-color: #2b5517;
+    -fx-border-color: #2b5517;
+}
+.vboxUpdate{
+    -fx-background-color:  #77bb58;
+}
+.vboxUpdate:hover{
+    -fx-background-color: #2b5517;
+    -fx-border-color: #2b5517;
+}
 .ajouter_stock{
     -fx-background-color: #aad597;
     -fx-border-width: 2px 2px 2px 2px;
@@ -50,4 +66,20 @@
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
 }
-
+.btn{
+    -fx-background-color: #aad597;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
+.btn:hover{
+    -fx-background-color: #2b5517;
+    -fx-border-color: #2b5517;
+    -fx-text-fill: white;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
+.pag{
+    -fx-background-color: #aad597;
+}

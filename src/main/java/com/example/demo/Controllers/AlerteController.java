@@ -118,8 +118,9 @@ public class AlerteController implements LanguageObserver {
     }
 
     private void loadAlerts() {
-        List<Alerte> alerts = getAlertsFromDatabase();
+        deleteReadAlertsOlderThan10Days();
 
+        List<Alerte> alerts = getAlertsFromDatabase();
         AlerteTableView.getItems().setAll(alerts);
     }
 
@@ -232,4 +233,15 @@ public class AlerteController implements LanguageObserver {
         updateLabels();
     }
 
+    private void deleteReadAlertsOlderThan10Days() {
+        try {
+            Connection connection = MyConnection.getInstance().getCnx();
+            String query = "DELETE FROM alerte WHERE Type = 1 AND date_alerte < DATE_SUB(NOW(), INTERVAL 10 DAY)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
