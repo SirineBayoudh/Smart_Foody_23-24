@@ -10,6 +10,9 @@ import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.types.FacebookType;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -121,7 +124,9 @@ public class StockController implements Initializable {
     private ScatterChart<String, Number> scatterChart;
     @FXML
     private Button btnExporterTout;
-
+    private static final String ACCOUNT_SID = "AC65cc060d1e8324522666575b59ffd53b";
+    private static final String AUTH_TOKEN = "679c30c3da2210f88b2d0b9355f6f708 ";
+    private static final String FROM_PHONE_NUMBER = "+18607820963";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -143,6 +148,18 @@ public class StockController implements Initializable {
 
     }
 
+
+    public void sendSMS(String toPhoneNumber, String message) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+        Message twilioMessage = Message.creator(
+                new PhoneNumber("+21692150166"), // To phone number
+                new PhoneNumber(FROM_PHONE_NUMBER), // From Twilio phone number
+                message
+        ).create();
+
+        System.out.println("SMS sent: " + twilioMessage.getSid());
+    }
     public static StockController getInstance() {
         if (instance == null) {
             instance = new StockController();
@@ -257,6 +274,46 @@ public class StockController implements Initializable {
 //
 //        return stockData;
 //    }
+//    public ObservableList<Stock> displayAllStock() {
+//        ObservableList<Stock> stockData = FXCollections.observableArrayList();
+//
+//        try {
+//            Connection connection = MyConnection.getInstance().getCnx();
+//
+//            String selectQuery = "SELECT s.id_s, s.nom, p.ref AS ref_produit, p.marque, lc.id_lc, lc.quantite AS quantite_commandee, s.quantite, s.nbVendu " +
+//                    "FROM stock s " +
+//                    "JOIN produit p ON s.ref_produit = p.ref " +
+//                    "LEFT JOIN ligne_commande lc ON p.ref = lc.ref_produit";
+//
+//            try (Statement statement = connection.createStatement();
+//                 ResultSet resultSet = statement.executeQuery(selectQuery)) {
+//
+//                while (resultSet.next()) {
+//                    int id_s = resultSet.getInt("id_s");
+//                    String nom = resultSet.getString("nom");
+//                    int refProduit = resultSet.getInt("ref_produit");
+//                    String marque = resultSet.getString("marque");
+//                    int idLigneCommande = resultSet.getInt("id_lc");
+//                    int quantiteCommandee = resultSet.getInt("quantite_commandee");
+//                    int quantiteStock = resultSet.getInt("quantite");
+//                    int nb_vendu = resultSet.getInt("nbVendu");
+//                    // Mettez à jour nb_vendu avec la quantité commandée
+//                    mettreAJourNbVendu(idLigneCommande);
+//
+//                    Produit produit = new Produit(refProduit, marque, "category", 0); // Assurez-vous de fournir les valeurs correctes
+//                    float cout = calculateTotalValue(refProduit);
+//
+//                    Stock stockEntry = new Stock(id_s, produit, quantiteStock, nom, nb_vendu, cout);
+//                    stockData.add(stockEntry);
+//                }
+//
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return stockData;
+//    }
     public ObservableList<Stock> displayAllStock() {
         ObservableList<Stock> stockData = FXCollections.observableArrayList();
 
@@ -288,6 +345,12 @@ public class StockController implements Initializable {
 
                     Stock stockEntry = new Stock(id_s, produit, quantiteStock, nom, nb_vendu, cout);
                     stockData.add(stockEntry);
+
+                    // Vérifier si la quantité est égale au nombre vendu
+                    if (quantiteStock == nb_vendu) {
+                        // Envoyer un SMS
+                        sendSMS("+21692150166", "Stock terminé : " + stockEntry.getNom());
+                    }
                 }
 
             }
@@ -297,6 +360,7 @@ public class StockController implements Initializable {
 
         return stockData;
     }
+
 
     public void mettreAJourNbVendu(int idLigneCommande) {
         String updateQuery = "UPDATE stock s " +

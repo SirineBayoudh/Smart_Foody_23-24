@@ -66,21 +66,6 @@ public class AlerteController {
 
     @FXML
     private Pane pane_111;
-    private static final String ACCOUNT_SID = "AC65cc060d1e8324522666575b59ffd53b";
-    private static final String AUTH_TOKEN = "714d7c691a24e8bb592c81985624dc5a";
-    private static final String FROM_PHONE_NUMBER = "+18607820963";
-
-    public void sendSMS(String toPhoneNumber, String message) {
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-
-        Message twilioMessage = Message.creator(
-                new PhoneNumber("+21692150166"), // To phone number
-                new PhoneNumber(FROM_PHONE_NUMBER), // From Twilio phone number
-                message
-        ).create();
-
-        System.out.println("SMS sent: " + twilioMessage.getSid());
-    }
 
     @FXML
     void initialize() {

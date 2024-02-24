@@ -80,11 +80,7 @@ public class Main extends Application {
                     Platform.runLater(() -> showNotification("Stock Notification", message, Alert.AlertType.INFORMATION));
 
                     // Check if nbVendu equals quantite
-                    if (lowestStock.getNbVendu() == lowestStock.getQuantite()) {
-                        System.out.println("en cours");
-                        // Send SMS
-                        alerteController.sendSMS("+21692150166", "Stock terminé");
-                    }
+
                 } else {
                     Platform.runLater(() -> showNotification("Stock Notification", "No stock data available.", Alert.AlertType.WARNING));
                 }
