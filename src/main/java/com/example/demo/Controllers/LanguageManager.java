@@ -46,7 +46,11 @@ public class LanguageManager {
         this.selectedLocale = selectedLocale;
     }
 
-
+    public void setLanguage(String language) {
+        // Set the language
+        // Notify observers
+        notifyObservers();
+    }
     private void notifyObservers() {
         for (LanguageObserver observer : observers) {
             observer.onLanguageChanged();

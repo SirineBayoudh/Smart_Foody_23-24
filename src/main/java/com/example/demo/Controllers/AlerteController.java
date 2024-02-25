@@ -76,14 +76,16 @@ public class AlerteController implements LanguageObserver {
     @FXML
     private Text nbalert;
 
+    @FXML
+    private Label idAlerteCountLabel;
 
     @FXML
     private Text nbalertstock;
 
     @FXML
     private Text stokid;
-    private int unreadCount;
-    private int readCount;
+    @FXML
+    private Text paneTitre;
     private PieChart.Data unreadData;
     private PieChart.Data readData;
 
@@ -102,6 +104,9 @@ public class AlerteController implements LanguageObserver {
         });
         updatePieChart(AlerteTableView.getItems());
         updateLineChart(getAlertCountsByStock(AlerteTableView.getItems()));
+               //stat pane nb des alertes
+        int alertCount = AlerteTableView.getItems().size();
+        idAlerteCountLabel.setText(String.valueOf(alertCount));
     }
 
 
@@ -254,6 +259,7 @@ public class AlerteController implements LanguageObserver {
         stokid.setText(LanguageManager.getInstance().getText("stokid"));
         nbalert.setText(LanguageManager.getInstance().getText("nbalert"));
         nbalertstock.setText(LanguageManager.getInstance().getText("nbalertstock"));
+        paneTitre.setText(LanguageManager.getInstance().getText("paneTitre"));
     }
 
 
