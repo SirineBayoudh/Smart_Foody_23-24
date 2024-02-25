@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -54,6 +55,7 @@
             </image>
         </ImageView>
         <TextField fx:id="TrechercheAlerte" layoutX="684.0" layoutY="203.0" onAction="#rechercherAlerte" promptText="Rechercher :" />
+      <PieChart fx:id="nbAlert" layoutX="112.0" layoutY="9.0" prefHeight="209.0" prefWidth="356.0" />
 
     </children>
 </Pane>

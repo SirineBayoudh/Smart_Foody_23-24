@@ -6,8 +6,10 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -27,6 +29,8 @@ public class AlerteController implements LanguageObserver {
 
     @FXML
     private URL location;
+    @FXML
+    private PieChart nbAlert;
 
     @FXML
     private TableView<Alerte> AlerteTableView;
@@ -81,7 +85,9 @@ public class AlerteController implements LanguageObserver {
         TrechercheAlerte.textProperty().addListener((observable, oldValue, newValue) -> {
             filterAlerts(newValue);
         });
+        updatePieChart(AlerteTableView.getItems());
     }
+
 
     @FXML
     void UpdateAlert(ActionEvent event) {
@@ -199,6 +205,7 @@ public class AlerteController implements LanguageObserver {
 
                 // Refresh the TableView or update the specific row
                 AlerteTableView.refresh(); // This may not be necessary if the TableView is properly bound to your data
+                updatePieChart(AlerteTableView.getItems());
             }
         }
     }
@@ -244,4 +251,24 @@ public class AlerteController implements LanguageObserver {
             e.printStackTrace();
         }
     }
+    private void updatePieChart(List<Alerte> alerts) {
+        int unreadCount = 0;
+        int readCount = 0;
+
+        for (Alerte alert : alerts) {
+            if (!alert.isType()) {
+                unreadCount++;
+            } else {
+                readCount++;
+            }
+        }
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Alertes non lues ", unreadCount),
+                new PieChart.Data("Alertes lues", readCount)
+        );
+
+        nbAlert.setData(pieChartData);
+    }
+
 }
