@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PageAccueilController">
+   <children>
+      <ScrollPane prefHeight="700.0" prefWidth="1201.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1458.0" prefWidth="1202.0">
+               <children>
+                  <HBox fx:id="imageContainer" prefHeight="350.0" prefWidth="1208.0" />
+                  <VBox fx:id="imagesVbox" layoutX="327.0" layoutY="606.0" prefHeight="900.0" prefWidth="874.0" styleClass="carte-sans-bordure">
+                     <stylesheets>
+                        <URL value="@css/style_dash.css" />
+                        <URL value="@css/style_pageClient.css" />
+                     </stylesheets>
+                  </VBox>
+                  <HBox fx:id="categoryIconsContainer" layoutX="33.0" layoutY="618.0" prefHeight="221.0" prefWidth="254.0" />
+                  <Label layoutX="468.0" layoutY="363.0" text="Tops Catégories " textFill="#56ab2f">
+                     <font>
+                        <Font name="Cambria Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="-1.0" layoutY="413.0" prefHeight="130.0" prefWidth="1202.0" style="-fx-background-color: #ddeed5;">
+                     <children>
+                        <Separator orientation="VERTICAL" prefHeight="155.0" prefWidth="300.0" visible="false" />
+                        <ImageView fx:id="AllProductImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleAllProductImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_all.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="fruitImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleFruitImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_fruit.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="vegImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleVegImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_veg.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="laitImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleLaitierImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_laitier.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="grainImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleGrainImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_grain.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="300.0" visible="false" />
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
