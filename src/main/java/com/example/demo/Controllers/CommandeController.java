@@ -1,19 +1,31 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Models.Commande;
+import com.example.demo.Models.CommandeHolder;
 import com.example.demo.Tools.MyConnection;
+import com.example.demo.Tools.TableExporter;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,11 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Desktop;
+
 
 public class CommandeController {
-
     @FXML
     private Pane pane_1;
 
@@ -35,6 +46,8 @@ public class CommandeController {
 
     @FXML
     private Pane pane_3;
+    @FXML
+    private Pane pane_4;
     @FXML
     private TextField searchField;
 
@@ -49,6 +62,9 @@ public class CommandeController {
 
     @FXML
     private Label cmdnonlivre;
+
+    @FXML
+    private Label cmdencours;
     @FXML
     private TableView<Commande> commandeTableView;
 
@@ -78,6 +94,7 @@ public class CommandeController {
     // Connexion à la base de données
     private Connection cnx;
 
+    private CommandeHolder holder = CommandeHolder.getInstance();
     // Constructeur
     public CommandeController() {
         cnx = MyConnection.getInstance().getCnx();
@@ -101,24 +118,28 @@ public class CommandeController {
         cmdlivre.setText(String.valueOf(commandesNonLivre.size()));
         List<Commande> commandesLivre = AfficherCommandes("Livre");
         cmdnonlivre.setText(String.valueOf(commandesLivre.size()));
+        List<Commande> commandesEncours = AfficherCommandes("en cours");
+        cmdencours.setText(String.valueOf(commandesEncours.size()));
 
 
 
 
     }
-
+    @FXML
     private void dynamicSearch()  {
-        ObservableList<Commande> commandeLists = FXCollections.observableArrayList();
-        commandeLists.addAll(AfficherCommandes(null));
 
-        FilteredList<Commande> filteredData = new FilteredList<>(commandeLists, b -> true);
+
+        FilteredList<Commande> filteredData = new FilteredList<>(commandeList, b -> true);
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(g -> {
+                System.out.println(g.toString());
+
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
+                System.out.println(lowerCaseFilter);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Customize the format as needed
                 String formattedDate = dateFormat.format(g.getDate_commande());
@@ -180,35 +201,118 @@ public class CommandeController {
     @FXML
     private void onPane1Clicked() {
         List<Commande> commandes = AfficherCommandes(null);
-        ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
         commandeList.clear();
-        commandeList.addAll(observableCommandes);
+        commandeList.addAll(commandes);
         cmd.setText(String.valueOf(commandes.size()));
-
     }
 
     @FXML
     private void onPane2Clicked() {
 
         List<Commande> commandes = AfficherCommandes("Livre");
-        // cmdnonlivre.setText(String.valueOf(commandes.stream().filter(c -> "Livre".equals(c.getEtat())).count()));
-        ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
         commandeList.clear();
-        commandeList.addAll(observableCommandes);
-
-
+        commandeList.addAll(commandes);
     }
 
     @FXML
     private void onPane3Clicked() {
         List<Commande> commandes = AfficherCommandes("Non Livre");
-        //cmdlivre.setText(String.valueOf(commandes.stream().filter(c -> "Non Livre".equals(c.getEtat())).count()));
-        ObservableList<Commande> observableCommandes = FXCollections.observableArrayList(commandes);
         commandeList.clear();
-        commandeList.addAll(observableCommandes);
+        commandeList.addAll(commandes);
+
+    }
+
+    @FXML
+    private void onPane4Clicked() {
+        List<Commande> commandes = AfficherCommandes("en cours");
+        commandeList.clear();
+        commandeList.addAll(commandes);
+    }
+
+    /************** Modifier Question *******************/
+    @FXML
+    void detailsCommande(ActionEvent event) throws SQLException, IOException {
+        Commande selectedCommande = commandeTableView.getSelectionModel().getSelectedItem();
+        if (selectedCommande != null) {
+            holder.setCommande(selectedCommande);
+
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/DetailsCommande.fxml"));
+                Parent root = loader.load();
+                clickpane.getChildren().clear();
+                clickpane.getChildren().add(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception as needed
+            }
+
+            //loadUsers();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Pas de Commande séléctionnée");
+            alert.setContentText("S'il vous plait de séléctionner une commande");
+            alert.showAndWait();
+        }
+
+    }
+
+    @FXML
+    void statButton(ActionEvent event) throws IOException {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/StatsCommande.fxml"));
+            Parent root = loader.load();
+            clickpane.getChildren().clear();
+            clickpane.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
+    }
+    @FXML
+    void exportExcel(ActionEvent event) throws IOException {
+
+        Commande selectedCommande = commandeTableView.getSelectionModel().getSelectedItem();
+        if (selectedCommande != null) {
+            holder.setCommande(selectedCommande);
+
+
+            try {
+                String path ="Commandes.pdf";
+                PdfWriter pdfWriter = new PdfWriter(path);
+                PdfDocument pdfDocument = new PdfDocument((pdfWriter));
+                pdfDocument.setDefaultPageSize(PageSize.A4);
+                Document document = new Document(pdfDocument);
+
+
+
+                document.add(new Paragraph("Commande numero : "+holder.getCommande().getId_commande()));
+                document.add(new Paragraph("Date : "+holder.getCommande().getDate_commande()));
+                document.add(new Paragraph("Totale : "+holder.getCommande().getTotal_commande()));
+
+                document.close();
+                Desktop.getDesktop().open(new File(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception as needed
+            }
+
+            //loadUsers();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Pas de Commande séléctionnée");
+            alert.setContentText("S'il vous plait de séléctionner une commande");
+            alert.showAndWait();
+        }
+
 
 
     }
+
+
 
 
 }
