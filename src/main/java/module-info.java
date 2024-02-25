@@ -7,6 +7,10 @@ module com.example.demo {
     requires javax.mail.api;
     requires stripe.java;
     requires javafx.web;
+    requires org.apache.poi.ooxml;
+    requires java.desktop;
+    requires kernel;
+    requires layout;
 
     opens com.example.demo to javafx.fxml;
     exports com.example.demo;
