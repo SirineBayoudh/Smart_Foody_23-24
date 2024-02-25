@@ -14,30 +14,30 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="832.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.recetteController">
+<AnchorPane prefHeight="832.0" prefWidth="1200.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.recetteController">
    <children>
       <ScrollPane fx:id="recommendedProductsScrollPane" layoutX="21.0" layoutY="110.0" prefHeight="700.0" prefWidth="1158.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1502.0" prefWidth="1154.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1400.0" prefWidth="1154.0" style="-fx-background-color: #ddeed5;">
                <children>
-                  <VBox fx:id="recommendedProductsVBox" layoutX="9.0" layoutY="14.0" prefHeight="454.0" prefWidth="1129.0">
+                  <VBox fx:id="recommendedProductsVBox" layoutX="12.0" layoutY="100.0" prefHeight="211.0" prefWidth="1130.0">
                      <padding>
                         <Insets left="20.0" />
                      </padding>
                   </VBox>
-                  <Label fx:id="resultatLabel" layoutX="501.0" layoutY="544.0" prefHeight="700.0" prefWidth="620.0" style="-fx-background-color: #56ab2f;" styleClass="chosen-fruit-card" stylesheets="@css/style_pageClient.css">
+                  <Label fx:id="resultatLabel" layoutX="501.0" layoutY="530.0" prefHeight="700.0" prefWidth="620.0" style="-fx-background-color: #56ab2f;" styleClass="chosen-fruit-card" stylesheets="@css/style_pageClient.css">
                      <padding>
                         <Insets left="25.0" />
                      </padding>
                   </Label>
-                  <Button fx:id="searchButton" layoutX="1009.0" layoutY="481.0" mnemonicParsing="false" onAction="#search" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="searchButton" />
-                  <TextField fx:id="ingredientField" layoutX="816.0" layoutY="481.0" promptText="ingredientField" styleClass="text-field" stylesheets="@css/style_pageClient.css" />
-                  <Label layoutX="438.0" layoutY="485.0" text="Pour avoir une idée de recette vous pouvez tapé un ingrédient : " textFill="#56ab2f">
+                  <Button fx:id="searchButton" layoutX="1010.0" layoutY="455.0" mnemonicParsing="false" onAction="#search" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="searchButton" />
+                  <TextField fx:id="ingredientField" layoutX="786.0" layoutY="455.0" promptText="ingredientField" styleClass="text-field" stylesheets="@css/style_pageClient.css" />
+                  <Label layoutX="400.0" layoutY="459.0" text="Pour avoir une idée de recette vous pouvez tapé un ingrédient : " textFill="#56ab2f">
                      <font>
                         <Font name="Cambria" size="13.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="chosenFruitCard" alignment="CENTER" layoutX="52.0" layoutY="544.0" prefHeight="383.0" prefWidth="350.0" stylesheets="@css/style_pageClient.css">
+                  <VBox fx:id="chosenFruitCard" alignment="CENTER" layoutX="52.0" layoutY="530.0" prefHeight="383.0" prefWidth="350.0" stylesheets="@css/style_pageClient.css">
                      <children>
                         <HBox prefHeight="62.0" prefWidth="239.0" stylesheets="@css/style_pageClient.css">
                            <children>
@@ -85,9 +85,27 @@
                         <String fx:value="shadow" />
                      </styleClass>
                   </VBox>
+                  <Label layoutX="52.0" layoutY="29.0" prefHeight="30.0" prefWidth="327.0" text="Nos produits recommandés :" textFill="#56ab2f">
+                     <font>
+                        <Font name="Cambria Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="719.0" layoutY="398.0" prefHeight="27.0" prefWidth="250.0" text="Notre coin de recettes : " textFill="#56ab2f">
+                     <font>
+                        <Font name="Cambria Bold" size="22.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
+      <Label layoutX="112.0" layoutY="44.0" prefHeight="50.0" prefWidth="450.0" text="Inspiration pour vos commandes : " textAlignment="CENTER" textFill="#56ab2f">
+         <font>
+            <Font name="Cambria Bold" size="26.0" />
+         </font>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </Label>
    </children>
 </AnchorPane>

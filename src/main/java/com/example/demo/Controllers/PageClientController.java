@@ -123,6 +123,7 @@ public class PageClientController {
                 suggestionsListView.getItems().clear();
             }
         });
+
     }
 
     private void displayAllProducts() {

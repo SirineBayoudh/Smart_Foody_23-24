@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 
 import java.io.BufferedReader;
@@ -30,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,6 +50,7 @@ public class recetteController {
 
     @FXML
     private Label fruitNameLabel;
+    ScrollPane scrollPane = new ScrollPane();
 
     @FXML
     private Label fruitPriceLabel;
@@ -71,6 +74,8 @@ public class recetteController {
     @FXML
     void initialize() {
     comparerObjectifUtilisateurAvecObjectif();
+    chosenFruitCard.setVisible(false);
+
 
     }
 
@@ -154,14 +159,36 @@ public class recetteController {
                 PreparedStatement stProduits = con.getCnx().prepareStatement(selectProduitsBuilder.toString());
                 ResultSet rsProduits = stProduits.executeQuery();
 
-                // Créer un conteneur pour les images horizontales
+                // Créer une HBox pour contenir les images horizontalement
                 HBox hboxProduits = new HBox();
                 hboxProduits.setSpacing(40);
 
-                // Compteur pour suivre le nombre de produits ajoutés
-                int produitCounter = 0;
+                // Variables de position de défilement
+                final double[] scrollPosition = {0.0};
+                double scrollIncrement = 100.0;
 
-                // Afficher les produits correspondants
+                // Boutons pour le défilement
+                Button previousButton = new Button("<");
+                previousButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+                previousButton.setOnAction(event -> {
+                    if (scrollPosition[0] < 0) {
+                        scrollPosition[0] += scrollIncrement;
+                        hboxProduits.setTranslateX(scrollPosition[0]);
+                    }
+                });
+
+                Button nextButton = new Button(">");
+                nextButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+                nextButton.setOnAction(event -> {
+                    if (scrollPosition[0] > -hboxProduits.getWidth() + recommendedProductsScrollPane.getWidth()) {
+                        scrollPosition[0] -= scrollIncrement;
+                        hboxProduits.setTranslateX(scrollPosition[0]);
+                    }
+                });
+
+                // Ajouter les boutons au VBox
+                recommendedProductsVBox.getChildren().addAll(previousButton, hboxProduits, nextButton);
+
                 while (rsProduits.next()) {
                     // Récupérer le nom, le prix et l'image de chaque produit
                     String nomProduit = rsProduits.getString("Marque");
@@ -172,10 +199,11 @@ public class recetteController {
                     ImageView imageView = new ImageView(new Image(imagePath));
                     imageView.setOnMouseClicked(event -> {
                         // Récupérer les détails du produit à partir de la base de données ou de toute autre source
-                        Produit produit = fetchProductDetailsFromDatabase(imagePath,con.getCnx());
+                        Produit produit = fetchProductDetailsFromDatabase(imagePath, con.getCnx());
 
                         // Afficher les détails du produit
                         setChosenFruit(produit);
+                        chosenFruitCard.setVisible(true);
                     });
 
                     // Définir la taille maximale de l'image
@@ -184,21 +212,6 @@ public class recetteController {
 
                     // Ajouter l'imageView à la HBox
                     hboxProduits.getChildren().add(imageView);
-
-                    // Incrémenter le compteur de produits
-                    produitCounter++;
-
-                    // Si nous avons ajouté 5 produits, ajouter la HBox au VBox et réinitialiser la HBox
-                    if (produitCounter == 5) {
-                        recommendedProductsVBox.getChildren().add(hboxProduits);
-                        hboxProduits = new HBox();
-                        produitCounter = 0; // Réinitialiser le compteur de produits
-                    }
-                }
-
-                // Ajouter la dernière HBox si elle contient moins de 5 produits
-                if (!hboxProduits.getChildren().isEmpty()) {
-                    recommendedProductsVBox.getChildren().add(hboxProduits);
                 }
 
             } catch (SQLException e) {
@@ -209,50 +222,6 @@ public class recetteController {
             System.out.println("Aucun critère trouvé pour l'objectif de l'utilisateur.");
         }
     }
-
-
-
-
-    // Méthode pour afficher une image à partir d'un chemin d'accès
-    void afficherImage(String urlImage) {
-        try {
-            // Charger l'image
-            Image image = new Image(urlImage);
-
-            // Créer un ImageView pour afficher l'image
-            ImageView imageView = new ImageView(image);
-            Button button = new Button("Voir la recette");
-
-            // Définir la taille maximale de l'image (vous pouvez ajuster ces valeurs selon vos besoins)
-            double maxWidth = 100; // Largeur maximale en pixels
-            double maxHeight = 100; // Hauteur maximale en pixels
-
-            // Redimensionner l'image si elle dépasse les dimensions maximales
-            if (image.getWidth() > maxWidth || image.getHeight() > maxHeight) {
-                double widthRatio = image.getWidth() / maxWidth;
-                double heightRatio = image.getHeight() / maxHeight;
-                double scale = Math.min(widthRatio, heightRatio);
-                imageView.setFitWidth(image.getWidth() / scale);
-                imageView.setFitHeight(image.getHeight() / scale);
-            }
-
-            // Ajouter un événement de clic à l'imageView pour afficher la recette du produit
-            imageView.setOnMouseClicked(event -> {
-                // Récupérer le nom du produit à partir de l'URL ou de toute autre source si nécessaire
-                String nomProduit = "Nom du produit";
-
-                // Afficher les recettes pour ce produit
-                getRecipesByIngredient(nomProduit);
-            });
-
-            // Ajouter l'imageView à votre interface utilisateur
-            recommendedProductsVBox.getChildren().add(imageView);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Gérer l'exception
-        }
-    }
-
 
     @FXML
     void search(ActionEvent event) {
