@@ -14,13 +14,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class AlerteController implements LanguageObserver {
 
@@ -31,6 +30,10 @@ public class AlerteController implements LanguageObserver {
     private URL location;
     @FXML
     private PieChart nbAlert;
+
+    @FXML
+    private LineChart<String, Number> nbIdstock;
+
 
     @FXML
     private TableView<Alerte> AlerteTableView;
@@ -70,7 +73,19 @@ public class AlerteController implements LanguageObserver {
 
     @FXML
     private Pane pane_111;
+    @FXML
+    private Text nbalert;
 
+
+    @FXML
+    private Text nbalertstock;
+
+    @FXML
+    private Text stokid;
+    private int unreadCount;
+    private int readCount;
+    private PieChart.Data unreadData;
+    private PieChart.Data readData;
 
     private LanguageManager languageManager = LanguageManager.getInstance();
     @FXML
@@ -86,6 +101,7 @@ public class AlerteController implements LanguageObserver {
             filterAlerts(newValue);
         });
         updatePieChart(AlerteTableView.getItems());
+        updateLineChart(getAlertCountsByStock(AlerteTableView.getItems()));
     }
 
 
@@ -204,8 +220,11 @@ public class AlerteController implements LanguageObserver {
                 updateAlertTypeInDatabase(selectedAlert.getId_alerte(), true);
 
                 // Refresh the TableView or update the specific row
-                AlerteTableView.refresh(); // This may not be necessary if the TableView is properly bound to your data
+                AlerteTableView.refresh();
                 updatePieChart(AlerteTableView.getItems());
+
+                //update les textfield piechart when i click (ligne table)
+                onLanguageChanged();
             }
         }
     }
@@ -232,12 +251,17 @@ public class AlerteController implements LanguageObserver {
         DescriptionCoulumn.setText(LanguageManager.getInstance().getText("DescriptionCoulumn"));
         TypeCoulumn.setText(LanguageManager.getInstance().getText("TypeCoulumn"));
         DateColoumn.setText(LanguageManager.getInstance().getText("DateColoumn"));
+        stokid.setText(LanguageManager.getInstance().getText("stokid"));
+        nbalert.setText(LanguageManager.getInstance().getText("nbalert"));
+        nbalertstock.setText(LanguageManager.getInstance().getText("nbalertstock"));
     }
 
 
     @Override
     public void onLanguageChanged() {
         updateLabels();
+        unreadData.setName(LanguageManager.getInstance().getText("Alertes_Non_lues"));
+        readData.setName(LanguageManager.getInstance().getText("Alertes_lues"));
     }
 
     private void deleteReadAlertsOlderThan10Days() {
@@ -263,12 +287,54 @@ public class AlerteController implements LanguageObserver {
             }
         }
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Alertes non lues ", unreadCount),
-                new PieChart.Data("Alertes lues", readCount)
-        );
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        // Utilisez des ID pour référencer les données
+        unreadData = new PieChart.Data("", unreadCount);
+        readData = new PieChart.Data("", readCount);
+        try {
+            unreadData.setName(LanguageManager.getInstance().getText("Alertes_Non_lues") + ": " + unreadCount);
+            readData.setName(LanguageManager.getInstance().getText("Alertes_lues") + ": " + readCount);
+        } catch (MissingResourceException e) {
+            System.out.println("Clé manquante : " + e.getKey());
+        }
+        pieChartData.addAll(unreadData, readData);
 
         nbAlert.setData(pieChartData);
     }
+    private Map<Integer, Integer> getAlertCountsByStock(List<Alerte> alerts) {
+        Map<Integer, Integer> alertCounts = new HashMap<>();
+
+        for (Alerte alert : alerts) {
+            int idStock = alert.getId_stock();
+            alertCounts.put(idStock, alertCounts.getOrDefault(idStock, 0) + 1);
+        }
+
+        return alertCounts;
+    }
+
+    private void updateLineChart(Map<Integer, Integer> alertCounts) {
+        ObservableList<XYChart.Series<String, Number>> lineChartData = FXCollections.observableArrayList();
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Alert Counts");
+
+        for (Map.Entry<Integer, Integer> entry : alertCounts.entrySet()) {
+            String idStock = String.valueOf(entry.getKey());
+            series.getData().add(new XYChart.Data<>(idStock, entry.getValue()));
+        }
+
+        lineChartData.add(series);
+
+        // Set the data to the existing LineChart with fx:id "nbIdstock"
+        nbIdstock.getData().setAll(lineChartData);
+
+
+
+    }
+
+
+
+
 
 }

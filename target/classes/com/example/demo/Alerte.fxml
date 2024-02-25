@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -9,6 +12,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AlerteController">
     <children>
@@ -30,32 +34,44 @@
             </image>
         </ImageView>
 
-        <Pane fx:id="pane_111" layoutX="653.0" layoutY="54.0" prefHeight="121.0" prefWidth="149.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+        <Pane fx:id="pane_111" layoutX="684.0" layoutY="52.0" prefHeight="135.0" prefWidth="177.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
             <children>
                 <Label layoutX="39.0" layoutY="69.0" prefHeight="17.0" prefWidth="68.0" text="GO ON" textFill="#f2eaea">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Label>
-                <Label layoutX="5.0" layoutY="14.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
+                <Label layoutX="52.0" layoutY="14.0" prefHeight="17.0" prefWidth="68.0" text="555" textFill="#faf1f1">
                     <font>
                         <Font size="18.0" />
                     </font>
                 </Label>
             </children>
         </Pane>
-        <Label layoutX="845.0" layoutY="54.0" text="Admin">
+        <Label layoutX="860.0" layoutY="53.0" text="Admin">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <ImageView fitHeight="45.0" fitWidth="68.0" layoutX="852.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="45.0" fitWidth="68.0" layoutX="864.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@Images/thumbnail_image.png" />
             </image>
         </ImageView>
         <TextField fx:id="TrechercheAlerte" layoutX="684.0" layoutY="203.0" onAction="#rechercherAlerte" promptText="Rechercher :" />
-      <PieChart fx:id="nbAlert" layoutX="112.0" layoutY="9.0" prefHeight="209.0" prefWidth="356.0" />
+      <PieChart fx:id="nbAlert" layoutX="38.0" layoutY="20.0" prefHeight="188.0" prefWidth="255.0" />
+      <LineChart fx:id="nbIdstock" accessibleText="Nombre des alertes" layoutX="356.0" layoutY="32.0" prefHeight="188.0" prefWidth="288.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis prefHeight="148.0" prefWidth="5.0" side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <Text fx:id="stokid" layoutX="457.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID Stock" wrappingWidth="86.8773193359375" />
+        <Text fx:id="nbalert" boundsType="LOGICAL_VERTICAL_CENTER" layoutX="269.0" layoutY="122.0" rotate="270" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="Nombre des alertes" textAlignment="CENTER" wrappingWidth="113.27740478515636" />
+      <Text fx:id="nbalertstock" layoutX="394.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre des alertes par stock" wrappingWidth="227.5830478668213" />
+
 
     </children>
 </Pane>
