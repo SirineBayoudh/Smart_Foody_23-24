@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PageAccueilController">
    <children>
       <ScrollPane prefHeight="700.0" prefWidth="1201.0">
@@ -24,11 +23,14 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1458.0" prefWidth="1202.0">
                <children>
                   <HBox fx:id="imageContainer" layoutX="-3.0" prefHeight="350.0" prefWidth="1211.0" />
-                  <VBox fx:id="imagesVbox" layoutX="360.0" layoutY="606.0" prefHeight="900.0" prefWidth="841.0" styleClass="carte-sans-bordure">
+                  <VBox fx:id="imagesVbox" layoutX="-1.0" layoutY="746.0" prefHeight="900.0" prefWidth="1202.0" styleClass="carte-sans-bordure">
                      <stylesheets>
                         <URL value="@css/style_dash.css" />
                         <URL value="@css/style_pageClient.css" />
                      </stylesheets>
+                     <padding>
+                        <Insets left="90.0" right="90.0" />
+                     </padding>
                   </VBox>
                   <Label layoutX="468.0" layoutY="363.0" text="Tops Catégories " textFill="#56ab2f">
                      <font>
@@ -85,7 +87,7 @@
                         <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="300.0" visible="false" />
                      </children>
                   </HBox>
-                  <VBox layoutX="24.0" layoutY="651.0" prefHeight="131.0" prefWidth="307.0">
+                  <VBox layoutX="375.0" layoutY="591.0" prefHeight="131.0" prefWidth="458.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="318.0" stylesheets="@css/style_pageClient.css">
                            <children>

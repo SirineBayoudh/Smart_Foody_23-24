@@ -1,11 +1,18 @@
 package com.example.demo.Controllers;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 
+
+import com.example.demo.Main;
+import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -41,22 +48,7 @@ public class PageAccueilController {
     @FXML
     private VBox imagesVbox;
     private Connection conn;
-    @FXML
-    private HBox categoryIconsContainer;
-    @FXML
-    private ImageView AllProductImageView;
 
-    @FXML
-    private ImageView fruitImageView;
-
-    @FXML
-    private ImageView grainImageView;
-
-    @FXML
-    private ImageView laitImageView;
-
-    @FXML
-    private ImageView vegImageView;
 
     @FXML
     void handleAllProductImageClick(MouseEvent event) {
@@ -65,45 +57,42 @@ public class PageAccueilController {
 
     @FXML
     void handleFruitImageClick(MouseEvent event) {
-        displayImagesByCategory("fruit");
+        displayProductsByCategory("fruit");
     }
 
     @FXML
     void handleGrainImageClick(MouseEvent event) {
-        displayImagesByCategory("grain");
+        displayProductsByCategory("grain");
     }
 
     @FXML
     void handleLaitierImageClick(MouseEvent event) {
-        displayImagesByCategory("laitier");
+        displayProductsByCategory("laitier");
     }
 
     @FXML
     void handleVegImageClick(MouseEvent event) {
-        displayImagesByCategory("legume");
+        displayProductsByCategory("legume");
     }
     @FXML
     private TextField searchResultTextField;
 
     @FXML
     private ListView<String> suggestionsListView;
+
+
     @FXML
     private void searchProducts() {
         String searchQuery = searchResultTextField.getText();
         try {
             // Requête SQL pour récupérer les produits correspondant à la requête de recherche
-            String sql = "SELECT image FROM produit WHERE marque LIKE ?";
+            String sql = "SELECT marque, image, prix FROM produit WHERE marque LIKE ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, searchQuery + "%");
             ResultSet resultSet = statement.executeQuery();
 
             // Effacer l'affichage actuel des produits
             clearProductDisplay();
-            List<String> suggestions = new ArrayList<>();
-            while (resultSet.next()) {
-                String suggestion = resultSet.getString("marque");
-                suggestions.add(suggestion);
-            }
 
             // Afficher les produits correspondant à la recherche
             displayProducts(resultSet);
@@ -111,66 +100,149 @@ public class PageAccueilController {
             System.out.println("Erreur lors de la recherche des produits : " + e.getMessage());
         }
     }
+
     private void displayProducts(ResultSet resultSet) throws SQLException {
-        while (resultSet.next()) {
-            // Récupérer l'URL de l'image du produit à partir du résultat de la requête
-            String imageUrl = resultSet.getString("image");
+        try {
+            // Effacer l'affichage actuel des produits
+            imagesVbox.getChildren().clear();
 
-            // Créer une ImageView pour afficher l'image du produit
-            Image image = new Image(imageUrl);
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(150); // Définir la largeur de l'image
-            imageView.setFitHeight(150); // Définir la hauteur de l'image
+            // Créer une HBox pour chaque ligne d'images
+            HBox hbox = new HBox();
+            hbox.setSpacing(40); // Espace entre les cartes
 
-            // Ajouter l'ImageView à votre conteneur d'affichage des produits
-            // Par exemple, si vous avez un VBox nommé 'productDisplayVBox':
-            imagesVbox.getChildren().add(imageView);
+            while (resultSet.next()) {
+                String imageUrl = resultSet.getString("image");
+                String marque = resultSet.getString("marque");
+                String prix = resultSet.getString("prix");
+
+                // Créer une ImageView pour afficher l'image du produit
+                Image image = new Image(imageUrl);
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(150); // Définir la largeur de l'image
+                imageView.setFitHeight(150); // Définir la hauteur de l'image
+
+                // Créer une VBox pour contenir les informations du produit
+                VBox productInfo = new VBox(5); // Espacement vertical entre les éléments
+                productInfo.setAlignment(Pos.BOTTOM_CENTER); // Alignement central des éléments
+                // Appliquer le style CSS au texte de la marque et du prix
+                Label labelMarque = new Label("Marque: " + marque);
+                labelMarque.setStyle("-fx-text-fill: #56ab2f;");
+                Label labelPrix = new Label("Prix: " + prix + " dt"); // Ajout de 'dt' au prix
+                labelPrix.setStyle("-fx-text-fill: #56ab2f;");
+                // Ajouter les labels avec les styles à la VBox des informations du produit
+                productInfo.getChildren().addAll(labelMarque, labelPrix);
+
+                // Créer des boutons pour ajouter au panier et voir les détails
+                Button btnAjouterPanier = new Button("Ajouter au panier");
+                Button btnDetails = new Button("Détails");
+                applyButtonStyles(btnAjouterPanier, btnDetails);
+
+                // Ajouter des actions aux boutons
+                btnAjouterPanier.setOnAction(event -> {
+                    // Action à effectuer lors du clic sur "Ajouter au panier"
+                    // Par exemple, ajouter le produit au panier
+                });
+
+                btnDetails.setOnAction(event -> {
+                    // Action à effectuer lors du clic sur "Détails"
+                    // Par exemple, afficher une fenêtre modale avec les détails du produit
+                });
+
+                // Ajouter les boutons à la VBox des informations du produit
+                productInfo.getChildren().addAll(btnDetails, btnAjouterPanier);
+
+                // Créer une carte pour encapsuler l'imageView et les informations du produit
+                StackPane cardPane = new StackPane();
+                StackPane.setAlignment(imageView, Pos.TOP_CENTER);
+                cardPane.getChildren().addAll(imageView, productInfo);
+                cardPane.setStyle("-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 22px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-border-color: #56ab2f;-fx-border-radius: 30;-fx-border-width: 2px;");
+                cardPane.setPrefWidth(220); // Fixer la largeur de la carte
+                cardPane.setPrefHeight(300); // Fixer la hauteur de la carte
+
+                // Ajouter la carte contenant l'image à la ligne actuelle
+                hbox.getChildren().add(cardPane);
+
+                // Si la ligne est pleine ou s'il n'y a plus de produits à afficher
+                if (hbox.getChildren().size() >= 4 || resultSet.isLast()) {
+                    // Ajouter la ligne à la VBox
+                    imagesVbox.getChildren().add(hbox);
+
+                    // Créer une nouvelle ligne si ce n'est pas le dernier produit
+                    if (!resultSet.isLast()) {
+                        hbox = new HBox();
+                        hbox.setSpacing(40); // Espace entre les cartes
+                    }
+                } else {
+                    System.out.println("L'URL de l'image est invalide : " + imageUrl);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
         }
     }
+
+
+
+
+    private StackPane createCardPane(ImageView imageView, String marque, String prix) {
+        // Créer une VBox pour contenir les informations du produit
+        VBox productInfo = new VBox(5); // Espacement vertical entre les éléments
+        productInfo.setAlignment(Pos.BOTTOM_CENTER); // Alignement central des éléments
+        // Appliquer le style CSS au texte de la marque et du prix
+        Label labelMarque = new Label("Marque: " + marque);
+        labelMarque.setStyle("-fx-text-fill: #56ab2f;");
+
+        Label labelPrix = new Label("Prix: " + prix);
+        labelPrix.setStyle("-fx-text-fill: #56ab2f;");
+
+// Ajouter les labels avec les styles à la VBox des informations du produit
+        productInfo.getChildren().addAll(labelMarque, labelPrix);
+        // Créer des boutons pour ajouter au panier et voir les détails
+        Button btnAjouterPanier = new Button("Ajouter au panier");
+        Button btnDetails = new Button("Détails");
+        applyButtonStyles(btnAjouterPanier, btnDetails);
+
+        // Ajouter des actions aux boutons
+        btnAjouterPanier.setOnAction(event -> {
+            // Action à effectuer lors du clic sur "Ajouter au panier"
+            // Par exemple, ajouter le produit au panier
+        });
+
+        btnDetails.setOnAction(event -> {
+            // Action à effectuer lors du clic sur "Détails"
+            // Par exemple, afficher une fenêtre modale avec les détails du produit
+        });
+
+        // Ajouter les boutons à la VBox des informations du produit
+        productInfo.getChildren().addAll(btnDetails,btnAjouterPanier);
+
+
+        // Créer une StackPane pour contenir l'image et les informations du produit
+        StackPane cardPane = new StackPane();
+        StackPane.setAlignment(imageView, Pos.TOP_CENTER);
+        cardPane.getChildren().addAll(imageView, productInfo);
+        cardPane.setStyle("-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 22px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-border-color: #56ab2f;-fx-border-radius: 30;-fx-border-width: 2px;");
+        cardPane.setPrefWidth(150); // Fixer la largeur de la carte
+        cardPane.setPrefHeight(150); // Fixer la hauteur de la carte
+
+        // Ajuster la position de la VBox des informations du produit
+        StackPane.setMargin(productInfo, new Insets(10, 0, 0, 0)); // Ajouter une marge au-dessus des informations du produit
+
+        return cardPane;
+    }
+
+
+
+
     private void clearProductDisplay() {
         imagesVbox.getChildren().clear();
     }
-    private List<String> getSuggestions(String input) {
-        List<String> suggestions = new ArrayList<>();
+    private void displayProductsByCategory(String category) {
         try {
-            // Requête SQL pour récupérer les suggestions basées sur la saisie de l'utilisateur
-            String sql = "SELECT marque FROM produit WHERE marque LIKE ?";
+            // Requête SQL pour récupérer toutes les informations des produits de la catégorie spécifiée depuis la base de données
+            String sql = "SELECT marque, prix, image FROM produit WHERE categorie = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, "%" + input + "%");
-            ResultSet resultSet = statement.executeQuery();
-
-            // Ajouter les suggestions à la liste
-            while (resultSet.next()) {
-                String suggestion = resultSet.getString("marque");
-                suggestions.add(suggestion);
-            }
-        } catch (Exception e) {
-            System.out.println("Erreur lors de la récupération des suggestions : " + e.getMessage());
-        }
-        return suggestions;
-    }
-    private void displaySuggestions(List<String> suggestions) {
-        // Ajouter les suggestions à la liste
-        ObservableList<String> items = FXCollections.observableArrayList(suggestions);
-        suggestionsListView.setItems(items);
-
-        // Gérer la sélection d'une suggestion
-        suggestionsListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            // Mettre à jour le champ de recherche avec la suggestion sélectionnée
-            searchResultTextField.setText(newValue);
-
-            // Effectuer la recherche dans la base de données avec la suggestion sélectionnée
-            searchProducts();
-        });
-    }
-
-
-    private void displayImagesByCategory(String categoryName) {
-        try {
-            // Requête SQL pour récupérer les images de la catégorie spécifiée depuis la base de données
-            String sql = "SELECT image FROM produit WHERE categorie = ?";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, categoryName);
+            statement.setString(1, category);
             ResultSet resultSet = statement.executeQuery();
 
             // Effacer l'affichage actuel des produits
@@ -180,46 +252,50 @@ public class PageAccueilController {
             HBox hbox = new HBox();
             hbox.setSpacing(40); // Espace entre les cartes
 
-            // Ajouter les images à chaque HBox et gérer les lignes
+            // Ajouter les images et les informations à chaque HBox et gérer les lignes
             while (resultSet.next()) {
                 String imageUrl = resultSet.getString("image");
+                String marque = resultSet.getString("marque");
+                String prix = resultSet.getString("prix");
                 Image image = new Image(imageUrl);
                 ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(190); // Fixer la largeur de l'image
-                imageView.setFitHeight(190);
+                imageView.setFitWidth(150); // Fixer la largeur de l'image
+                imageView.setFitHeight(150);
                 imageView.setPreserveRatio(false);
 
-                // Créer une carte blanche pour chaque image
-                StackPane cardPane = new StackPane();
-                cardPane.setStyle("-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 22px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-border-color: #56ab2f;-fx-border-radius: 30;-fx-border-width: 2px;");
-                cardPane.getChildren().add(imageView);
+                // Créer une carte blanche pour chaque produit
+                StackPane cardPane = createCardPane(imageView, marque, prix + " dt");
                 cardPane.setPrefWidth(220);
-                cardPane.setPrefHeight(220);
+                cardPane.setPrefHeight(300);
 
                 // Ajouter la carte à la HBox
                 hbox.getChildren().add(cardPane);
+
                 // Créer une nouvelle ligne si la ligne actuelle est pleine
-                if (hbox.getChildren().size() >= 3) {
+                if (hbox.getChildren().size() >= 4) {
                     imagesVbox.getChildren().add(hbox);
                     hbox = new HBox();
                     hbox.setSpacing(40); // Espace entre les cartes
                 }
             }
+
             // Ajouter la dernière ligne si elle n'est pas pleine
             if (!hbox.getChildren().isEmpty()) {
                 imagesVbox.getChildren().add(hbox);
             }
+
             imagesVbox.setSpacing(20);
 
         } catch (Exception e) {
-            System.out.println("Erreur lors de la récupération des images depuis la base de données : " + e.getMessage());
+            System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
         }
     }
+
 
     private void displayAllProducts() {
         try {
-            // Requête SQL pour récupérer toutes les URL des images depuis la base de données
-            String sql = "SELECT image FROM produit";
+            // Requête SQL pour récupérer toutes les informations des produits depuis la base de données
+            String sql = "SELECT marque, prix, image FROM produit";
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
 
@@ -230,43 +306,45 @@ public class PageAccueilController {
             HBox hbox = new HBox();
             hbox.setSpacing(40); // Espace entre les cartes
 
-            // Ajouter les images à chaque HBox et gérer les lignes
+            // Ajouter les images et les informations à chaque HBox et gérer les lignes
             while (resultSet.next()) {
                 String imageUrl = resultSet.getString("image");
+                String marque = resultSet.getString("marque");
+                String prix = resultSet.getString("prix");
                 Image image = new Image(imageUrl);
                 ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(190); // Fixer la largeur de l'image
-                imageView.setFitHeight(190);
+                imageView.setFitWidth(150); // Fixer la largeur de l'image
+                imageView.setFitHeight(150);
                 imageView.setPreserveRatio(false);
 
-                // Créer une carte blanche pour chaque image
-                StackPane cardPane = new StackPane();
-                cardPane.setStyle("-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 22px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-border-color: #56ab2f;-fx-border-radius: 30;-fx-border-width: 2px;");
-                cardPane.getChildren().add(imageView);
+                // Créer une carte blanche pour chaque produit
+                StackPane cardPane = createCardPane(imageView, marque, prix + " dt");
                 cardPane.setPrefWidth(220);
-                cardPane.setPrefHeight(220);
+                cardPane.setPrefHeight(300);
 
                 // Ajouter la carte à la HBox
                 hbox.getChildren().add(cardPane);
+
                 // Créer une nouvelle ligne si la ligne actuelle est pleine
-                if (hbox.getChildren().size() >= 3) {
+                if (hbox.getChildren().size() >= 4) {
                     imagesVbox.getChildren().add(hbox);
                     hbox = new HBox();
                     hbox.setSpacing(40); // Espace entre les cartes
                 }
             }
-            //imagesVbox.setSpacing(20);
 
             // Ajouter la dernière ligne si elle n'est pas pleine
             if (!hbox.getChildren().isEmpty()) {
                 imagesVbox.getChildren().add(hbox);
             }
+
             imagesVbox.setSpacing(20);
 
         } catch (Exception e) {
-            System.out.println("Erreur lors de la récupération des images depuis la base de données : " + e.getMessage());
+            System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
         }
     }
+
 
 
 
@@ -275,6 +353,7 @@ public class PageAccueilController {
     void initialize() {
         MyConnection db = MyConnection.getInstance();
         conn = db.getCnx();
+
         // Initialise la liste des suggestions avec une liste vide
         suggestionsListView.setItems(FXCollections.observableArrayList());
         suggestionsListView.setStyle("-fx-background-color: transparent; -fx-padding: 10;");
@@ -289,7 +368,9 @@ public class PageAccueilController {
                 suggestionsListView.getItems().clear();
             }
         });
+
         displayAllProducts();
+
         try {
             // Ouvrir une connexion HTTP
             URL url = new URL(API_URL + "&count=" + NUM_IMAGES);
@@ -319,27 +400,14 @@ public class PageAccueilController {
                 imageView.setPreserveRatio(false); // Désactiver le maintien du ratio d'aspect
                 imageContainer.getChildren().add(imageView);
             }
-            // Initialise la liste des suggestions avec une liste vide
-            suggestionsListView.setItems(FXCollections.observableArrayList());
-
-            // Ajoute un écouteur sur le champ de recherche pour détecter les changements de texte
-            searchResultTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue.isEmpty()) {
-                    // Exécute une recherche dans la base de données et met à jour les suggestions
-                    updateSuggestions(newValue);
-                } else {
-                    // Efface la liste des suggestions si le champ de recherche est vide
-                    suggestionsListView.getItems().clear();
-                }
-            });
 
             // Fermer la connexion
             connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
 
     private void updateSuggestions(String searchQuery) {
         try {
@@ -357,5 +425,10 @@ public class PageAccueilController {
             e.printStackTrace();
         }
     }
+    private void applyButtonStyles(Button btnAjouterPanier, Button btnDetails) {
+        btnAjouterPanier.setStyle("-fx-background-color: #56ab2f; -fx-background-radius: 30; -fx-text-fill: white;");
+        btnDetails.setStyle("-fx-background-color: #56ab2f; -fx-background-radius: 30; -fx-text-fill: white;");
     }
+
+}
 
