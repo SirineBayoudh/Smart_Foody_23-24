@@ -48,11 +48,14 @@ public class PageAccueilController {
     @FXML
     private VBox imagesVbox;
     private Connection conn;
+    private int currentPageIndex = 0;
+    private int totalPageCount = 0;
+    private final int itemsPerPage = 8;
 
 
     @FXML
     void handleAllProductImageClick(MouseEvent event) {
-       displayAllProducts();
+       displayProductsByPage(0);
     }
 
     @FXML
@@ -79,6 +82,63 @@ public class PageAccueilController {
 
     @FXML
     private ListView<String> suggestionsListView;
+    @FXML
+    void goToPreviousPage() {
+        if (currentPageIndex > 0) {
+            currentPageIndex--;
+            displayProductsByPage(currentPageIndex);
+        }
+    }
+
+    @FXML
+    void goToNextPage() {
+        int totalProductsCount = getTotalProductsCount();
+        int totalPages = (int) Math.ceil((double) totalProductsCount / itemsPerPage);
+
+        if (currentPageIndex < totalPages - 1) {
+            currentPageIndex++;
+            displayProductsByPage(currentPageIndex);
+        }
+    }
+    private int getTotalProductsCount() {
+        try {
+            String sql = "SELECT COUNT(*) AS total FROM produit";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private void displayProductsByPage(int pageIndex) {
+        try {
+            // Calculer l'offset
+            int offset = pageIndex * itemsPerPage;
+
+            // Requête SQL pour récupérer les produits de la page spécifiée
+            String sql = "SELECT marque, prix, image FROM produit LIMIT ?, ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, offset);
+            statement.setInt(2, itemsPerPage);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Effacer l'affichage actuel des produits
+            imagesVbox.getChildren().clear();
+
+            // Afficher les produits de la page spécifiée
+            displayProducts(resultSet);
+
+            // Mise à jour de l'indice de la page actuelle
+            currentPageIndex = pageIndex;
+
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
+        }
+    }
 
 
     @FXML
@@ -176,6 +236,7 @@ public class PageAccueilController {
                     System.out.println("L'URL de l'image est invalide : " + imageUrl);
                 }
             }
+            imagesVbox.setSpacing(20);
         } catch (Exception e) {
             System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
         }
@@ -292,63 +353,6 @@ public class PageAccueilController {
     }
 
 
-    private void displayAllProducts() {
-        try {
-            // Requête SQL pour récupérer toutes les informations des produits depuis la base de données
-            String sql = "SELECT marque, prix, image FROM produit";
-            PreparedStatement statement = conn.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
-
-            // Effacer l'affichage actuel des produits
-            imagesVbox.getChildren().clear();
-
-            // Créer une HBox pour chaque ligne d'images
-            HBox hbox = new HBox();
-            hbox.setSpacing(40); // Espace entre les cartes
-
-            // Ajouter les images et les informations à chaque HBox et gérer les lignes
-            while (resultSet.next()) {
-                String imageUrl = resultSet.getString("image");
-                String marque = resultSet.getString("marque");
-                String prix = resultSet.getString("prix");
-                Image image = new Image(imageUrl);
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(150); // Fixer la largeur de l'image
-                imageView.setFitHeight(150);
-                imageView.setPreserveRatio(false);
-
-                // Créer une carte blanche pour chaque produit
-                StackPane cardPane = createCardPane(imageView, marque, prix + " dt");
-                cardPane.setPrefWidth(220);
-                cardPane.setPrefHeight(300);
-
-                // Ajouter la carte à la HBox
-                hbox.getChildren().add(cardPane);
-
-                // Créer une nouvelle ligne si la ligne actuelle est pleine
-                if (hbox.getChildren().size() >= 4) {
-                    imagesVbox.getChildren().add(hbox);
-                    hbox = new HBox();
-                    hbox.setSpacing(40); // Espace entre les cartes
-                }
-            }
-
-            // Ajouter la dernière ligne si elle n'est pas pleine
-            if (!hbox.getChildren().isEmpty()) {
-                imagesVbox.getChildren().add(hbox);
-            }
-
-            imagesVbox.setSpacing(20);
-
-        } catch (Exception e) {
-            System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
-        }
-    }
-
-
-
-
-
     @FXML
     void initialize() {
         MyConnection db = MyConnection.getInstance();
@@ -368,14 +372,15 @@ public class PageAccueilController {
                 suggestionsListView.getItems().clear();
             }
         });
-
-        displayAllProducts();
+        
+        displayProductsByPage(0);
 
         try {
             // Ouvrir une connexion HTTP
             URL url = new URL(API_URL + "&count=" + NUM_IMAGES);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+
 
             // Lire la réponse de l'API
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

@@ -20,10 +20,10 @@
    <children>
       <ScrollPane prefHeight="700.0" prefWidth="1201.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1458.0" prefWidth="1202.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1502.0" prefWidth="1202.0">
                <children>
                   <HBox fx:id="imageContainer" layoutX="-3.0" prefHeight="350.0" prefWidth="1211.0" />
-                  <VBox fx:id="imagesVbox" layoutX="-1.0" layoutY="746.0" prefHeight="900.0" prefWidth="1202.0" styleClass="carte-sans-bordure">
+                  <VBox fx:id="imagesVbox" layoutX="-1.0" layoutY="738.0" prefHeight="670.0" prefWidth="1202.0" styleClass="carte-sans-bordure">
                      <stylesheets>
                         <URL value="@css/style_dash.css" />
                         <URL value="@css/style_pageClient.css" />
@@ -117,6 +117,16 @@
                         <ListView fx:id="suggestionsListView" prefHeight="80.0" prefWidth="200.0" />
                      </children>
                   </VBox>
+                  <Button layoutX="474.0" layoutY="1440.0" mnemonicParsing="false" onAction="#goToPreviousPage" prefHeight="28.0" prefWidth="85.0" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="Précédent" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="604.0" layoutY="1440.0" mnemonicParsing="false" onAction="#goToNextPage" prefHeight="28.0" prefWidth="85.0" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="Suivant" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
         </content>
