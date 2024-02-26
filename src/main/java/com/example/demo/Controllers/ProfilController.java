@@ -321,7 +321,7 @@ public class ProfilController implements Initializable {
                 pst.setString(4, tfemailp.getText());
                 pst.setInt(5,Integer.parseInt(tfnumtelp.getText()));
                 pst.setString(6, Role.Client.toString());
-                pst.setInt(7,0);
+                pst.setString(7,"");
                 pst.setString(8,"");
                 pst.setString(9,choixVillep.getValue() + "," + tfruep.getText());
                 pst.setString(10, choixObjectifp.getValue());

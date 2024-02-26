@@ -121,25 +121,6 @@ public class ModifierConseillerController implements Initializable {
             return;
         }
 
-        try {
-            int matricule = Integer.parseInt(tfmatricule.getText());
-            if (tfmatricule.getText().length() != 6) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Format de matricule incorrect");
-                alert.setHeaderText(null);
-                alert.setContentText("Le champ matricule doit contenir exactement 6 chiffres.");
-                alert.showAndWait();
-                return;
-            }
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Format de matricule incorrect");
-            alert.setHeaderText(null);
-            alert.setContentText("Le champ matricule ne doit contenir que des chiffres.");
-            alert.showAndWait();
-            return;
-        }
-
         Connection  cnx = MyConnection.getInstance().getCnx();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -164,7 +145,7 @@ public class ModifierConseillerController implements Initializable {
                 pst.setString(5,encryptor.encryptString(tfmdpc.getText()));
                 pst.setInt(6,Integer.parseInt(tfnumtelc.getText()));
                 pst.setString(7,Role.Conseiller.toString());
-                pst.setInt(8,Integer.parseInt(tfmatricule.getText()));
+                pst.setString(8,tfmatricule.getText());
                 pst.setString(9,tfattestation.getText());
                 pst.setString(10,"");
                 pst.setString(11, "");
@@ -213,7 +194,7 @@ public class ModifierConseillerController implements Initializable {
             tfmdpc.setText(user.getMot_de_passe());
             choixGenrec.setValue(user.getGenre());
             tfnumtelc.setText(String.valueOf(user.getNum_tel()));
-            tfmatricule.setText(String.valueOf(user.getMatricule()));
+            tfmatricule.setText(user.getMatricule());
             tfattestation.setText(user.getAttestation());
         }
     }

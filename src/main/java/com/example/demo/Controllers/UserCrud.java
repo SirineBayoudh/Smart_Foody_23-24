@@ -33,7 +33,7 @@ public class UserCrud implements ICrud<Utilisateur>{
             pst.setString(5,u.getMot_de_passe());
             pst.setInt(6,u.getNum_tel());
             pst.setString(7,u.getRole());
-            pst.setInt(8,u.getMatricule());
+            pst.setString(8,u.getMatricule());
             pst.setString(9,u.getAttestation());
             pst.setString(10,u.getAdresse());
             pst.setString(11, u.getObjectif());
@@ -56,7 +56,7 @@ public class UserCrud implements ICrud<Utilisateur>{
             pst.setString(5,u.getMot_de_passe());
             pst.setInt(6,u.getNum_tel());
             pst.setString(7,u.getRole());
-            pst.setInt(8,u.getMatricule());
+            pst.setString(8,u.getMatricule());
             pst.setString(9,u.getAttestation());
             pst.setString(10,u.getAdresse());
             pst.setString(11, u.getObjectif());
@@ -101,7 +101,7 @@ public class UserCrud implements ICrud<Utilisateur>{
                 usr.setMot_de_passe(rs.getString(6));
                 usr.setNum_tel(rs.getInt(7));
                 usr.setRole(rs.getString(8));
-                usr.setMatricule(rs.getInt(9));
+                usr.setMatricule(rs.getString(9));
                 usr.setAttestation(rs.getString(10));
                 usr.setAdresse(rs.getString(11));
                 usr.setObjectif(rs.getString(12));
@@ -146,7 +146,7 @@ public class UserCrud implements ICrud<Utilisateur>{
                 usr.setMot_de_passe(rs.getString(6));
                 usr.setNum_tel(rs.getInt(7));
                 usr.setRole(rs.getString(8));
-                usr.setMatricule(rs.getInt(9));
+                usr.setMatricule(rs.getString(9));
                 usr.setAttestation(rs.getString(10));
                 usr.setAdresse(rs.getString(11));
                 usr.setObjectif(rs.getString(12));
@@ -175,7 +175,7 @@ public class UserCrud implements ICrud<Utilisateur>{
                 usr.setMot_de_passe(rs.getString(6));
                 usr.setNum_tel(rs.getInt(7));
                 usr.setRole(rs.getString(8));
-                usr.setMatricule(rs.getInt(9));
+                usr.setMatricule(rs.getString(9));
                 usr.setAttestation(rs.getString(10));
                 usr.setAdresse(rs.getString(11));
                 usr.setObjectif(rs.getString(12));

@@ -371,9 +371,11 @@ public class LoginController implements Initializable {
             // Construct email body with HTML formatting
             String body = "<html>"
                     + "<body>"
-                    + "<div style='width: 500px;background-color: #aad597; padding: 20px;'>"
-                    + "<p style='color:darkgreen;font-size:14px;'>Bonjour, " + prenom + "</p>"
-                    + "<p style='color:blue;font-size:14px;'> Veuillez copier le code suivant :</p>"
+                    + "<div style='text-align:center;'><img src='/com/example/demo/Images/trans_logo.png' alt='Logo smart foody'/></div>"
+                    + "<p style='color: #000;font-size:18px;padding-left: 20px;font-weight:bold'>Bonjour, " + prenom + "</p>"
+                    + "<div style='width: 500px;padding: 20px;'>"
+                    + "<h2 style='text-transform: uppercase; color: #000;'>VOUS AVEZ DEMANDÉ LA MODIFICATION DE VOTRE MOT DE PASSE</h2>"
+                    + "<p style='color: #000;font-size:14px;'> Veuillez copier le code suivant :</p>"
                     + "<button style='background-color: #4CAF50; /* Green */\n" +
                     "  border: none;\n" +
                     "  color: white;\n" +

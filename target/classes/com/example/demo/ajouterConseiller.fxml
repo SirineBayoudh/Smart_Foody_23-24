@@ -38,9 +38,9 @@
             <TextField fx:id="tfnumtelc" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-249.0" />
             <Label layoutX="10.0" layoutY="343.0" style="-fx-font-weight: bold;" text="Numéro de téléphone" translateX="300.0" translateY="-317.0" />
             <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Matricule" translateX="20.0" translateY="-275.0" />
-            <TextField fx:id="tfmatricule" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-290.0" />
+            <TextField fx:id="tfmatricule" editable="false" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-290.0" />
             <Label layoutX="10.0" layoutY="509.0" style="-fx-font-weight: bold;" text="Attestation" translateX="300.0" translateY="-358.0" />
-            <TextField fx:id="tfattestation" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
+            <TextField fx:id="tfattestation" editable="false" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
          </children>
       </VBox>
       <Button fx:id="btn_ajoutConseiller" mnemonicParsing="false" onAction="#addConseiller" prefWidth="100.0" style="-fx-font-weight: bold;" styleClass="btn_ajout" stylesheets="@css/style_ajoutConseiller.css" text="Ajouter" translateX="440.0" translateY="400.0" />
@@ -58,6 +58,11 @@
       <ImageView fitHeight="26.0" fitWidth="23.0" layoutX="300.0" layoutY="409.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/rafraichir.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="choixAttestation" fitHeight="34.0" fitWidth="31.0" onMouseClicked="#choisirAttestationOnClick" pickOnBounds="true" preserveRatio="true" translateX="497.0" translateY="312.0">
+         <image>
+            <Image url="@Images/dossier.png" />
          </image>
       </ImageView>
    </children>

@@ -344,7 +344,7 @@ public class RegisterController implements Initializable {
                 alert.showAndWait();
                 complx.setNb(0);
             } else if (complx.getNb() == 12){
-                Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), 0, "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0);
+                Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), "", "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0);
                 UserCrud usc = new UserCrud();
                 usc.ajouterEntite(user);
 

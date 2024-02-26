@@ -5,8 +5,8 @@ import java.util.Objects;
 public class Utilisateur implements Comparable<Utilisateur>{
     private int id_utilisateur;
     private String nom,prenom,genre,email,mot_de_passe,role;
-    private int num_tel,matricule;
-    private String attestation,adresse,objectif;
+    private int num_tel;
+    private String matricule,attestation,adresse,objectif;
 
     private int tentative;
 
@@ -74,11 +74,11 @@ public class Utilisateur implements Comparable<Utilisateur>{
         this.role = role;
     }
 
-    public int getMatricule() {
+    public String getMatricule() {
         return matricule;
     }
 
-    public void setMatricule(int matricule) {
+    public void setMatricule(String matricule) {
         this.matricule = matricule;
     }
 
@@ -117,31 +117,7 @@ public class Utilisateur implements Comparable<Utilisateur>{
     public Utilisateur() {
     }
 
-    public Utilisateur(String nom, String prenom, String genre, String email, String mdp, int num_tel,String role, int matricule, String attestation) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.genre = genre;
-        this.email = email;
-        this.mot_de_passe = mdp;
-        this.num_tel = num_tel;
-        this.role = role;
-        this.matricule = matricule;
-        this.attestation = attestation;
-    }
-
-    public Utilisateur(String nom, String prenom, String genre, String email, String mdp,int num_tel, String role, String adresse, String objectif) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.genre = genre;
-        this.email = email;
-        this.mot_de_passe = mdp;
-        this.num_tel = num_tel;
-        this.role = role;
-        this.adresse = adresse;
-        this.objectif = objectif;
-    }
-
-    public Utilisateur(String nom, String prenom, String genre, String email, String mot_de_passe,int num_tel, String role, int matricule, String attestation, String adresse, String objectif, int tentative) {
+    public Utilisateur(String nom, String prenom, String genre, String email, String mot_de_passe,int num_tel, String role, String matricule, String attestation, String adresse, String objectif, int tentative) {
         this.nom = nom;
         this.prenom = prenom;
         this.genre = genre;

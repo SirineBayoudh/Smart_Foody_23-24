@@ -7,8 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
 
+import java.io.File;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -52,6 +56,11 @@ public class AjouterConseillerController implements Initializable {
     @FXML
     private Button btn_refresh;
 
+    @FXML
+    private ImageView choixAttestation;
+
+    Encryptor encryptor = new Encryptor();
+
     private GestionUserController gestionUserController;
 
     public void setGestionUserController(GestionUserController gestionUserController) {
@@ -64,9 +73,33 @@ public class AjouterConseillerController implements Initializable {
         choixGenrec.getItems().addAll(genre);
         choixGenrec.setOnAction(e -> genreChoisi = choixGenrec.getValue());
 
+        tfprenomc.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                tfmatricule.setText("CNS-" + newValue);
+            } else {
+                tfmatricule.clear();
+            }
+        });
     }
 
-    Encryptor encryptor = new Encryptor();
+    @FXML
+    void choisirAttestationOnClick(MouseEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir un fichier d'attestation");
+
+        // Définir un filtre pour n'afficher que certains types de fichiers si nécessaire
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Afficher la boîte de dialogue de sélection de fichier
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        // Mettre à jour le champ de texte avec le chemin du fichier sélectionné
+        if (selectedFile != null) {
+            tfattestation.setText(selectedFile.getAbsolutePath());
+        }
+    }
     @FXML
     void addConseiller(ActionEvent event) throws NoSuchAlgorithmException {
 
@@ -118,27 +151,9 @@ public class AjouterConseillerController implements Initializable {
             return;
         }
 
-        try {
-            int matricule = Integer.parseInt(tfmatricule.getText());
-            if (tfmatricule.getText().length() != 6) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Format de matricule incorrect");
-                alert.setHeaderText(null);
-                alert.setContentText("Le champ matricule doit contenir exactement 6 chiffres.");
-                alert.showAndWait();
-                return;
-            }
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Format de matricule incorrect");
-            alert.setHeaderText(null);
-            alert.setContentText("Le champ matricule ne doit contenir que des chiffres.");
-            alert.showAndWait();
-            return;
-        }
         Connection cnx = MyConnection.getInstance().getCnx();
 
-        Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),Integer.parseInt(tfmatricule.getText()),tfattestation.getText(),"","",0);
+        Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),tfmatricule.getText(),tfattestation.getText(),"","",0);
         String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         try{
             PreparedStatement pst = cnx.prepareStatement(requete);
@@ -149,7 +164,7 @@ public class AjouterConseillerController implements Initializable {
             pst.setString(5,u.getMot_de_passe());
             pst.setInt(6,u.getNum_tel());
             pst.setString(7,u.getRole());
-            pst.setInt(8,u.getMatricule());
+            pst.setString(8,u.getMatricule());
             pst.setString(9,u.getAttestation());
             pst.setString(10,u.getAdresse());
             pst.setString(11, u.getObjectif());

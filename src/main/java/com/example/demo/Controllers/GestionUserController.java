@@ -64,7 +64,7 @@ public class GestionUserController implements Initializable {
     private TableColumn<Utilisateur, String> col_role;
 
     @FXML
-    private TableColumn<Utilisateur, Integer> col_matricule;
+    private TableColumn<Utilisateur, String> col_matricule;
 
     @FXML
     private TableColumn<Utilisateur, String> col_attestation;
@@ -210,7 +210,7 @@ public class GestionUserController implements Initializable {
                 usr.setMot_de_passe(rs.getString(6));
                 usr.setNum_tel(rs.getInt(7));
                 usr.setRole(rs.getString(8));
-                usr.setMatricule(rs.getInt(9));
+                usr.setMatricule(rs.getString(9));
                 usr.setAttestation(rs.getString(10));
                 usr.setAdresse(rs.getString(11));
                 usr.setObjectif(rs.getString(12));
@@ -233,7 +233,7 @@ public class GestionUserController implements Initializable {
         col_mdp.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("mot_de_passe"));
         col_numtel.setCellValueFactory(new PropertyValueFactory<Utilisateur,Integer>("num_tel"));
         col_role.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("role"));
-        col_matricule.setCellValueFactory(new PropertyValueFactory<Utilisateur,Integer>("matricule"));
+        col_matricule.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("matricule"));
         col_attestation.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("attestation"));
         col_adresse.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("adresse"));
         col_objectif.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("objectif"));
