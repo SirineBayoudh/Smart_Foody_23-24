@@ -10,7 +10,7 @@ public class FacebookAPI {
 
     public static void main(String[] args) {
         // Remplacez cette valeur par votre jeton d'accès Facebook
-        String accessToken = "EAANLAmpI2JEBO6VBMfXbdLY3ZCXRKxZAv6TZAQ3rYdcGQ9h2cD2Son0b6a8v57wQsqHvmeieNdokk5EyhSOjKxMcRSZAEK4QFXN38XhdbwZAluZAs9wZAqK2xZCWfyZCmDFZBUkJZC5ZCTrFRy3aMoSXmJ6cfqFSGk5Rt5D32DgAj95hxDHjT9LofKe0icqZA0UeZBsEfvzSZCcz5gkjRDhDgNiDPf1AZC4ZD ";
+        String accessToken = "EAANLAmpI2JEBOwbvRtdm76IprQ5jpytGPZAe1aAC0Gn5VacKxqbSLXW7kcUMElkLfjd4CQKiq6WfYZCReqlZCFg7qLJYvP1xO6UcaOuTB3EMhlgrB1fd9hLbPlsVBZAA6KdwAv8aC1V37YRnOFKAhShPnZCXi5VZBIBnpk6NOGTXUuLySMuNEAo2ZCz ";
 
         // Initialize the Facebook client
         FacebookClient facebookClient = new DefaultFacebookClient(accessToken, Version.VERSION_19_0);
