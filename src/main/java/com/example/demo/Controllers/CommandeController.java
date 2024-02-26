@@ -10,6 +10,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.Image;
 
 import java.io.*;
@@ -22,6 +23,8 @@ import com.itextpdf.layout.property.TextAlignment;
 
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.layout.property.VerticalAlignment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -281,28 +284,34 @@ public class CommandeController {
             pdfDocument.setDefaultPageSize(PageSize.A4);
             Document document = new Document(pdfDocument);
 
-            // Ajouter le titre
+            // Créer une table avec 2 colonnes pour le logo et le titre
+            float[] columnWidths = {2, 8}; // Ajustez les proportions selon vos besoins
+            Table headerTable = new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
+
+            // Ajouter le logo de l'application
+            String imagePath = "C:/Users/INFOTEC/Desktop/Smart_Foody_23-24/src/main/resources/com/example/demo/Images/trans_logo.png";
+            Image logo = new Image(ImageDataFactory.create(imagePath)).setAutoScale(true);
+            headerTable.addCell(new Cell().add(logo).setBorder(Border.NO_BORDER));
+
+            // Ajouter le titre dans la deuxième cellule de la table
             Paragraph title = new Paragraph("Extrait des Commandes")
                     .setTextAlignment(TextAlignment.CENTER)
                     .setFontSize(20)
                     .setBold()
                     .setFontColor(new DeviceRgb(0, 128, 0)); // Vert
-            document.add(title);
+            headerTable.addCell(new Cell().add(title).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
 
-            // Ajouter le logo de l'application
-            String imagePath = "C:/Users/INFOTEC/Desktop/Smart_Foody_23-24/src/main/resources/com/example/demo/Images/trans_logo.png";
-            Image logo = new Image(ImageDataFactory.create(imagePath));
-            logo.setWidth(100); // Ajustez la taille du logo selon vos besoins
-            document.add(logo);
+            // Ajouter la table d'en-tête au document
+            document.add(headerTable);
 
-            // Espacement entre le titre et le tableau
+            // Espacement entre l'en-tête et le tableau des commandes
             document.add(new Paragraph("\n"));
 
-            // Créer un tableau avec 5 colonnes
+            // Créer un tableau avec 5 colonnes pour les données des commandes
             Table table = new Table(5);
 
             // Ajouter un en-tête pour chaque colonne
-            table.addCell(new Cell().add("ID Commande").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
+            table.addCell(new Cell().add("ID Commande").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN)); // Couleur légèrement différente pour l'exemple
             table.addCell(new Cell().add("Date").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
             table.addCell(new Cell().add("ID Client").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
             table.addCell(new Cell().add("Total").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
@@ -329,6 +338,8 @@ public class CommandeController {
             e.printStackTrace();
         }
     }
+
+
 
 
     @FXML

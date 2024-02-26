@@ -5,6 +5,8 @@
 package com.example.demo.Controllers;
 
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -15,6 +17,21 @@ import java.util.ResourceBundle;
 import com.example.demo.Models.Commande;
 import com.example.demo.Models.CommandeHolder;
 import com.example.demo.Tools.ServiceCommande;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.color.DeviceRgb;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.border.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.layout.property.VerticalAlignment;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +39,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -35,10 +53,10 @@ public class  DetailsCommandeController implements Initializable {
     @FXML
     private Pane clickpane;
     @FXML
-    private TextArea clientInput ;
+    private TextArea clientInput;
 
     @FXML
-    private DatePicker    dateCreationInput;
+    private DatePicker dateCreationInput;
 
     @FXML
     private Text etatInput;
@@ -70,7 +88,7 @@ public class  DetailsCommandeController implements Initializable {
         String remiseText = decimalFormat.format(CurrentCommande.getRemise() * 100) + " %";
         remiseInput.setText(remiseText);
         etatInput.setText(String.valueOf(CurrentCommande.getEtat()));
-        totaleInout.setText(CurrentCommande.getTotal_commande()+" $");
+        totaleInout.setText(CurrentCommande.getTotal_commande() + " $");
         System.out.println(CurrentCommande.getEtat());
         if (CurrentCommande.getEtat().toLowerCase().equals("livre")) {
             okbutton.setCancelButton(true);
@@ -159,4 +177,76 @@ public class  DetailsCommandeController implements Initializable {
     }
 
 
+    public void exportPDF() {
+        Commande commande = CurrentCommande; // Utilisez l'instance CurrentCommande chargée dans l'interface
+        if (commande != null) {
+            String path = "DetailCommande_" + commande.getId_commande() + ".pdf";
+            try {
+                PdfWriter pdfWriter = new PdfWriter(path);
+                PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+                pdfDocument.setDefaultPageSize(PageSize.A4);
+                Document document = new Document(pdfDocument);
+
+                // Ajouter le logo et le titre au même niveau
+                float[] columnWidths = {2, 8};
+                Table headerTable = new Table(UnitValue.createPercentArray(columnWidths)).useAllAvailableWidth();
+
+                String imagePath = "C:/Users/INFOTEC/Desktop/Smart_Foody_23-24/src/main/resources/com/example/demo/Images/trans_logo.png";
+                Image logo = new Image(ImageDataFactory.create(imagePath)).setAutoScale(true);
+                headerTable.addCell(new Cell().add(logo).setBorder(Border.NO_BORDER));
+
+                Paragraph title = new Paragraph("Détails des Commandes")
+                        .setTextAlignment(TextAlignment.CENTER)
+                        .setFontSize(20)
+                        .setBold()
+                        .setFontColor(new DeviceRgb(0, 128, 0)); // Vert
+                headerTable.addCell(new Cell().add(title).setVerticalAlignment(VerticalAlignment.MIDDLE).setBorder(Border.NO_BORDER));
+
+                document.add(headerTable);
+
+                // Création du tableau pour les détails de la commande
+                Table table = new Table(new float[]{4, 6});
+                table.useAllAvailableWidth();
+
+                DeviceRgb greenColor = new DeviceRgb(0, 128, 0);
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+                // Ajout des titres des colonnes
+                table.addHeaderCell(new Cell().add(new Paragraph("Attribut")).setFontColor(greenColor).setBold());
+                table.addHeaderCell(new Cell().add(new Paragraph("Valeur")).setFontColor(greenColor).setBold());
+
+                // Ajout des données de la commande
+                table.addCell(new Cell().add(new Paragraph("ID Commande")));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(commande.getId_commande()))));
+                table.addCell(new Cell().add(new Paragraph("Date de création")));
+                table.addCell(new Cell().add(new Paragraph(String.valueOf(commande.getDate_commande()))));
+                table.addCell(new Cell().add(new Paragraph("Client")));
+                table.addCell(new Cell().add(new Paragraph(commandeService.usernameById(commande.getId_client()))));
+                table.addCell(new Cell().add(new Paragraph("Etat")));
+                table.addCell(new Cell().add(new Paragraph(commande.getEtat())));
+                table.addCell(new Cell().add(new Paragraph("Remise")));
+                table.addCell(new Cell().add(new Paragraph(decimalFormat.format(commande.getRemise() * 100) + "%")));
+                table.addCell(new Cell().add(new Paragraph("Total")));
+                table.addCell(new Cell().add(new Paragraph(decimalFormat.format(commande.getTotal_commande()) + "$")));
+
+                document.add(table);
+
+                document.close();
+                Desktop.getDesktop().open(new File(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur d'exportation");
+                alert.setHeaderText(null);
+                alert.setContentText("Une erreur est survenue lors de l'exportation du PDF.");
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Aucune commande sélectionnée");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez sélectionner une commande pour exporter.");
+            alert.showAndWait();
+        }
+    }
 }
