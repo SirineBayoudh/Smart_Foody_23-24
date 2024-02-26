@@ -87,7 +87,7 @@ public class AjouterConseillerController implements Initializable {
         });
     }
 
-    public File selectedFile;
+    public Boolean existe = false;
     @FXML
     void choisirAttestationOnClick(MouseEvent event) {
 
@@ -99,9 +99,19 @@ public class AjouterConseillerController implements Initializable {
         fileChooser.getExtensionFilters().add(extFilter);
 
         // Afficher la boîte de dialogue de sélection de fichier
-        selectedFile = fileChooser.showOpenDialog(null);
+        File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             tfattestation.setText(selectedFile.getAbsolutePath());
+
+            // Effectuer OCR sur le fichier d'attestation
+            String contenuFichier = effectuerOCR(selectedFile);
+
+            // Vérifier si le fichier d'attestation contient les mots "Conseiller" ou "Nutritionniste"
+            if (contenuFichier.contains("Conseiller") || contenuFichier.contains("Nutritionniste")) {
+                existe = true;
+            } else {
+                existe = false;
+                }
         }
     }
     private String effectuerOCR(File file) {
@@ -172,49 +182,42 @@ public class AjouterConseillerController implements Initializable {
             alert.showAndWait();
             return;
         }
-        if (selectedFile != null) {
+        if (existe == true) {
+            Connection cnx = MyConnection.getInstance().getCnx();
 
-            // Effectuer OCR sur le fichier d'attestation
-            String contenuFichier = effectuerOCR(selectedFile);
+            Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),tfmatricule.getText(),tfattestation.getText(),"","",0);
+            String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            try{
+                PreparedStatement pst = cnx.prepareStatement(requete);
+                pst.setString(1, u.getNom());
+                pst.setString(2,u.getPrenom());
+                pst.setString(3, u.getGenre());
+                pst.setString(4, u.getEmail());
+                pst.setString(5,u.getMot_de_passe());
+                pst.setInt(6,u.getNum_tel());
+                pst.setString(7,u.getRole());
+                pst.setString(8,u.getMatricule());
+                pst.setString(9,u.getAttestation());
+                pst.setString(10,u.getAdresse());
+                pst.setString(11, u.getObjectif());
+                pst.setInt(12,u.getTentative());
+                pst.executeUpdate();
 
-            // Vérifier si le fichier d'attestation contient les mots "Conseiller" ou "Nutritionniste"
-            if (contenuFichier.contains("Conseiller") || contenuFichier.contains("Nutritionniste")) {
-                Connection cnx = MyConnection.getInstance().getCnx();
-
-                Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),tfmatricule.getText(),tfattestation.getText(),"","",0);
-                String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-                try{
-                    PreparedStatement pst = cnx.prepareStatement(requete);
-                    pst.setString(1, u.getNom());
-                    pst.setString(2,u.getPrenom());
-                    pst.setString(3, u.getGenre());
-                    pst.setString(4, u.getEmail());
-                    pst.setString(5,u.getMot_de_passe());
-                    pst.setInt(6,u.getNum_tel());
-                    pst.setString(7,u.getRole());
-                    pst.setString(8,u.getMatricule());
-                    pst.setString(9,u.getAttestation());
-                    pst.setString(10,u.getAdresse());
-                    pst.setString(11, u.getObjectif());
-                    pst.setInt(12,u.getTentative());
-                    pst.executeUpdate();
-
-                    gestionUserController.afficherUtilisateurs();
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Conseiller ajouté");
-                alert.setHeaderText(null);
-                alert.setContentText("Conseiller ajouté avec succès");
-                alert.showAndWait();
-
-                Stage loginStage = (Stage) tfemailc.getScene().getWindow();
-                loginStage.close();
-            } else {
-                showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
+                gestionUserController.afficherUtilisateurs();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Conseiller ajouté");
+            alert.setHeaderText(null);
+            alert.setContentText("Conseiller ajouté avec succès");
+            alert.showAndWait();
+
+            Stage loginStage = (Stage) tfemailc.getScene().getWindow();
+            loginStage.close();
+        }else {
+            showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
         }
 
     }
