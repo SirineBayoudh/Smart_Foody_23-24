@@ -3,12 +3,25 @@ package com.example.demo.Controllers;
 import com.example.demo.Models.Commande;
 import com.example.demo.Models.CommandeHolder;
 import com.example.demo.Tools.MyConnection;
-import com.example.demo.Tools.TableExporter;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Image;
+
+import java.io.*;
+
+import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.property.TextAlignment;
+
+
+
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.TextAlignment;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -16,16 +29,12 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,16 +47,8 @@ import java.awt.Desktop;
 
 
 public class CommandeController {
-    @FXML
-    private Pane pane_1;
 
-    @FXML
-    private Pane pane_2;
 
-    @FXML
-    private Pane pane_3;
-    @FXML
-    private Pane pane_4;
     @FXML
     private TextField searchField;
 
@@ -272,47 +273,67 @@ public class CommandeController {
         }
     }
     @FXML
-    void exportExcel(ActionEvent event) throws IOException {
+    public void ExportPDF(List<Commande> commandes) {
+        String path = "Commandes.pdf";
+        try {
+            PdfWriter pdfWriter = new PdfWriter(path);
+            PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+            pdfDocument.setDefaultPageSize(PageSize.A4);
+            Document document = new Document(pdfDocument);
 
-        Commande selectedCommande = commandeTableView.getSelectionModel().getSelectedItem();
-        if (selectedCommande != null) {
-            holder.setCommande(selectedCommande);
+            // Ajouter le titre
+            Paragraph title = new Paragraph("Extrait des Commandes")
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setFontSize(20)
+                    .setBold()
+                    .setFontColor(new DeviceRgb(0, 128, 0)); // Vert
+            document.add(title);
 
+            // Ajouter le logo de l'application
+            String imagePath = "C:/Users/INFOTEC/Desktop/Smart_Foody_23-24/src/main/resources/com/example/demo/Images/trans_logo.png";
+            Image logo = new Image(ImageDataFactory.create(imagePath));
+            logo.setWidth(100); // Ajustez la taille du logo selon vos besoins
+            document.add(logo);
 
-            try {
-                String path ="Commandes.pdf";
-                PdfWriter pdfWriter = new PdfWriter(path);
-                PdfDocument pdfDocument = new PdfDocument((pdfWriter));
-                pdfDocument.setDefaultPageSize(PageSize.A4);
-                Document document = new Document(pdfDocument);
+            // Espacement entre le titre et le tableau
+            document.add(new Paragraph("\n"));
 
+            // Créer un tableau avec 5 colonnes
+            Table table = new Table(5);
 
+            // Ajouter un en-tête pour chaque colonne
+            table.addCell(new Cell().add("ID Commande").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
+            table.addCell(new Cell().add("Date").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
+            table.addCell(new Cell().add("ID Client").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
+            table.addCell(new Cell().add("Total").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
+            table.addCell(new Cell().add("Remise").setTextAlignment(TextAlignment.CENTER).setBackgroundColor(Color.GREEN));
 
-                document.add(new Paragraph("Commande numero : "+holder.getCommande().getId_commande()));
-                document.add(new Paragraph("Date : "+holder.getCommande().getDate_commande()));
-                document.add(new Paragraph("Totale : "+holder.getCommande().getTotal_commande()));
-
-                document.close();
-                Desktop.getDesktop().open(new File(path));
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Handle the exception as needed
+            // Ajouter les données des commandes dans le tableau
+            for (Commande commande : commandes) {
+                table.addCell(new Cell().add(String.valueOf(commande.getId_commande())).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(commande.getDate_commande().toString()).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(String.valueOf(commande.getId_client())).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(String.valueOf(commande.getTotal_commande())).setTextAlignment(TextAlignment.CENTER));
+                table.addCell(new Cell().add(String.valueOf(commande.getRemise())).setTextAlignment(TextAlignment.CENTER));
             }
 
-            //loadUsers();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Pas de Commande séléctionnée");
-            alert.setContentText("S'il vous plait de séléctionner une commande");
-            alert.showAndWait();
+            // Ajouter le tableau au document
+            document.add(table);
+
+            // Fermer le document
+            document.close();
+
+            // Ouvrir le fichier PDF généré
+            Desktop.getDesktop().open(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
-
     }
 
 
-
-
+    @FXML
+    void exportPDF(ActionEvent event) {
+        List<Commande> allCommandes = commandeList; // Récupérez toutes les commandes à partir de votre TableView
+        ExportPDF(allCommandes);
+    }
 }

@@ -11,6 +11,10 @@ module com.example.demo {
     requires java.desktop;
     requires kernel;
     requires layout;
+    requires jxmapviewer2;
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
+    requires io;
 
     opens com.example.demo to javafx.fxml;
     exports com.example.demo;

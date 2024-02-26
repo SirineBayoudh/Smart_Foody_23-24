@@ -90,7 +90,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#exportExcel" prefHeight="30.0" prefWidth="165.0" style="-fx-background-color: red;" stylesheets="@css/fullpackstyling.css" text="PDF" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#exportPDF" prefHeight="30.0" prefWidth="165.0" style="-fx-background-color: red;" stylesheets="@css/fullpackstyling.css" text="PDF" textFill="WHITE">
                             <font>
                                 <Font size="14.0" />
                             </font>

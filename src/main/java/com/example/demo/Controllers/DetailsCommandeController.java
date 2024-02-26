@@ -29,11 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author omarb
- */
+
 public class  DetailsCommandeController implements Initializable {
 
     @FXML
@@ -60,9 +56,7 @@ public class  DetailsCommandeController implements Initializable {
     private CommandeHolder holder = CommandeHolder.getInstance();
     private Commande CurrentCommande = holder.getCommande();
 
-    /**
-     * Initializes the controller class.
-     */
+
     public void initData(Commande quest) {
         CurrentCommande = quest;
         holder.setCommande(CurrentCommande);

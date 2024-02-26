@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -20,50 +21,8 @@ import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement
 
 public class CommandeClientController {
 
-    @FXML
-    private Pane pane_1;
 
-    @FXML
-    private Pane pane_2;
 
-    @FXML
-    private Pane pane_3;
-    @FXML
-    private TextField Trecherche;
-
-    @FXML
-    private Pane clickpane;
-
-    @FXML
-    private Label cmd;
-
-    @FXML
-    private Label cmdlivre;
-
-    @FXML
-    private Label cmdnonlivre;
-    @FXML
-    private TableView<Commande> commandeTableView;
-
-    @FXML
-    private TableColumn<Commande, Integer> id_commandeColumn;
-
-    @FXML
-    private TableColumn<Commande, String> etat;
-    @FXML
-    private TableColumn<Commande, Float> remise;
-
-    @FXML
-    private TableColumn<Commande, Date> date_commandeColumn;
-
-    @FXML
-    private TableColumn<Commande, Integer> id_clientColumn;
-
-    @FXML
-    private TableColumn<Commande, Float> total_commandeColumn;
-
-    @FXML
-    private TableColumn<Commande, Integer> nbre_commandeColumn;
     PanierController panierController = new PanierController(); // Création d'une instance de PanierController
 
 
