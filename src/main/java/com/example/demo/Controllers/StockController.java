@@ -32,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -143,6 +144,21 @@ public class StockController implements Initializable , LanguageObserver{
     private TextField tstsmodif;
     @FXML
     private Button btnExporterTout;
+
+    @FXML
+    private Text ref_pr;
+
+    @FXML
+    private Text qtvendu;
+    @FXML
+    private Text qtpr_stock;
+    @FXML
+    private Text id_st;
+    @FXML
+    private Text qtbarchart;
+
+    @FXML
+    private Text Titlebarchart;
     private static final String ACCOUNT_SID = "AC65cc060d1e8324522666575b59ffd53b";
     private static final String AUTH_TOKEN = "679c30c3da2210f88b2d0b9355f6f708 ";
     private static final String FROM_PHONE_NUMBER = "+18607820963";
@@ -783,9 +799,7 @@ void UpdateStock(ActionEvent event) {
         }
 
         barchart.getData().add(series);
-        barchart.setTitle("Quantités de produit par stock");
-        barchart.getXAxis().setLabel("Id stock");
-        barchart.getYAxis().setLabel("Quantité");
+
     }
 
     /******** Count nb stock **********/
@@ -833,9 +847,9 @@ void UpdateStock(ActionEvent event) {
         }
 
         scatterChart.getData().add(series);
-        scatterChart.setTitle("Nombre vendu  par produit");
-        scatterChart.getXAxis().setLabel("Référence du produit");
-        scatterChart.getYAxis().setLabel("NbVendu");
+//        scatterChart.setTitle("Nombre vendu  par produit");
+//        scatterChart.getXAxis().setLabel("Référence du produit");
+//        scatterChart.getYAxis().setLabel("NbVendu");
     }
 
 
@@ -955,6 +969,15 @@ private void exportStockToExcel() {
         tstsmodif.setText(LanguageManager.getInstance().getText("tstsmodif"));
         tstexport.setText(LanguageManager.getInstance().getText("tstexport"));
         tstTotal.setText(LanguageManager.getInstance().getText("tstTotal"));
+        /***************stat********************************/
+        ref_pr.setText(LanguageManager.getInstance().getText("ref_pr"));
+        qtvendu.setText(LanguageManager.getInstance().getText("qtvendu"));
+        qtpr_stock.setText(LanguageManager.getInstance().getText("qtpr_stock"));
+        id_st.setText(LanguageManager.getInstance().getText("id_st"));
+        Titlebarchart.setText(LanguageManager.getInstance().getText("Titlebarchart"));
+        qtbarchart.setText(LanguageManager.getInstance().getText("qtbarchart"));
+
+        /**********************/
         //Trecherche.setText(LanguageManager.getInstance().getText("Trecherche"));
         updateMarqueColumnContent();
     }
