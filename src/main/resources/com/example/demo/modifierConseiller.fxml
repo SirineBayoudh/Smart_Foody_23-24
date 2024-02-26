@@ -40,7 +40,7 @@
                 <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Matricule" translateX="20.0" translateY="-275.0" />
                 <TextField fx:id="tfmatricule" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-290.0" />
                 <Label layoutX="10.0" layoutY="509.0" style="-fx-font-weight: bold;" text="Attestation" translateX="300.0" translateY="-358.0" />
-                <TextField fx:id="tfattestation" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
+                <TextField fx:id="tfattestation" editable="false" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
             </children>
         </VBox>
         <Button fx:id="btn_modifierConseiller" mnemonicParsing="false" onAction="#updateConseiller" prefHeight="38.0" prefWidth="120.0" style="-fx-font-weight: bold;" styleClass="btn_ajout" stylesheets="@css/style_ajoutConseiller.css" text="Modifier" translateX="410.0" translateY="400.0" />
@@ -60,5 +60,10 @@
                 <Image url="@Images/rafraichir.png" />
             </image>
         </ImageView>
+      <ImageView fx:id="choixAttestation" fitHeight="23.0" fitWidth="23.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#choisirAttestationOnClick" pickOnBounds="true" preserveRatio="true" translateX="525.0" translateY="305.0">
+         <image>
+            <Image url="@Images/dossier.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

@@ -7,8 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -71,11 +74,36 @@ public class ModifierConseillerController implements Initializable {
         choixGenrec.getItems().addAll(genre);
         choixGenrec.setOnAction(e -> genreChoisi = choixGenrec.getValue());
 
+        tfprenomc.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                tfmatricule.setText("CNS-" + newValue);
+            } else {
+                tfmatricule.clear();
+            }
+        });
+
     }
 
     public void initData(Utilisateur u) {
         this.u = u;
         remplirChamps(u);
+    }
+
+    @FXML
+    void choisirAttestationOnClick(MouseEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir un fichier d'attestation");
+
+        // filtre pour les types de fichiers
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Afficher la boîte de dialogue de sélection de fichier
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            tfattestation.setText(selectedFile.getAbsolutePath());
+        }
     }
 
     @FXML

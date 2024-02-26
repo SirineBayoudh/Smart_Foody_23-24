@@ -14,9 +14,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +29,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ProfilController implements Initializable {
+public class ProfilConseillerController implements Initializable {
 
     @FXML
     private BorderPane centerPane;
@@ -67,22 +69,6 @@ public class ProfilController implements Initializable {
     @FXML
     private TextField tfnumtelp;
 
-    @FXML
-    private ComboBox<String> choixVillep;
-
-    private String[] ville = {"Ariana","Béja","Ben Arous","Bizerte","Gabès","Gafsa","Jendouba","Kairouan","Kasserine","Kébili","Le Kef","Mahdia","La Manouba","Médenine","Monastir","Nabeul","Sfax","Sidi Bouzid","Siliana","Sousse","Tataouine","Tozeur","Tunis","Zaghouan"};
-
-    private String villeChoisie;
-
-    @FXML
-    private TextField tfruep;
-
-    @FXML
-    private ComboBox<String> choixObjectifp;
-
-    private String[] objectif = {"Bien être","prise de poids","Perte de poids","Prise de masse musculaire"};
-
-    private String objectifChoisi;
 
     @FXML
     private Button btn_modif;
@@ -122,6 +108,12 @@ public class ProfilController implements Initializable {
 
     @FXML
     private Button modifierMDP;
+
+    @FXML
+    private TextField tfmatricule;
+
+    @FXML
+    private TextField tfattestation;
 
     Encryptor encryptor = new Encryptor();
     ComplexiteMdp complx = new ComplexiteMdp();
@@ -194,21 +186,38 @@ public class ProfilController implements Initializable {
         eyeOpenN.setVisible(false);
     }
 
+    @FXML
+    void choisirAttestationOnClick(MouseEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir un fichier d'attestation");
+
+        // filtre pour les types de fichiers
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // Afficher la boîte de dialogue de sélection de fichier
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            tfattestation.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         choixGenrep.getItems().addAll(genre);
         choixGenrep.setOnAction(e -> genreChoisi = choixGenrep.getValue());
 
-        choixVillep.getItems().addAll(ville);
-        choixVillep.setOnAction(e -> villeChoisie = choixVillep.getValue());
-
-        choixObjectifp.getItems().addAll(objectif);
-        choixObjectifp.setOnAction(e -> objectifChoisi = choixObjectifp.getValue());
-
         idUtilisateurConnecte = MyConnection.getInstance().getUserId();
         remplirChampsUtilisateur(idUtilisateurConnecte);
 
-        System.out.println(idUtilisateurConnecte);
+        tfprenomp.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                tfmatricule.setText("CNS-" + newValue);
+            } else {
+                tfmatricule.clear();
+            }
+        });
 
         infosForm.setVisible(true);
         pwdForm.setVisible(false);
@@ -235,14 +244,8 @@ public class ProfilController implements Initializable {
                 choixGenrep.setValue(rs.getString(4));
                 tfemailp.setText(rs.getString(5));
                 tfnumtelp.setText(rs.getString(7));
-
-                String adresse = rs.getString(11);
-                String[] parts = adresse.split(",");
-                if (parts.length == 2) {
-                    choixVillep.setValue(parts[0]);
-                    tfruep.setText(parts[1]);
-                }
-                choixObjectifp.setValue(rs.getString(12));
+                tfmatricule.setText(rs.getString(9));
+                tfattestation.setText(rs.getString(10));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -251,7 +254,7 @@ public class ProfilController implements Initializable {
     @FXML
     void modifierProfil(ActionEvent event) {
 
-        if (tfnomp.getText().isEmpty() || tfprenomp.getText().isEmpty() || tfemailp.getText().isEmpty() || choixGenrep.getValue().isEmpty() || tfnumtelp.getText().isEmpty()  || choixVillep.getValue().isEmpty() ||  tfruep.getText().isEmpty() || choixObjectifp.getValue().isEmpty()) {
+        if (tfnomp.getText().isEmpty() || tfprenomp.getText().isEmpty() || tfemailp.getText().isEmpty() || choixGenrep.getValue().isEmpty() || tfnumtelp.getText().isEmpty()  || tfmatricule.getText().isEmpty() || tfattestation.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
             alert.setHeaderText(null);
@@ -311,11 +314,11 @@ public class ProfilController implements Initializable {
                 pst.setString(3, choixGenrep.getValue());
                 pst.setString(4, tfemailp.getText());
                 pst.setInt(5,Integer.parseInt(tfnumtelp.getText()));
-                pst.setString(6, Role.Client.toString());
-                pst.setString(7,"");
-                pst.setString(8,"");
-                pst.setString(9,choixVillep.getValue() + "," + tfruep.getText());
-                pst.setString(10, choixObjectifp.getValue());
+                pst.setString(6, Role.Conseiller.toString());
+                pst.setString(7,tfmatricule.getText());
+                pst.setString(8,tfattestation.getText());
+                pst.setString(9,"");
+                pst.setString(10, "");
                 pst.setInt(11, idUtilisateurConnecte);
                 pst.executeUpdate();
             } catch (SQLException e) {
@@ -409,6 +412,13 @@ public class ProfilController implements Initializable {
             alert2.setContentText("Vos informations ont été mises à jour avec succès.");
             alert2.showAndWait();
         }
+
+
+
+    }
+
+    @FXML
+    void choisirAttestation(MouseEvent event) {
 
     }
     @FXML

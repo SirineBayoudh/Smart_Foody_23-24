@@ -60,7 +60,7 @@
             <Image url="@Images/rafraichir.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="choixAttestation" fitHeight="34.0" fitWidth="31.0" onMouseClicked="#choisirAttestationOnClick" pickOnBounds="true" preserveRatio="true" translateX="497.0" translateY="312.0">
+      <ImageView fx:id="choixAttestation" fitHeight="23.0" fitWidth="23.0" onMouseClicked="#choisirAttestationOnClick" pickOnBounds="true" preserveRatio="true" translateX="535.0" translateY="317.0">
          <image>
             <Image url="@Images/dossier.png" />
          </image>

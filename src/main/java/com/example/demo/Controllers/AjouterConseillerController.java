@@ -12,6 +12,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 
+
+import net.sourceforge.tess4j.ITesseract;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
+
 import java.io.File;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -82,23 +87,40 @@ public class AjouterConseillerController implements Initializable {
         });
     }
 
+    public File selectedFile;
     @FXML
     void choisirAttestationOnClick(MouseEvent event) {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un fichier d'attestation");
 
-        // Définir un filtre pour n'afficher que certains types de fichiers si nécessaire
+        // filtre pour les types de fichiers
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
 
         // Afficher la boîte de dialogue de sélection de fichier
-        File selectedFile = fileChooser.showOpenDialog(null);
-
-        // Mettre à jour le champ de texte avec le chemin du fichier sélectionné
+        selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             tfattestation.setText(selectedFile.getAbsolutePath());
         }
+    }
+    private String effectuerOCR(File file) {
+        ITesseract instance = new Tesseract();
+        instance.setDatapath("D:\\ESPRIT\\Semestre 2\\PI\\API\\Tess4J\\tessdata");
+        try {
+            return instance.doOCR(file);
+        } catch (TesseractException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     @FXML
     void addConseiller(ActionEvent event) throws NoSuchAlgorithmException {
@@ -150,40 +172,50 @@ public class AjouterConseillerController implements Initializable {
             alert.showAndWait();
             return;
         }
+        if (selectedFile != null) {
 
-        Connection cnx = MyConnection.getInstance().getCnx();
+            // Effectuer OCR sur le fichier d'attestation
+            String contenuFichier = effectuerOCR(selectedFile);
 
-        Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),tfmatricule.getText(),tfattestation.getText(),"","",0);
-        String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-        try{
-            PreparedStatement pst = cnx.prepareStatement(requete);
-            pst.setString(1, u.getNom());
-            pst.setString(2,u.getPrenom());
-            pst.setString(3, u.getGenre());
-            pst.setString(4, u.getEmail());
-            pst.setString(5,u.getMot_de_passe());
-            pst.setInt(6,u.getNum_tel());
-            pst.setString(7,u.getRole());
-            pst.setString(8,u.getMatricule());
-            pst.setString(9,u.getAttestation());
-            pst.setString(10,u.getAdresse());
-            pst.setString(11, u.getObjectif());
-            pst.setInt(12,u.getTentative());
-            pst.executeUpdate();
+            // Vérifier si le fichier d'attestation contient les mots "Conseiller" ou "Nutritionniste"
+            if (contenuFichier.contains("Conseiller") || contenuFichier.contains("Nutritionniste")) {
+                Connection cnx = MyConnection.getInstance().getCnx();
 
-            gestionUserController.afficherUtilisateurs();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+                Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),tfmatricule.getText(),tfattestation.getText(),"","",0);
+                String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                try{
+                    PreparedStatement pst = cnx.prepareStatement(requete);
+                    pst.setString(1, u.getNom());
+                    pst.setString(2,u.getPrenom());
+                    pst.setString(3, u.getGenre());
+                    pst.setString(4, u.getEmail());
+                    pst.setString(5,u.getMot_de_passe());
+                    pst.setInt(6,u.getNum_tel());
+                    pst.setString(7,u.getRole());
+                    pst.setString(8,u.getMatricule());
+                    pst.setString(9,u.getAttestation());
+                    pst.setString(10,u.getAdresse());
+                    pst.setString(11, u.getObjectif());
+                    pst.setInt(12,u.getTentative());
+                    pst.executeUpdate();
+
+                    gestionUserController.afficherUtilisateurs();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Conseiller ajouté");
+                alert.setHeaderText(null);
+                alert.setContentText("Conseiller ajouté avec succès");
+                alert.showAndWait();
+
+                Stage loginStage = (Stage) tfemailc.getScene().getWindow();
+                loginStage.close();
+            } else {
+                showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
+            }
         }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Conseiller ajouté");
-        alert.setHeaderText(null);
-        alert.setContentText("Conseiller ajouté avec succès");
-        alert.showAndWait();
-
-        Stage loginStage = (Stage) tfemailc.getScene().getWindow();
-        loginStage.close();
 
     }
 

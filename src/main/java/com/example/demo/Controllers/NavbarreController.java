@@ -1,5 +1,7 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Models.Role;
+import com.example.demo.Tools.MyConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +14,10 @@ import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class NavbarreController implements Initializable {
@@ -21,30 +27,49 @@ public class NavbarreController implements Initializable {
     @FXML
     private ImageView logoUser;
 
-    private int idUtilisateurConnecte;
+    Connection cnx = MyConnection.instance.getCnx();
 
-    public int getIdUtilisateurConnecte() {
-        return idUtilisateurConnecte;
-    }
+    private int idUtilisateurConnecte = MyConnection.getInstance().getUserId();
 
-    public void setIdUtilisateurConnecte(int idUtilisateurConnecte) {
-        this.idUtilisateurConnecte = idUtilisateurConnecte;
-    }
+    public void redirectToProfil(MouseEvent mouseEvent) throws SQLException {
 
-    public void redirectToProfil(MouseEvent mouseEvent) {
+        String req = "SELECT role FROM utilisateur WHERE id_utilisateur = ?";
+        PreparedStatement pst = cnx.prepareStatement(req);
+        pst.setString(1, String.valueOf(idUtilisateurConnecte));
+        System.out.println(idUtilisateurConnecte);
+        ResultSet rs = pst.executeQuery();
+        rs.next();
+        String role = rs.getString("role");
+        System.out.println(role);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/profil.fxml"));
-        try {
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-            //Pour fermer la fenêtre du login
-            Stage loginStage = (Stage) logoUser.getScene().getWindow();
-            loginStage.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(role.equals("Client")){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/profil.fxml"));
+            try {
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+                //Pour fermer la fenêtre du login
+                Stage loginStage = (Stage) logoUser.getScene().getWindow();
+                loginStage.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else if (role.equals("Conseiller")){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/profilConseiller.fxml"));
+            try {
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+                //Pour fermer la fenêtre du login
+                Stage loginStage = (Stage) logoUser.getScene().getWindow();
+                loginStage.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
 
     @Override
