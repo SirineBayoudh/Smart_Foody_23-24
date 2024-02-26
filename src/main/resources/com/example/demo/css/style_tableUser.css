@@ -3,6 +3,11 @@
     -fx-background-radius: 5px;
 }
 
+.card:hover{
+    -fx-background-color: linear-gradient(to right, #56ab2f, #19330e.03);
+    -fx-background-radius: 5px;
+}
+
 .button {
     -fx-background-color: #56AB2F;
     -fx-padding: 10px 20px;

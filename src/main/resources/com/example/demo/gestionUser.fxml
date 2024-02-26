@@ -79,6 +79,8 @@
                   <TableColumn fx:id="col_attestation" prefWidth="70.39996337890625" text="Attestation" />
                   <TableColumn fx:id="col_adresse" prefWidth="82.4000244140625" text="Adresse" />
                   <TableColumn fx:id="col_objectif" prefWidth="79.199951171875" text="Objectif" />
+                  <TableColumn fx:id="col_taille" prefWidth="82.4000244140625" text="Taille" />
+                  <TableColumn fx:id="col_poids" prefWidth="79.199951171875" text="Poids" />
               </columns>
                <styleClass>
                   <String fx:value=".table-row-cell" />

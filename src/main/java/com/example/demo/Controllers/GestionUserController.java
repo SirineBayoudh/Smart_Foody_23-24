@@ -75,6 +75,12 @@ public class GestionUserController implements Initializable {
     private TableColumn<Utilisateur, String> col_objectif;
 
     @FXML
+    private TableColumn<Utilisateur, Double> col_taille;
+
+    @FXML
+    private TableColumn<Utilisateur, Double> col_poids;
+
+    @FXML
     private Button btn_ajout;
 
     @FXML
@@ -216,6 +222,8 @@ public class GestionUserController implements Initializable {
                 usr.setAttestation(rs.getString(10));
                 usr.setAdresse(rs.getString(11));
                 usr.setObjectif(rs.getString(12));
+                usr.setTaille(rs.getDouble(14));
+                usr.setPoids(rs.getDouble(15));
                 utilisateurs.add(usr);
             }
         } catch (SQLException e) {
@@ -239,6 +247,8 @@ public class GestionUserController implements Initializable {
         col_attestation.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("attestation"));
         col_adresse.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("adresse"));
         col_objectif.setCellValueFactory(new PropertyValueFactory<Utilisateur,String>("objectif"));
+        col_taille.setCellValueFactory(new PropertyValueFactory<Utilisateur,Double>("taille"));
+        col_poids.setCellValueFactory(new PropertyValueFactory<Utilisateur,Double>("poids"));
 
         tableUser.setItems(listUsers);
 

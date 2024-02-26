@@ -10,6 +10,8 @@ public class Utilisateur implements Comparable<Utilisateur>{
 
     private int tentative;
 
+    private Double taille,poids;
+
     public int getId_utilisateur() {
         return id_utilisateur;
     }
@@ -114,6 +116,22 @@ public class Utilisateur implements Comparable<Utilisateur>{
         this.tentative = tentative;
     }
 
+    public Double getTaille() {
+        return taille;
+    }
+
+    public void setTaille(Double taille) {
+        this.taille = taille;
+    }
+
+    public Double getPoids() {
+        return poids;
+    }
+
+    public void setPoids(Double poids) {
+        this.poids = poids;
+    }
+
     public Utilisateur() {
     }
 
@@ -130,6 +148,23 @@ public class Utilisateur implements Comparable<Utilisateur>{
         this.adresse = adresse;
         this.objectif = objectif;
         this.tentative = tentative;
+    }
+
+    public Utilisateur(String nom, String prenom, String genre, String email, String mot_de_passe,int num_tel, String role, String matricule, String attestation, String adresse, String objectif, int tentative, Double taille, Double poids) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.genre = genre;
+        this.email = email;
+        this.mot_de_passe = mot_de_passe;
+        this.num_tel = num_tel;
+        this.role = role;
+        this.matricule = matricule;
+        this.attestation = attestation;
+        this.adresse = adresse;
+        this.objectif = objectif;
+        this.tentative = tentative;
+        this.taille = taille;
+        this.poids = poids;
     }
 
     @Override

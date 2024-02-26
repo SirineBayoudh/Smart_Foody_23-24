@@ -156,7 +156,6 @@ public class RegisterController implements Initializable {
 
         choixObjectif.setItems(FXCollections.observableArrayList(objectifList));
 
-
     }
 
     @Override
@@ -400,7 +399,7 @@ public class RegisterController implements Initializable {
 
     @FXML
     void addUserIMC(ActionEvent event) throws NoSuchAlgorithmException{
-        Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), "", "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0);
+        Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), "", "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0,spinnerTaille.getValue(),spinnerPoids.getValue());
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);
 
