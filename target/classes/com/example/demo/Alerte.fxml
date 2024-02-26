@@ -5,6 +5,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -17,8 +18,10 @@
 <Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="672.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AlerteController">
     <children>
         <!-- Le contenu spécifique de votre page de stocks -->
-        <TableView fx:id="AlerteTableView" layoutX="78.0" layoutY="236.0" onMouseClicked="#getData" prefHeight="383.0" prefWidth="830.0">
+        <Pagination fx:id="pagination" layoutX="629.0" layoutY="627.0" maxPageIndicatorCount="5" pageCount="1" prefHeight="45.0" prefWidth="177.0" stylesheets="@css/style_dash.css" />
+        <TableView fx:id="AlerteTableView" layoutX="56.0" layoutY="301.0" onMouseClicked="#getData" prefHeight="326.0" prefWidth="825.0">
             <columns>
+
                 <TableColumn fx:id="id_alerteColumn" prefWidth="103.20001602172852" text="Id Alerte" />
                 <TableColumn fx:id="idstockCoulmn" minWidth="20.0" prefWidth="163.20001220703125" text="Id Stock" />
             <TableColumn fx:id="DescriptionCoulumn" prefWidth="324.0" text="Description" />
@@ -28,45 +31,48 @@
         </TableView>
 
 
-        <ImageView fitHeight="25.0" fitWidth="23.0" layoutX="841.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="25.0" fitWidth="23.0" layoutX="837.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@Images/8666693_search_icon.png" />
             </image>
         </ImageView>
 
-        <Pane fx:id="pane_111" layoutX="684.0" layoutY="52.0" prefHeight="135.0" prefWidth="177.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+        <Pane fx:id="pane_111" layoutX="670.0" layoutY="21.0" prefHeight="226.0" prefWidth="216.0" style="-fx-border-color: #bbddab; -fx-border-width: 2;" styleClass="pane_1" stylesheets="@css/style_dash.css">
             <children>
-                <Label fx:id="idAlerteCountLabel" layoutX="62.0" layoutY="68.0" prefHeight="35.0" prefWidth="87.0" text="GO ON" textFill="#f2eaea">
+                <Label fx:id="idAlerteCountLabel" layoutX="77.0" layoutY="113.0" prefHeight="35.0" prefWidth="87.0" text="GO ON" textFill="#f2eaea">
                     <font>
-                        <Font size="24.0" />
+                        <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-            <Text fx:id="paneTitre" layoutX="30.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre des alertes" />
+            <Text fx:id="paneTitre" fill="#66b343" layoutX="41.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre des alertes" wrappingWidth="222.00000000000023">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font></Text>
             </children>
         </Pane>
-        <Label layoutX="860.0" layoutY="53.0" text="Admin">
+        <Label layoutX="886.0" layoutY="55.0" text="Admin">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <ImageView fitHeight="45.0" fitWidth="68.0" layoutX="864.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="45.0" fitWidth="68.0" layoutX="890.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@Images/thumbnail_image.png" />
             </image>
         </ImageView>
-        <TextField fx:id="TrechercheAlerte" layoutX="684.0" layoutY="203.0" onAction="#rechercherAlerte" promptText="Rechercher :" />
-      <PieChart fx:id="nbAlert" layoutX="38.0" layoutY="20.0" prefHeight="188.0" prefWidth="255.0" />
-      <LineChart fx:id="nbIdstock" accessibleText="Nombre des alertes" layoutX="356.0" layoutY="32.0" prefHeight="188.0" prefWidth="288.0">
+        <TextField fx:id="TrechercheAlerte" layoutX="670.0" layoutY="265.0" onAction="#rechercherAlerte" promptText="Rechercher :" />
+      <PieChart fx:id="nbAlert" layoutX="30.0" layoutY="21.0" prefHeight="226.0" prefWidth="266.0" style="-fx-border-color: #bbddab; -fx-border-width: 2;" />
+      <LineChart fx:id="nbIdstock" accessibleText="Nombre des alertes" layoutX="321.0" layoutY="21.0" prefHeight="226.0" prefWidth="337.0" style="-fx-border-color: #bbddab; -fx-border-width: 2;">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
         <yAxis>
-          <NumberAxis prefHeight="148.0" prefWidth="5.0" side="LEFT" />
+          <NumberAxis prefHeight="167.0" prefWidth="53.0" side="LEFT" />
         </yAxis>
       </LineChart>
-      <Text fx:id="stokid" layoutX="457.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID Stock" wrappingWidth="86.8773193359375" />
-        <Text fx:id="nbalert" boundsType="LOGICAL_VERTICAL_CENTER" layoutX="269.0" layoutY="122.0" rotate="270" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="Nombre des alertes" textAlignment="CENTER" wrappingWidth="113.27740478515636" />
-      <Text fx:id="nbalertstock" layoutX="394.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre des alertes par stock" wrappingWidth="227.5830478668213" />
+      <Text fx:id="stokid" layoutX="511.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID Stock" wrappingWidth="86.8773193359375" />
+        <Text fx:id="nbalert" boundsType="LOGICAL_VERTICAL_CENTER" layoutX="292.0" layoutY="137.0" rotate="270" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="Nombre des alertes" textAlignment="CENTER" wrappingWidth="127.6774139404298" />
+      <Text fx:id="nbalertstock" layoutX="400.0" layoutY="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre des alertes par stock" wrappingWidth="243.5830478668213" />
 
 
     </children>

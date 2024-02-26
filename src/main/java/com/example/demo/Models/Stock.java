@@ -111,6 +111,7 @@ public class Stock {
     public String getProduitMarque() {
         return produit.getMarque();
     }
+
     public LigneCommande getLigneCommande() {
         return ligneCommande;
     }

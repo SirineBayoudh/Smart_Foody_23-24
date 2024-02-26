@@ -14,6 +14,7 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,10 +36,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Comparator;
 import java.util.List;
@@ -839,7 +843,9 @@ private void exportStockToExcel() {
     Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
     if (selectedStock != null) {
-        String fileName = "StockReport_" + selectedStock.getId_s() + ".xlsx";
+        String folderPath = "./ExcelFiles/";
+        System.out.println("Chemin du fichier Excel : " + folderPath);
+        String fileName = folderPath + "StockReport_" + selectedStock.getId_s() + ".xlsx";
         boolean success = ExcelExporter.exportStockToExcel(fileName, selectedStock);
 
         if (success) {
@@ -855,8 +861,11 @@ private void exportStockToExcel() {
         // Récupérer la liste de tous les stocks à partir du TableView
         ObservableList<Stock> allStocks = stockTableView.getItems();
 
+        // Spécifier le chemin du dossier ExcelFiles dans le même répertoire que votre application
+        String folderPath = "./ExcelFiles/";
+
         // Générer un nom de fichier unique, par exemple, en ajoutant une horodatage
-        String fileName = "AllStocksReport_" + System.currentTimeMillis() + ".xlsx";
+        String fileName = folderPath + "AllStocksReport_" + System.currentTimeMillis() + ".xlsx";
 
         // Appeler la méthode d'exportation avec le nom de fichier et la liste de stocks
         boolean success = ExcelExporter.exportAllStocksToExcel(fileName, allStocks);
@@ -867,6 +876,7 @@ private void exportStockToExcel() {
             showAlert("Erreur lors de l'export Excel.");
         }
     }
+
     /**********************************************/
 
     @FXML
@@ -946,8 +956,29 @@ private void exportStockToExcel() {
         tstexport.setText(LanguageManager.getInstance().getText("tstexport"));
         tstTotal.setText(LanguageManager.getInstance().getText("tstTotal"));
         //Trecherche.setText(LanguageManager.getInstance().getText("Trecherche"));
+        updateMarqueColumnContent();
     }
+    public void updateMarqueColumnContent() {
+        // Suppose your TableColumn "marqueColumn" is already defined in your FXML or code
+        // TableColumn<Stock, String> marqueColumn = ...
 
+        marqueColumn.setCellValueFactory(cellData -> {
+            Stock stock = cellData.getValue();
+            return new SimpleStringProperty(stock.getProduitMarque());
+        });
+
+        marqueColumn.setCellFactory(column -> new TableCell<Stock, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(LanguageManager.getInstance().getText(item));
+                }
+            }
+        });
+    }
 
     @Override
     public void onLanguageChanged() {

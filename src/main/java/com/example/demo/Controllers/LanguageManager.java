@@ -1,9 +1,7 @@
 package com.example.demo.Controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.text.MessageFormat;
+import java.util.*;
 
 public class LanguageManager {
     private static LanguageManager instance;
@@ -60,4 +58,11 @@ public class LanguageManager {
     public Locale getCurrentLocale() {
         return currentLocale;
     }
+
+
+    public String getText(String key, Object... args) {
+        String pattern = resourceBundle.getString(key);
+        return MessageFormat.format(pattern, args);
+    }
+
 }

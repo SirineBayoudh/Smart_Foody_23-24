@@ -5,6 +5,7 @@ import com.example.demo.Tools.MyConnection;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,7 +60,7 @@ public class AlerteController implements LanguageObserver {
     @FXML
     private TableColumn<Alerte, Integer> idstockCoulmn;
     @FXML
-    private TableColumn<Alerte, Integer> DescriptionCoulumn;
+    private TableColumn<Alerte, String> DescriptionCoulumn;
     @FXML
     private TableColumn<Alerte, Boolean> TypeCoulumn;
     @FXML
@@ -107,6 +108,7 @@ public class AlerteController implements LanguageObserver {
                //stat pane nb des alertes
         int alertCount = AlerteTableView.getItems().size();
         idAlerteCountLabel.setText(String.valueOf(alertCount));
+        setupPagination(AlerteTableView.getItems());
     }
 
 
@@ -152,6 +154,7 @@ public class AlerteController implements LanguageObserver {
     }
 
     private List<Alerte> getAlertsFromDatabase() {
+
         List<Alerte> alerts = new ArrayList<>();
 
         try {
@@ -261,7 +264,24 @@ public class AlerteController implements LanguageObserver {
         nbalertstock.setText(LanguageManager.getInstance().getText("nbalertstock"));
         paneTitre.setText(LanguageManager.getInstance().getText("paneTitre"));
     }
+    public void updateDescriptionColumnContent() {
+        DescriptionCoulumn.setCellValueFactory(cellData -> {
+            Alerte alerte = cellData.getValue();
+            return new SimpleStringProperty(alerte.getDescription_alerte()); // Supposons que votre modèle Alerte a une méthode getDescription()
+        });
 
+        DescriptionCoulumn.setCellFactory(column -> new TableCell<Alerte, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(LanguageManager.getInstance().getText(item));
+                }
+            }
+        });
+    }
 
     @Override
     public void onLanguageChanged() {
@@ -323,7 +343,7 @@ public class AlerteController implements LanguageObserver {
         ObservableList<XYChart.Series<String, Number>> lineChartData = FXCollections.observableArrayList();
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Alert Counts");
+
 
         for (Map.Entry<Integer, Integer> entry : alertCounts.entrySet()) {
             String idStock = String.valueOf(entry.getKey());
@@ -338,9 +358,55 @@ public class AlerteController implements LanguageObserver {
 
 
     }
+    private static final int ITEMS_PER_PAGE = 12;
+
+    @FXML
+    private Pagination pagination;
+
+   // private ObservableList<Alerte> alerteData; // Gardez une référence à la liste d'origine
 
 
 
+//    private void setupPagination() {
+//        // Initialisez alerteData avec vos données d'origine
+//        alerteData = AlerteTableView.getItems();
+//
+//        int pageCount = (alerteData.size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+//        pagination.setPageCount(pageCount);
+//
+//        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
+//            // Vérifiez si l'index de la page actuelle est dans les limites
+//            if (newIndex.intValue() >= 0 && newIndex.intValue() < pageCount) {
+//                int startIndex = newIndex.intValue() * ITEMS_PER_PAGE;
+//                int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, alerteData.size());
+//
+//                // Vérifiez si les indices de début et de fin sont valides
+//                if (startIndex >= 0 && endIndex >= 0 && startIndex <= endIndex) {
+//                    ObservableList<Alerte> pageData = FXCollections.observableArrayList(
+//                            alerteData.subList(startIndex, endIndex));
+//                    AlerteTableView.setItems(pageData);
+//                }
+//            }
+//        });
+//    }
 
+
+    private void setupPagination(ObservableList<Alerte> alerteData) {
+        int pageCount = (alerteData.size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+        pagination.setPageCount(pageCount);
+
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
+            if (newIndex.intValue() >= 0 && newIndex.intValue() < pageCount) {
+                int startIndex = newIndex.intValue() * ITEMS_PER_PAGE;
+                int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, alerteData.size());
+
+                if (startIndex >= 0 && endIndex >= 0 && startIndex <= endIndex) {
+                    ObservableList<Alerte> pageData = FXCollections.observableArrayList(
+                            alerteData.subList(startIndex, endIndex));
+                    AlerteTableView.setItems(pageData);
+                }
+            }
+        });
+    }
 
 }

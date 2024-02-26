@@ -13,6 +13,19 @@ public class Alerte {
   private Boolean Type ;
 
     private String typeString;
+    private Stock stock;
+
+    public Stock getStock() {
+        return stock;
+    }
+    public int getQuantite() {
+        if (stock != null) {
+            return stock.getQuantite();
+        } else {
+            // Handle the case where stock is null, return a default value or throw an exception
+            return 0; // Or throw an exception, depending on your requirements
+        }
+    }
     public Alerte(int id_alerte, int id_stock, Date date, Boolean type) {
         this.id_alerte = id_alerte;
         this.id_stock = id_stock;
