@@ -1,9 +1,11 @@
 package com.example.demo.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -14,12 +16,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NavbarreCotroller implements Initializable {
+public class NavbarreController implements Initializable {
 
     @FXML
     private BorderPane centerPane;
     @FXML
-    private Label BtnConseil;
+    private Button BtnConseil;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,7 +38,7 @@ public class NavbarreCotroller implements Initializable {
                     // Chargez la vue d'accueil, si vous en avez une
                     break;
                 case "labelProduits":
-                    loadPage("/com/example/pitest/fxml/produit.fxml");
+                    loadPage("/com/example/pitest/fxml/panier.fxml");
                     break;
                 // Ajoutez d'autres cas pour les autres labels
             }
@@ -52,11 +54,19 @@ public class NavbarreCotroller implements Initializable {
 
     @FXML
     private void loadPanier() {
+        clear();
+        loadPage("/com/example/demo/panier.fxml");
     }
 
     @FXML
-    void loadConseil(MouseEvent event) {
+    void loadConseil() {
+        BtnConseil.setStyle("-fx-background-color: #56AB2F");
+        System.out.println("changed");
         loadPage("/com/example/demo/ajoutConseil.fxml");
+    }
+
+    public void clear(){
+        BtnConseil.setStyle("-fx-background-color: #ffffff");
     }
 
 

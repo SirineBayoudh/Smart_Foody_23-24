@@ -1,6 +1,5 @@
 package com.example.demo.Controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -68,8 +66,21 @@ public class dashboardController implements Initializable {
     }
     @FXML
     private void dashboard() {
-        centerPane.setCenter(innerPane);
-        btn_home.getStyleClass().add("btn_home");
+        try {
+            Parent navbarreRoot = FXMLLoader.load(getClass().getResource("/com/example/demo/navbarre.fxml"));
+
+            Stage navbarreStage = new Stage();
+            navbarreStage.setScene(new Scene(navbarreRoot));
+            navbarreStage.setHeight(700);
+            navbarreStage.setWidth(1200);
+            navbarreStage.setTitle("Smart foody");
+            navbarreStage.show();
+
+            Stage dashboardStage = (Stage) btn_home.getScene().getWindow();
+            dashboardStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     private void stock() {
@@ -94,14 +105,11 @@ public class dashboardController implements Initializable {
             centerPane.setCenter(root);
         } catch (IOException e) {
             e.printStackTrace();
-            // Handle the exception as needed
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
-
 
 }

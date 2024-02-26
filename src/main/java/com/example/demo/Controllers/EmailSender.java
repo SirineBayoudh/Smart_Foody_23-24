@@ -8,20 +8,17 @@ public class EmailSender {
 
     public static void main(String[] args) {
 
-        // SMTP server details
         String host = "smtp.gmail.com";
-        int port = 587; // Change this to your SMTP server port
-        String username = "smartfoody.2024@gmail.com"; // SMTP username
-        String password = ""; // SMTP password
+        int port = 587;
+        String username = "smartfoody.2024@gmail.com";
+        String password = "";
 
-        // Set mail properties
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", port);
 
-        // Create a Session object
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {

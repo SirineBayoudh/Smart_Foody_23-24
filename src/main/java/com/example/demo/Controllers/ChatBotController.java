@@ -45,6 +45,7 @@ public class ChatBotController {
     }
 
     private void sendMessage(String message) {
+        clear();
         // Display user message
         appendToChatArea("Moi: " + message);
 
@@ -79,7 +80,7 @@ public class ChatBotController {
     }
 
     @FXML
-    void clear(MouseEvent event) {
+    void clear() {
         chatArea.setText(null);
     }
 }

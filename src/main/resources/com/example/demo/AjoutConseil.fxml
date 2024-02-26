@@ -49,7 +49,7 @@
             <Image url="@Images/plus.png" />
          </image>
       </ImageView>
-        <TableView fx:id="table" layoutX="367.0" layoutY="60.0" onMouseClicked="#getData" prefHeight="211.0" prefWidth="504.0" stylesheets="@css/table_view.css">
+        <TableView fx:id="table" layoutX="367.0" layoutY="60.0" onMouseClicked="#getData" prefHeight="198.0" prefWidth="504.0" stylesheets="@css/table_view.css">
             <columns>
                 <TableColumn fx:id="colidconseil" minWidth="20.0" prefWidth="64.79997253417969" style="-fx-background-color: #66b343;" text="ID Conseil" />
                 <TableColumn fx:id="colstatut" prefWidth="69.5999755859375" style="-fx-background-color: #66b343;" text="Statut" />
@@ -136,22 +136,17 @@
             <Image url="@Images/editer.png" />
          </image>
       </ImageView>
-        <Text fx:id="quoteText" fill="#3c7720" layoutX="487.0" layoutY="449.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="235.0">
-            <font>
-                <Font name="System Bold Italic" size="13.0" />
-            </font>
-        </Text>
-        <Button layoutX="645.0" layoutY="321.0" onAction="#searchFood" prefHeight="30.0" prefWidth="85.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 12, 0, 0, 0);" styleClass="btn" stylesheets="@css/style_dash.css" text="Chercher">
+        <Button layoutX="655.0" layoutY="304.0" onAction="#searchFood" prefHeight="30.0" prefWidth="85.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 12, 0, 0, 0);" styleClass="btn" stylesheets="@css/style_dash.css" text="Chercher">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <TextArea fx:id="foodLabel" layoutX="510.0" layoutY="321.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="126.0" promptText="Food" style="-fx-border-color: #232323;" />
-      <Text fill="#3c7720" layoutX="485.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calories des aliments (100g)">
+      <TextArea fx:id="foodLabel" layoutX="520.0" layoutY="304.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="126.0" promptText="Food" style="-fx-border-color: #232323;" />
+      <Text fill="#3c7720" layoutX="485.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calories des aliments (100g)">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Text>
-      <ImageView fitHeight="24.0" fitWidth="20.0" layoutX="486.0" layoutY="326.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="24.0" fitWidth="20.0" layoutX="496.0" layoutY="309.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/8666693_search_icon.png" />
          </image>
@@ -198,27 +193,27 @@
             <font>
                <Font name="Arial" size="14.0" />
             </font></Text>
-         <TextArea fx:id="calLabel" prefHeight="31.0" prefWidth="175.0">
+         <TextArea fx:id="calLabel" editable="false" prefHeight="31.0" prefWidth="175.0">
             <font>
                <Font name="System Bold" size="14.0" />
             </font></TextArea>
         </VBox>
-      <StackPane fx:id="pane" layoutX="475.0" layoutY="389.0">
+      <StackPane fx:id="pane" layoutX="475.0" layoutY="375.0" prefHeight="143.0" prefWidth="286.0">
          <children>
             <Text fill="#3c7720" strokeType="OUTSIDE" strokeWidth="0.0" text="Citation de motivation ">
                <font>
                   <Font name="System Bold Italic" size="20.0" />
                </font>
                <StackPane.margin>
-                  <Insets bottom="90.0" left="10.0" />
+                  <Insets bottom="105.0" left="10.0" />
                </StackPane.margin>
             </Text>
-              <Text fx:id="foodInfoText" fill="#3c7720" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="217.87109375000023">
+              <Text fx:id="quoteText" fill="#3c7720" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="211.7999885082245">
                   <font>
-                      <Font name="System Bold Italic" size="14.0" />
+                      <Font name="System Bold Italic" size="13.0" />
                   </font>
                <StackPane.margin>
-                  <Insets bottom="30.0" right="30.0" />
+                  <Insets left="10.0" top="8.0" />
                </StackPane.margin>
               </Text>
             <ImageView fitHeight="38.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
@@ -226,11 +221,16 @@
                   <Image url="@Images/main.png" />
                </image>
                <StackPane.margin>
-                  <Insets bottom="90.0" right="250.0" />
+                  <Insets bottom="95.0" right="250.0" />
                </StackPane.margin>
             </ImageView>
          </children>
       </StackPane>
+        <Text fx:id="foodInfoText" fill="#3c7720" layoutX="516.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="341.705078125">
+            <font>
+                <Font name="System Bold Italic" size="14.0" />
+            </font>
+        </Text>
     </children>
 
 </AnchorPane>

@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Models.Conseil;
+import com.example.demo.Models.Utilisateur;
 import com.example.demo.Tools.MyConnection;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -35,26 +36,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import com.dynamsoft.dbr.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 import javafx.util.Duration;
 
 public class AjoutConseilController implements Initializable {
-    @FXML
-    private ImageView productImage;
 
     @FXML
     private Text marqueLabel;
@@ -261,12 +257,16 @@ public class AjoutConseilController implements Initializable {
         }
     }
 
+    Utilisateur user1 = new Utilisateur(1,"Trabelsi","Yassine");
+    Utilisateur user2 = new Utilisateur(2,"Miled","Youssef");
+    int id = user1.getId_utilisateur();
     public ObservableList<Conseil> getConseils(){
         ObservableList<Conseil> conseils = FXCollections.observableArrayList();
-        String query="select * from conseil WHERE id_client='1'";
+        String query="select * from conseil WHERE id_client = ?";
         con = MyConnection.instance.getCnx();
         try {
             st = con.prepareStatement(query);
+            st.setInt(1, id);
             rs = st.executeQuery();
             while(rs.next()){
                 Conseil st = new Conseil();
@@ -368,6 +368,7 @@ public class AjoutConseilController implements Initializable {
                         st.setInt(2, id_conseil);
                         int rowsAffected = st.executeUpdate();
                         showConseils();
+                        clear();
                         if (rowsAffected > 0) {
                             showAlert(Alert.AlertType.INFORMATION, "Succès", "Conseil mis à jour avec succès.");
                         } else {
@@ -405,9 +406,12 @@ public class AjoutConseilController implements Initializable {
     }
 
     @FXML
-    void clear(MouseEvent event) {
+    void clear() {
         foodLabel.setText(null);
         foodInfoText.setText(null);
+        tDemande.setText(null);
+        tNote.setText(null);
+        table.getSelectionModel().clearSelection();
     }
 
     @FXML
