@@ -81,7 +81,7 @@
                   <TableColumn fx:id="col_objectif" prefWidth="79.199951171875" text="Objectif" />
               </columns>
                <styleClass>
-                  <String fx:value="table-view" />
+                  <String fx:value=".table-row-cell" />
                   <String fx:value="column-header-background" />
                </styleClass>
             </TableView>

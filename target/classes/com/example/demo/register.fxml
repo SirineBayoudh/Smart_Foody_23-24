@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,7 +22,7 @@
         </ImageView>
         <Text fx:id="t1" layoutX="90.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="login-form-container" text="Se connecter" translateY="10.0" />
         <Text fill="#56ab2f" layoutX="246.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-underline: true;" text="S'inscrire" translateY="10.0" />
-        <VBox layoutX="45.0" layoutY="100.0" minHeight="-Infinity" prefHeight="388.0" prefWidth="347.0" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="60.0">
+        <VBox fx:id="register1" layoutX="45.0" layoutY="100.0" minHeight="-Infinity" prefHeight="388.0" prefWidth="347.0" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="60.0">
             <children>
                 <TextField fx:id="tnom" layoutX="10.0" layoutY="113.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="310.0" promptText="Nom" />
                 <TextField fx:id="tprenom" layoutX="10.0" layoutY="113.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="310.0" promptText="Prénom" />
@@ -56,12 +57,33 @@
                 <TextField fx:id="tfrue" layoutX="10.0" layoutY="106.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="140.0" promptText="Rue" translateX="170.0" translateY="-353.0" />
                 <ComboBox fx:id="choixObjectif" prefWidth="310.0" promptText="Objectif" styleClass="combo-box" stylesheets="@css/style_login.css" translateY="-355.0" />
             <Label fx:id="verifCaptcha" onMouseClicked="#verifierCaptcha" prefHeight="19.0" prefWidth="237.0" text="Veuillez vérifier le code suivant:" translateY="-355.0" />
-                <Button fx:id="btnInscri" mnemonicParsing="false" onAction="#addUser" style="-fx-padding: 10px 20px;" styleClass="login-form-container" stylesheets="@css/style_login.css" text="S'inscrire" translateX="35.0" translateY="-280.0" />
+                <Button fx:id="btnInscri" mnemonicParsing="false" onAction="#addUser" style="-fx-padding: 10px 20px;" styleClass="login-form-container" stylesheets="@css/style_login.css" text="Continuer" translateX="35.0" translateY="-280.0" />
                 <Label text="Vous avez déjà un compte?" translateX="37.0" translateY="-290.0" />
                 <Label fx:id="linkConnexion" layoutX="10.0" layoutY="862.0" onMouseClicked="#redirectToLogin" text="Connexion" textFill="#56ab2f" translateX="210.0" translateY="-324.0" />
             <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" prefWidth="347.0" translateY="-490.0" />
             </children>
         </VBox>
+      <AnchorPane fx:id="register2" layoutX="10.0" layoutY="10.0" prefHeight="725.0" prefWidth="400.0" styleClass="login-form-container" stylesheets="@css/style_login.css" visible="false">
+         <children>
+            <Label layoutX="64.0" layoutY="446.0" prefHeight="19.0" prefWidth="150.0" text="Votre IMC est :" />
+            <ImageView fitHeight="264.0" fitWidth="156.0" layoutX="14.0" layoutY="210.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/silhouette-de-corps-humain-debout.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="135.0" fitWidth="136.0" layoutX="220.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/balance.png" />
+               </image>
+            </ImageView>
+            <Spinner fx:id="spinnerTaille" layoutX="18.0" layoutY="392.0" />
+            <Label layoutX="120.0" layoutY="396.0" text="cm" />
+            <Spinner fx:id="spinnerPoids" layoutX="220.0" layoutY="392.0" />
+            <Label layoutX="320.0" layoutY="396.0" text="kg" />
+            <Label fx:id="IMC" layoutX="220.0" layoutY="446.0" prefHeight="19.0" prefWidth="100.0" />
+            <Button fx:id="btn_ajout" layoutX="142.0" layoutY="510.0" mnemonicParsing="false" onAction="#addUserIMC" style="-fx-padding: 10px 20px;" text="Button" translateX="-70.0" translateY="20.0" />
+         </children>
+      </AnchorPane>
     </children>
     <styleClass>
         <String fx:value="login-container" />

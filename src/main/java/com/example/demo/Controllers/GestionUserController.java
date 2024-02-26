@@ -3,7 +3,7 @@ package com.example.demo.Controllers;
 import com.example.demo.Models.Role;
 import com.example.demo.Models.Utilisateur;
 import com.example.demo.Tools.MyConnection;
-import javafx.animation.PauseTransition;
+import javafx.animation.*;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -173,7 +173,9 @@ public class GestionUserController implements Initializable {
             }
         }*/
 
+
     }
+
 
     public void totalClient() {
         ObservableList<Utilisateur> listUsers = getUtilisateurs();

@@ -105,6 +105,9 @@ public class RegisterController implements Initializable {
     private Button btnInscri;
 
     @FXML
+    private Button btn_ajout;
+
+    @FXML
     private AnchorPane anchorPane;
 
     @FXML
@@ -119,6 +122,21 @@ public class RegisterController implements Initializable {
     ComplexiteMdp complx = new ComplexiteMdp();
 
     private ArrayList<String> objectifList = new ArrayList<>();
+
+    @FXML
+    private Spinner<Double> spinnerTaille;
+
+    @FXML
+    private Spinner<Double> spinnerPoids;
+
+    @FXML
+    private Label IMC;
+
+    @FXML
+    private VBox register1;
+
+    @FXML
+    private AnchorPane register2;
 
     private void chargerOptionsObjectif() {
         Connection cnx = MyConnection.getInstance().getCnx();
@@ -137,6 +155,8 @@ public class RegisterController implements Initializable {
         }
 
         choixObjectif.setItems(FXCollections.observableArrayList(objectifList));
+
+
     }
 
     @Override
@@ -156,6 +176,34 @@ public class RegisterController implements Initializable {
         chargerOptionsObjectif();
         choixObjectif.setOnAction(e -> objectifChoisi = choixObjectif.getValue());
 
+        register1.setVisible(true);
+        register2.setVisible(false);
+
+
+        SpinnerValueFactory<Double> tailleValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 300.0, 170.0);
+        SpinnerValueFactory<Double> poidsValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 500.0, 70.0);
+
+
+        // Définir les SpinnerValueFactory pour les Spinners
+        spinnerTaille.setValueFactory(tailleValueFactory);
+        spinnerPoids.setValueFactory(poidsValueFactory);
+
+        spinnerTaille.valueProperty().addListener((observable, oldValue, newValue) -> calculerIMC());
+        spinnerPoids.valueProperty().addListener((observable, oldValue, newValue) -> calculerIMC());
+
+        IMC.setText(String.valueOf(0));
+
+        // Calculer l'IMC initial
+        calculerIMC();
+
+    }
+    private void calculerIMC() {
+        double taille = spinnerTaille.getValue() / 100.0; // Convertir la taille en mètres
+        double poids = spinnerPoids.getValue();
+        double imc = poids / (taille * taille);
+
+        // Mettre à jour le label IMC avec le résultat
+        IMC.setText(String.format("IMC : %.2f", imc));
     }
 
     @FXML
@@ -260,7 +308,7 @@ public class RegisterController implements Initializable {
     }
 
     @FXML
-    void addUser(ActionEvent event) throws NoSuchAlgorithmException {
+    void addUser(ActionEvent event)  {
 
         //Contrôle sur les champs vides
         if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || genreChoisi == null || tftel.getText().isEmpty()  || villeChoisie == null || tfrue.getText().isEmpty() || objectifChoisi == null) {
@@ -344,23 +392,29 @@ public class RegisterController implements Initializable {
                 alert.showAndWait();
                 complx.setNb(0);
             } else if (complx.getNb() == 12){
-                Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), "", "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0);
-                UserCrud usc = new UserCrud();
-                usc.ajouterEntite(user);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
-                try {
-                    Parent root = loader.load();
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                    //Pour fermer la fenêtre du login
-                    Stage loginStage = (Stage) temail.getScene().getWindow();
-                    loginStage.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                register1.setVisible(false);
+                register2.setVisible(true);
             }
+        }
+    }
+
+    @FXML
+    void addUserIMC(ActionEvent event) throws NoSuchAlgorithmException{
+        Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), "", "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0);
+        UserCrud usc = new UserCrud();
+        usc.ajouterEntite(user);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
+        try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+            //Pour fermer la fenêtre du login
+            Stage loginStage = (Stage) temail.getScene().getWindow();
+            loginStage.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -3,19 +3,28 @@ package com.example.demo.Controllers;
 import com.example.demo.Models.Role;
 import com.example.demo.Models.Utilisateur;
 import com.example.demo.Tools.MyConnection;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 
 
+import javafx.util.StringConverter;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
 import java.net.URL;
@@ -23,7 +32,10 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 public class AjouterConseillerController implements Initializable {
 
@@ -64,6 +76,8 @@ public class AjouterConseillerController implements Initializable {
     @FXML
     private ImageView choixAttestation;
 
+    public Boolean existe = false;
+
     Encryptor encryptor = new Encryptor();
 
     private GestionUserController gestionUserController;
@@ -71,6 +85,8 @@ public class AjouterConseillerController implements Initializable {
     public void setGestionUserController(GestionUserController gestionUserController) {
         this.gestionUserController = gestionUserController;
     }
+
+    //private ObservableList<String> emailSuggestions = FXCollections.observableArrayList("@gmail.com", "@hotmail.com", "@yahoo.com"); // Ajoutez d'autres suggestions au besoin
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -85,9 +101,63 @@ public class AjouterConseillerController implements Initializable {
                 tfmatricule.clear();
             }
         });
+
+        /*tfemailc.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.AT) {
+                // Si l'utilisateur appuie sur la touche @, ajouter automatiquement "@gmail.com"
+                tfemailc.appendText("gmail.com");
+
+                // Déplacer le curseur à la position juste avant "gmail.com" pour permettre à l'utilisateur de continuer à saisir
+                tfemailc.positionCaret(tfemailc.getText().length() - "gmail.com".length());
+
+                // Consommer l'événement pour éviter qu'il ne soit traité par d'autres écouteurs
+                event.consume();
+            }
+        });*/
+
+        /*tfemailc.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                // Vérifier si la nouvelle valeur se termine par "@" et ne contient pas déjà "@gmail.com"
+                if (newValue.endsWith("@") && !newValue.endsWith("@gmail.com")) {
+                    tfemailc.setText(newValue + "gmail.com"); // Ajouter automatiquement "@gmail.com"
+                    tfemailc.positionCaret(newValue.length());
+                }
+            }
+        });*/
+
+        /*ComboBox<String> emailComboBox = new ComboBox<>(emailSuggestions);
+        emailComboBox.setLayoutX(tfemailc.getLayoutX() + tfemailc.getWidth() + 100);
+        emailComboBox.setLayoutY(tfemailc.getLayoutY() + tfemailc.getHeight() + 50);
+
+        // Créez un menu contextuel pour afficher les suggestions
+        ContextMenu emailSuggestionsMenu = new ContextMenu();
+        emailSuggestions.forEach(suggestion -> {
+            MenuItem item = new MenuItem(suggestion);
+            item.setOnAction(event -> {
+                String emailText = tfemailc.getText().split("@")[0] + suggestion;
+                tfemailc.setText(emailText);
+                tfemailc.positionCaret(emailText.length());
+            });
+            emailSuggestionsMenu.getItems().add(item);
+        });
+
+        // Associez le menu contextuel au champ de texte tfemailc
+        tfemailc.setContextMenu(emailSuggestionsMenu);
+
+        // Gérez l'affichage du menu contextuel lors de la saisie
+        tfemailc.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.contains("@")) {
+                emailSuggestionsMenu.show(tfemailc, tfemailc.getLayoutX() + tfemailc.getWidth(), tfemailc.getLayoutY());
+            } else {
+                emailSuggestionsMenu.hide();
+            }
+        });
+        */
+
     }
 
-    public Boolean existe = false;
+
     @FXML
     void choisirAttestationOnClick(MouseEvent event) {
 

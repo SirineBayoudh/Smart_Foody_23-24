@@ -7,3 +7,13 @@
     -fx-background-color: #56AB2F;
     -fx-padding: 10px 20px;
 }
+
+.table-row-cell {
+    -fx-background-color: #ddeed5;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #56ab2f;
+}
+
+

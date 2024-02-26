@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -31,14 +30,12 @@
                 <TextField fx:id="tfprenomc" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-83.0" />
                 <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Email" translateX="20.0" translateY="-85.0" />
                 <TextField fx:id="tfemailc" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-100.0" />
-                <Label layoutX="10.0" layoutY="95.0" style="-fx-font-weight: bold;" text="Mot de passe" translateX="300.0" translateY="-168.0" />
-                <PasswordField fx:id="tfmdpc" maxWidth="-Infinity" prefWidth="230.0" translateX="300.0" translateY="-183.0" />
-                <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Genre" translateX="20.0" translateY="-185.0" />
-                <ComboBox fx:id="choixGenrec" prefWidth="230.0" translateX="20.0" translateY="-200.0" />
-                <TextField fx:id="tfnumtelc" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-249.0" />
-                <Label layoutX="10.0" layoutY="343.0" style="-fx-font-weight: bold;" text="Numéro de téléphone" translateX="300.0" translateY="-317.0" />
-                <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Matricule" translateX="20.0" translateY="-275.0" />
-                <TextField fx:id="tfmatricule" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-290.0" />
+                <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Genre" translateX="20.0" translateY="-110.0" />
+                <ComboBox fx:id="choixGenrec" prefWidth="230.0" translateX="20.0" translateY="-124.0" />
+                <TextField fx:id="tfnumtelc" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-232.0" />
+                <Label layoutX="10.0" layoutY="343.0" style="-fx-font-weight: bold;" text="Numéro de téléphone" translateX="300.0" translateY="-300.0" />
+                <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Matricule" translateX="20.0" translateY="-210.0" />
+                <TextField fx:id="tfmatricule" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-225.0" />
                 <Label layoutX="10.0" layoutY="509.0" style="-fx-font-weight: bold;" text="Attestation" translateX="300.0" translateY="-358.0" />
                 <TextField fx:id="tfattestation" editable="false" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
             </children>
@@ -60,7 +57,7 @@
                 <Image url="@Images/rafraichir.png" />
             </image>
         </ImageView>
-      <ImageView fx:id="choixAttestation" fitHeight="23.0" fitWidth="23.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#choisirAttestationOnClick" pickOnBounds="true" preserveRatio="true" translateX="525.0" translateY="305.0">
+      <ImageView fx:id="choixAttestation" fitHeight="23.0" fitWidth="23.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#choisirAttestationOnClick" pickOnBounds="true" preserveRatio="true" translateX="525.0" translateY="223.0">
          <image>
             <Image url="@Images/dossier.png" />
          </image>

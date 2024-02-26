@@ -35,9 +35,6 @@ public class ModifierConseillerController implements Initializable {
     private TextField tfemailc;
 
     @FXML
-    private PasswordField tfmdpc;
-
-    @FXML
     private ComboBox<String> choixGenrec;
 
     private String[] genre = {"Homme","Femme"};
@@ -143,7 +140,7 @@ public class ModifierConseillerController implements Initializable {
 
         id = GestionUserController.getId();
 
-        if (tfnomc.getText().isEmpty() || tfprenomc.getText().isEmpty() || tfemailc.getText().isEmpty() || tfmdpc.getText().isEmpty() || choixGenrec.getValue().isEmpty() || tfnumtelc.getText().isEmpty()  || tfmatricule.getText().isEmpty() || tfattestation.getText().isEmpty()) {
+        if (tfnomc.getText().isEmpty() || tfprenomc.getText().isEmpty() || tfemailc.getText().isEmpty() || choixGenrec.getValue().isEmpty() || tfnumtelc.getText().isEmpty()  || tfmatricule.getText().isEmpty() || tfattestation.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
             alert.setHeaderText(null);
@@ -203,7 +200,6 @@ public class ModifierConseillerController implements Initializable {
                     pst.setString(2,tfprenomc.getText());
                     pst.setString(3, choixGenrec.getValue());
                     pst.setString(4, tfemailc.getText());
-                    pst.setString(5,encryptor.encryptString(tfmdpc.getText()));
                     pst.setInt(6,Integer.parseInt(tfnumtelc.getText()));
                     pst.setString(7,Role.Conseiller.toString());
                     pst.setString(8,tfmatricule.getText());
@@ -217,8 +213,6 @@ public class ModifierConseillerController implements Initializable {
 
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
-                } catch (NoSuchAlgorithmException e) {
-                    throw new RuntimeException(e);
                 }
 
             }
@@ -243,7 +237,6 @@ public class ModifierConseillerController implements Initializable {
         tfnomc.clear();
         tfprenomc.clear();
         tfemailc.clear();
-        tfmdpc.clear();
         choixGenrec.getSelectionModel().clearSelection();
         tfnumtelc.clear();
         tfmatricule.clear();
@@ -256,7 +249,6 @@ public class ModifierConseillerController implements Initializable {
             tfnomc.setText(user.getNom());
             tfprenomc.setText(user.getPrenom());
             tfemailc.setText(user.getEmail());
-            tfmdpc.setText(user.getMot_de_passe());
             choixGenrec.setValue(user.getGenre());
             tfnumtelc.setText(String.valueOf(user.getNum_tel()));
             tfmatricule.setText(user.getMatricule());
