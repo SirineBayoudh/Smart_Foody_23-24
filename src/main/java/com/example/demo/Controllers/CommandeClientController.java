@@ -22,7 +22,7 @@ import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement
 public class CommandeClientController {
 
 
-
+    public ComboBox map;
     PanierController panierController = new PanierController(); // Création d'une instance de PanierController
 
 
@@ -84,10 +84,7 @@ public class CommandeClientController {
                         "Adresse : " + adresse);
 
                 // Charger les adresses de livraison disponibles dans la combobox
-                addressComboBox.getItems().addAll("Adresse 1", "Adresse 2", "Adresse 3"); // Supposons que ce sont les adresses enregistrées pour le client
 
-                // Sélectionner par défaut la première adresse dans la combobox
-                addressComboBox.getSelectionModel().selectFirst();
             } else {
                 System.out.println("Aucun utilisateur trouvé avec l'identifiant spécifié.");
             }
@@ -112,29 +109,49 @@ public class CommandeClientController {
             pst.setString(5, "en cours");
             pst.executeUpdate();
 
+            // URL de votre page Facebook Smart Foody
+            String facebookPageURL = "https://www.facebook.com/smartfoody.tn";
+
+            // Générer le code QR pour la commande avec l'URL de la page Facebook
+            String qrCodePath = "C:\\Users\\INFOTEC\\Desktop\\Smart_Foody_23-24\\qr_code.png"; // Remplacer par le chemin où vous souhaitez enregistrer le code QR
+            QRCodeGenerator.generateQRCode(facebookPageURL, 200, 200, qrCodePath);
+
+            // Informations pour l'email
             String emailClient = "saidifadhila24@gmail.com";
             String sujetEmail = "Confirmation de commande";
-            String contenuEmail = "Votre commande a été passée avec succès. Merci de votre confiance.";
 
-            EmailUtil.envoyerEmail(emailClient, sujetEmail, contenuEmail);
+            // Modifier le contenuEmail pour inclure le code QR
+            String contenuEmail = "<html><body>"
+                    + "<div style='display: flex; justify-content: space-between; width: 100%;'>"
+                    +   "<div style='width: 50%;'><img src='cid:logo' alt='Logo' style='width: 100px; float: left;'/></div>" // Logo poussé à gauche
+                    +   "<div style='width: 50%;'><img src='cid:qrCode' alt='QR Code' style='width: 100px; float: right;'/></div>" // QR Code poussé à droite
+                    + "</div>"
+                    + "<div style='clear: both; border: 2px solid green; padding: 20px; margin-top: 20px;'>"
+                    +   "<h1 style='text-align: center;'>Confirmation de commande</h1>"
+                    +   "<p>Votre commande a été passée avec succès. Merci de votre confiance.</p>"
+                    + "</div>"
+                    + "</body></html>";
 
+            // Assurez-vous que la méthode envoyerEmailAvecImageInline est adaptée pour gérer plusieurs images (logo et code QR)
+            EmailUtil.envoyerEmailAvecImageInline(emailClient, sujetEmail, contenuEmail, qrCodePath, "qrCode","C:/Users/INFOTEC/Desktop/Smart_Foody_23-24/src/main/resources/com/example/demo/Images/trans_logo.png", "logo");
+
+            // Afficher une alerte de succès
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Commande passée");
             successAlert.setHeaderText(null);
             successAlert.setContentText("La commande a été ajoutée avec succès et un e-mail de confirmation a été envoyé.");
-            successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
-            successAlert.getDialogPane().getStyleClass().add("custom-alert");
             successAlert.showAndWait();
 
             System.out.println("Commande ajoutée avec succès");
             panierController.viderPanier(true);
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
-        } catch (MessagingException e) {
-            System.out.println("Erreur lors de l'envoi de l'email : " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Erreur lors de l'envoi de l'email ou de la génération du QR code: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
     private void appelerViderPanier(ActionEvent event) {
         panierController.viderPanier(false); // Appel de la méthode viderPanier avec false pour indiquer que la commande n'est pas validée
     }
@@ -155,5 +172,6 @@ public class CommandeClientController {
     }
 
 
-
+    public void map(ActionEvent actionEvent) {
+    }
 }
