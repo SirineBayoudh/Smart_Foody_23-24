@@ -1,4 +1,7 @@
 package com.example.demo.Controllers;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 
@@ -21,6 +24,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,10 +42,10 @@ import java.util.List;
 
 public class PageAccueilController {
     private static final String ACCESS_KEY = "8SwFxNJG53NadG8LlDRnWphLiLd56udZIqAY6v9DE2Y";
-    private static final String SEARCH_QUERY = "healthy%20ingredientfood"; // Modifier cette requête pour rechercher des images de produits alimentaires
+    private static final String SEARCH_QUERY = "healthy%20food"; // Modifier cette requête pour rechercher des images de produits alimentaires
     private static final String API_URL = "https://api.unsplash.com/photos/random?query=" + SEARCH_QUERY + "&client_id=" + ACCESS_KEY;
-    private static final int NUM_IMAGES = 4; // Nombre d'images à afficher
-    private static final int IMAGE_WIDTH = 300; // Largeur fixe des images
+    private static final int NUM_IMAGES = 15; // Nombre d'images à afficher
+    private static final int IMAGE_WIDTH = 750; // Largeur fixe des images
     private static final int IMAGE_HEIGHT = 350;
     @FXML
     private HBox imageContainer;
@@ -51,6 +55,7 @@ public class PageAccueilController {
     private int currentPageIndex = 0;
     private int totalPageCount = 0;
     private final int itemsPerPage = 8;
+    double totalWidth = 0.0;
 
 
     @FXML
@@ -352,11 +357,14 @@ public class PageAccueilController {
         }
     }
 
-
     @FXML
     void initialize() {
         MyConnection db = MyConnection.getInstance();
         conn = db.getCnx();
+        if (conn == null) {
+            System.err.println("La connexion à la base de données n'est pas établie.");
+            return;
+        }
 
         // Initialise la liste des suggestions avec une liste vide
         suggestionsListView.setItems(FXCollections.observableArrayList());
@@ -372,7 +380,8 @@ public class PageAccueilController {
                 suggestionsListView.getItems().clear();
             }
         });
-        
+
+        // Affiche les produits par page
         displayProductsByPage(0);
 
         try {
@@ -380,7 +389,6 @@ public class PageAccueilController {
             URL url = new URL(API_URL + "&count=" + NUM_IMAGES);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-
 
             // Lire la réponse de l'API
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -393,18 +401,50 @@ public class PageAccueilController {
 
             // Extraire les URL des images à partir de la réponse JSON
             JSONArray jsonArray = new JSONArray(response.toString());
+
+            // Créer une timeline pour l'animation
+            Timeline timeline = new Timeline();
+            // Durée totale de l'animation
+            double animationDuration = 0;
+
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                final int index = i;
+                JSONObject jsonObject = jsonArray.getJSONObject(index);
                 String imageUrl = jsonObject.getJSONObject("urls").getString("regular");
 
-                // Charger et afficher l'image dans ImageView
+                // Charger l'image dans ImageView
                 Image image = new Image(imageUrl);
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(IMAGE_WIDTH); // Fixer la largeur de l'image
                 imageView.setFitHeight(IMAGE_HEIGHT); // Fixer la hauteur de l'image
                 imageView.setPreserveRatio(false); // Désactiver le maintien du ratio d'aspect
+                imageView.setTranslateX(IMAGE_WIDTH * i); // Position initiale de l'image
+
+                // Ajouter l'image à imageContainer
                 imageContainer.getChildren().add(imageView);
+                // Positionner l'image à côté de la précédente
+                if (index > 0) {
+                    totalWidth += IMAGE_WIDTH-900; // Ajouter la largeur de l'image précédente
+                    imageView.setTranslateX(totalWidth); // Positionner l'image en fonction de la largeur totale
+                } else {
+                    totalWidth = 0.0; // Réinitialiser la largeur totale pour la première image
+                }
+
+                // Ajouter la durée de délai à l'animation totale
+                animationDuration += 10; // Délai de 3 secondes pour chaque image
+
+                // Créer une KeyValue pour l'animation
+                KeyValue keyValue = new KeyValue(imageView.translateXProperty(), -IMAGE_WIDTH * i - IMAGE_WIDTH);
+                // Créer un KeyFrame pour l'animation
+                KeyFrame keyFrame = new KeyFrame(Duration.seconds(animationDuration), keyValue);
+                // Ajouter le KeyFrame à la timeline
+                timeline.getKeyFrames().add(keyFrame);
             }
+
+            // Régler le cycle de la timeline
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            // Lancer la timeline
+            timeline.play();
 
             // Fermer la connexion
             connection.disconnect();
@@ -412,6 +452,7 @@ public class PageAccueilController {
             e.printStackTrace();
         }
     }
+
 
 
     private void updateSuggestions(String searchQuery) {
