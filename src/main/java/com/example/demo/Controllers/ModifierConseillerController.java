@@ -19,6 +19,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -62,6 +63,10 @@ public class ModifierConseillerController implements Initializable {
 
     public Boolean existe = false;
 
+    public String matriculeC;
+
+    public String attestationC;
+
     Encryptor encryptor = new Encryptor();
 
     private GestionUserController gestionUserController;
@@ -101,15 +106,13 @@ public class ModifierConseillerController implements Initializable {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        // Afficher la boîte de dialogue de sélection de fichier
+
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             tfattestation.setText(selectedFile.getAbsolutePath());
 
-            // Effectuer OCR sur le fichier d'attestation
             String contenuFichier = effectuerOCR(selectedFile);
 
-            // Vérifier si le fichier d'attestation contient les mots "Conseiller" ou "Nutritionniste"
             if (contenuFichier.contains("Conseiller") || contenuFichier.contains("Nutritionniste")) {
                 existe = true;
             } else {
@@ -136,7 +139,7 @@ public class ModifierConseillerController implements Initializable {
         alert.showAndWait();
     }
     @FXML
-    void updateConseiller(ActionEvent event) {
+    void updateConseiller(ActionEvent event) throws SQLException {
 
         id = GestionUserController.getId();
 
@@ -156,7 +159,7 @@ public class ModifierConseillerController implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("Veuillez saisir une adresse e-mail valide au format ****@esprit.tn.");
             alert.showAndWait();
-            return; // Arrête l'exécution de la méthode si le format de l'e-mail est incorrect
+            return;
         }
 
         try {
@@ -178,58 +181,74 @@ public class ModifierConseillerController implements Initializable {
             return;
         }
 
-        if(existe){
-            Connection  cnx = MyConnection.getInstance().getCnx();
+        String reqMatricule = "SELECT matricule,attestation FROM utilisateur WHERE id_utilisateur= ?";
+        PreparedStatement pstMatricule = cnx.prepareStatement(reqMatricule);
+        pstMatricule.setInt(1, id);
+        ResultSet rsMatricule = pstMatricule.executeQuery();
+        rsMatricule.next();
+        matriculeC = rsMatricule.getString("matricule");
+        attestationC = rsMatricule.getString("attestation");
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation de modification");
-            alert.setHeaderText(null);
-            alert.setContentText("Êtes-vous sûr de vouloir modifier ce conseiller ?");
+        if(!tfattestation.getText().equals(attestationC)){
+            if(existe){
+                modif();
 
-            ButtonType buttonTypeOui = new ButtonType("Oui", ButtonBar.ButtonData.YES);
-            ButtonType buttonTypeNon = new ButtonType("Non", ButtonBar.ButtonData.NO);
-
-            alert.getButtonTypes().setAll(buttonTypeOui, buttonTypeNon);
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == buttonTypeOui) {
-                String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,mot_de_passe=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
-                try {
-                    PreparedStatement pst = cnx.prepareStatement(req);
-                    pst.setString(1, tfnomc.getText());
-                    pst.setString(2,tfprenomc.getText());
-                    pst.setString(3, choixGenrec.getValue());
-                    pst.setString(4, tfemailc.getText());
-                    pst.setInt(6,Integer.parseInt(tfnumtelc.getText()));
-                    pst.setString(7,Role.Conseiller.toString());
-                    pst.setString(8,tfmatricule.getText());
-                    pst.setString(9,tfattestation.getText());
-                    pst.setString(10,"");
-                    pst.setString(11, "");
-                    pst.setInt(12, id);
-                    pst.executeUpdate();
-
-                    gestionUserController.tableUser.getItems().setAll(gestionUserController.getUtilisateurs());
-
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }
-
+            } else {
+                showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
             }
-
-            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-            alert2.setTitle("Modification réussie");
-            alert2.setHeaderText(null);
-            alert2.setContentText("Les informations du conseiller ont été mises à jour avec succès.");
-            alert2.showAndWait();
-
-            Stage loginStage = (Stage) tfemailc.getScene().getWindow();
-            loginStage.close();
-
-        } else {
-            showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
+        }else {
+            modif();
         }
 
+    }
+
+    Connection  cnx = MyConnection.getInstance().getCnx();
+
+    public void modif(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation de modification");
+        alert.setHeaderText(null);
+        alert.setContentText("Êtes-vous sûr de vouloir modifier le conseiller ayant la matricule " + matriculeC +" ?");
+
+        ButtonType buttonTypeOui = new ButtonType("Oui", ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeNon = new ButtonType("Non", ButtonBar.ButtonData.NO);
+
+        alert.getButtonTypes().setAll(buttonTypeOui, buttonTypeNon);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonTypeOui) {
+            String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
+            try {
+                PreparedStatement pst = cnx.prepareStatement(req);
+                pst.setString(1, tfnomc.getText());
+                pst.setString(2,tfprenomc.getText());
+                pst.setString(3, choixGenrec.getValue());
+                pst.setString(4, tfemailc.getText());
+                pst.setInt(5,Integer.parseInt(tfnumtelc.getText()));
+                pst.setString(6,Role.Conseiller.toString());
+                pst.setString(7,tfmatricule.getText());
+                pst.setString(8,tfattestation.getText());
+                pst.setString(9,"");
+                pst.setString(10, "");
+                pst.setInt(11, id);
+                pst.executeUpdate();
+
+                gestionUserController.tableUser.getItems().setAll(gestionUserController.getUtilisateurs());
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        alert2.setTitle("Modification réussie");
+        alert2.setHeaderText(null);
+        alert2.setContentText("Les informations du conseiller ont été mises à jour avec succès.");
+        alert2.showAndWait();
+
+        Stage loginStage = (Stage) tfemailc.getScene().getWindow();
+        loginStage.close();
     }
 
     @FXML

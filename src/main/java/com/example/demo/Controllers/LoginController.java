@@ -371,7 +371,6 @@ public class LoginController implements Initializable {
             // Construct email body with HTML formatting
             String body = "<html>"
                     + "<body>"
-                    + "<div style='text-align:center;'><img src='/com/example/demo/Images/trans_logo.png' alt='Logo smart foody'/></div>"
                     + "<p style='color: #000;font-size:18px;padding-left: 20px;font-weight:bold'>Bonjour, " + prenom + "</p>"
                     + "<div style='width: 500px;padding: 20px;'>"
                     + "<h2 style='text-transform: uppercase; color: #000;'>VOUS AVEZ DEMANDÉ LA MODIFICATION DE VOTRE MOT DE PASSE</h2>"
@@ -384,6 +383,8 @@ public class LoginController implements Initializable {
                     "  text-decoration: none;\n" +
                     "  display: inline-block;\n" +
                     "  font-size: 16px;'>" + codeEnvoye + "</button>"
+                    + "<p style='color: #000;font-size:14px;'>Visitez notre page Facebook pour plus d'informations : "
+                    + "<a href='https://www.facebook.com/smartfoody.tn' style='color: green;'>Smart Foody</a></p>"
                     + "</div>"
                     + "</body>"
                     + "</html>";

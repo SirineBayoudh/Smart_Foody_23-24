@@ -75,6 +75,8 @@ public class dashboardController implements Initializable {
         centerPane.setCenter(innerPane);
         btn_home.getStyleClass().add("btn_home");
 
+        loadPage("/com/example/demo/accueilDashboard.fxml");
+
     }
 
     @FXML

@@ -393,8 +393,9 @@ public class GestionUserController implements Initializable {
         }
     }
 
+    public String matriculeC;
     @FXML
-    void supprimerConseiller(ActionEvent event) {
+    void supprimerConseiller(ActionEvent event) throws SQLException {
         Utilisateur selectedUser = (Utilisateur) tableUser.getSelectionModel().getSelectedItem();
         ObservableList<Utilisateur> listUsers = getUtilisateurs();
 
@@ -406,10 +407,17 @@ public class GestionUserController implements Initializable {
                 alert.showAndWait();
             }
             else {
+                String reqMatricule = "SELECT matricule FROM utilisateur WHERE id_utilisateur= ?";
+                PreparedStatement pstMatricule = cnx.prepareStatement(reqMatricule);
+                pstMatricule.setInt(1, id);
+                ResultSet rsMatricule = pstMatricule.executeQuery();
+                rsMatricule.next();
+                matriculeC = rsMatricule.getString("matricule");
+
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation de suppression");
                 alert.setHeaderText(null);
-                alert.setContentText("Êtes-vous sûr de vouloir supprimer ce conseiller ?");
+                alert.setContentText("Êtes-vous sûr de vouloir modifier le conseiller ayant la matricule " + matriculeC + " ?");
 
                 ButtonType buttonTypeOui = new ButtonType("Oui", ButtonBar.ButtonData.YES);
                 ButtonType buttonTypeNon = new ButtonType("Non", ButtonBar.ButtonData.NO);

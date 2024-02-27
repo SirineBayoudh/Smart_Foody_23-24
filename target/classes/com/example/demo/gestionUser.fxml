@@ -9,9 +9,13 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.GestionUserController">
@@ -65,8 +69,23 @@
       </AnchorPane>
       <AnchorPane layoutY="260.0" prefHeight="340.0" prefWidth="900.0">
          <children>
-            <TextField fx:id="tfrecherche" layoutX="-16.0" layoutY="1.0" promptText="Rechercher" translateX="30.0" />
-             <Pagination fx:id="pagination" layoutX="-18.0" layoutY="268.0" prefHeight="44.0" prefWidth="338.0" />
+            <TextField fx:id="tfrecherche" layoutX="-16.0" layoutY="1.0" promptText="Rechercher" translateX="30.0">
+               <effect>
+                  <Lighting diffuseConstant="1.68">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant>
+                           <color>
+                              <Color red="0.5894736647605896" green="0.75789475440979" blue="0.5052631497383118" />
+                           </color>
+                        </Light.Distant>
+                     </light>
+                  </Lighting>
+               </effect>
+            </TextField>
+             <Pagination fx:id="pagination" layoutX="-18.0" layoutY="268.0" prefHeight="44.0" prefWidth="338.0" stylesheets="@css/style_tableUser.css" />
             <TableView fx:id="tableUser" layoutY="-13.0" onMouseClicked="#getData" prefHeight="230.0" prefWidth="900.0" stylesheets="@css/style_tableUser.css" translateY="50.0">
               <columns>
                 <TableColumn fx:id="col_id" prefWidth="63.19998246431351" text="ID" />
@@ -89,15 +108,27 @@
                   <String fx:value="column-header-background" />
                </styleClass>
             </TableView>
-            <Button fx:id="btn_ajout" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#ajouterConseiller" stylesheets="@css/style_tableUser.css" text="   Ajouter Conseiller" translateX="385.0" translateY="270.0" />
-            <Button fx:id="btn_modif" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifierConseiller" stylesheets="@css/style_tableUser.css" text="   Modifier Conseiller" translateX="550.0" translateY="280.0" />
-            <Button fx:id="btn_supprimer" mnemonicParsing="false" onAction="#supprimerConseiller" stylesheets="@css/style_tableUser.css" text="   Supprimer Conseiller" translateX="720.0" translateY="290.0" />
+            <Button id="sale" fx:id="btn_ajout" layoutX="20.0" layoutY="20.0" mnemonicParsing="false" onMouseClicked="#ajouterConseiller" stylesheets="@css/style_tableUser.css" text="   Ajouter Conseiller" translateX="385.0" translateY="270.0" />
+            <Button id="sale" fx:id="btn_modif" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifierConseiller" stylesheets="@css/style_tableUser.css" text="   Modifier Conseiller" translateX="550.0" translateY="280.0" />
+            <Button id="sale" fx:id="btn_supprimer" mnemonicParsing="false" onAction="#supprimerConseiller" stylesheets="@css/style_tableUser.css" text="   Supprimer Conseiller" translateX="720.0" translateY="290.0" />
             <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="164.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/rechercher.png" />
                </image>
             </ImageView>
-            <ComboBox fx:id="choixRole" layoutX="222.0" layoutY="2.0" prefWidth="150.0" promptText="Filtrer" />
+            <ComboBox fx:id="choixRole" layoutX="222.0" layoutY="2.0" prefWidth="150.0" promptText="Filtrer">
+               <effect>
+                  <Lighting bumpInput="$null" diffuseConstant="1.64" specularConstant="0.5">
+                     <light>
+                        <Light.Distant>
+                           <color>
+                              <Color red="0.5975776314735413" green="0.7789473533630371" blue="0.5423781871795654" />
+                           </color>
+                        </Light.Distant>
+                     </light>
+                  </Lighting>
+               </effect>
+            </ComboBox>
             <ImageView fitHeight="26.0" fitWidth="15.0" layoutX="380.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true" translateX="35.0">
                <image>
                   <Image url="@Images/plus.png" />
@@ -114,7 +145,7 @@
                </image>
             </ImageView>
 
-         </children>
+                     </children>
       </AnchorPane>
    </children>
 </AnchorPane>
