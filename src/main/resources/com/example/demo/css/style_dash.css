@@ -54,12 +54,23 @@
     -fx-background-color: #2b5517;
     -fx-border-color: #2b5517;
 }
-.ajouter_stock{
+.ajouter_stock {
     -fx-background-color: #aad597;
-    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-width: 2px;
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
+
+    -fx-transition: background-color 0.3s ease;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 3);
 }
+
+.ajouter_stock:pressed {
+    -fx-background-color: #86bf91;
+    -fx-transition: background-color 0s;
+    -fx-transform: translateY(2px);
+}
+
+
 .tt{
     -fx-background-color: #aad597;
     -fx-border-width: 2px 2px 2px 2px;

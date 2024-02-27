@@ -24,9 +24,9 @@
 
                 <TableColumn fx:id="id_alerteColumn" prefWidth="103.20001602172852" text="Id Alerte" />
                 <TableColumn fx:id="idstockCoulmn" minWidth="20.0" prefWidth="163.20001220703125" text="Id Stock" />
-            <TableColumn fx:id="DescriptionCoulumn" prefWidth="324.0" text="Description" />
-                <TableColumn fx:id="DateColoumn" prefWidth="122.20001220703125" text="Date" />
-            <TableColumn fx:id="TypeCoulumn" prefWidth="114.79998779296875" text="Type" />
+            <TableColumn fx:id="DescriptionCoulumn" prefWidth="355.20001220703125" text="Description" />
+                <TableColumn fx:id="DateColoumn" prefWidth="119.199951171875" text="Date" />
+            <TableColumn fx:id="TypeCoulumn" prefWidth="88.0001220703125" text="Type" />
             </columns>
         </TableView>
 

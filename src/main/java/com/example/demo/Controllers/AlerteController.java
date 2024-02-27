@@ -8,6 +8,7 @@ import com.twilio.type.PhoneNumber;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
@@ -109,6 +110,8 @@ public class AlerteController implements LanguageObserver {
         int alertCount = AlerteTableView.getItems().size();
         idAlerteCountLabel.setText(String.valueOf(alertCount));
         setupPagination(AlerteTableView.getItems());
+        applyRowStyles();
+
     }
 
 
@@ -264,24 +267,6 @@ public class AlerteController implements LanguageObserver {
         nbalertstock.setText(LanguageManager.getInstance().getText("nbalertstock"));
         paneTitre.setText(LanguageManager.getInstance().getText("paneTitre"));
     }
-    public void updateDescriptionColumnContent() {
-        DescriptionCoulumn.setCellValueFactory(cellData -> {
-            Alerte alerte = cellData.getValue();
-            return new SimpleStringProperty(alerte.getDescription_alerte()); // Supposons que votre modèle Alerte a une méthode getDescription()
-        });
-
-        DescriptionCoulumn.setCellFactory(column -> new TableCell<Alerte, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(LanguageManager.getInstance().getText(item));
-                }
-            }
-        });
-    }
 
     @Override
     public void onLanguageChanged() {
@@ -363,33 +348,6 @@ public class AlerteController implements LanguageObserver {
     @FXML
     private Pagination pagination;
 
-   // private ObservableList<Alerte> alerteData; // Gardez une référence à la liste d'origine
-
-
-
-//    private void setupPagination() {
-//        // Initialisez alerteData avec vos données d'origine
-//        alerteData = AlerteTableView.getItems();
-//
-//        int pageCount = (alerteData.size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
-//        pagination.setPageCount(pageCount);
-//
-//        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
-//            // Vérifiez si l'index de la page actuelle est dans les limites
-//            if (newIndex.intValue() >= 0 && newIndex.intValue() < pageCount) {
-//                int startIndex = newIndex.intValue() * ITEMS_PER_PAGE;
-//                int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, alerteData.size());
-//
-//                // Vérifiez si les indices de début et de fin sont valides
-//                if (startIndex >= 0 && endIndex >= 0 && startIndex <= endIndex) {
-//                    ObservableList<Alerte> pageData = FXCollections.observableArrayList(
-//                            alerteData.subList(startIndex, endIndex));
-//                    AlerteTableView.setItems(pageData);
-//                }
-//            }
-//        });
-//    }
-
 
     private void setupPagination(ObservableList<Alerte> alerteData) {
         int pageCount = (alerteData.size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
@@ -406,6 +364,25 @@ public class AlerteController implements LanguageObserver {
                     AlerteTableView.setItems(pageData);
                 }
             }
+        });
+    }
+
+
+    private void applyRowStyles() {
+        AlerteTableView.setRowFactory(tv -> {
+            TableRow<Alerte> row = new TableRow<>();
+            row.itemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    if (Boolean.TRUE.equals(newValue.isType())) {
+                        row.setStyle("-fx-background-color: #bbddab; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
+                    } else {
+                        row.setStyle("-fx-background-color: #ff9999; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
+                    }
+                } else {
+                    row.setStyle(""); // Réinitialiser le style par défaut si la ligne est vide
+                }
+            });
+            return row;
         });
     }
 

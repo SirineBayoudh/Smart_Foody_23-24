@@ -86,46 +86,7 @@ public class AjouterStockController {
         }
     }
 
-    /**
-     * A-2 condition clique sur entrer puis appel fetchMarque pour récuperer marque du  produit
-     **/
-    @FXML
-    private void onRefTextFieldKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            fetchMarque();
-        }
-    }
 
-//    @FXML
-//    private void fetchMarque() {
-//        int ref = Integer.parseInt(tRef.getText());
-//
-//        try {
-//            Connection connection = MyConnection.getInstance().getCnx();
-//
-//            // produit existe
-//            if (isProductExists(ref)) {
-//                // detail produit  (fetch)
-//                String selectQuery = "SELECT marque FROM produit WHERE ref = ?";
-//                try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
-//                    selectStatement.setInt(1, ref);
-//                    ResultSet resultSet = selectStatement.executeQuery();
-//
-//                    // if produit existe , set  'marque' value in the tMarque TextField
-//                    if (resultSet.next()) {
-//                        String marque = resultSet.getString("marque");
-//                        tMarque.setText(marque);
-//                    }
-//                }
-//            } else {
-//                // supprimer tmarque textfield if produit n'existe pas
-//                tMarque.clear();
-//                System.out.println("Product does not exist. Please add the product first.");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     /**
      * A-3 methode ajout avec nb vendu initialiser à 0

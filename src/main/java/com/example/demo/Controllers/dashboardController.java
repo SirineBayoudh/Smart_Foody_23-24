@@ -83,38 +83,11 @@ public class dashboardController implements Initializable , LanguageObserver{
         languageManager.addObserver(this);
         updateLabels();
     }
-//    @FXML
-//    private void userClicked() {
-//        if (isClicked) {
-//            // Réinitialiser l'état normal si déjà cliqué
-//            tt.setFill(Color.valueOf("#faf6f6"));
-//            isClicked = false;
-//        } else {
-//            // Changer le fond lors du clic
-//            tt.setFill(Color.rgb(250, 246, 246, 0.5));
-//            // Vous pouvez ajuster les valeurs RGBA selon vos besoins
-//            isClicked = true;
-//        }
-//    }
 
-//    @FXML
-//    private void resetState() {
-//        // Réinitialiser l'état normal
-//        tt.setFill(Color.valueOf("#faf6f6"));
-//        isClicked = false;
-//    }
 
     @FXML
     public void initialize() {
-        // Ajouter un gestionnaire d'événements générique pour réinitialiser l'état
-//        Parent root = tt.getParent();  // ou récupérez la référence au conteneur principal
-//        root.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-//            // Vérifier si l'événement provient d'un bouton
-//            if (event.getTarget() instanceof Button) {
-//                // Réinitialiser l'état normal
-//                resetState();
-//            }
-//        });
+
     }
     @FXML
     private void dashboard() {
@@ -208,10 +181,7 @@ public class dashboardController implements Initializable , LanguageObserver{
         frenchRadioButton.setSelected(false);
     }
 
-//    @Override
-//    public void onLanguageChanged() {
-//        updateLabels();
-//    }
+
 
     private void saveSelectedLocale() {
         selectedLocale = languageManager.getCurrentLocale();
@@ -219,23 +189,7 @@ public class dashboardController implements Initializable , LanguageObserver{
 
 
 
-//    @FXML
-//    private void onFrenchSelected() {
-//        selectedLocale = Locale.FRENCH;
-//        languageManager.initialize(selectedLocale);
-//        updateLabels();
-//        // Update labels in other sections if needed
-//        englishRadioButton.setSelected(false);
-//    }
-//
-//    @FXML
-//    private void onEnglishSelected() {
-//        selectedLocale = Locale.ENGLISH;
-//        languageManager.initialize(selectedLocale);
-//        updateLabels();
-//        // Update labels in other sections if needed
-//        frenchRadioButton.setSelected(false);
-//    }
+
 
     @Override
     public void onLanguageChanged() {
