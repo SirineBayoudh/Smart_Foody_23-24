@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 
@@ -42,18 +43,10 @@ public class recetteController {
     PreparedStatement st = null;
     @FXML
     private GridPane recommendedProductsGridPane;
-    @FXML
-    private VBox chosenFruitCard;
 
-    @FXML
-    private ImageView fruitImg;
-
-    @FXML
-    private Label fruitNameLabel;
     ScrollPane scrollPane = new ScrollPane();
 
-    @FXML
-    private Label fruitPriceLabel;
+
 
     @FXML
     private TextField ingredientField;
@@ -74,10 +67,7 @@ public class recetteController {
     @FXML
     void initialize() {
     comparerObjectifUtilisateurAvecObjectif();
-    chosenFruitCard.setVisible(false);
-
-
-    }
+        }
 
     void comparerObjectifUtilisateurAvecObjectif() {
         // Requête pour sélectionner l'objectif de l'utilisateur
@@ -159,60 +149,44 @@ public class recetteController {
                 PreparedStatement stProduits = con.getCnx().prepareStatement(selectProduitsBuilder.toString());
                 ResultSet rsProduits = stProduits.executeQuery();
 
-                // Créer une HBox pour contenir les images horizontalement
+                // Créer une HBox pour contenir les cartes horizontalement
                 HBox hboxProduits = new HBox();
-                hboxProduits.setSpacing(40);
-
-                // Variables de position de défilement
-                final double[] scrollPosition = {0.0};
-                double scrollIncrement = 100.0;
-
-                // Boutons pour le défilement
-                Button previousButton = new Button("<");
-                previousButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
-                previousButton.setOnAction(event -> {
-                    if (scrollPosition[0] < 0) {
-                        scrollPosition[0] += scrollIncrement;
-                        hboxProduits.setTranslateX(scrollPosition[0]);
-                    }
-                });
-
-                Button nextButton = new Button(">");
-                nextButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
-                nextButton.setOnAction(event -> {
-                    if (scrollPosition[0] > -hboxProduits.getWidth() + recommendedProductsScrollPane.getWidth()) {
-                        scrollPosition[0] -= scrollIncrement;
-                        hboxProduits.setTranslateX(scrollPosition[0]);
-                    }
-                });
-
-                // Ajouter les boutons au VBox
-                recommendedProductsVBox.getChildren().addAll(previousButton, hboxProduits, nextButton);
+                hboxProduits.setSpacing(20); // Espacement horizontal entre les cartes
 
                 while (rsProduits.next()) {
-                    // Récupérer le nom, le prix et l'image de chaque produit
-                    String nomProduit = rsProduits.getString("Marque");
-                    double prixProduit = rsProduits.getDouble("Prix");
-                    String imagePath = rsProduits.getString("Image");
+                    // Récupérer les informations sur le produit
+                    String imageUrl = rsProduits.getString("image");
+                    String marque = rsProduits.getString("marque");
+                    String prix = rsProduits.getString("prix");
 
-                    // Créer un ImageView pour afficher l'image
-                    ImageView imageView = new ImageView(new Image(imagePath));
-                    imageView.setOnMouseClicked(event -> {
-                        // Récupérer les détails du produit à partir de la base de données ou de toute autre source
-                        Produit produit = fetchProductDetailsFromDatabase(imagePath, con.getCnx());
-
-                        // Afficher les détails du produit
-                        setChosenFruit(produit);
-                        chosenFruitCard.setVisible(true);
-                    });
-
-                    // Définir la taille maximale de l'image
-                    imageView.setFitWidth(180);
-                    imageView.setFitHeight(180);
-
-                    // Ajouter l'imageView à la HBox
-                    hboxProduits.getChildren().add(imageView);
+                    // Ajouter la carte à la HBox
+                    hboxProduits.getChildren().add(createProductCard(imageUrl, marque, prix));
                 }
+
+                // Créer un ScrollPane pour permettre le glissement horizontal
+                ScrollPane scrollPane = new ScrollPane(hboxProduits);
+                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Désactiver la barre de défilement horizontale
+
+                // Définir la couleur de fond du ScrollPane
+                scrollPane.setStyle("-fx-background-color: #56ab2f;");
+
+
+                // Ajouter les boutons de défilement
+                Button previousButton = new Button("<");
+                previousButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+                Button nextButton = new Button(">");
+                nextButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+
+                previousButton.setOnAction(event -> {
+                    hboxProduits.setTranslateX(hboxProduits.getTranslateX() + 100); // Décalage vers la gauche
+                });
+
+                nextButton.setOnAction(event -> {
+                    hboxProduits.setTranslateX(hboxProduits.getTranslateX() - 100); // Décalage vers la droite
+                });
+
+                // Ajouter les boutons à la VBox des produits recommandés
+                recommendedProductsVBox.getChildren().addAll(previousButton, scrollPane, nextButton);
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -222,6 +196,56 @@ public class recetteController {
             System.out.println("Aucun critère trouvé pour l'objectif de l'utilisateur.");
         }
     }
+
+
+    // Méthode pour créer une carte de produit avec image, marque, prix et boutons
+    private StackPane createProductCard(String imageUrl, String marque, String prix) {
+        // Créer une VBox pour contenir les informations du produit
+        VBox productInfo = new VBox(5); // Espacement vertical entre les éléments
+        productInfo.setAlignment(Pos.BOTTOM_CENTER); // Alignement central des éléments
+        // Appliquer le style CSS au texte de la marque et du prix
+        Label labelMarque = new Label("Marque: " + marque);
+        labelMarque.setStyle("-fx-text-fill: #56ab2f;");
+
+        Label labelPrix = new Label("Prix: " + prix);
+        labelPrix.setStyle("-fx-text-fill: #56ab2f;");
+
+// Ajouter les labels avec les styles à la VBox des informations du produit
+        productInfo.getChildren().addAll(labelMarque, labelPrix);
+        // Créer des boutons pour ajouter au panier et voir les détails
+        Button btnAjouterPanier = new Button("Ajouter au panier");
+        Button btnDetails = new Button("Détails");
+        btnAjouterPanier.setStyle("-fx-background-color: #56ab2f; -fx-background-radius: 30; -fx-text-fill: white;");
+        btnDetails.setStyle("-fx-background-color: #56ab2f; -fx-background-radius: 30; -fx-text-fill: white;");
+
+        // Ajouter des actions aux boutons
+        btnAjouterPanier.setOnAction(event -> {
+            // Action à effectuer lors du clic sur "Ajouter au panier"
+            // Par exemple, ajouter le produit au panier
+        });
+
+        btnDetails.setOnAction(event -> {
+            // Action à effectuer lors du clic sur "Détails"
+            // Par exemple, afficher une fenêtre modale avec les détails du produit
+        });
+
+        // Ajouter les boutons à la VBox des informations du produit
+        productInfo.getChildren().addAll(btnDetails,btnAjouterPanier);
+
+
+        StackPane cardPane = new StackPane();
+        ImageView imageView = new ImageView(new Image(imageUrl));
+        imageView.setFitWidth(150); // Taille de l'image
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(true);
+        StackPane.setAlignment(imageView, Pos.TOP_CENTER);
+        cardPane.getChildren().addAll(imageView, productInfo);
+        cardPane.setStyle("-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 22px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-border-color: #56ab2f;-fx-border-radius: 30;-fx-border-width: 2px;");
+        cardPane.setPrefWidth(220); // Fixer la largeur de la carte
+        cardPane.setPrefHeight(300);
+        return cardPane;
+    }
+
 
     @FXML
     void search(ActionEvent event) {
@@ -323,44 +347,4 @@ public class recetteController {
             return "Instructions not available";
         }
     }
-
-    private void setChosenFruit(Produit produit) {
-        if (produit != null && produit.getImage() != null) {
-            fruitNameLabel.setText(produit.getMarque());
-            fruitPriceLabel.setText(produit.getPrix() + Main.CURRENCY);
-            // Vérifier si l'URL de l'image n'est pas null avant de créer l'objet Image
-            if (produit.getImage() != null) {
-                javafx.scene.image.Image image = new Image(produit.getImage(), 200, 200, true, true);
-                fruitImg.setImage(image);
-                chosenFruitCard.setStyle("   -fx-background-radius: 30;");
-            } else {
-                System.out.println("L'URL de l'image est null.");
-            }
-        } else {
-            System.out.println("Le produit est null ou l'URL de l'image est null.");
-        }
-    }
-    private Produit fetchProductDetailsFromDatabase(String imageUrl, Connection connection) {
-        Produit produit = null;
-        try {
-            String sql = "SELECT * FROM produit WHERE image=?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, imageUrl);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String marque = resultSet.getString("marque");
-                float prix = resultSet.getFloat("prix");
-
-                produit = new Produit(marque, prix, imageUrl);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return produit;
-    }
-
-
-
-
-
 }
