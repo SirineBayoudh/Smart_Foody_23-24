@@ -10,6 +10,15 @@ public class Reclamation {
     private String statut;
     private String type;
     private Date date_reclamation;
+    private int archive;
+
+    public int getArchive() {
+        return archive;
+    }
+
+    public void setArchive(int archive) {
+        this.archive = archive;
+    }
 
     public int getId_reclamation() {
         return id_reclamation;
@@ -69,7 +78,16 @@ public class Reclamation {
 
     public Reclamation() {
     }
-
+    public Reclamation(int id_reclamation, int id_client, String description, String titre, String statut, String type, Date date_reclamation, int archive) {
+        this.id_reclamation = id_reclamation;
+        this.id_client = id_client;
+        this.description = description;
+        this.titre = titre;
+        this.statut = statut;
+        this.type = type;
+        this.date_reclamation = date_reclamation;
+        this.archive = archive;
+    }
     public Reclamation(int id_reclamation, int id_client, String description, String titre, String statut, String type, Date date_reclamation) {
         this.id_reclamation = id_reclamation;
         this.id_client = id_client;
