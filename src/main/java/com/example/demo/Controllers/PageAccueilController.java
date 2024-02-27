@@ -3,7 +3,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
 
 import com.example.demo.Main;
@@ -15,9 +15,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -44,7 +41,7 @@ public class PageAccueilController {
     private static final String ACCESS_KEY = "8SwFxNJG53NadG8LlDRnWphLiLd56udZIqAY6v9DE2Y";
     private static final String SEARCH_QUERY = "healthy%20food"; // Modifier cette requête pour rechercher des images de produits alimentaires
     private static final String API_URL = "https://api.unsplash.com/photos/random?query=" + SEARCH_QUERY + "&client_id=" + ACCESS_KEY;
-    private static final int NUM_IMAGES = 15; // Nombre d'images à afficher
+    private static final int NUM_IMAGES = 30; // Nombre d'images à afficher
     private static final int IMAGE_WIDTH = 750; // Largeur fixe des images
     private static final int IMAGE_HEIGHT = 350;
     @FXML
@@ -56,6 +53,8 @@ public class PageAccueilController {
     private int totalPageCount = 0;
     private final int itemsPerPage = 8;
     double totalWidth = 0.0;
+    @FXML
+    private ChoiceBox<String> categorieChoiceBox;
 
 
     @FXML
@@ -87,6 +86,13 @@ public class PageAccueilController {
 
     @FXML
     private ListView<String> suggestionsListView;
+    private ObservableList<String> categories = FXCollections.observableArrayList(
+            "Tous",
+            "sans_lactose",
+            "sans_gluten",
+            "sans_glucose",
+            "protein"
+    );
     @FXML
     void goToPreviousPage() {
         if (currentPageIndex > 0) {
@@ -365,6 +371,32 @@ public class PageAccueilController {
             System.err.println("La connexion à la base de données n'est pas établie.");
             return;
         }
+        categorieChoiceBox.setItems(categories);
+
+        // Ajouter un écouteur d'événement pour le choix de filtre
+        categorieChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // Appliquer le filtre sur les produits selon le critère sélectionné
+                switch (newValue) {
+                    case "sans_glucose":
+                        applyFilter("sans_glucose");
+                        break;
+                    case "sans_gluten":
+                        applyFilter("sans_gluten");
+                        break;
+                    case "sans_lactose":
+                        applyFilter("sans_lactose");
+                        break;
+                    case "protein":
+                        applyFilter("protein");
+                        break;
+                    default:
+                        // Si aucun filtre n'est sélectionné, afficher tous les produits
+                        displayProductsByPage(0);
+                        break;
+                }
+            }
+        });
 
         // Initialise la liste des suggestions avec une liste vide
         suggestionsListView.setItems(FXCollections.observableArrayList());
@@ -450,6 +482,21 @@ public class PageAccueilController {
             connection.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void applyFilter(String filter) {
+        try {
+            // Exécuter la requête SQL pour récupérer les produits contenant le critère spécifié
+            String sql = "SELECT marque, prix, image FROM produit WHERE critere LIKE ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, "%" + filter + "%"); // Utilise LIKE pour rechercher le critère dans les produits
+            ResultSet resultSet = statement.executeQuery();
+
+            // Afficher les produits filtrés
+            displayProducts(resultSet);
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de l'application du filtre : " + e.getMessage());
         }
     }
 
