@@ -1,0 +1,32 @@
+.root{
+    -fx-background-color: #aad597;
+}
+
+Label{
+    -fx-text-fill: #000000;
+}
+
+.button {
+    -fx-background-color: #56ab2f;
+    -fx-text-fill: white;
+}
+
+#btnAnnuler{
+    -fx-background-color: #6C6B6C;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #349714;
+    -fx-font-size: 16px;
+}
+
+
+#btnAnnuler{
+    -fx-font-size: 14px;
+}
+#btnAnnuler:hover{
+    -fx-font-size: 16px;
+    -fx-border-color: black;
+}
+
