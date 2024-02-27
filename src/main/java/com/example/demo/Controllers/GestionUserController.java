@@ -92,8 +92,6 @@ public class GestionUserController implements Initializable {
     @FXML
     private TextField tfrecherche;
 
-
-
     @FXML
     private ComboBox<String> choixRole;
 
@@ -111,6 +109,11 @@ public class GestionUserController implements Initializable {
 
     @FXML
     private Label totalConseillers;
+
+    @FXML
+    private Pagination pagination;
+
+    private static final int ITEMS_PER_PAGE= 10;
 
     static Connection cnx = MyConnection.instance.getCnx();
 
@@ -130,6 +133,20 @@ public class GestionUserController implements Initializable {
 
         collectGenderData();
         totalClient();
+
+        Pagination();
+    }
+
+    private void Pagination() {
+        int pageCount = (getUtilisateurs().size() + ITEMS_PER_PAGE - 1) / ITEMS_PER_PAGE;
+        pagination.setPageCount(pageCount);
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
+            int startIndex = newIndex.intValue() * ITEMS_PER_PAGE;
+            int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, getUtilisateurs().size());
+            ObservableList<Utilisateur> pageData = FXCollections.observableArrayList(
+                    getUtilisateurs().subList(startIndex, endIndex));
+            tableUser.setItems(pageData);
+        });
     }
 
     private void collectGenderData() {
@@ -290,6 +307,7 @@ public class GestionUserController implements Initializable {
         for (Utilisateur user : allUsers) {
             if (roleChoisi.equalsIgnoreCase("Tous") || user.getRole().equalsIgnoreCase(roleChoisi)) {
                 filteredUsers.add(user);
+                Pagination();
             }
         }
         tableUser.setItems(filteredUsers);

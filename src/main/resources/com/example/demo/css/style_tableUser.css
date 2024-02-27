@@ -4,7 +4,7 @@
 }
 
 .card:hover{
-    -fx-background-color: linear-gradient(to right, #56ab2f, #19330e.03);
+    -fx-background-color: linear-gradient(to right, #56ab2f, #19330e);
     -fx-background-radius: 5px;
 }
 
@@ -19,6 +19,14 @@
 
 .table-row-cell:hover {
     -fx-background-color: #56ab2f;
+}
+
+.default-color0.chart-pie {
+    -fx-pie-color : #56ab2f;
+}
+
+.default-color1.chart-pie {
+    -fx-pie-color : #33661c;
 }
 
 
