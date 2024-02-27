@@ -192,7 +192,6 @@ public class ModifierConseillerController implements Initializable {
         if(!tfattestation.getText().equals(attestationC)){
             if(existe){
                 modif();
-
             } else {
                 showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
             }

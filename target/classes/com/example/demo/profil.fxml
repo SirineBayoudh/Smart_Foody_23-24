@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -108,13 +109,25 @@
                            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Email" translateX="20.0" translateY="-85.0" />
                            <TextField fx:id="tfemailp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-100.0" />
                            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Objectif" translateX="300.0" translateY="-170.0" />
-                           <ComboBox fx:id="choixObjectifp" layoutX="10.0" layoutY="544.0" prefWidth="230.0" translateX="300.0" translateY="-183.0" />
+                           <ComboBox fx:id="choixObjectifp" layoutX="10.0" layoutY="544.0" prefWidth="230.0" stylesheets="@css/style_profil.css" translateX="300.0" translateY="-183.0">
+                              <styleClass>
+                                 <String fx:value="combo-box" />
+                                 <String fx:value="list-cell" />
+                              </styleClass></ComboBox>
                            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Genre" translateX="20.0" translateY="-185.0" />
-                           <ComboBox fx:id="choixGenrep" prefWidth="230.0" translateX="20.0" translateY="-200.0" />
+                           <ComboBox fx:id="choixGenrep" prefWidth="230.0" stylesheets="@css/style_profil.css" translateX="20.0" translateY="-200.0">
+                              <styleClass>
+                                 <String fx:value="combo-box" />
+                                 <String fx:value="list-cell" />
+                              </styleClass></ComboBox>
                            <TextField fx:id="tfnumtelp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-249.0" />
                            <Label layoutX="10.0" layoutY="343.0" style="-fx-font-weight: bold;" text="Numéro de téléphone" translateX="300.0" translateY="-317.0" />
                            <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Ville" translateX="20.0" translateY="-275.0" />
-                           <ComboBox fx:id="choixVillep" layoutX="10.0" layoutY="377.0" prefWidth="230.0" translateX="20.0" translateY="-290.0" />
+                           <ComboBox fx:id="choixVillep" layoutX="10.0" layoutY="377.0" prefWidth="230.0" stylesheets="@css/style_profil.css" translateX="20.0" translateY="-290.0">
+                              <styleClass>
+                                 <String fx:value="combo-box" />
+                                 <String fx:value="list-cell" />
+                              </styleClass></ComboBox>
                            <Label layoutX="10.0" layoutY="509.0" style="-fx-font-weight: bold;" text="Rue" translateX="300.0" translateY="-358.0" />
                            <TextField fx:id="tfruep" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
                            <Button fx:id="btn_modif" maxWidth="-Infinity" mnemonicParsing="false" onAction="#modifierProfil" prefWidth="100.0" text="Modifier" translateX="350.0" translateY="-370.0" />

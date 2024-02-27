@@ -255,8 +255,8 @@ public class AjouterConseillerController implements Initializable {
         if (existe == true) {
             Connection cnx = MyConnection.getInstance().getCnx();
 
-            Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),tfmatricule.getText(),tfattestation.getText(),"","",0);
-            String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            Utilisateur u = new Utilisateur(tfnomc.getText(),tfprenomc.getText(),genreChoisi,tfemailc.getText(),encryptor.encryptString(tfmdpc.getText()), Integer.parseInt(tfnumtelc.getText()), Role.Conseiller.toString(),tfmatricule.getText(),tfattestation.getText(),"","",0,0.0,0.0);
+            String requete = "INSERT INTO utilisateur(nom,prenom,genre,email,mot_de_passe,num_tel,role,matricule,attestation,adresse,objectif,tentative,taille,poids) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             try{
                 PreparedStatement pst = cnx.prepareStatement(requete);
                 pst.setString(1, u.getNom());
@@ -271,6 +271,8 @@ public class AjouterConseillerController implements Initializable {
                 pst.setString(10,u.getAdresse());
                 pst.setString(11, u.getObjectif());
                 pst.setInt(12,u.getTentative());
+                pst.setDouble(13,u.getTaille());
+                pst.setDouble(14, u.getPoids());
                 pst.executeUpdate();
 
                 gestionUserController.afficherUtilisateurs();

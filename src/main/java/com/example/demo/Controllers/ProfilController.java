@@ -318,6 +318,8 @@ public class ProfilController implements Initializable {
                 pst.setString(10, choixObjectifp.getValue());
                 pst.setInt(11, idUtilisateurConnecte);
                 pst.executeUpdate();
+
+                remplirChampsUtilisateur(idUtilisateurConnecte);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

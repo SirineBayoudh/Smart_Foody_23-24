@@ -27,6 +27,9 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -77,6 +80,8 @@ public class LoginController implements Initializable {
 
     public int nbTentatives= 0;
 
+    public Boolean bloque = false;
+
     Connection cnx = MyConnection.getInstance().getCnx();
     public void login(){
 
@@ -101,7 +106,6 @@ public class LoginController implements Initializable {
                 ResultSet rsRole = pstRole.executeQuery();
                 rsRole.next();
                 String role = rsRole.getString("role");
-                System.out.println(role);
                 if(role.equalsIgnoreCase("Admin")){
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/dashboard.fxml"));
                     try {
@@ -119,21 +123,33 @@ public class LoginController implements Initializable {
                         throw new RuntimeException(e);
                     }
                 }else{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
-                    try {
-                        Parent root = loader.load();
+                    if(!bloque){
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
+                        try {
+                            Parent root = loader.load();
 
-                        NavbarreController nv = loader.getController();
+                            NavbarreController nv = loader.getController();
 
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root));
-                        stage.show();
-                        //Pour fermer la fenêtre du login
-                        Stage loginStage = (Stage) temail.getScene().getWindow();
-                        loginStage.close();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root));
+                            stage.show();
+                            //Pour fermer la fenêtre du login
+                            Stage loginStage = (Stage) temail.getScene().getWindow();
+                            loginStage.close();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING,"Votre compte est bloqué",ButtonType.OK);
+                        alert.show();
+                        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                        scheduler.schedule(() -> {
+                            // Débloquer le compte après une minute
+                            bloque = false;
+                            System.out.println("Le compte est maintenant débloqué.");
+                        }, 1, TimeUnit.MINUTES);
                     }
+
                 }
             }else {
 
@@ -167,6 +183,7 @@ public class LoginController implements Initializable {
                         } catch (SQLException e) {
                             System.out.println(e.getMessage());
                         }
+                        bloque = true;
                     }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING,"Aucun compte n'est associé à cette adresse email",ButtonType.OK);

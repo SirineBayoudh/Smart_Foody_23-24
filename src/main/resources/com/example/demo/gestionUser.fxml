@@ -116,7 +116,7 @@
                   <Image url="@Images/rechercher.png" />
                </image>
             </ImageView>
-            <ComboBox fx:id="choixRole" layoutX="222.0" layoutY="2.0" prefWidth="150.0" promptText="Filtrer">
+            <ComboBox fx:id="choixRole" layoutX="222.0" layoutY="2.0" prefWidth="150.0" promptText="Filtrer" stylesheets="@css/style_tableUser.css">
                <effect>
                   <Lighting bumpInput="$null" diffuseConstant="1.64" specularConstant="0.5">
                      <light>
@@ -128,6 +128,10 @@
                      </light>
                   </Lighting>
                </effect>
+               <styleClass>
+                  <String fx:value="combo-box" />
+                  <String fx:value="list-cell" />
+               </styleClass>
             </ComboBox>
             <ImageView fitHeight="26.0" fitWidth="15.0" layoutX="380.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true" translateX="35.0">
                <image>

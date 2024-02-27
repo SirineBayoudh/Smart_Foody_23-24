@@ -33,6 +33,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.scene.control.Pagination;
 
 public class GestionUserController implements Initializable {
 
@@ -113,7 +114,7 @@ public class GestionUserController implements Initializable {
     @FXML
     private Pagination pagination;
 
-    private static final int ITEMS_PER_PAGE= 10;
+    private static final int ITEMS_PER_PAGE= 8;
 
     static Connection cnx = MyConnection.instance.getCnx();
 

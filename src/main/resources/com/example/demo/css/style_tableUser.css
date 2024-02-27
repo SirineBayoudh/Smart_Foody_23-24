@@ -67,5 +67,15 @@
 
 }
 
+.combo-box .list-cell {
+    -fx-text-fill: black; /* Couleur du texte */
+    -fx-background-color: white; /* Couleur de fond */
+}
+
+.combo-box .list-cell:hover {
+    -fx-text-fill: white; /* Couleur du texte sélectionné */
+    -fx-background-color: #56ab2f; /* Couleur de fond sélectionnée */
+}
+
 
 

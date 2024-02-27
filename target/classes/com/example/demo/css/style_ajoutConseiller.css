@@ -65,3 +65,17 @@
     -fx-padding: 10px 25px 10px 30px;
     -fx-text-fill: black;
 }
+
+.combo-box .list-cell {
+    -fx-text-fill: black;
+}
+
+.combo-box .list-cell:hover {
+    -fx-text-fill: white; /* Couleur du texte sélectionné */
+    -fx-background-color: #56ab2f; /* Couleur de fond sélectionnée */
+}
+
+.combo-box .list-cell:selected {
+    -fx-text-fill: black; /* Couleur du texte sélectionné */
+    -fx-background-color: transparent; /* Couleur de fond sélectionnée */
+}

@@ -192,7 +192,7 @@ public class RegisterController implements Initializable {
 
         IMC.setText(String.valueOf(0));
 
-        // Calculer l'IMC initial
+
         calculerIMC();
 
     }
@@ -202,7 +202,7 @@ public class RegisterController implements Initializable {
         double imc = poids / (taille * taille);
 
         // Mettre à jour le label IMC avec le résultat
-        IMC.setText(String.format("IMC : %.2f", imc));
+        IMC.setText(String.format(" %.2f", imc));
     }
 
     @FXML
