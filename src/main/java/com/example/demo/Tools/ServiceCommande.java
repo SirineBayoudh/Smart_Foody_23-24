@@ -38,7 +38,8 @@ public class ServiceCommande implements IServiceCommande<Commande> {
 
     @Override
     public void deleteOne(Commande t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
+
     }
 
 
@@ -104,7 +105,8 @@ public class ServiceCommande implements IServiceCommande<Commande> {
         while (rs.next()) {
             int idClient = rs.getInt("id_client");
             countMap.put(idClient, countMap.getOrDefault(idClient, 0) + 1);
-            totalCommandeMap.put(idClient, totalCommandeMap.getOrDefault(idClient, 0f) + rs.getFloat("totalecommande"));
+            totalCommandeMap.put(idClient, totalCommandeMap.getOrDefault(idClient, 0f) +
+                    rs.getFloat("totalecommande"));
         }
 
         List<Map.Entry<Integer, Integer>> sortedCountList = new ArrayList<>(countMap.entrySet());

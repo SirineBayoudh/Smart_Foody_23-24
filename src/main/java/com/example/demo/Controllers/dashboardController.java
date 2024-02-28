@@ -1,15 +1,19 @@
 package com.example.demo.Controllers;
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +31,7 @@ public class dashboardController implements Initializable {
     private Text tt;
 
     private boolean isClicked = false;
+
 
     @FXML
     private void userClicked() {
@@ -63,10 +68,23 @@ public class dashboardController implements Initializable {
     }
     @FXML
     private void dashboard() {
-        centerPane.setCenter(innerPane);
-        btn_home.getStyleClass().add("btn_home");
-
+//        centerPane.setCenter(innerPane);
+//        btn_home.getStyleClass().add("btn_home");
+        try {
+            Parent navbarreRoot = FXMLLoader.load(getClass().getResource("/com/example/demo/navbarre.fxml"));
+            Stage navbarreStage = new Stage();
+            navbarreStage.setScene(new Scene(navbarreRoot));
+            navbarreStage.setHeight(700);
+            navbarreStage.setWidth(1200);
+            navbarreStage.show();
+            Stage dashboardStage = (Stage) btn_home.getScene().getWindow();
+            dashboardStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
     @FXML
 
