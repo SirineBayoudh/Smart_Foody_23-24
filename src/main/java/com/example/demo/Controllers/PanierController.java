@@ -16,7 +16,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -83,8 +82,8 @@ public class PanierController {
                             rs.getInt("id_lc"), // Récupération de l'identifiant de la ligne de commande
                             rs.getInt("id_panier"), // Récupération de l'identifiant du panier
                             rs.getInt("quantite"), // Récupération de la quantité
-                            rs.getString("ref_produit") // Récupération de la référence du produit
-                    ));
+                            rs.getString("ref_produit"), // Récupération de la référence du produit
+                            rs.getInt("id_commande")));
                 }
             }
         } catch (SQLException e) { // Gestion des exceptions SQL
@@ -285,10 +284,9 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
 
     private void supprimerPanier() {
         String requete = "DELETE FROM panier";
-        String requete1 = "DELETE FROM ligne_commande";
         try (Statement statement = cnx.createStatement()) {
             int rowCount = statement.executeUpdate(requete);
-            statement.executeUpdate(requete1);
+            statement.executeUpdate(requete);
             if (rowCount > 0) {
                 System.out.println("Le panier a été vidé avec succès.");
                 afficherProduits();
@@ -441,6 +439,7 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
 
     @FXML
     private void chargerInterfaceCommande(ActionEvent event) {
+        ajouterCommande();
         try {
             Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/Commande_client.fxml"));
             Scene commandeScene = new Scene(commandeParent);
@@ -449,6 +448,34 @@ private void recalculate(double[]  sousTotale, double[] remise, double[] totale)
             window.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public void ajouterCommande() {
+        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
+            pst.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+            pst.setInt(2, 14);
+            pst.setFloat(3, (float) totale[0]);
+            pst.setFloat(4, (float) remise[0]);
+            pst.setString(5, "en cours"); // Fournir une valeur pour le champ 'etat'
+            pst.executeUpdate();
+
+            // Afficher une notification de commande réussie avec le style personnalisé
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Commande passée");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("La commande a été ajoutée avec succès.");
+
+            // Appliquer la classe CSS personnalisée à la boîte de dialogue
+            successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+            successAlert.getDialogPane().getStyleClass().add("custom-alert");
+
+            successAlert.showAndWait();
+
+            System.out.println("Commande ajoutée avec succès");
+           // viderPanier();
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
         }
     }
     public void viderPanier() {

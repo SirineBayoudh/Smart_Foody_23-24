@@ -16,6 +16,8 @@ module com.example.demo {
     requires com.google.zxing.javase;
     requires io;
     requires activation;
+    requires com.google.gson;
+    requires org.json;
 
     opens com.example.demo to javafx.fxml;
     exports com.example.demo;

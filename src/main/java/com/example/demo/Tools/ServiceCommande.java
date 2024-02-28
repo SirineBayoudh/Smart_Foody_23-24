@@ -14,10 +14,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- *
- * @author trabe
- */
+
 public class ServiceCommande implements IServiceCommande<Commande> {
 
     private Connection cnx;
@@ -83,7 +80,8 @@ public class ServiceCommande implements IServiceCommande<Commande> {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la récupération du nombre de commandes pour le client " + clientId + " : " + e.getMessage());
+            System.out.println("Erreur lors de la récupération du nombre de commandes pour le client " + clientId +
+                    " : " + e.getMessage());
             return -1; // or throw an exception
         }
 

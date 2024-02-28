@@ -2,6 +2,7 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.Commande;
 import com.example.demo.Tools.MyConnection;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -140,6 +141,8 @@ public class CommandeClientController {
             successAlert.setTitle("Commande passée");
             successAlert.setHeaderText(null);
             successAlert.setContentText("La commande a été ajoutée avec succès et un e-mail de confirmation a été envoyé.");
+            successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+            successAlert.getDialogPane().getStyleClass().add("custom-alert");
             successAlert.showAndWait();
 
             System.out.println("Commande ajoutée avec succès");
@@ -173,5 +176,6 @@ public class CommandeClientController {
 
 
     public void map(ActionEvent actionEvent) {
+
     }
 }

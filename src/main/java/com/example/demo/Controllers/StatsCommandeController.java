@@ -32,11 +32,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author omarb
- */
+
 public class StatsCommandeController implements Initializable {
     @FXML
     private Pane clickpane;
@@ -46,9 +42,7 @@ public class StatsCommandeController implements Initializable {
     private ServiceCommande quest;
     private CommandeHolder holder = CommandeHolder.getInstance();
 
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -66,7 +60,8 @@ public class StatsCommandeController implements Initializable {
         // create Data
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 quest.selectByLikes().stream()
-                        .map(d -> new PieChart.Data(quest.usernameById(d)+" : "+quest.nbrCommandeByClient(d) +" commandes" , quest.nbrCommandeByClient(d)))
+                        .map(d -> new PieChart.Data(quest.usernameById(d)+" : "
+                                +quest.nbrCommandeByClient(d) +" commandes" , quest.nbrCommandeByClient(d)))
                         .collect(Collectors.toList())
         );
 
@@ -108,27 +103,7 @@ public class StatsCommandeController implements Initializable {
 
     @FXML
     void afficherQuestion(MouseEvent event, int id) throws SQLException, IOException {
-/*
-        quest = new ServiceQuestion();
-        Question selectedQuestion = quest.selectById(id);
 
-        if (selectedQuestion != null) {
-            holder.setQuest(selectedQuestion);
-            Parent root = FXMLLoader.load(getClass().getResource("../../../../../../../../../../OneDrive/Bureau/Formatage/Projects/Java/WorkshopJDBC3A37/src/com/dynamics/pidev/gui/ModifierQuestion.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-            //loadUsers();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Pas de Question séléctionnée");
-            alert.setContentText("S'il vous plait de séléctionner une question");
-            alert.showAndWait();
-        }
-*/
 
     }
 

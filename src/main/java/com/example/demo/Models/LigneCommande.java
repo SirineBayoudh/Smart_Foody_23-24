@@ -7,7 +7,7 @@ public class LigneCommande {
     private int quantite;
     private String refProduit;
 
-    public LigneCommande(int idLc,int idPanier,  int quantite, String refProduit) {
+    public LigneCommande(int idLc, int idPanier, int quantite, String refProduit, int idCommande) {
         this.idLc = idLc;
         this.idPanier = idPanier;
         this.quantite = quantite;
