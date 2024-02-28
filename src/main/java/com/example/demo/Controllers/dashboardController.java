@@ -44,9 +44,7 @@ public class dashboardController implements Initializable {
             tt.setFill(Color.valueOf("#faf6f6"));
             isClicked = false;
         } else {
-            // Changer le fond lors du clic
             tt.setFill(Color.rgb(250, 246, 246, 0.5));
-            // Vous pouvez ajuster les valeurs RGBA selon vos besoins
             isClicked = true;
         }
     }
@@ -60,13 +58,12 @@ public class dashboardController implements Initializable {
 
     @FXML
     public void initialize() {
-        // Ajouter un gestionnaire d'événements générique pour réinitialiser l'état
+
         Parent root = tt.getParent();  // ou récupérez la référence au conteneur principal
         root.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            // Vérifier si l'événement provient d'un bouton
+
             if (event.getTarget() instanceof Button) {
-                // Réinitialiser l'état normal
-                resetState();
+                resetState();  // reset etat initial
             }
         });
     }
@@ -99,6 +96,7 @@ public class dashboardController implements Initializable {
         btnUser.setTextFill(Color.BLACK);
         loadPage("/com/example/demo/profilAdmin.fxml");
     }
+
     /*@FXML
     void logout(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));

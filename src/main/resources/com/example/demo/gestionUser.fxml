@@ -85,7 +85,7 @@
                   </Lighting>
                </effect>
             </TextField>
-             <Pagination fx:id="pagination" layoutX="-18.0" layoutY="268.0" prefHeight="44.0" prefWidth="338.0" stylesheets="@css/style_tableUser.css" />
+             <Pagination fx:id="pagination" currentPageIndex="1" layoutX="-18.0" layoutY="268.0" prefHeight="44.0" prefWidth="338.0" stylesheets="@css/style_tableUser.css" />
             <TableView fx:id="tableUser" layoutY="-13.0" onMouseClicked="#getData" prefHeight="230.0" prefWidth="900.0" stylesheets="@css/style_tableUser.css" translateY="50.0">
               <columns>
                 <TableColumn fx:id="col_id" prefWidth="63.19998246431351" text="ID" />

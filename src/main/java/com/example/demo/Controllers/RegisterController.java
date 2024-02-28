@@ -212,8 +212,9 @@ public class RegisterController implements Initializable {
     @FXML
     private Label longueurConfirm;
 
+    Connection cnx = MyConnection.getInstance().getCnx();
+
     private void chargerOptionsObjectif() {
-        Connection cnx = MyConnection.getInstance().getCnx();
 
         String req = "SELECT libelle FROM objectif";
 
@@ -257,7 +258,6 @@ public class RegisterController implements Initializable {
         SpinnerValueFactory<Double> poidsValueFactory = new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 500.0, 70.0);
 
 
-        // Définir les SpinnerValueFactory pour les Spinners
         spinnerTaille.setValueFactory(tailleValueFactory);
         spinnerPoids.setValueFactory(poidsValueFactory);
 
@@ -265,7 +265,6 @@ public class RegisterController implements Initializable {
         spinnerPoids.valueProperty().addListener((observable, oldValue, newValue) -> calculerIMC());
 
         IMC.setText(String.valueOf(0));
-
 
         calculerIMC();
 
@@ -275,7 +274,6 @@ public class RegisterController implements Initializable {
         double poids = spinnerPoids.getValue();
         double imc = poids / (taille * taille);
 
-        // Mettre à jour le label IMC avec le résultat
         IMC.setText(String.format(" %.2f", imc));
     }
 
@@ -483,18 +481,15 @@ public class RegisterController implements Initializable {
 
     @FXML
     void verifierCaptcha(MouseEvent event) {
-        // Générer un mot aléatoire composé de chiffres et de lettres
+
         generatedWord = generateRandomWord();
 
-        // Créer une image avec le mot généré
         ImageView captchaImage = createCaptchaImage(generatedWord);
 
-        // Champ de texte pour que l'utilisateur entre le mot du captcha
         TextField captchaInput = new TextField();
         captchaInput.setPromptText("Entrez le mot suivant");
         captchaInput.setEditable(true);
 
-        // Bouton pour vérifier le captcha
         Button verifyButton = new Button("Vérifier");
         verifyButton.setOnAction(e -> {
             String userInput = captchaInput.getText();
@@ -529,7 +524,6 @@ public class RegisterController implements Initializable {
     @FXML
     void addUser(ActionEvent event)  {
 
-        //Contrôle sur les champs vides
         if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || genreChoisi == null || tftel.getText().isEmpty()  || villeChoisie == null || tfrue.getText().isEmpty() || objectifChoisi == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
@@ -539,7 +533,6 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        // Vérifiez si l'e-mail est au format requis ****@*****
         String emailPattern = "^.+@.+$";
         if (!temail.getText().matches(emailPattern)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -550,7 +543,6 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        //contrôle sur l'@ email existe déjà
         if (UserCrud.emailExists(temail.getText())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Adresse e-mail déjà utilisée");
@@ -560,7 +552,6 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        //contrôle sur le mot de passe = confirm mot de passe
         if (!tpwd.getText().equals(tpwdconfirm.getText())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Erreur de mot de passe");
@@ -570,7 +561,6 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        //verifier que la longuer du num = 8 et que le champ comporte que des chiffres
         try {
             int tel = Integer.parseInt(tftel.getText());
             if (tftel.getText().length() != 8) {
@@ -629,7 +619,7 @@ public class RegisterController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
-            //Pour fermer la fenêtre du login
+
             Stage loginStage = (Stage) temail.getScene().getWindow();
             loginStage.close();
         } catch (IOException e) {
@@ -653,7 +643,6 @@ public class RegisterController implements Initializable {
         return imageView;
     }
 
-    // Méthode pour afficher une alerte
     private void showAlert(String message) {
         Stage alertStage = new Stage();
         VBox alertLayout = new VBox(10);
@@ -671,7 +660,7 @@ public class RegisterController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
-            //Pour fermer la fenêtre du login
+
             Stage loginStage = (Stage) temail.getScene().getWindow();
             loginStage.close();
         } catch (IOException e) {

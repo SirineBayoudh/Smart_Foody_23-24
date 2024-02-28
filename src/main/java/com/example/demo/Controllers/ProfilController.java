@@ -343,7 +343,6 @@ public class ProfilController implements Initializable {
         rsMDP.next();
         String mdp = rsMDP.getString("mot_de_passe");
 
-        // Comparer l'ancien mot de passe saisi avec le mot de passe actuel de l'utilisateur
         if (!encryptor.encryptString(ancienMDP.getText()).equals(mdp)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Mot de passe incorrect");
@@ -418,14 +417,13 @@ public class ProfilController implements Initializable {
 
         MyConnection.getInstance().setUserId(0);
 
-        // Redirection vers l'écran de connexion ou autre écran d'accueil
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
         try {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
-            // Fermeture des autres fenêtres ouvertes, si nécessaire
+
             Stage currentStage = (Stage) logoutIcon.getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {

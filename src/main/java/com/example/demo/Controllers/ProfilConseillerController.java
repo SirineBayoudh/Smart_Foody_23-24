@@ -224,19 +224,17 @@ public class ProfilConseillerController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un fichier d'attestation");
 
-        // filtre pour les types de fichiers
+
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        // Afficher la boîte de dialogue de sélection de fichier
+
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
             tfattestation.setText(selectedFile.getAbsolutePath());
 
-            // Effectuer OCR sur le fichier d'attestation
             String contenuFichier = effectuerOCR(selectedFile);
 
-            // Vérifier si le fichier d'attestation contient les mots "Conseiller" ou "Nutritionniste"
             if (contenuFichier.contains("Conseiller") || contenuFichier.contains("Nutritionniste")) {
                 existe = true;
             } else {
@@ -344,7 +342,6 @@ public class ProfilConseillerController implements Initializable {
     }
 
     public void modif(){
-        Connection cnx = MyConnection.getInstance().getCnx();
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de modification");
@@ -397,7 +394,6 @@ public class ProfilConseillerController implements Initializable {
         rsMDP.next();
         String mdp = rsMDP.getString("mot_de_passe");
 
-        // Comparer l'ancien mot de passe saisi avec le mot de passe actuel de l'utilisateur
         if (!encryptor.encryptString(ancienMDP.getText()).equals(mdp)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Mot de passe incorrect");
@@ -473,14 +469,13 @@ public class ProfilConseillerController implements Initializable {
 
         MyConnection.getInstance().setUserId(0);
 
-        // Redirection vers l'écran de connexion ou autre écran d'accueil
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
         try {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
-            // Fermeture des autres fenêtres ouvertes, si nécessaire
+
             Stage currentStage = (Stage) logoutIcon.getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {

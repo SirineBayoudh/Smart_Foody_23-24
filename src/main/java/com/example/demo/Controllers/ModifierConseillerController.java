@@ -67,9 +67,9 @@ public class ModifierConseillerController implements Initializable {
 
     public String attestationC;
 
-    Encryptor encryptor = new Encryptor();
-
     private GestionUserController gestionUserController;
+
+    Connection  cnx = MyConnection.getInstance().getCnx();
 
     public void setGestionUserController(GestionUserController gestionUserController) {
         this.gestionUserController = gestionUserController;
@@ -102,10 +102,9 @@ public class ModifierConseillerController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir un fichier d'attestation");
 
-        // filtre pour les types de fichiers
+
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
-
 
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
@@ -201,8 +200,6 @@ public class ModifierConseillerController implements Initializable {
 
     }
 
-    Connection  cnx = MyConnection.getInstance().getCnx();
-
     public void modif(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de modification");
@@ -261,9 +258,9 @@ public class ModifierConseillerController implements Initializable {
         tfattestation.clear();
     }
     public void remplirChamps(Utilisateur user) {
-        // Assurez-vous que l'utilisateur n'est pas null
+
         if (user != null) {
-            // Remplir les champs avec les données de l'utilisateur
+
             tfnomc.setText(user.getNom());
             tfprenomc.setText(user.getPrenom());
             tfemailc.setText(user.getEmail());

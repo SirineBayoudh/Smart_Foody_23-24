@@ -130,7 +130,7 @@ public class AjouterConseillerController implements Initializable {
         emailComboBox.setLayoutX(tfemailc.getLayoutX() + tfemailc.getWidth() + 100);
         emailComboBox.setLayoutY(tfemailc.getLayoutY() + tfemailc.getHeight() + 50);
 
-        // Créez un menu contextuel pour afficher les suggestions
+
         ContextMenu emailSuggestionsMenu = new ContextMenu();
         emailSuggestions.forEach(suggestion -> {
             MenuItem item = new MenuItem(suggestion);
@@ -142,10 +142,10 @@ public class AjouterConseillerController implements Initializable {
             emailSuggestionsMenu.getItems().add(item);
         });
 
-        // Associez le menu contextuel au champ de texte tfemailc
+
         tfemailc.setContextMenu(emailSuggestionsMenu);
 
-        // Gérez l'affichage du menu contextuel lors de la saisie
+
         tfemailc.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.contains("@")) {
                 emailSuggestionsMenu.show(tfemailc, tfemailc.getLayoutX() + tfemailc.getWidth(), tfemailc.getLayoutY());
@@ -168,20 +168,17 @@ public class AjouterConseillerController implements Initializable {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        // Afficher la boîte de dialogue de sélection de fichier
-        File selectedFile = fileChooser.showOpenDialog(null);
+        File selectedFile = fileChooser.showOpenDialog(null); //ouvre boite de selection fichier
         if (selectedFile != null) {
             tfattestation.setText(selectedFile.getAbsolutePath());
 
-            // Effectuer OCR sur le fichier d'attestation
             String contenuFichier = effectuerOCR(selectedFile);
 
-            // Vérifier si le fichier d'attestation contient les mots "Conseiller" ou "Nutritionniste"
             if (contenuFichier.contains("Conseiller") || contenuFichier.contains("Nutritionniste")) {
                 existe = true;
             } else {
                 existe = false;
-                }
+            }
         }
     }
     private String effectuerOCR(File file) {
@@ -252,6 +249,7 @@ public class AjouterConseillerController implements Initializable {
             alert.showAndWait();
             return;
         }
+
         if (existe == true) {
             Connection cnx = MyConnection.getInstance().getCnx();
 

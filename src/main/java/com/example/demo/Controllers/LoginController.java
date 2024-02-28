@@ -7,6 +7,7 @@ import com.example.demo.Tools.MyConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -23,10 +26,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -56,31 +56,17 @@ public class LoginController implements Initializable {
 
     private int userId;
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public void setTemail(String temail) {
-        this.temail.setText(temail);
-    }
-
-    public void setTpwd(String tpwd) {
-        this.tpwd.setText(tpwd);
-    }
-
-    public void setTpwdshow(String tpwdshow) {
-        this.tpwdshow.setText(tpwdshow);
-    }
-
     Encryptor encryptor = new Encryptor();
 
     public int nbTentatives= 0;
 
     public Boolean bloque = false;
+
+    public String prenom;
+
+    public String codeEnvoye;
+
+    ComplexiteMdp complx = new ComplexiteMdp();
 
     Connection cnx = MyConnection.getInstance().getCnx();
     public void login(){
@@ -106,6 +92,7 @@ public class LoginController implements Initializable {
                 ResultSet rsRole = pstRole.executeQuery();
                 rsRole.next();
                 String role = rsRole.getString("role");
+
                 if(role.equalsIgnoreCase("Admin")){
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/dashboard.fxml"));
                     try {
@@ -116,7 +103,7 @@ public class LoginController implements Initializable {
                         Stage stage = new Stage();
                         stage.setScene(new Scene(root));
                         stage.show();
-                        //Pour fermer la fenêtre du login
+
                         Stage loginStage = (Stage) temail.getScene().getWindow();
                         loginStage.close();
                     } catch (IOException e) {
@@ -158,6 +145,7 @@ public class LoginController implements Initializable {
                 pstEmail.setString(1, temail.getText());
                 ResultSet rsCheckEmail = pstEmail.executeQuery();
                 rsCheckEmail.next();
+
                 int count = rsCheckEmail.getInt(1);
                 if (count > 0) {
                     String reqUserId = "SELECT id_utilisateur FROM utilisateur WHERE email = ?";
@@ -174,7 +162,7 @@ public class LoginController implements Initializable {
                     Alert alert = new Alert(Alert.AlertType.WARNING,"Mot de passe erroné",ButtonType.OK);
                     alert.show();
                     if(nbTentatives == 3 ){
-                        String requete = "UPDATE utilisateur SET tentative=? WHERE id_utilisateur=?";
+                        /*String requete = "UPDATE utilisateur SET tentative=? WHERE id_utilisateur=?";
                         try{
                             PreparedStatement pstTentative = cnx.prepareStatement(requete);
                             pstTentative.setInt(1, nbTentatives);
@@ -182,7 +170,7 @@ public class LoginController implements Initializable {
                             pstTentative.executeUpdate();
                         } catch (SQLException e) {
                             System.out.println(e.getMessage());
-                        }
+                        }*/
                         bloque = true;
                     }
                 } else {
@@ -240,17 +228,13 @@ public class LoginController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
-            //Pour fermer la fenêtre du login
+
             Stage loginStage = (Stage) temail.getScene().getWindow();
             loginStage.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-    public String prenom;
-
-    ComplexiteMdp complx = new ComplexiteMdp();
 
     @FXML
     void forgotPassword(MouseEvent event) throws SQLException {
@@ -260,6 +244,10 @@ public class LoginController implements Initializable {
         emailDialog.setTitle("Mot de passe oublié");
         emailDialog.setHeaderText("Veuillez entrer votre adresse e-mail pour réinitialiser votre mot de passe :");
         emailDialog.setContentText("Adresse e-mail :");
+
+        emailDialog.getDialogPane().getStylesheets().add(
+                getClass().getResource("/com/example/demo/css/style_email.css").toExternalForm()
+        );
 
         Optional<String> emailResult = emailDialog.showAndWait();
         if (emailResult.isPresent()) {
@@ -271,17 +259,17 @@ public class LoginController implements Initializable {
             ResultSet rsSend = psetSend.executeQuery();
             if (rsSend.next()) {
                 prenom = rsSend.getString("prenom");
-            } else {
-                System.out.println("Aucun utilisateur trouvé avec cet e-mail");
-            }
-            sendResetPasswordEmail(email, subject,prenom);
+
+                sendResetPasswordEmail(email, subject,prenom);
 
                 TextInputDialog codeAndPasswordDialog = new TextInputDialog();
                 codeAndPasswordDialog.setTitle("Réinitialiser le mot de passe");
                 codeAndPasswordDialog.setHeaderText("Veuillez entrer le code reçu par e-mail et votre nouveau mot de passe :");
                 codeAndPasswordDialog.setContentText("Code reçu par e-mail :");
 
-                // Créer un champ de mot de passe pour le nouveau mot de passe
+                codeAndPasswordDialog.getDialogPane().getStylesheets().add(
+                        getClass().getResource("/com/example/demo/css/style_email.css").toExternalForm()
+                );
 
                 TextField codeField = new TextField();
                 codeField.setPromptText("code");
@@ -289,7 +277,7 @@ public class LoginController implements Initializable {
                 PasswordField newPasswordField = new PasswordField();
                 newPasswordField.setPromptText("Nouveau mot de passe");
 
-                // Ajouter le champ de mot de passe à la boîte de dialogue
+
                 VBox content = new VBox();
                 content.getChildren().addAll(codeField);
                 content.getChildren().addAll(newPasswordField);
@@ -353,11 +341,14 @@ public class LoginController implements Initializable {
                     }
 
                 }
-
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText(null);
+                alert.setContentText("Aucun utilisateur trouvé avec cette adresse e-mail");
+                alert.showAndWait();
+            }
         }
     }
-
-    public String codeEnvoye;
     private void sendResetPasswordEmail(String to, String subject,String prenom) {
 
         codeEnvoye = generateRandomCode();
@@ -380,12 +371,12 @@ public class LoginController implements Initializable {
         });
 
         try {
-            // Create a MimeMessage object
+
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(email));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject(subject);
-            // Construct email body with HTML formatting
+
             String body = "<html>"
                     + "<body>"
                     + "<p style='color: #000;font-size:18px;padding-left: 20px;font-weight:bold'>Bonjour, " + prenom + "</p>"
@@ -414,19 +405,19 @@ public class LoginController implements Initializable {
     }
 
     private String generateRandomCode() {
-        // Définir la longueur du code
+
         int length = 6;
-        // Définir les caractères possibles pour le code
+
         String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        // Créer un objet Random
+
         Random random = new Random();
-        // Créer une chaîne pour stocker le code généré
+
         StringBuilder code = new StringBuilder();
-        // Générer le code en sélectionnant aléatoirement des caractères de la chaîne de caractères
+
         for (int i = 0; i < length; i++) {
             code.append(characters.charAt(random.nextInt(characters.length())));
         }
-        // Retourner le code généré
+
         return code.toString();
     }
 

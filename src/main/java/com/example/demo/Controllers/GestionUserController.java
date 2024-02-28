@@ -118,6 +118,18 @@ public class GestionUserController implements Initializable {
 
     static Connection cnx = MyConnection.instance.getCnx();
 
+    private static int id;
+
+    public String matriculeC;
+
+    public static int getId() {
+        return id;
+    }
+
+    public static void setId(int id) {
+        GestionUserController.id = id;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         afficherUtilisateurs();
@@ -148,6 +160,7 @@ public class GestionUserController implements Initializable {
                     getUtilisateurs().subList(startIndex, endIndex));
             tableUser.setItems(pageData);
         });
+        pagination.setCurrentPageIndex(0);
     }
 
     private void collectGenderData() {
@@ -171,6 +184,24 @@ public class GestionUserController implements Initializable {
 
         genderPieChart.setData(pieChartData);
 
+
+        PieChart.Data hommeData = pieChartData.get(0);
+        PieChart.Data femmeData = pieChartData.get(1);
+
+        Node hommeNode = hommeData.getNode();
+        Node femmeNode = femmeData.getNode();
+
+        RotateTransition rotateTransitionHomme = new RotateTransition(Duration.seconds(1), hommeNode);
+        rotateTransitionHomme.setByAngle(360);
+        rotateTransitionHomme.setCycleCount(1);
+
+        RotateTransition rotateTransitionFemme = new RotateTransition(Duration.seconds(1), femmeNode);
+        rotateTransitionFemme.setByAngle(360);
+        rotateTransitionFemme.setCycleCount(1);
+
+        rotateTransitionHomme.play();
+        rotateTransitionFemme.play();
+
         for (final PieChart.Data data : pieChartData) {
             Node node = data.getNode();
             Tooltip tooltip = new Tooltip(String.format("%.1f%%", (data.getPieValue() / (maleCount + femaleCount)) * 100));
@@ -188,16 +219,6 @@ public class GestionUserController implements Initializable {
                 pause.stop();
             });
         }
-
-        /*for (final PieChart.Data data : genderPieChart.getData()) {
-            if (data.getName().equalsIgnoreCase("Homme")) {
-                data.getNode().setStyle("-fx-pie-color: #56ab2f;");
-            } else if (data.getName().equalsIgnoreCase("Femme")) {
-                data.getNode().setStyle("-fx-pie-color: #33661c;");
-            }
-        }*/
-
-
     }
 
 
@@ -222,7 +243,6 @@ public class GestionUserController implements Initializable {
     public ObservableList<Utilisateur> getUtilisateurs(){
         ObservableList<Utilisateur> utilisateurs = FXCollections.observableArrayList();
         String req="select * from utilisateur";
-        Connection cnx = MyConnection.instance.getCnx();
         try {
             PreparedStatement pst = cnx.prepareStatement(req);
             ResultSet rs = pst.executeQuery();
@@ -277,7 +297,7 @@ public class GestionUserController implements Initializable {
     private void rechercher(String searchText) {
         ObservableList<Utilisateur> listUsers = getUtilisateurs();
         if (allUsers.isEmpty()) {
-            allUsers.addAll(listUsers); // Remplir la liste de tous les utilisateurs s'il est vide
+            allUsers.addAll(listUsers); // remplir tous les users if vide
         }
 
         ObservableList<Utilisateur> ListFiltre = FXCollections.observableArrayList();
@@ -308,7 +328,6 @@ public class GestionUserController implements Initializable {
         for (Utilisateur user : allUsers) {
             if (roleChoisi.equalsIgnoreCase("Tous") || user.getRole().equalsIgnoreCase(roleChoisi)) {
                 filteredUsers.add(user);
-                Pagination();
             }
         }
         tableUser.setItems(filteredUsers);
@@ -331,16 +350,6 @@ public class GestionUserController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static int id;
-
-    public static int getId() {
-        return id;
-    }
-
-    public static void setId(int id) {
-        GestionUserController.id = id;
     }
 
     @FXML
@@ -394,7 +403,6 @@ public class GestionUserController implements Initializable {
         }
     }
 
-    public String matriculeC;
     @FXML
     void supprimerConseiller(ActionEvent event) throws SQLException {
         Utilisateur selectedUser = (Utilisateur) tableUser.getSelectionModel().getSelectedItem();

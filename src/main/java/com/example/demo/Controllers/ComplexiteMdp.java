@@ -16,26 +16,26 @@ public class ComplexiteMdp {
     }
 
     public void Calcul(String password) {
-        // Vérifier si la longueur du mot de passe est > 8
+        //longueur  > 8
         if (password.length() >= 8) {
             this.nb += 2;
         }
 
-        // Vérifier si le mot de passe contient au moins une lettre majuscule
+        // 1 lettre majus
         Pattern upperCasePattern = Pattern.compile("[A-Z]");
         Matcher upperCaseMatcher = upperCasePattern.matcher(password);
         if (upperCaseMatcher.find()) {
             this.nb += 3;
         }
 
-        // Vérifier si le mot de passe contient au moins une lettre miniscule
+        // 1 lettre min
         Pattern lowerCasePattern = Pattern.compile("[a-z]");
         Matcher lowerCaseMatcher = lowerCasePattern.matcher(password);
         if (lowerCaseMatcher.find()) {
             this.nb += 3;
         }
 
-        // Vérifier si le mot de passe contient au moins un caractère spécial
+        // 1 caractère spécial
         Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
         Matcher specialCharMatcher = specialCharPattern.matcher(password);
         if (specialCharMatcher.find()) {

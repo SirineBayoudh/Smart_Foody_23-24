@@ -1,0 +1,31 @@
+
+/* Background de la partie supérieure de la boîte */
+.dialog-pane .header-panel {
+    -fx-background-color: #cce5c0; /* Couleur de fond */
+}
+
+.dialog-pane {
+    -fx-background-color: #cce5c0;
+}
+
+
+.dialog-pane .content {
+    -fx-padding: 10px;
+}
+
+.dialog-pane .content .text-input {
+    -fx-font-size: 14px;
+}
+
+.dialog-pane .content Textfield {
+    -fx-font-size: 14px;
+}
+
+.dialog-pane .button-bar .button {
+    -fx-background-color: #56AB2F;
+    -fx-text-fill: white;
+}
+
+.dialog-pane .button-bar .button:hover {
+    -fx-background-color: #33661c;
+}

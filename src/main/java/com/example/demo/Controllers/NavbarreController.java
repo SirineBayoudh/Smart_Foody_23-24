@@ -36,11 +36,10 @@ public class NavbarreController implements Initializable {
         String req = "SELECT role FROM utilisateur WHERE id_utilisateur = ?";
         PreparedStatement pst = cnx.prepareStatement(req);
         pst.setString(1, String.valueOf(idUtilisateurConnecte));
-        System.out.println(idUtilisateurConnecte);
+
         ResultSet rs = pst.executeQuery();
         rs.next();
         String role = rs.getString("role");
-        System.out.println(role);
 
         if(role.equals("Client")){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/profil.fxml"));
@@ -49,7 +48,7 @@ public class NavbarreController implements Initializable {
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
                 stage.show();
-                //Pour fermer la fenêtre du login
+
                 Stage loginStage = (Stage) logoUser.getScene().getWindow();
                 loginStage.close();
             } catch (IOException e) {
