@@ -33,7 +33,7 @@ public class dashboardController implements Initializable {
     private Button btnUser;
 
     @FXML
-    private Button btnLogout;
+    private Button btnProfil;
 
     private boolean isClicked = false;
 
@@ -94,6 +94,12 @@ public class dashboardController implements Initializable {
     }
 
     @FXML
+    void profil(ActionEvent event) {
+        clear();
+        btnUser.setTextFill(Color.BLACK);
+        loadPage("/com/example/demo/profilAdmin.fxml");
+    }
+    /*@FXML
     void logout(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
         try {
@@ -107,7 +113,8 @@ public class dashboardController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
+
     private void loadPage(String page) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(page));

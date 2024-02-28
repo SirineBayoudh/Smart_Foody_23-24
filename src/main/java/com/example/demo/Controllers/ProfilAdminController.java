@@ -1,7 +1,6 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Models.Role;
-import com.example.demo.Models.Utilisateur;
 import com.example.demo.Tools.MyConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,16 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
-import net.sourceforge.tess4j.ITesseract;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -32,35 +26,16 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ProfilConseillerController implements Initializable {
+public class ProfilAdminController implements Initializable {
+
+    @FXML
+    private PasswordField ancienMDP;
+
+    @FXML
+    private TextField ancienMDPshow;
 
     @FXML
     private BorderPane centerPane;
-
-    @FXML
-    private AnchorPane infosForm;
-
-    @FXML
-    private AnchorPane pwdForm;
-
-    @FXML
-    private Label infos;
-
-    @FXML
-    private Label infosmdp;
-
-    @FXML
-    private Label prenomUser;
-
-    @FXML
-    private TextField tfnomp;
-
-    @FXML
-    private TextField tfprenomp;
-
-    @FXML
-    private TextField tfemailp;
-
 
     @FXML
     private ComboBox<String> choixGenrep;
@@ -70,30 +45,25 @@ public class ProfilConseillerController implements Initializable {
     private String genreChoisi;
 
     @FXML
-    private TextField tfnumtelp;
-
-
-    @FXML
-    private Button btn_modif;
-
-    @FXML
-    private ImageView logoutIcon;
-
-    private int idUtilisateurConnecte;
-
-    @FXML
-    private PasswordField ancienMDP;
-
-    @FXML
-    private TextField ancienMDPshow;
-
-    String ancienPwd;
-
-    @FXML
     private ImageView eyeClosedA;
 
     @FXML
+    private ImageView eyeClosedN;
+
+    @FXML
     private ImageView eyeOpenA;
+
+    @FXML
+    private ImageView eyeOpenN;
+
+    @FXML
+    private AnchorPane infosForm;
+
+    @FXML
+    private Button modifInfos;
+
+    @FXML
+    private Button modifierMDP;
 
     @FXML
     private PasswordField nouveauMDP;
@@ -101,39 +71,40 @@ public class ProfilConseillerController implements Initializable {
     @FXML
     private TextField nouveauMDPshow;
 
-    String nouveauPwd;
+    @FXML
+    private TextField tfemailp;
 
     @FXML
-    private ImageView eyeClosedN;
+    private TextField tfnomp;
 
     @FXML
-    private ImageView eyeOpenN;
+    private TextField tfnumtelp;
 
     @FXML
-    private Button modifierMDP;
+    private TextField tfprenomp;
 
-    @FXML
-    private TextField tfmatricule;
+    String ancienPwd,nouveauPwd;
 
-    @FXML
-    private TextField tfattestation;
+    public int idUtilisateurConnecte;
 
-    public String attestationC;
+    Connection cnx = MyConnection.getInstance().getCnx();
 
-    public Boolean existe = false;
     Encryptor encryptor = new Encryptor();
     ComplexiteMdp complx = new ComplexiteMdp();
-    Connection cnx = MyConnection.getInstance().getCnx();
-    @FXML
-    void infosUser(MouseEvent event) {
-        infosForm.setVisible(true);
-        pwdForm.setVisible(false);
-    }
 
-    @FXML
-    void mdpUser(MouseEvent event) {
-        pwdForm.setVisible(true);
-        infosForm.setVisible(false);
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        choixGenrep.getItems().addAll(genre);
+        choixGenrep.setOnAction(e -> genreChoisi = choixGenrep.getValue());
+
+        idUtilisateurConnecte = MyConnection.getInstance().getUserId();
+        remplirChampsUtilisateur(idUtilisateurConnecte);
+
+        ancienMDPshow.setVisible(false);
+        eyeOpenA.setVisible(false);
+
+        nouveauMDPshow.setVisible(false);
+        eyeOpenN.setVisible(false);
     }
 
     @FXML
@@ -192,102 +163,27 @@ public class ProfilConseillerController implements Initializable {
         eyeOpenN.setVisible(false);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        choixGenrep.getItems().addAll(genre);
-        choixGenrep.setOnAction(e -> genreChoisi = choixGenrep.getValue());
-
-        idUtilisateurConnecte = MyConnection.getInstance().getUserId();
-        remplirChampsUtilisateur(idUtilisateurConnecte);
-
-        tfprenomp.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                tfmatricule.setText("CNS-" + newValue);
-            } else {
-                tfmatricule.clear();
-            }
-        });
-
-        infosForm.setVisible(true);
-        pwdForm.setVisible(false);
-
-        ancienMDPshow.setVisible(false);
-        eyeOpenA.setVisible(false);
-
-        nouveauMDPshow.setVisible(false);
-        eyeOpenN.setVisible(false);
-    }
-
-    @FXML
-    void choisirAttestationOnClick(MouseEvent event) {
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choisir un fichier d'attestation");
-
-        // filtre pour les types de fichiers
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        // Afficher la boîte de dialogue de sélection de fichier
-        File selectedFile = fileChooser.showOpenDialog(null);
-        if (selectedFile != null) {
-            tfattestation.setText(selectedFile.getAbsolutePath());
-
-            // Effectuer OCR sur le fichier d'attestation
-            String contenuFichier = effectuerOCR(selectedFile);
-
-            // Vérifier si le fichier d'attestation contient les mots "Conseiller" ou "Nutritionniste"
-            if (contenuFichier.contains("Conseiller") || contenuFichier.contains("Nutritionniste")) {
-                existe = true;
-            } else {
-                existe = false;
-            }
-        }
-    }
-    private String effectuerOCR(File file) {
-        ITesseract instance = new Tesseract();
-        instance.setDatapath("D:\\ESPRIT\\Semestre 2\\PI\\API\\Tess4J\\tessdata");
-        try {
-            return instance.doOCR(file);
-        } catch (TesseractException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
     public void remplirChampsUtilisateur(int idUtilisateur) {
-        Connection cnx = MyConnection.getInstance().getCnx();
         String req = "SELECT * FROM utilisateur WHERE id_utilisateur=?";
         try {
             PreparedStatement pst = cnx.prepareStatement(req);
             pst.setInt(1, idUtilisateur);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
-                prenomUser.setText(rs.getString(3));
                 tfnomp.setText(rs.getString(2));
                 tfprenomp.setText(rs.getString(3));
                 choixGenrep.setValue(rs.getString(4));
                 tfemailp.setText(rs.getString(5));
                 tfnumtelp.setText(rs.getString(7));
-                tfmatricule.setText(rs.getString(9));
-                tfattestation.setText(rs.getString(10));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    @FXML
-    void modifierProfil(ActionEvent event) throws SQLException {
 
-        if (tfnomp.getText().isEmpty() || tfprenomp.getText().isEmpty() || tfemailp.getText().isEmpty() || choixGenrep.getValue().isEmpty() || tfnumtelp.getText().isEmpty()  || tfmatricule.getText().isEmpty() || tfattestation.getText().isEmpty()) {
+    @FXML
+    void modifierProfil(ActionEvent event) {
+        if (tfnomp.getText().isEmpty() || tfprenomp.getText().isEmpty() || tfemailp.getText().isEmpty() || choixGenrep.getValue().isEmpty() || tfnumtelp.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
             alert.setHeaderText(null);
@@ -325,27 +221,6 @@ public class ProfilConseillerController implements Initializable {
             return;
         }
 
-        String reqMatricule = "SELECT matricule,attestation FROM utilisateur WHERE id_utilisateur= ?";
-        PreparedStatement pstMatricule = cnx.prepareStatement(reqMatricule);
-        pstMatricule.setInt(1, idUtilisateurConnecte);
-        ResultSet rsMatricule = pstMatricule.executeQuery();
-        rsMatricule.next();
-        attestationC = rsMatricule.getString("attestation");
-
-        if(!tfattestation.getText().equals(attestationC)){
-            if(existe){
-                modif();
-            } else {
-                showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
-            }
-        }else {
-            modif();
-        }
-    }
-
-    public void modif(){
-        Connection cnx = MyConnection.getInstance().getCnx();
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de modification");
         alert.setHeaderText(null);
@@ -358,7 +233,7 @@ public class ProfilConseillerController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == buttonTypeOui) {
-            String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,num_tel=?,role=?,matricule=?,attestation=?,adresse=?,objectif=? WHERE id_utilisateur=?";
+            String req = "UPDATE utilisateur SET nom=?,prenom=?,genre=?,email=?,num_tel=? WHERE id_utilisateur=?";
             try {
                 PreparedStatement pst = cnx.prepareStatement(req);
                 pst.setString(1, tfnomp.getText());
@@ -366,12 +241,7 @@ public class ProfilConseillerController implements Initializable {
                 pst.setString(3, choixGenrep.getValue());
                 pst.setString(4, tfemailp.getText());
                 pst.setInt(5,Integer.parseInt(tfnumtelp.getText()));
-                pst.setString(6, Role.Conseiller.toString());
-                pst.setString(7,tfmatricule.getText());
-                pst.setString(8,tfattestation.getText());
-                pst.setString(9,"");
-                pst.setString(10, "");
-                pst.setInt(11, idUtilisateurConnecte);
+                pst.setInt(6, idUtilisateurConnecte);
                 pst.executeUpdate();
 
                 remplirChampsUtilisateur(idUtilisateurConnecte);
@@ -389,13 +259,21 @@ public class ProfilConseillerController implements Initializable {
 
     @FXML
     void modifierMDP(ActionEvent event) throws SQLException, NoSuchAlgorithmException {
-
         String reqMDP = "SELECT mot_de_passe FROM utilisateur WHERE id_utilisateur = ?";
         PreparedStatement pstMDP = cnx.prepareStatement(reqMDP);
-        pstMDP.setString(1, String.valueOf(MyConnection.getInstance().getUserId()));
+        pstMDP.setString(1, String.valueOf(idUtilisateurConnecte));
         ResultSet rsMDP = pstMDP.executeQuery();
         rsMDP.next();
         String mdp = rsMDP.getString("mot_de_passe");
+
+        if (ancienMDP.getText().isEmpty() || nouveauMDP.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Champs manquants");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez remplir tous les champs obligatoires.");
+            alert.showAndWait();
+            return;
+        }
 
         // Comparer l'ancien mot de passe saisi avec le mot de passe actuel de l'utilisateur
         if (!encryptor.encryptString(ancienMDP.getText()).equals(mdp)) {
@@ -407,32 +285,21 @@ public class ProfilConseillerController implements Initializable {
             return;
         }
 
-        if (ancienMDP.getText().isEmpty() || nouveauMDP.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Champs manquants");
-            alert.setHeaderText(null);
-            alert.setContentText("Veuillez remplir tous les champs obligatoires.");
-            alert.showAndWait();
-            return;
-        }
-
         complx.Calcul(nouveauMDP.getText());
 
-        if(complx.getNb() <6){
+        if (complx.getNb() < 6) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
             alert.setContentText("Mot de passe faible");
             alert.showAndWait();
             complx.setNb(0);
-        }else if (complx.getNb() >= 6 && complx.getNb() < 12){
+        } else if (complx.getNb() >= 6 && complx.getNb() < 12) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
             alert.setContentText("Mot de passe moyen");
             alert.showAndWait();
             complx.setNb(0);
-        } else if (complx.getNb() == 12){
-
-            Connection cnx = MyConnection.getInstance().getCnx();
+        } else if (complx.getNb() == 12) {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation de modification");
@@ -470,7 +337,6 @@ public class ProfilConseillerController implements Initializable {
 
     @FXML
     void logout(MouseEvent event) {
-
         MyConnection.getInstance().setUserId(0);
 
         // Redirection vers l'écran de connexion ou autre écran d'accueil
@@ -481,11 +347,10 @@ public class ProfilConseillerController implements Initializable {
             stage.setScene(new Scene(root));
             stage.show();
             // Fermeture des autres fenêtres ouvertes, si nécessaire
-            Stage currentStage = (Stage) logoutIcon.getScene().getWindow();
+            Stage currentStage = (Stage) tfemailp.getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

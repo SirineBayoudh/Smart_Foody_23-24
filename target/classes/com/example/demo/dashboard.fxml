@@ -120,14 +120,14 @@
                         <Image url="@Images/homme.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btnLogout" layoutX="15.0" layoutY="617.0" mnemonicParsing="false" onAction="#logout" onMouseClicked="#stock" prefHeight="42.0" prefWidth="167.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="        Se déconnecter" textFill="WHITE">
+                  <Button fx:id="btnProfil" layoutX="15.0" layoutY="617.0" mnemonicParsing="false" onAction="#profil" onMouseClicked="#stock" prefHeight="42.0" prefWidth="151.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Profil" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
                   <ImageView fitHeight="24.0" fitWidth="28.0" layoutX="30.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Images/deconnexion.png" />
+                        <Image url="@Images/profil-de-lutilisateur.png" />
                      </image>
                   </ImageView>
                     <!-- Autres boutons et images... -->
