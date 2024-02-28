@@ -50,7 +50,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.json.JSONObject;
+
 import com.google.gson.Gson;
 
 import com.example.demo.Models.Commande;
@@ -247,7 +247,7 @@ public class DetailsCommandeController implements Initializable {
 
     }
 
-  
+
     @FXML
     public void modifierCommande(ActionEvent event) {
         try {
@@ -316,55 +316,6 @@ public class DetailsCommandeController implements Initializable {
         return produits;
     }
 
-
-   /* @FXML
-    public void modifierCommande(ActionEvent event) {
-
-   /*     try {
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String createdAt = dateCreationInput.getValue().format(formatter);
-            String contenus = clientInput.getText();
-
-            if (createdAt.isEmpty() || contenus.isEmpty()) {
-                Alert al = new Alert(Alert.AlertType.WARNING);
-                al.setTitle("Erreur");
-                al.setContentText("Veuillez remplir tous les champs !");
-                al.show();
-                return;
-            }
-            if (contenus.length() < 3 || contenus.length() > 200) {
-                Alert al = new Alert(Alert.AlertType.WARNING);
-                al.setTitle("Erreur de données");
-                al.setContentText("Le champ 'Contenus' doit contenir entre 3 et 200 caractères !");
-                al.show();
-                return;
-            }
-
-            CurrentCommande.setDate_commande(createdAt);
-            CurrentCommande.setId_client(contenus);
-
-            ServiceQuestion service = new ServiceQuestion();
-            service.updateQuestion(CurrentQuestion, CurrentQuestion.getId());
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Modification de Question");
-            alert.setHeaderText(null);
-            alert.setContentText("La Question a été modifiée avec succès !");
-            alert.showAndWait();
-            Parent root = FXMLLoader.load(getClass().getResource("../../../../../../../../../../OneDrive/Bureau/Formatage/Projects/Java/WorkshopJDBC3A37/src/com/dynamics/pidev/gui/AfficherQuestion.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText(null);
-            alert.setContentText("Une erreur est survenue lors de la modification de la Question !");
-            alert.showAndWait();
-        }*/
 
 
 

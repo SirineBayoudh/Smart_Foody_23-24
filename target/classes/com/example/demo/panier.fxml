@@ -9,14 +9,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="698.0" prefWidth="873.0" stylesheets="@css/style_panier.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PanierController">
+<AnchorPane prefHeight="698.0" prefWidth="873.0" stylesheets="@css/style_panier.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PanierController">
     <children>
         <!-- Navbar -->
         <!-- Navbar -->
         <HBox prefHeight="60.0" prefWidth="698.0" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-            <HBox prefHeight="34.0" prefWidth="797.0" styleClass="navbar-labels" HBox.hgrow="ALWAYS">
+            <HBox prefHeight="70.0" prefWidth="100.0" styleClass="navbar-labels">
                 <!-- Bouton Fléché -->
                 <Button onAction="#navbarre" styleClass="arrow-button">
                     <graphic>
@@ -27,6 +28,9 @@
                         </ImageView>
                     </graphic>
                 </Button>
+                <padding>
+                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                </padding>
 
             </HBox>
         </HBox>
@@ -34,18 +38,21 @@
 
         <!-- Main Content -->
         <!-- Main Content -->
-        <VBox styleClass="main-content" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.topAnchor="80">
+        <VBox layoutX="10.0" prefHeight="598.0" prefWidth="851.0" styleClass="main-content" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="80">
             <!-- Product Details and Pricing -->
-            <HBox prefHeight="510.0" prefWidth="638.0" spacing="20" styleClass="cart-details">
+            <HBox prefHeight="412.0" prefWidth="773.0" spacing="20" styleClass="cart-details">
                 <!-- Product Details Section -->
                 <VBox prefHeight="503.0" prefWidth="769.0" styleClass="product-details" VBox.vgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Mon Panier" />
-                    <ScrollPane prefHeight="477.0" prefWidth="365.0" VBox.vgrow="ALWAYS">
+                    <Label prefHeight="37.0" prefWidth="622.0" styleClass="section-title" text="                                                                  Mon Panier">
+                  <font>
+                     <Font name="System Bold" size="20.0" />
+                  </font></Label>
+                    <ScrollPane prefHeight="279.0" prefWidth="543.0" VBox.vgrow="ALWAYS">
                         <VBox fx:id="productsContainer" spacing="10">
                             <!-- Products will be added here dynamically -->
                         </VBox>
                     </ScrollPane>
-                    <Button fx:id="btnViderPanier" onAction="#viderPanier" styleClass="button-order" text="Vider le Panier">
+                    <Button fx:id="btnViderPanier" onAction="#viderPanier" prefHeight="35.0" prefWidth="129.0" styleClass="button-order" text="Vider le Panier">
                         <VBox.margin>
                             <Insets left="180.0" />
                         </VBox.margin>
@@ -53,12 +60,16 @@
                 </VBox>
 
                 <!-- Pricing Section -->
-                <VBox prefHeight="474.0" prefWidth="444.0" styleClass="pricing-details" VBox.vgrow="ALWAYS">
+                <VBox prefHeight="412.0" prefWidth="304.0" styleClass="pricing-details" VBox.vgrow="ALWAYS">
                     <Label prefHeight="36.0" prefWidth="195.0" styleClass="section-title" text="Récapitulatif de Commande" />
                     <Label fx:id="soustotaleid" styleClass="pricing-info" text="Sous-total:" />
                     <Label fx:id="remiseid" styleClass="pricing-info" text="Remise:" />
                     <Label fx:id="totaleid" styleClass="pricing-info" text="Total: " />
-                    <Button fx:id="btnValiderCommande" onAction="#chargerInterfaceCommande" prefHeight="35.0" prefWidth="165.0" styleClass="button-order" text="Valider la Commande" />
+                    <HBox prefHeight="100.0" prefWidth="215.0">
+                        <children>
+                            <Button fx:id="btnValiderCommande" alignment="CENTER" contentDisplay="CENTER" onAction="#ajouterCommande" prefHeight="35.0" prefWidth="191.0" styleClass="button-order" text="Valider la Commande" textAlignment="CENTER" />
+                        </children>
+                    </HBox>
                 </VBox>
             </HBox>
         </VBox>
