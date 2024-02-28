@@ -34,6 +34,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -64,10 +65,14 @@ public class recetteController {
     private Label resultatLabel;
     private static final String API_KEY = "e701aafe487049789b44f77762dfec88";
 
+
     @FXML
     void initialize() {
-    comparerObjectifUtilisateurAvecObjectif();
-        }
+        comparerObjectifUtilisateurAvecObjectif();
+
+    }
+
+
 
     void comparerObjectifUtilisateurAvecObjectif() {
         // Requête pour sélectionner l'objectif de l'utilisateur
@@ -251,7 +256,7 @@ public class recetteController {
     void search(ActionEvent event) {
         String ingredient = ingredientField.getText().trim();
         if (!ingredient.isEmpty()) {
-            Task<List<JSONObject>> searchTask = new Task<List<JSONObject>>() {
+            Task<List<JSONObject>> searchTask = new Task<>() {
                 @Override
                 protected List<JSONObject> call() throws Exception {
                     return getRecipesByIngredient(ingredient);
@@ -262,15 +267,7 @@ public class recetteController {
                 if (recipes.isEmpty()) {
                     resultatLabel.setText("No recipes found for this ingredient.");
                 } else {
-                    StringBuilder sb = new StringBuilder();
-                    for (JSONObject recipe : recipes) {
-                        String title = recipe.getString("title");
-                        String instructions = getCookingInstructionsForRecipe(recipe.getInt("id")); // Passer l'identifiant de la recette
-                        sb.append("Title: ").append(title).append("\n");
-                        sb.append("Instructions: ").append(instructions).append("\n");
-                        sb.append("\n");
-                    }
-                    resultatLabel.setText(sb.toString());
+                    displayRecipesWithPagination(recipes);
                 }
             });
             new Thread(searchTask).start();
@@ -297,7 +294,7 @@ public class recetteController {
             reader.close();
 
             JSONArray jsonArray = new JSONArray(response.toString());
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject recipe = jsonArray.getJSONObject(i);
                 recipes.add(recipe);
             }
@@ -306,7 +303,6 @@ public class recetteController {
         }
         return recipes;
     }
-
 
     private String getCookingInstructionsForRecipe(int recipeId) {
         try {
@@ -331,7 +327,7 @@ public class recetteController {
                 for (int j = 0; j < steps.length(); j++) {
                     JSONObject stepDetail = steps.getJSONObject(j);
                     String stepInstruction = stepDetail.getString("step");
-                    // Remplacer chaque point par un point suivi d'un retour à la ligne
+                    // Replace each dot with a dot followed by a newline
                     stepInstruction = stepInstruction.replaceAll("\\.", ".\n");
                     instructions.append(stepInstruction).append("\n");
                     if (j == 0) {
@@ -347,4 +343,69 @@ public class recetteController {
             return "Instructions not available";
         }
     }
+
+    // Méthode pour afficher les recettes avec pagination
+    private void displayRecipesWithPagination(List<JSONObject> recipes) {
+        int recipesPerPage = 1;
+        int numPages = (int) Math.ceil((double) recipes.size() / recipesPerPage);
+        int currentPage = 0;
+        int[] currentPageHolder = new int[]{currentPage};
+
+        Runnable displayPage = () -> {
+            resultatLabel.setText(""); // Effacer le contenu précédent du label
+
+            int startIndex = currentPageHolder[0] * recipesPerPage;
+            int endIndex = Math.min(startIndex + recipesPerPage, recipes.size());
+
+            for (int i = startIndex; i < endIndex; i++) {
+                JSONObject recipe = recipes.get(i);
+                String title = recipe.getString("title");
+                String instructions = getCookingInstructionsForRecipe(recipe.getInt("id"));
+                StringBuilder recipeText = new StringBuilder();
+                recipeText.append("Title: ").append(title).append("\n").append("\n").append("\n");
+                recipeText.append("Instructions: ").append(instructions);
+
+                if (i < endIndex - 1) {
+                    recipeText.append("\n");
+                }
+
+                resultatLabel.setText(resultatLabel.getText() + recipeText.toString());
+            }
+        };
+
+        displayPage.run();
+
+        Button prevButton = new Button("<");
+        prevButton.setStyle("-fx-background-color: white; -fx-text-fill: #56ab2f;");
+        prevButton.setOnAction(e -> {
+            if (currentPageHolder[0] > 0) {
+                currentPageHolder[0]--;
+                displayPage.run();
+            }
+        });
+
+        Button nextButton = new Button(">");
+        nextButton.setStyle("-fx-background-color: white; -fx-text-fill: #56ab2f;");
+        nextButton.setOnAction(e -> {
+            if (currentPageHolder[0] < numPages - 1) {
+                currentPageHolder[0]++;
+                displayPage.run();
+            }
+        });
+
+        HBox paginationBox = new HBox(10); // Espacement de 10 pixels entre les boutons
+
+// Ajouter d'abord le bouton "Previous"
+        paginationBox.getChildren().add(prevButton);
+
+// Ajouter ensuite le bouton "Next"
+        paginationBox.getChildren().add(nextButton);
+
+// Ajouter le conteneur au contenu du label
+        resultatLabel.setGraphic(paginationBox);
+        //resultatLabel.setPrefWidth(600); // Définir la largeur souhaitée en pixels
+
+    }
+
+
 }

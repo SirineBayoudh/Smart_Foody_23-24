@@ -13,21 +13,21 @@
    <children>
       <ScrollPane fx:id="recommendedProductsScrollPane" layoutX="21.0" layoutY="110.0" prefHeight="700.0" prefWidth="1158.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1400.0" prefWidth="1154.0" style="-fx-background-color: #ddeed5;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1161.0" prefWidth="1154.0" style="-fx-background-color: #ddeed5;">
                <children>
                   <VBox fx:id="recommendedProductsVBox" layoutX="12.0" layoutY="100.0" prefHeight="374.0" prefWidth="1130.0">
                      <padding>
                         <Insets left="20.0" />
                      </padding>
                   </VBox>
-                  <Label fx:id="resultatLabel" layoutX="499.0" layoutY="628.0" prefHeight="700.0" prefWidth="620.0" style="-fx-background-color: #56ab2f;" styleClass="chosen-fruit-card" stylesheets="@css/style_pageClient.css">
+                  <Label fx:id="resultatLabel" layoutX="27.0" layoutY="553.0" prefHeight="440.0" prefWidth="715.0" style="-fx-background-color: #56ab2f;" styleClass="chosen-fruit-card" stylesheets="@css/style_pageClient.css">
                      <padding>
                         <Insets left="25.0" />
                      </padding>
                   </Label>
-                  <Button fx:id="searchButton" layoutX="982.0" layoutY="574.0" mnemonicParsing="false" onAction="#search" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="searchButton" />
-                  <TextField fx:id="ingredientField" layoutX="796.0" layoutY="574.0" promptText="ingredientField" styleClass="text-field" stylesheets="@css/style_pageClient.css" />
-                  <Label layoutX="406.0" layoutY="587.0" text="Pour avoir une idée de recette vous pouvez tapé un ingrédient : " textFill="#56ab2f">
+                  <Button fx:id="searchButton" layoutX="969.0" layoutY="695.0" mnemonicParsing="false" onAction="#search" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="searchButton" textFill="WHITE" />
+                  <TextField fx:id="ingredientField" layoutX="781.0" layoutY="695.0" promptText="ingredientField" styleClass="text-field" stylesheets="@css/style_pageClient.css" />
+                  <Label layoutX="760.0" layoutY="649.0" text="Pour avoir une idée de recette vous pouvez tapé un ingrédient : " textFill="#56ab2f">
                      <font>
                         <Font name="Cambria" size="13.0" />
                      </font>
@@ -37,7 +37,7 @@
                         <Font name="Cambria Bold" size="22.0" />
                      </font>
                   </Label>
-                  <Label layoutX="721.0" layoutY="513.0" prefHeight="27.0" prefWidth="250.0" text="Notre coin de recettes : " textFill="#56ab2f">
+                  <Label layoutX="806.0" layoutY="593.0" prefHeight="27.0" prefWidth="250.0" text="Notre coin de recettes : " textFill="#56ab2f">
                      <font>
                         <Font name="Cambria Bold" size="22.0" />
                      </font>
