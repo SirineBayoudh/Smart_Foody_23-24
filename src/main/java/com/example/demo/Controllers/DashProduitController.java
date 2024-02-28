@@ -285,6 +285,7 @@ public class DashProduitController implements Initializable {
                 // tfCritere.clear();
                 tfImage.clear();
                 //btnModifier.setVisible(true);
+                updateTotalPriceLabel();
             } else {
                 System.out.println("Échec de l'ajout du produit !");
             }
@@ -293,15 +294,8 @@ public class DashProduitController implements Initializable {
             throw new RuntimeException(e);
         }
         updateLineChart();
-        updateTotalProduitsLabel();
         updateCategoryFilter();
-    }
 
-
-    private void updateTotalProduitsLabel() {
-        getData(); // Vous n'avez plus besoin de capturer la valeur retournée
-        int totalProduits = getTotalProduits();
-        labelTotalProduits.setText("Total des produits : " + totalProduits);
     }
 
     private boolean isImageUrlUnique(String imageUrl) throws SQLException {
@@ -418,6 +412,7 @@ public class DashProduitController implements Initializable {
                         checkboxCritere2.setSelected(false); // Décocher la deuxième case à cocher
                         checkboxCritere3.setSelected(false);
                         checkboxCritere4.setSelected(false);
+                        updateTotalPriceLabel();
                     } else {
                         System.out.println("Échec de la modification du produit !");
                     }
@@ -431,6 +426,7 @@ public class DashProduitController implements Initializable {
 
         btnAjouter.setDisable(false);
         updateCategoryFilter();
+
     }
 
     @FXML
@@ -457,6 +453,7 @@ public class DashProduitController implements Initializable {
                                 checkboxCritere3.setSelected(false);
                                 checkboxCritere4.setSelected(false);
                                 tfCategorie.clear();
+                                updateTotalPriceLabel();
                             } else {
                                 System.out.println("Échec de la suppression du produit !");
                             }
@@ -468,9 +465,9 @@ public class DashProduitController implements Initializable {
                     }
                 }
         );
-        updateTotalProduitsLabel();
         btnAjouter.setDisable(false);
         updateCategoryFilter();
+
     }
 
     @FXML
@@ -539,8 +536,14 @@ public class DashProduitController implements Initializable {
         int totalProduits = getTotalProduits();
         labelTotalProduits.setText("Total des produits :\n " + totalProduits);
         labelSommePrixProduit.setText("Total des prix des produits :\n" + getTotalPrixProduits());
+        updateTotalPriceLabel();
 
 
+    }
+    private void updateTotalPriceLabel() {
+        int totalProduits = getTotalProduits();
+        labelTotalProduits.setText("Total des produits :\n " + totalProduits);
+        labelSommePrixProduit.setText("Total des prix des produits :\n" + getTotalPrixProduits());
     }
 
     @FXML

@@ -63,7 +63,7 @@ public class recetteController {
 
     @FXML
     private Label resultatLabel;
-    private static final String API_KEY = "e701aafe487049789b44f77762dfec88";
+    private static final String API_KEY = "5102b1af21ad4e70b01e5d5cf6b8e795";
 
 
     @FXML

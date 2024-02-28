@@ -86,7 +86,7 @@ public class PageAccueilController {
 
     @FXML
     private ListView<String> suggestionsListView;
-    private ObservableList<String> categories = FXCollections.observableArrayList(
+    private ObservableList<String> criteres = FXCollections.observableArrayList(
             "Tous",
             "sans_lactose",
             "sans_gluten",
@@ -141,7 +141,7 @@ public class PageAccueilController {
             imagesVbox.getChildren().clear();
 
             // Afficher les produits de la page spécifiée
-            displayProducts(resultSet);
+            displayProducts(resultSet, offset, itemsPerPage);
 
             // Mise à jour de l'indice de la page actuelle
             currentPageIndex = pageIndex;
@@ -150,6 +150,7 @@ public class PageAccueilController {
             System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
         }
     }
+
 
 
     @FXML
@@ -166,13 +167,14 @@ public class PageAccueilController {
             clearProductDisplay();
 
             // Afficher les produits correspondant à la recherche
-            displayProducts(resultSet);
+            displayProducts(resultSet, 0, itemsPerPage); // Utilisez les paramètres pour spécifier la pagination
         } catch (SQLException e) {
             System.out.println("Erreur lors de la recherche des produits : " + e.getMessage());
         }
     }
 
-    private void displayProducts(ResultSet resultSet) throws SQLException {
+
+    private void displayProducts(ResultSet resultSet, int offset, int limit) throws SQLException {
         try {
             // Effacer l'affichage actuel des produits
             imagesVbox.getChildren().clear();
@@ -181,7 +183,9 @@ public class PageAccueilController {
             HBox hbox = new HBox();
             hbox.setSpacing(40); // Espace entre les cartes
 
-            while (resultSet.next()) {
+            int count = 0; // Compteur pour le nombre de produits affichés sur la page actuelle
+
+            while (resultSet.next() && count < limit) {
                 String imageUrl = resultSet.getString("image");
                 String marque = resultSet.getString("marque");
                 String prix = resultSet.getString("prix");
@@ -223,18 +227,16 @@ public class PageAccueilController {
                 productInfo.getChildren().addAll(btnDetails, btnAjouterPanier);
 
                 // Créer une carte pour encapsuler l'imageView et les informations du produit
-                StackPane cardPane = new StackPane();
-                StackPane.setAlignment(imageView, Pos.TOP_CENTER);
-                cardPane.getChildren().addAll(imageView, productInfo);
-                cardPane.setStyle("-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 22px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2); -fx-border-color: #56ab2f;-fx-border-radius: 30;-fx-border-width: 2px;");
-                cardPane.setPrefWidth(220); // Fixer la largeur de la carte
-                cardPane.setPrefHeight(300); // Fixer la hauteur de la carte
+                StackPane cardPane = createCardPane(imageView, marque, prix + " dt");
+                cardPane.setPrefWidth(220);
+                cardPane.setPrefHeight(300);
 
                 // Ajouter la carte contenant l'image à la ligne actuelle
                 hbox.getChildren().add(cardPane);
+                count++;
 
                 // Si la ligne est pleine ou s'il n'y a plus de produits à afficher
-                if (hbox.getChildren().size() >= 4 || resultSet.isLast()) {
+                if (count >= 4 || resultSet.isLast()) {
                     // Ajouter la ligne à la VBox
                     imagesVbox.getChildren().add(hbox);
 
@@ -243,6 +245,7 @@ public class PageAccueilController {
                         hbox = new HBox();
                         hbox.setSpacing(40); // Espace entre les cartes
                     }
+                    count = 0; // Réinitialiser le compteur pour la nouvelle ligne
                 } else {
                     System.out.println("L'URL de l'image est invalide : " + imageUrl);
                 }
@@ -252,7 +255,6 @@ public class PageAccueilController {
             System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
         }
     }
-
 
 
 
@@ -371,7 +373,7 @@ public class PageAccueilController {
             System.err.println("La connexion à la base de données n'est pas établie.");
             return;
         }
-        categorieChoiceBox.setItems(categories);
+        categorieChoiceBox.setItems(criteres);
 
         // Ajouter un écouteur d'événement pour le choix de filtre
         categorieChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -379,16 +381,16 @@ public class PageAccueilController {
                 // Appliquer le filtre sur les produits selon le critère sélectionné
                 switch (newValue) {
                     case "sans_glucose":
-                        applyFilter("sans_glucose");
+                        applyFilter("sans_glucose", 0);
                         break;
                     case "sans_gluten":
-                        applyFilter("sans_gluten");
+                        applyFilter("sans_gluten", 0);
                         break;
                     case "sans_lactose":
-                        applyFilter("sans_lactose");
+                        applyFilter("sans_lactose", 0);
                         break;
                     case "protein":
-                        applyFilter("protein");
+                        applyFilter("protein", 0);
                         break;
                     default:
                         // Si aucun filtre n'est sélectionné, afficher tous les produits
@@ -485,16 +487,21 @@ public class PageAccueilController {
         }
     }
 
-    private void applyFilter(String filter) {
+    private void applyFilter(String filter, int pageIndex) {
         try {
-            // Exécuter la requête SQL pour récupérer les produits contenant le critère spécifié
-            String sql = "SELECT marque, prix, image FROM produit WHERE critere LIKE ?";
+            // Calculer l'offset
+            int offset = pageIndex * itemsPerPage;
+
+            // Requête SQL pour récupérer les produits filtrés de la page spécifiée
+            String sql = "SELECT marque, prix, image FROM produit WHERE critere LIKE ? LIMIT ?, ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, "%" + filter + "%"); // Utilise LIKE pour rechercher le critère dans les produits
+            statement.setString(1, "%" + filter + "%");
+            statement.setInt(2, offset);
+            statement.setInt(3, itemsPerPage);
             ResultSet resultSet = statement.executeQuery();
 
             // Afficher les produits filtrés
-            displayProducts(resultSet);
+            displayProducts(resultSet, offset, itemsPerPage);
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'application du filtre : " + e.getMessage());
         }
