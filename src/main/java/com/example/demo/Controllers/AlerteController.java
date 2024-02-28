@@ -90,7 +90,10 @@ public class AlerteController implements LanguageObserver {
     private Text paneTitre;
     private PieChart.Data unreadData;
     private PieChart.Data readData;
+    private static final int ITEMS_PER_PAGE = 12;
 
+    @FXML
+    private Pagination pagination;
     private LanguageManager languageManager = LanguageManager.getInstance();
     @FXML
     void initialize() {
@@ -254,9 +257,7 @@ public class AlerteController implements LanguageObserver {
     }
 
     public void updateLabels() {
-        // Update other labels in StockController...
-        // You can customize this based on your needs
-        // Update btnupdate text based on language
+
       id_alerteColumn.setText(LanguageManager.getInstance().getText("id_alerteColumn"));
       idstockCoulmn.setText(LanguageManager.getInstance().getText("idstockCoulmn"));
         DescriptionCoulumn.setText(LanguageManager.getInstance().getText("DescriptionCoulumn"));
@@ -343,10 +344,7 @@ public class AlerteController implements LanguageObserver {
 
 
     }
-    private static final int ITEMS_PER_PAGE = 12;
 
-    @FXML
-    private Pagination pagination;
 
 
     private void setupPagination(ObservableList<Alerte> alerteData) {

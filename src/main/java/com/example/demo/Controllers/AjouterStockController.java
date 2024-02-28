@@ -3,10 +3,7 @@ package com.example.demo.Controllers;
 import com.example.demo.Tools.MyConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -46,9 +43,14 @@ public class AjouterStockController {
     private TextField tNom;
     private StockController stockController;
 
+    @FXML
+    void initialize() {
+        loadProductReferences();
+        refComboBox.setOnAction(event -> {
+            // Appelez la méthode pour récupérer la marque lorsqu'une référence est sélectionnée
+            fetchMarque();
+        });
 
-    public void setStockController(StockController stockController) {
-        this.stockController = stockController;
     }
 
     @FXML
@@ -70,14 +72,14 @@ public class AjouterStockController {
     }
 
 
-
+              /**********Verifier l'existence du produit************/
     private boolean isProductExists(int ref) {
         try {
-            Connection connection = MyConnection.getInstance().getCnx();
+            Connection connection = MyConnection.getInstance().getCnx() ;  //Obtient une instance de connexion à la base de données en utilisant un Singleton
             String query = "SELECT * FROM produit WHERE ref = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, ref);
-                ResultSet resultSet = preparedStatement.executeQuery();
+                preparedStatement.setInt(1, ref); //Associe la valeur du paramètre `ref` au premier espace réservé (`?`) dans la requête SQL
+                ResultSet resultSet = preparedStatement.executeQuery();  // Exécute la requête SQL
                 return resultSet.next(); // Retourner true if product existe
             }
         } catch (SQLException e) {
@@ -85,21 +87,55 @@ public class AjouterStockController {
             return false;
         }
     }
+ /****************Verifier si stock existe avec la ref entré ou non  *******************/
+    private boolean isStockEntryExists(int ref) {
+        try {
+            Connection connection = MyConnection.getInstance().getCnx();
+            String query = "SELECT * FROM stock" +
+                    " WHERE ref_produit = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, ref);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return resultSet.next(); //Retourner true if stock entry existe
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    /*************Controle de saisie****************/
+    @FXML
+    private boolean validateInputs() {
+        if (tQnt.getText().isEmpty() || tNom.getText().isEmpty() || tMarque.getText().isEmpty()) {
+            showAlert1("Erreur", "Les champs sont obligatoires.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        try {
+            Integer.parseInt(tQnt.getText());
+
+            String nomValue = tNom.getText();
+            // Valide si tNom contient uniquement des lettres et a au moins 3 caractères
+            if (!nomValue.matches("^[a-zA-Z]{3,}$")) {
+                showAlert1("Erreur", "Le nom doit contenir uniquement des lettres et avoir au moins 3 caractères.", Alert.AlertType.ERROR);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert1("Erreur", "Les champs doivent être respecter leurs Types.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        return true;
+    }
 
 
-
-    /**
-     * A-3 methode ajout avec nb vendu initialiser à 0
-     **/
-
+    /***************ajout stock ***************/
 
     @FXML
-
     private void createStock(ActionEvent event) {
         if (validateInputs()) {
             try {
                 String selectedRef = refComboBox.getValue();
-
                 // Vérifiez si une référence est sélectionnée
                 if (selectedRef != null && !selectedRef.isEmpty()) {
                     int ref = Integer.parseInt(selectedRef);
@@ -140,8 +176,6 @@ public class AjouterStockController {
                         } else {
                             showAlert("Référence déjà existante.", "Référence existe", Alert.AlertType.WARNING);
                         }
-                    } else {
-                        showAlert("Produit inexistant, veuillez ajouter le produit.", "Produit introuvable", Alert.AlertType.WARNING);
                     }
                 }
             } catch (SQLException e) {
@@ -150,30 +184,8 @@ public class AjouterStockController {
             }
         }
     }
-
-    @FXML
-    private boolean validateInputs() {
-        if ( tQnt.getText().isEmpty() || tNom.getText().isEmpty()|| tMarque.getText().isEmpty()) {
-            showAlert1("Erreur", "Les champs sont obligatoires.", Alert.AlertType.ERROR);
-            return false;
-        }
-
-        try {
-            // Validate if tRef, tQnt type  int
-
-            Integer.parseInt(tQnt.getText());
-            // Validate if tNom type String
-            String nomValue = tNom.getText();
-            if (!nomValue.matches("^[a-zA-Z]+$")) {
-                showAlert1("Erreur", "Le nom doit contenir uniquement des lettres.", Alert.AlertType.ERROR);
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            showAlert1("Erreur", "Les champs doivent être respecter leurs Types.", Alert.AlertType.ERROR);
-            return false;
-        }
-
-        return true;
+    public void setStockController(StockController stockController) {
+        this.stockController = stockController;
     }
 
 
@@ -182,6 +194,23 @@ public class AjouterStockController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
+
+        // Get the dialog pane
+        DialogPane dialogPane = alert.getDialogPane();
+
+        Label contentLabel = (Label) dialogPane.lookup(".content.label");
+        contentLabel.setStyle("-fx-text-fill: red;-fx-font-weight: bold;");
+
+        // Customize the OK button
+        if (alertType == Alert.AlertType.ERROR) {
+            ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            dialogPane.getButtonTypes().setAll(okButton);
+
+            // Set the text color of the OK button to red
+            Button okBtn = (Button) dialogPane.lookupButton(okButton);
+            okBtn.setStyle("-fx-text-fill: #ffffff;-fx-background-color:red;-fx-font-weight: bold;");
+        }
+
         alert.showAndWait();
     }
 
@@ -194,45 +223,43 @@ public class AjouterStockController {
         alert.showAndWait();
     }
 
-    private boolean isStockEntryExists(int ref) {
-        try {
-            Connection connection = MyConnection.getInstance().getCnx();
-            String query = "SELECT * FROM stock" +
-                    " WHERE ref_produit = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, ref);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                return resultSet.next(); //Retourner true if stok entry existe
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
-    /***********************Fin ajout stock **************************/
-
-
+    /***********************Annuler l'ajout  **************************/
     @FXML
     private void Annuler(ActionEvent event) {
         clear();
     }
 
     private void clear() {
-        tRef.setText(null);
+        // Assuming refComboBox is your ComboBox<String>
+        refComboBox.getSelectionModel().select(null);
+
         tMarque.setText(null);
         tQnt.setText(null);
         btnSave.setDisable(false);
     }
 
-    @FXML
-    void initialize() {
-        loadProductReferences();
-        refComboBox.setOnAction(event -> {
-            // Appelez la méthode pour récupérer la marque lorsqu'une référence est sélectionnée
-            fetchMarque();
-        });
 
+    /***********Get les ref dans combobox********/
+    private void loadProductReferences() {
+        try {
+            Connection connection = MyConnection.getInstance().getCnx();
+            String query = "SELECT ref FROM produit";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                // Nettoyez d'abord le ComboBox
+                refComboBox.getItems().clear();
+
+                // Ajoutez chaque référence au ComboBox
+                while (resultSet.next()) {
+                    String reference = resultSet.getString("ref");
+                    refComboBox.getItems().add(reference);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     private void fetchMarque() {
@@ -244,7 +271,6 @@ public class AjouterStockController {
 
             try {
                 Connection connection = MyConnection.getInstance().getCnx();
-
                 // Produit existe
                 if (isProductExists(ref)) {
                     // Détail du produit (fetch)
@@ -259,18 +285,12 @@ public class AjouterStockController {
                             tMarque.setText(marque);
                         }
                     }
-                } else {
-                    // Supprimez le champ tMarque si le produit n'existe pas
-                    tMarque.clear();
-                    System.out.println("Le produit n'existe pas. Veuillez d'abord ajouter le produit.");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
-
-
 
     private float calculateTotalValue(int ref_produit) {
         try {
@@ -304,25 +324,5 @@ public class AjouterStockController {
         return 0.0f;
     }
 
-    private void loadProductReferences() {
-        try {
-            Connection connection = MyConnection.getInstance().getCnx();
-            String query = "SELECT ref FROM produit";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                // Nettoyez d'abord le ComboBox
-                refComboBox.getItems().clear();
-
-                // Ajoutez chaque référence au ComboBox
-                while (resultSet.next()) {
-                    String reference = resultSet.getString("ref");
-                    refComboBox.getItems().add(reference);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

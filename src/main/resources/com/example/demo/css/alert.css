@@ -1,0 +1,23 @@
+/* Styles for INFORMATION alert */
+.information-alert .alert-content {
+    -fx-text-fill: green;
+}
+
+/* Styles for WARNING alert */
+.warning-alert .alert-content {
+    -fx-text-fill: orange;
+}
+
+/* Styles for ERROR alert */
+.error-alert .alert-content {
+    -fx-text-fill: red;
+}
+
+.custom-button-style {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+}
+.information-alert .button {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+}

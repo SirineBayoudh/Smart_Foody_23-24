@@ -45,11 +45,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
+import java.util.*;
 
 
 public class StockController implements Initializable , LanguageObserver{
@@ -160,7 +156,7 @@ public class StockController implements Initializable , LanguageObserver{
     @FXML
     private Text Titlebarchart;
     private static final String ACCOUNT_SID = "AC65cc060d1e8324522666575b59ffd53b";
-    private static final String AUTH_TOKEN = "679c30c3da2210f88b2d0b9355f6f708 ";
+    private static final String AUTH_TOKEN = "";
     private static final String FROM_PHONE_NUMBER = "+18607820963";
     private LanguageManager languageManager = LanguageManager.getInstance();
 
@@ -185,60 +181,117 @@ public class StockController implements Initializable , LanguageObserver{
 
     }
 
+ /*********************Update stock **********/
+     @FXML
+      void UpdateStock(ActionEvent event) {
+         Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
-    public void sendSMS(String toPhoneNumber, String message) {
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+         if (selectedStock == null) {
+             showAlert("Veuillez sélectionner un élément.");
+         } else {
+             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+             alert.setTitle("Confirmation Dialog");
+             alert.setHeaderText(null);
+             alert.setContentText("Vous êtes sûr de modifier le stock ? ");
 
-        Message twilioMessage = Message.creator(
-                new PhoneNumber("+21692150166"), // To phone number
-                new PhoneNumber(FROM_PHONE_NUMBER), // From Twilio phone number
-                message
-        ).create();
+             ButtonType customButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+             alert.getButtonTypes().setAll(customButtonType);
 
-        System.out.println("SMS sent: " + twilioMessage.getSid());
-    }
-    public static StockController getInstance() {
-        if (instance == null) {
-            instance = new StockController();
-        }
-        return instance;
-    }
+             // Get the OK button and apply custom styles
+             Button okButton = (Button) alert.getDialogPane().lookupButton(customButtonType);
+             okButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+
+             // Remove the default icon
+             alert.getDialogPane().setGraphic(null);
+
+             alert.showAndWait().ifPresent(response -> {
+                 if (response == customButtonType) {
+                     if (!isInteger(Qntfield.getText())) {
+                         showAlert("La quantité doit être un entier.");
+                         return;
+                     }
+                     String update = "update stock set quantite = ? where id_s = ?";
+                     Connection connection = MyConnection.getInstance().getCnx();
+
+                     try {
+                         int newQuantite = Integer.parseInt(Qntfield.getText());
+
+                         PreparedStatement st = connection.prepareStatement(update);
+                         st.setInt(1, newQuantite);
+                         st.setInt(2, Integer.parseInt(Idfield.getText()));
+
+                         st.executeUpdate();
+                     if (newQuantite > selectedStock.getNbVendu()) {
+                         // Remplacez YOUR_ACCESS_TOKEN par votre jeton d'accès Facebook
+                         String accessToken = "EAANLAmpI2JEBO2XUNnnsmnZCWIxORTpZA3mQ3YFDhgo2qlRj6teQWDZAWWQadhU3zjg2LgwkCxzXLxxWEgFdFJUOIBZC6pOzVpwqtQBcb68Eezv7ZBUmMj5vVExZCxeHv3gxZBhUlvCt0b4yfebtZAj5yO0v9LtJbqupwlKOJpgrtBTXSWnP31YCRqOGaEFVSsAZD";
+                         FacebookClient facebookClient = new DefaultFacebookClient(accessToken, Version.VERSION_19_0);
+
+                         // Construire le message pour la publication sur Facebook
+                         String facebookMessage = "Le stock du produit "+selectedStock.getProduitMarque()+ " est maintenant disponible  ";
 
 
+                         // Publier sur Facebook directement depuis StockController
+                         postStatusUpdate(facebookClient, facebookMessage);
+                     }
 
-    public static Stock findLowestStock(ObservableList<Stock> stockData) {
-        Stock lowestStock = null;
-        int minQuantity = Integer.MAX_VALUE;
+                     show();
 
-        for (Stock stock : stockData) {
-            int quantity = stock.getQuantite();
-            if (quantity < minQuantity) {
-                minQuantity = quantity;
-                lowestStock = new Stock();
-                lowestStock.setId_s(stock.getId_s());
-                lowestStock.setQuantite(stock.getQuantite());
-                lowestStock.setNbVendu(stock.getNbVendu());
+                 } catch (SQLException | NumberFormatException e) {
+                     e.printStackTrace();
+                 }
+             }
+         });
+     }
+ }
 
-            }
-        }
-        return lowestStock;
-    }
+ /*************Delete stock**************/
+     @FXML
 
+     void deleteStock(ActionEvent event) {
+         Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
+         if (selectedStock == null) {
+             // alert lors d'absence d'un element selectionner
+             showAlert("Veuillez sélectionner un élément.");
+         } else {
+             stockTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                 if (newSelection != null) {
+                     id_s = newSelection.getId_s();
+                 }
+             });
 
-    @FXML
-    private void handlePaneClick(MouseEvent event) {
-        // annuler select in the TableView when the Pane is clicked
-        stockTableView.getSelectionModel().clearSelection();
-        tTotal.setText("cout");
-       show();
-        // Clear other fields
-        Qntfield.setText(null);
-        Idfield.setText(null);
-        Refield.setText(null);
+             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+             alert.setTitle("Confirmation Dialog");
+             alert.setHeaderText(null);
+             alert.setContentText("Vous êtes sûr de supprimer le stock?");
+             ButtonType customButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+             alert.getButtonTypes().setAll(customButtonType);
 
-        Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
-    }
+             // Get the OK button and apply custom styles
+             Button okButton = (Button) alert.getDialogPane().lookupButton(customButtonType);
+             okButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+
+             // Remove the default icon
+             alert.getDialogPane().setGraphic(null);
+
+             Optional<ButtonType> result = alert.showAndWait();
+
+             if (result.isPresent() && result.get() == customButtonType) {
+                 String delete = "DELETE FROM stock WHERE id_s = ?";
+                 Connection connection = MyConnection.getInstance().getCnx();
+                 try {
+                     PreparedStatement st = connection.prepareStatement(delete);
+                     st.setInt(1, id_s);
+                     st.executeUpdate();
+                     show();
+                     updateTotalStockCount();
+                 } catch (SQLException e) {
+                     throw new RuntimeException(e);
+                 }
+             }
+         }
+     }
+
 
 
     /******** Get stock data from the database**********/
@@ -291,11 +344,30 @@ public class StockController implements Initializable , LanguageObserver{
     }
 
 
-    public void mettreAJourNbVendu(int idLigneCommande) {
+
+     /*********Fnct si je clique dans le pane j'annule les selectionner *********/
+    @FXML
+    private void handlePaneClick(MouseEvent event) {
+        // annuler select in the TableView when the Pane is clicked
+        stockTableView.getSelectionModel().clearSelection();
+        tTotal.setText("cout");
+       show();
+        // Clear other fields
+        Qntfield.setText(null);
+        Idfield.setText(null);
+        Refield.setText(null);
+
+        Vboxupdate.visibleProperty().bind(stockTableView.getSelectionModel().selectedItemProperty().isNotNull());
+    }
+
+
+
+         /************pour mettre a jour le nb vendu , a partir de ligne commande responsable de l'exécution de la mise à jou**********/
+        public void mettreAJourNbVendu(int idLigneCommande) {
         String updateQuery = "UPDATE stock s " +
                 "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
                 "SET s.nbVendu = lc.quantite " +
-                "WHERE lc.id_lc = ?";
+                "WHERE lc.id_lc = ?";   //mettre à jour la colonne nbVendu de la table stock en fonction de la quantité (quantite) de la ligne de commande associée.
 
         try {
             Connection connection = MyConnection.getInstance().getCnx();
@@ -310,18 +382,18 @@ public class StockController implements Initializable , LanguageObserver{
                 // Now fetch and print the updated nbVendu from the stock entry
                 printUpdatedNbVendu(connection, idLigneCommande);
             } else {
-                System.out.println("No rows were updated.");
+                System.out.println("aucune ligne a été modifié");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
+        /*************printUpdatedNbVendu pour afficher la nouvelle valeur de nbVendu.***************/
     private void printUpdatedNbVendu(Connection connection, int idLigneCommande) {
         String selectQuery = "SELECT s.id_s, s.nbVendu " +
                 "FROM stock s " +
                 "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
-                "WHERE lc.id_lc = ?";
+                "WHERE lc.id_lc = ?";  //récupérer la nouvelle valeur de nbVendu à partir de la table stock après la mise à jour.
 
         try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
             selectStatement.setInt(1, idLigneCommande);
@@ -338,7 +410,7 @@ public class StockController implements Initializable , LanguageObserver{
             e.printStackTrace();
         }
     }
-
+        /************calcul cout ***************/
     public float calculateTotalValue(int ref_produit) {
         try {
             Connection connection = MyConnection.getInstance().getCnx();
@@ -361,14 +433,14 @@ public class StockController implements Initializable , LanguageObserver{
                         float totalValue = prix * quantite;
 
                         // Print the result
-                        System.out.println("Total value for product with ref " + ref_produit + ": " + totalValue);
+                        System.out.println("valeur total des produit  " + ref_produit + ": " + totalValue);
 
                         // Update the total value in the stockk table
                         updateTotalValueInDatabase(ref_produit, totalValue);
 
                         return totalValue;
                     } else {
-                        System.out.println("Product with ref " + ref_produit + " not found in stockk table.");
+                        System.out.println("produit avec réference  " + ref_produit + " n'existe pas dans le stock .");
                     }
                 }
             }
@@ -379,7 +451,7 @@ public class StockController implements Initializable , LanguageObserver{
         // Return a default value in case of an error or if the product is not found
         return 0.0f;
     }
-
+       /**********update cout dans table***********/
     private void updateTotalValueInDatabase(int ref_produit, float totalValue) {
         try {
             Connection connection = MyConnection.getInstance().getCnx();
@@ -414,77 +486,33 @@ public class StockController implements Initializable , LanguageObserver{
 
 
         } else {
-            System.out.println("TableView is null");
+            System.out.println("Table vide");
         }
     }
 
-
+  /************Pour buton ajouter stock*************/
     @FXML
     void handleButtonAction(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Ajouter_stock.fxml"));
             Parent root = loader.load();
             AjouterStockController ajouterStockController = loader.getController();
-            // Pass the StockController instance
-            ajouterStockController.setStockController(this);
+           //établir une référence entre deux contrôleurs
+            ajouterStockController.setStockController(this); //prend en paramètre une référence au contrôleur actuel (this),
 
             Stage stage = new Stage();
             stage.setTitle("Ajouter stock");
             stage.setScene(new Scene(root));
             stage.setOnHidden((WindowEvent windowEvent) -> {
                 show(); // Update the table
-                updateTotalStockCount();
+                updateTotalStockCount();// stat pane
             });
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error du chargement Ajouter_stock.fxml");
+            System.out.println("Erreur du chargement Ajouter_stock.fxml");
         }
     }
-
-    public void updateTotalValue(float totalValue) {
-        tTotal.setText(String.valueOf(totalValue));
-    }
-
-    @FXML
-    void deleteStock(ActionEvent event) {
-        Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
-
-        if (selectedStock == null) {
-            // alert lors d'absence d'un element selectionner
-            showAlert("Veuillez sélectionner un élément.");
-        } else {
-            stockTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-                if (newSelection != null) {
-                    id_s = newSelection.getId_s();
-                }
-            });
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Dialog");
-            alert.setHeaderText(null);
-            alert.setContentText("Vous êtes sur  de supprimer le stock?");
-
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    String delete = "DELETE FROM stock WHERE id_s = ?";
-                    Connection connection = MyConnection.getInstance().getCnx();
-                    try {
-                        PreparedStatement st = connection.prepareStatement(delete);
-                        st.setInt(1, id_s);
-                        st.executeUpdate();
-                        show();
-                        updateTotalStockCount();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-        }
-    }
-
-    /******************************Update*******************/
-
     @FXML
     void getData(MouseEvent event) {
         Vboxupdate.visibleProperty().unbind();
@@ -501,59 +529,33 @@ public class StockController implements Initializable , LanguageObserver{
         }
     }
 
-
-@FXML
-void UpdateStock(ActionEvent event) {
-    Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
-
-    if (selectedStock == null) {
-        showAlert("Veuillez sélectionner un élément.");
-    } else {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText(null);
-        alert.setContentText("Vous êtes sûr de modifier le stock ? ");
-
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                if (!isInteger(Qntfield.getText())) {
-                    showAlert("La quantité doit être un entier.");
-                    return;
-                }
-                String update = "update stock set quantite = ? where id_s = ?";
-                Connection connection = MyConnection.getInstance().getCnx();
-
-                try {
-                    int newQuantite = Integer.parseInt(Qntfield.getText());
-
-                    PreparedStatement st = connection.prepareStatement(update);
-                    st.setInt(1, newQuantite);
-                    st.setInt(2, Integer.parseInt(Idfield.getText()));
-
-                    st.executeUpdate();
-
-                    if (newQuantite > selectedStock.getNbVendu()) {
-                        // Remplacez YOUR_ACCESS_TOKEN par votre jeton d'accès Facebook
-                        String accessToken = "EAANLAmpI2JEBO2XUNnnsmnZCWIxORTpZA3mQ3YFDhgo2qlRj6teQWDZAWWQadhU3zjg2LgwkCxzXLxxWEgFdFJUOIBZC6pOzVpwqtQBcb68Eezv7ZBUmMj5vVExZCxeHv3gxZBhUlvCt0b4yfebtZAj5yO0v9LtJbqupwlKOJpgrtBTXSWnP31YCRqOGaEFVSsAZD";
-                        FacebookClient facebookClient = new DefaultFacebookClient(accessToken, Version.VERSION_19_0);
-
-                        // Construire le message pour la publication sur Facebook
-                        String facebookMessage = "Le stock du produit "+selectedStock.getProduitMarque()+ " est maintenant disponible  ";
-
-
-                        // Publier sur Facebook directement depuis StockController
-                        postStatusUpdate(facebookClient, facebookMessage);
-                    }
-
-                    show();
-
-                } catch (SQLException | NumberFormatException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    public void updateTotalValue(float totalValue) {
+        tTotal.setText(String.valueOf(totalValue));
     }
-}
+
+    public static Stock findLowestStock(ObservableList<Stock> stockData) {
+        Stock lowestStock = null;
+        int minQuantity = Integer.MAX_VALUE;
+
+        for (Stock stock : stockData) {
+            int quantity = stock.getQuantite();
+            if (quantity < minQuantity) {
+                minQuantity = quantity;
+                lowestStock = new Stock();
+                lowestStock.setId_s(stock.getId_s());
+                lowestStock.setQuantite(stock.getQuantite());
+                lowestStock.setNbVendu(stock.getNbVendu());
+
+            }
+        }
+        return lowestStock;
+    }
+
+
+
+
+
+    /**********using api facebook*************/
 
     private void postStatusUpdate(FacebookClient facebookClient, String message) {
         try {
@@ -586,13 +588,20 @@ void UpdateStock(ActionEvent event) {
         alert.setContentText(message);
 
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(
-                getClass().getResource("/com/example/demo/css/style_dash.css").toExternalForm()
-        );
-        dialogPane.getStyleClass().add("custom-alert");
 
-        alert.showAndWait();
-    }
+            ButtonType customButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            alert.getButtonTypes().setAll(customButtonType);
+
+            // Get the OK button and apply custom styles
+            Button okButton = (Button) alert.getDialogPane().lookupButton(customButtonType);
+            okButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+
+            // Remove the default icon
+            alert.getDialogPane().setGraphic(null);
+
+            alert.showAndWait();
+        }
+
 
 
     /*****************Recherche************/
@@ -692,7 +701,7 @@ void UpdateStock(ActionEvent event) {
 
     }
 
-
+/****************export excel****************/
 private void exportStockToExcel() {
     Stock selectedStock = stockTableView.getSelectionModel().getSelectedItem();
 
@@ -731,7 +740,7 @@ private void exportStockToExcel() {
         }
     }
 
-    /**********************************************/
+    /******************** devise **************************/
 
     @FXML
     void convertCostToEuro(ActionEvent event) {
@@ -791,11 +800,9 @@ private void exportStockToExcel() {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+
     }
     public void updateLabels() {
-        // Update other labels in StockController...
-         // You can customize this based on your needs
-        // Update btnupdate text based on language
         id_stockColumn.setText(LanguageManager.getInstance().getText("id_stockColumn"));
         NomColumn.setText(LanguageManager.getInstance().getText("NomColumn"));
         refProduitColumn.setText(LanguageManager.getInstance().getText("refProduitColumn"));
@@ -820,6 +827,7 @@ private void exportStockToExcel() {
         /**********************/
         //Trecherche.setText(LanguageManager.getInstance().getText("Trecherche"));
         updateMarqueColumnContent();
+        updateNomColumnContent();
     }
     public void updateMarqueColumnContent() {
         // Suppose your TableColumn "marqueColumn" is already defined in your FXML or code
@@ -842,10 +850,51 @@ private void exportStockToExcel() {
             }
         });
     }
+    public void updateNomColumnContent() {
+        // Suppose your TableColumn "nomColumn" is already defined in your FXML or code
+        // TableColumn<Stock, String> nomColumn = ...
+
+        NomColumn.setCellValueFactory(cellData -> {
+            Stock stock = cellData.getValue();
+            return new SimpleStringProperty(stock.getNom());
+        });
+
+        NomColumn.setCellFactory(column -> new TableCell<Stock, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(LanguageManager.getInstance().getText(item));
+                }
+            }
+        });
+    }
 
     @Override
     public void onLanguageChanged() {
         updateLabels();
+    }
+
+
+
+    public void sendSMS(String toPhoneNumber, String message) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+        Message twilioMessage = Message.creator(
+                new PhoneNumber("+21692150166"), // To phone number
+                new PhoneNumber(FROM_PHONE_NUMBER), // From Twilio phone number
+                message
+        ).create();
+
+        System.out.println("SMS sent: " + twilioMessage.getSid());
+    }
+    public static StockController getInstance() {
+        if (instance == null) {
+            instance = new StockController();
+        }
+        return instance;
     }
 }
 
