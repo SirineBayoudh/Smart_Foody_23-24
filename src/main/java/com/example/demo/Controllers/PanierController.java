@@ -458,8 +458,9 @@ public class PanierController {
 
     @FXML
     private void chargerInterfaceCommande(ActionEvent event) {
+        ajouterCommande();
         try {
-            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/commande.fxml"));
+            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/commande_client.fxml"));
             Scene commandeScene = new Scene(commandeParent);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(commandeScene);

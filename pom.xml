@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.stripe</groupId>
             <artifactId>stripe-java</artifactId>
-            <version>20.79.0</version> <!-- Assurez-vous de vérifier la dernière version sur https://search.maven.org/artifact/com.stripe/stripe-java -->
+            <version>24.17.0</version> <!-- Assurez-vous de vérifier la dernière version sur https://search.maven.org/artifact/com.stripe/stripe-java -->
         </dependency>
 
         <dependency>

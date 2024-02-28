@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -15,6 +17,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Date;
 
@@ -25,7 +28,6 @@ public class CommandeClientController {
 
     public ComboBox map;
     PanierController panierController = new PanierController(); // Création d'une instance de PanierController
-
 
 
     public CommandeClientController(PanierController panierController) {
@@ -53,7 +55,6 @@ public class CommandeClientController {
     }
 
     public void initialize() {
-
 
 
         int idUtilisateur = 1; // Supposons que l'utilisateur connecté ait l'id 1
@@ -124,17 +125,17 @@ public class CommandeClientController {
             // Modifier le contenuEmail pour inclure le code QR
             String contenuEmail = "<html><body>"
                     + "<div style='display: flex; justify-content: space-between; width: 100%;'>"
-                    +   "<div style='width: 50%;'><img src='cid:logo' alt='Logo' style='width: 100px; float: left;'/></div>" // Logo poussé à gauche
-                    +   "<div style='width: 50%;'><img src='cid:qrCode' alt='QR Code' style='width: 100px; float: right;'/></div>" // QR Code poussé à droite
+                    + "<div style='width: 50%;'><img src='cid:logo' alt='Logo' style='width: 100px; float: left;'/></div>" // Logo poussé à gauche
+                    + "<div style='width: 50%;'><img src='cid:qrCode' alt='QR Code' style='width: 100px; float: right;'/></div>" // QR Code poussé à droite
                     + "</div>"
                     + "<div style='clear: both; border: 2px solid green; padding: 20px; margin-top: 20px;'>"
-                    +   "<h1 style='text-align: center;'>Confirmation de commande</h1>"
-                    +   "<p>Votre commande a été passée avec succès. Merci de votre confiance.</p>"
+                    + "<h1 style='text-align: center;'>Confirmation de commande</h1>"
+                    + "<p>Votre commande a été passée avec succès. Merci de votre confiance.</p>"
                     + "</div>"
                     + "</body></html>";
 
             // Assurez-vous que la méthode envoyerEmailAvecImageInline est adaptée pour gérer plusieurs images (logo et code QR)
-            EmailUtil.envoyerEmailAvecImageInline(emailClient, sujetEmail, contenuEmail, qrCodePath, "qrCode","C:/Users/INFOTEC/Desktop/Smart_Foody_23-24/src/main/resources/com/example/demo/Images/trans_logo.png", "logo");
+            EmailUtil.envoyerEmailAvecImageInline(emailClient, sujetEmail, contenuEmail, qrCodePath, "qrCode", "C:/Users/INFOTEC/Desktop/Smart_Foody_23-24/src/main/resources/com/example/demo/Images/trans_logo.png", "logo");
 
             // Afficher une alerte de succès
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -159,8 +160,6 @@ public class CommandeClientController {
         panierController.viderPanier(false); // Appel de la méthode viderPanier avec false pour indiquer que la commande n'est pas validée
     }
     // la méthodes qui selectionne tous les commandes passe a partir de base
-
-
 
 
     public void payer() {
