@@ -22,7 +22,7 @@
         </ImageView>
         <Text fx:id="t1" layoutX="90.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="login-form-container" text="Se connecter" translateY="10.0" />
         <Text fill="#56ab2f" layoutX="246.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-underline: true;" text="S'inscrire" translateY="10.0" />
-        <VBox fx:id="register1" layoutX="45.0" layoutY="100.0" minHeight="-Infinity" prefHeight="388.0" prefWidth="347.0" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="60.0">
+        <VBox fx:id="register1" layoutX="36.0" layoutY="102.0" minHeight="-Infinity" prefHeight="388.0" prefWidth="347.0" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="60.0">
             <children>
                 <TextField fx:id="tnom" layoutX="10.0" layoutY="113.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="310.0" promptText="Nom" />
                 <TextField fx:id="tprenom" layoutX="10.0" layoutY="113.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="310.0" promptText="Prénom" />
@@ -51,8 +51,8 @@
                         <Image url="@Images/fermer-les-yeux-vert.png" />
                     </image>
                 </ImageView>
-                <ComboBox fx:id="choixGenre" prefWidth="150.0" promptText="Genre" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-265.0" />
-            <TextField fx:id="tftel" maxWidth="-Infinity" prefWidth="150.0" promptText="Num Tel" translateX="170.0" translateY="-314.0" />
+                <ComboBox fx:id="choixGenre" prefWidth="150.0" promptText="Genre" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-255.0" />
+            <TextField fx:id="tftel" maxWidth="-Infinity" prefWidth="150.0" promptText="Num Tel" translateX="170.0" translateY="-304.0" />
                 <ComboBox fx:id="choixVille" prefWidth="150.0" promptText="Ville" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-305.0" visibleRowCount="4" />
                 <TextField fx:id="tfrue" layoutX="10.0" layoutY="106.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="140.0" promptText="Rue" translateX="170.0" translateY="-353.0" />
                 <ComboBox fx:id="choixObjectif" prefWidth="310.0" promptText="Objectif" styleClass="combo-box" stylesheets="@css/style_login.css" translateY="-355.0" />
@@ -84,6 +84,94 @@
             <Button fx:id="btn_ajout" layoutX="142.0" layoutY="510.0" mnemonicParsing="false" onAction="#addUserIMC" style="-fx-padding: 10px 20px;" text="S'inscrire" translateX="-70.0" translateY="20.0" />
          </children>
       </AnchorPane>
+      <Label fx:id="majus" layoutX="24.0" layoutY="15.0" prefHeight="18.0" prefWidth="67.0" text="1 majuscule" translateX="30.0" translateY="325.0" />
+      <ImageView fx:id="verif1" fitHeight="16.0" fitWidth="26.0" layoutX="15.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" translateX="25.0" translateY="295.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="verif2" fitHeight="16.0" fitWidth="26.0" layoutX="25.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" translateX="95.0" translateY="285.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="minuscule" layoutX="34.0" layoutY="25.0" prefHeight="18.0" prefWidth="67.0" text="1 minuscule" translateX="100.0" translateY="315.0" />
+      <ImageView fx:id="verif3" fitHeight="16.0" fitWidth="26.0" layoutX="35.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" translateX="165.0" translateY="275.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="special" layoutX="44.0" layoutY="35.0" prefHeight="18.0" prefWidth="72.0" text="1 carct. spéc." translateX="170.0" translateY="305.0" />
+      <ImageView fx:id="verif4" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="240.0" translateY="265.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="longueur" layoutX="54.0" layoutY="45.0" prefHeight="18.0" prefWidth="72.0" text="longueur &gt;8" translateX="245.0" translateY="295.0" />
+      <ImageView fx:id="error1" fitHeight="16.0" fitWidth="26.0" layoutX="25.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="285.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="error2" fitHeight="16.0" fitWidth="26.0" layoutX="35.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" translateX="85.0" translateY="275.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="error3" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="155.0" translateY="265.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="error4" fitHeight="16.0" fitWidth="26.0" layoutX="55.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateX="228.0" translateY="255.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="majusConfirm" layoutX="34.0" layoutY="25.0" prefHeight="18.0" prefWidth="67.0" text="1 majuscule" translateX="20.0" translateY="365.0" />
+      <ImageView fx:id="verifConfirm1" fitHeight="16.0" fitWidth="26.0" layoutX="25.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" translateX="15.0" translateY="335.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="errorConfirm1" fitHeight="16.0" fitWidth="26.0" layoutX="35.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" translateX="5.0" translateY="325.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="minusculeConfirm" layoutX="44.0" layoutY="35.0" prefHeight="18.0" prefWidth="67.0" text="1 minuscule" translateX="90.0" translateY="355.0" />
+      <ImageView fx:id="verifConfirm2" fitHeight="16.0" fitWidth="26.0" layoutX="35.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" translateX="85.0" translateY="325.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="errorConfirm2" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="75.0" translateY="315.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="specialConfirm" layoutX="54.0" layoutY="45.0" prefHeight="18.0" prefWidth="72.0" text="1 carct. spéc." translateX="160.0" translateY="345.0" />
+      <ImageView fx:id="verifConfirm3" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="155.0" translateY="315.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="errorConfirm3" fitHeight="16.0" fitWidth="26.0" layoutX="55.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateX="145.0" translateY="305.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="longueurConfirm" layoutX="64.0" layoutY="55.0" prefHeight="18.0" prefWidth="72.0" text="longueur &gt;8" translateX="235.0" translateY="335.0" />
+      <ImageView fx:id="verifConfirm4" fitHeight="16.0" fitWidth="26.0" layoutX="55.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateX="228.0" translateY="305.0" visible="false">
+         <image>
+            <Image url="@Images/coche.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="errorConfirm4" fitHeight="16.0" fitWidth="26.0" layoutX="65.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" translateX="218.0" translateY="295.0">
+         <image>
+            <Image url="@Images/supprimer.png" />
+         </image>
+      </ImageView>
     </children>
     <styleClass>
         <String fx:value="login-container" />

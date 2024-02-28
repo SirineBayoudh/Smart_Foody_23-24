@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterController implements Initializable {
 
@@ -138,6 +140,78 @@ public class RegisterController implements Initializable {
     @FXML
     private AnchorPane register2;
 
+    @FXML
+    private ImageView verif1;
+
+    @FXML
+    private ImageView error1;
+
+    @FXML
+    private Label majus;
+
+    @FXML
+    private ImageView verif2;
+
+    @FXML
+    private ImageView error2;
+
+    @FXML
+    private Label minuscule;
+
+    @FXML
+    private ImageView verif3;
+
+    @FXML
+    private ImageView error3;
+
+    @FXML
+    private Label special;
+
+    @FXML
+    private ImageView verif4;
+
+    @FXML
+    private ImageView error4;
+
+    @FXML
+    private Label longueur;
+
+    @FXML
+    private ImageView verifConfirm1;
+
+    @FXML
+    private ImageView errorConfirm1;
+
+    @FXML
+    private Label majusConfirm;
+
+    @FXML
+    private ImageView verifConfirm2;
+
+    @FXML
+    private ImageView errorConfirm2;
+
+    @FXML
+    private Label minusculeConfirm;
+
+    @FXML
+    private ImageView verifConfirm3;
+
+    @FXML
+    private ImageView errorConfirm3;
+
+    @FXML
+    private Label specialConfirm;
+
+    @FXML
+    private ImageView verifConfirm4;
+
+    @FXML
+    private ImageView errorConfirm4;
+
+    @FXML
+    private Label longueurConfirm;
+
     private void chargerOptionsObjectif() {
         Connection cnx = MyConnection.getInstance().getCnx();
 
@@ -209,12 +283,20 @@ public class RegisterController implements Initializable {
     void HidePasswordOnAction(KeyEvent event) {
         password = tpwd.getText();
         tpwdshow.setText(password);
+        checkForUpperCaseLetter(password);
+        checkForLowerCaseLetter(password);
+        checkSpecial(password);
+        checkLength(password);
     }
 
     @FXML
     void ShowPasswordOnAction(KeyEvent event) {
         password = tpwdshow.getText();
         tpwd.setText(password);
+        checkForUpperCaseLetter(password);
+        checkForLowerCaseLetter(password);
+        checkSpecial(password);
+        checkLength(password);
     }
 
     @FXML
@@ -237,12 +319,20 @@ public class RegisterController implements Initializable {
     void HidePasswordConfirmOnAction(KeyEvent event) {
         confirmPassword = tpwdconfirm.getText();
         tpwdshowconfirm.setText(confirmPassword);
+        checkForUpperCaseLetterConfirm(confirmPassword);
+        checkForLowerCaseLetterConfirm(confirmPassword);
+        checkSpecialConfirm(confirmPassword);
+        checkLengthConfirm(confirmPassword);
     }
 
     @FXML
     void ShowPasswordConfirmOnAction(KeyEvent event) {
         confirmPassword = tpwdshowconfirm.getText();
         tpwdconfirm.setText(confirmPassword);
+        checkForUpperCaseLetterConfirm(confirmPassword);
+        checkForLowerCaseLetterConfirm(confirmPassword);
+        checkSpecialConfirm(confirmPassword);
+        checkLengthConfirm(confirmPassword);
     }
 
     @FXML
@@ -259,6 +349,136 @@ public class RegisterController implements Initializable {
         eyeClosedConfrm.setVisible(true);
         tpwdshowconfirm.setVisible(false);
         eyeOpenConfirm.setVisible(false);
+    }
+
+    private void checkForUpperCaseLetter(String password) {
+        boolean containsUpperCase = false;
+        for (int i = 0; i < password.length(); i++) {
+            if (Character.isUpperCase(password.charAt(i))) {
+                containsUpperCase = true;
+                break;
+            }
+        }
+        if (containsUpperCase) {
+            majus.setStyle("-fx-text-fill: green;");
+            verif1.setVisible(true);
+            error1.setVisible(false);
+        } else {
+            majus.setStyle("");
+            verif1.setVisible(false);
+            error1.setVisible(true);
+        }
+    }
+
+    private void checkForLowerCaseLetter(String password) {
+        boolean containsLowerCase = false;
+        for (int i = 0; i < password.length(); i++) {
+            if (Character.isLowerCase(password.charAt(i))) {
+                containsLowerCase = true;
+                break;
+            }
+        }
+        if (containsLowerCase) {
+            minuscule.setStyle("-fx-text-fill: green;");
+            verif2.setVisible(true);
+            error2.setVisible(false);
+        } else {
+            minuscule.setStyle("");
+            verif2.setVisible(false);
+            error2.setVisible(true);
+        }
+    }
+
+    private void checkSpecial(String password) {
+    Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
+    Matcher specialCharMatcher = specialCharPattern.matcher(password);
+        if (specialCharMatcher.find()) {
+            special.setStyle("-fx-text-fill: green;");
+            verif3.setVisible(true);
+            error3.setVisible(false);
+        } else {
+            special.setStyle("");
+            verif3.setVisible(false);
+            error3.setVisible(true);
+        }
+
+    }
+
+    private void checkLength(String password){
+        if (password.length() >= 8) {
+            longueur.setStyle("-fx-text-fill: green;");
+            verif4.setVisible(true);
+            error4.setVisible(false);
+        } else {
+            longueur.setStyle("");
+            verif4.setVisible(false);
+            error4.setVisible(true);
+        }
+    }
+
+    private void checkForUpperCaseLetterConfirm(String password) {
+        boolean containsUpperCase = false;
+        for (int i = 0; i < password.length(); i++) {
+            if (Character.isUpperCase(password.charAt(i))) {
+                containsUpperCase = true;
+                break;
+            }
+        }
+        if (containsUpperCase) {
+            majusConfirm.setStyle("-fx-text-fill: green;");
+            verifConfirm1.setVisible(true);
+            errorConfirm1.setVisible(false);
+        } else {
+            majusConfirm.setStyle("");
+            verifConfirm1.setVisible(false);
+            errorConfirm1.setVisible(true);
+        }
+    }
+
+    private void checkForLowerCaseLetterConfirm(String password) {
+        boolean containsLowerCase = false;
+        for (int i = 0; i < password.length(); i++) {
+            if (Character.isLowerCase(password.charAt(i))) {
+                containsLowerCase = true;
+                break;
+            }
+        }
+        if (containsLowerCase) {
+            minusculeConfirm.setStyle("-fx-text-fill: green;");
+            verifConfirm2.setVisible(true);
+            errorConfirm2.setVisible(false);
+        } else {
+            minusculeConfirm.setStyle("");
+            verifConfirm2.setVisible(false);
+            errorConfirm2.setVisible(true);
+        }
+    }
+
+    private void checkSpecialConfirm(String password) {
+        Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
+        Matcher specialCharMatcher = specialCharPattern.matcher(password);
+        if (specialCharMatcher.find()) {
+            specialConfirm.setStyle("-fx-text-fill: green;");
+            verifConfirm3.setVisible(true);
+            errorConfirm3.setVisible(false);
+        } else {
+            specialConfirm.setStyle("");
+            verifConfirm3.setVisible(false);
+            errorConfirm3.setVisible(true);
+        }
+
+    }
+
+    private void checkLengthConfirm(String password){
+        if (password.length() >= 8) {
+            longueurConfirm.setStyle("-fx-text-fill: green;");
+            verifConfirm4.setVisible(true);
+            errorConfirm4.setVisible(false);
+        } else {
+            longueurConfirm.setStyle("");
+            verifConfirm4.setVisible(false);
+            errorConfirm4.setVisible(true);
+        }
     }
 
     @FXML
