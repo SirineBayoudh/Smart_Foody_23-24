@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="902.0" stylesheets="@css/style_navbarre.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.NavbarreCotroller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="902.0" stylesheets="@css/style_navbarre.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.NavbarreCotroller">
    <top>
       <!-- Ajustement de l'espacement entre les éléments de la HBox -->
       <HBox prefHeight="75.0" prefWidth="902.0" spacing="30" styleClass="navbar" BorderPane.alignment="CENTER">
@@ -20,62 +20,62 @@
                   <Image url="@Images/trans_logo.png" />
                </image>
             </ImageView>
-            <!-- Réduction de la taille de police pour une meilleure intégration dans l'espace disponible -->
-            <Label styleClass="nav-item" text="Accueil">
+            <Button mnemonicParsing="false" stylesheets="@css/style_navbarre.css" text="Accueil">
+               <styleClass>
+                  <String fx:value="nav-item" />
+                  <String fx:value="navbar" />
+               </styleClass>
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
                <HBox.margin>
-                  <Insets left="20.0" top="25.0" />
+                  <Insets top="25.0" />
                </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Label>
-            <Label onMouseClicked="#loadProduit" styleClass="nav-item" text="Nos Produits">
+            </Button>
+            <Button fx:id="produit" mnemonicParsing="false" onAction="#loadProduit" stylesheets="@css/style_navbarre.css" text="Nos Produits">
+               <HBox.margin>
+                  <Insets top="25.0" />
+               </HBox.margin>
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="nav-item" />
+                  <String fx:value="navbar" />
+               </styleClass>
+            </Button>
+            <Button mnemonicParsing="false" stylesheets="@css/style_navbarre.css" text="Réclamations">
                <HBox.margin>
-                  <Insets left="20.0" top="25.0" />
+                  <Insets top="25.0" />
                </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Label>
-            <Label styleClass="nav-item" text="Réclamation">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+               <styleClass>
+                  <String fx:value="nav-item" />
+                  <String fx:value="navbar" />
+               </styleClass>
+            </Button>
+            <Button fx:id="BtnConseil" mnemonicParsing="false" prefHeight="46.0" prefWidth="96.0" stylesheets="@css/style_navbarre.css" text="Conseils">
                <HBox.margin>
-                  <Insets left="20.0" top="25.0" />
+                  <Insets top="25.0" />
                </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Label>
-            <Label styleClass="nav-item" text="Conseils">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
-               <HBox.margin>
-                  <Insets left="20.0" top="25.0" />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Label>
+               <styleClass>
+                  <String fx:value="navbar" />
+                  <String fx:value="nav-item" />
+               </styleClass>
+            </Button>
             <!-- Ajustement de la taille des icônes de navigation -->
-            <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#loadPanier" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
+            <ImageView fx:id="panier" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#loadPanier" pickOnBounds="true" preserveRatio="true" styleClass="nav-item">
                <image>
                   <Image url="@Images/panier.png" />
                </image>
                <HBox.margin>
                   <Insets left="20.0" top="25.0" />
                </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
             </ImageView>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
                <image>

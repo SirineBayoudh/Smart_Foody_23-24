@@ -1,9 +1,11 @@
 package com.example.demo.Controllers;
 
+import com.microsoft.schemas.vml.CTGroup;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -14,8 +16,12 @@ import java.util.ResourceBundle;
 
 public class NavbarreCotroller implements Initializable {
 
+    public Button BtnConseil;
+    public ImageView panier;
+    public Button produit;
     @FXML
     private BorderPane centerPane;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,11 +50,16 @@ public class NavbarreCotroller implements Initializable {
 
     @FXML
     private void loadProduit() {
+        produit.setStyle("-fx-background-color: #56AB2F");
+      
+
         loadPage("/com/example/demo/produit.fxml");
     }
 
     @FXML
     private void loadPanier() {
+        panier.setStyle("-fx-background-color: #56AB2F");
+
         loadPage("/com/example/demo/panier.fxml");
     }
 
