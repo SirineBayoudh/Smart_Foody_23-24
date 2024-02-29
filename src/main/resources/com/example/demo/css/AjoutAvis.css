@@ -1,0 +1,26 @@
+.root{
+    -fx-background-color: #ffff;
+}
+
+.paneAvis{
+    -fx-border-color: green;
+    -fx-border-width: 6px;
+}
+.textStar{
+    -fx-text-fill: #1a65c7;
+}
+
+.retour:hover{
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+}
+
+.modifier-button {
+    -fx-background-color: #4CAF50; /* Couleur verte */
+    -fx-text-fill: white; /* Couleur du texte en blanc */
+}
+
+.supprimer-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+}
