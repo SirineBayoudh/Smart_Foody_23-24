@@ -316,7 +316,7 @@ public class reclamationController{
         } else {
             // Si le tri n'est pas actif, activer le tri par type
             // Requête SQL pour trier les réclamations par type
-            String req = "SELECT * FROM reclamation ORDER BY type";
+            String req = "SELECT * FROM reclamation WHERE archive=0 ORDER BY statut ";
             con = MyConnection.getInstance();
             try {
                 st = con.getCnx().prepareStatement(req);
@@ -366,6 +366,7 @@ public class reclamationController{
                     nombreNotification();
                     showReclamations();
                     showReclamationsArchivées();
+                    nombreNotification();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -375,7 +376,7 @@ public class reclamationController{
     @FXML
     void rechercherRec(MouseEvent event) {
         // Requête SQL pour récupérer les détails de la réclamation selon l'ID
-        String req = "SELECT * FROM reclamation WHERE id_reclamation=?";
+        String req = "SELECT * FROM reclamation WHERE id_reclamation=? ";
         con = MyConnection.getInstance();
         try {
             st = con.getCnx().prepareStatement(req);
