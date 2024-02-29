@@ -19,7 +19,7 @@
 <Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="674.0" prefWidth="954.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.StockController">
     <children>
         <!-- Le contenu spécifique de votre page de stocks -->
-        <TableView fx:id="stockTableView" layoutX="237.0" layoutY="302.0" onMouseClicked="#getData" prefHeight="321.0" prefWidth="705.0" styleClass="table-row-cell" stylesheets="@css/table-view-sa.css">
+        <TableView fx:id="stockTableView" layoutX="229.0" layoutY="307.0" onMouseClicked="#getData" prefHeight="324.0" prefWidth="703.0" styleClass="table-row-cell" stylesheets="@css/table-view-sa.css">
             <columns>
             <TableColumn fx:id="id_stockColumn" editable="false" prefWidth="103.20001602172852" text="Id Stock" />
                 <TableColumn fx:id="NomColumn" minWidth="20.0" prefWidth="91.199951171875" style="-fx-text-fill: #448825;" text="Nom" />
@@ -27,7 +27,7 @@
                 <TableColumn fx:id="marqueColumn" style="-fx-text-fill: #448825;" text="Marque" />
                 <TableColumn fx:id="quantiteColumn" prefWidth="77.5999755859375" style="-fx-text-fill: #448825;" text="Quantité" />
             <TableColumn fx:id="nbVenduColumn" minWidth="0.0" prefWidth="130.39996337890625" style="-fx-text-fill: #448825;" text="Nombre vendus" />
-            <TableColumn fx:id="tTotal" prefWidth="86.99993896484375" style="-fx-text-fill: #448825;" text="cout" />
+            <TableColumn fx:id="tTotal" prefWidth="77.79998779296875" style="-fx-text-fill: #448825;" text="cout" />
 
             </columns>
 <!--            <styleClass>-->
@@ -37,7 +37,7 @@
         </TableView>
       <Button fx:id="btnupdate" layoutX="359.0" layoutY="631.0" mnemonicParsing="false" onAction="#UpdateStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
       <Button fx:id="btnsupprimer" layoutX="523.0" layoutY="632.0" mnemonicParsing="false" onAction="#deleteStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
-        <Button fx:id="btnExporterTout" layoutX="696.0" layoutY="629.0" mnemonicParsing="false" onAction="#exporterToutesLesDonnees" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+        <Button fx:id="btnExporterTout" layoutX="697.0" layoutY="632.0" mnemonicParsing="false" onAction="#exporterToutesLesDonnees" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
 
         <ImageView fitHeight="23.0" fitWidth="35.0" layoutX="373.0" layoutY="635.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -134,7 +134,7 @@
          </image>
       </ImageView>
       <TextField fx:id="tstdelete" editable="false" layoutX="563.0" layoutY="637.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="supprimer" />
-      <TextField fx:id="tstexport" editable="false" layoutX="720.0" layoutY="634.0" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Exporter Tout" />
+      <TextField fx:id="tstexport" editable="false" layoutX="721.0" layoutY="637.0" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Exporter Tout" />
       <TextField fx:id="tstadd" layoutX="255.0" layoutY="261.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Add" />
       <TextField fx:id="tstsmodif" editable="false" layoutX="405.0" layoutY="637.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Modifier" />
       <Text fx:id="ref_pr" layoutX="696.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Réference de produit" />

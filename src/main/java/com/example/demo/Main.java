@@ -111,7 +111,7 @@ public class Main extends Application {
                 DialogPane dialogPane = alert.getDialogPane();
                 dialogPane.setMinWidth(400);  // Set your desired minimum width
 
-                // Apply inline styles to the "OK" button
+                // Apply  inline styles to the "OK" button
                 Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
                 okButton.setStyle("-fx-background-color: " +
                         "linear-gradient(#f0ff35, #a9ff00), " +

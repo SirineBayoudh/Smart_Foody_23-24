@@ -2,7 +2,6 @@
     -fx-background-color:#EAEEF4;
 }
 .background {
-    /* Fallback color */
     -fx-background-color: #56ab2f;
     -fx-background-color: linear-gradient(to bottom right, #56ab2f, #a8e063);
 }

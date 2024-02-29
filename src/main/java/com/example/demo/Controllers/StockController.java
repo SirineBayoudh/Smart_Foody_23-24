@@ -156,7 +156,7 @@ public class StockController implements Initializable , LanguageObserver{
     @FXML
     private Text Titlebarchart;
     private static final String ACCOUNT_SID = "AC65cc060d1e8324522666575b59ffd53b";
-    private static final String AUTH_TOKEN = "";
+    private static final String AUTH_TOKEN = "b0620372cecd4c84f99c069d8c554fda";
     private static final String FROM_PHONE_NUMBER = "+18607820963";
     private LanguageManager languageManager = LanguageManager.getInstance();
 
@@ -480,7 +480,6 @@ public class StockController implements Initializable , LanguageObserver{
             id_stockColumn.setCellValueFactory(new PropertyValueFactory<>("id_s"));
             NomColumn.setCellValueFactory(new PropertyValueFactory<>("nom"));
             tTotal.setCellValueFactory(new PropertyValueFactory<>("cout"));
-
             updateBarChart(list);
             updateScatterChart(list);
 
@@ -632,25 +631,29 @@ public class StockController implements Initializable , LanguageObserver{
         barchart.getData().clear();
         stockData.sort(Comparator.comparingInt(Stock::getId_s));
         XYChart.Series<String, Number> series = new XYChart.Series<>();
+
         for (Stock stock : stockData) {
             try {
                 int quantity = stock.getQuantite();
                 String id_s = String.valueOf(stock.getId_s());
+                String nom = stock.getNom(); // Retrieve the 'nom' property
 
-                // Utilisez BarChart.Data pour spécifier les valeurs des axes X et Y
-                BarChart.Data<String, Number> data = new BarChart.Data<>(id_s, quantity);
+                // Combine 'id_s' and 'nom' for the X-axis label
+                String xAxisLabel = id_s + " - " + nom;
+
+                // Use BarChart.Data to specify X and Y axis values
+                BarChart.Data<String, Number> data = new BarChart.Data<>(xAxisLabel, quantity);
                 series.getData().add(data);
 
-                // Si vous avez besoin de personnaliser l'apparence des barres, vous pouvez le faire ici
+                // If you need to customize the appearance of the bars, you can do it here
                 Node bar = data.getNode();
-                // Ajoutez ici votre personnalisation de la barre (si nécessaire)
+                // Add your bar customization here if necessary
             } catch (NumberFormatException e) {
                 System.err.println("Invalid reference format: " + stock.getId_s());
             }
         }
 
         barchart.getData().add(series);
-
     }
 
     /******** Count nb stock **********/
