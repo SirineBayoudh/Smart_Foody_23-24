@@ -335,53 +335,71 @@ public class PanierController {
 
     // Ajoute un produit au panier///////////////////////////////////////////////
     public void ajouterCommande() {
+        // Récupérer les lignes de commande actuellement dans le panier
         List<LigneCommande> ligneCommandes = affichageProduitsDansLePanier();
-        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande,remise,etat) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
-            pst.setDate(1, new java.sql.Date(System.currentTimeMillis()));
-            pst.setInt(2, 14);
-            pst.setFloat(3, (float) totale[0]);
-            pst.setFloat(4, (float) remise[0]);
-            pst.setString(5, "Non Livre");
 
+        // Requête SQL pour insérer une nouvelle commande dans la base de données
+        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
+            // Spécifier les valeurs des paramètres de la requête
+            pst.setDate(1, new java.sql.Date(System.currentTimeMillis())); // Date actuelle
+            pst.setInt(2, 14); // ID du client (à remplacer par une valeur dynamique)
+            pst.setFloat(3, (float) totale[0]); // Montant total de la commande
+            pst.setFloat(4, (float) remise[0]); // Montant de la remise appliquée
+            pst.setString(5, "Non Livre"); // État de la commande
+
+            // Exécuter la requête d'insertion
             pst.executeUpdate();
             System.out.println("Commande ajoutée avec succès");
+
+            // Récupérer l'ID de la dernière commande insérée
             String selectCommandeQuery = "SELECT * FROM commande WHERE id_commande = LAST_INSERT_ID()";
             try (PreparedStatement pstSelect = cnx.prepareStatement(selectCommandeQuery)) {
                 ResultSet rs = pstSelect.executeQuery();
                 if (rs.next()) {
+                    // Récupérer les détails de la commande insérée
                     int idCommande = rs.getInt("id_commande");
                     Date dateCommande = rs.getDate("date_commande");
                     int idClient = rs.getInt("id_client");
                     float totaleCommande = rs.getFloat("totalecommande");
                     float remise = rs.getFloat("remise");
                     String etat = rs.getString("etat");
-                    Commande selectedCommande = new Commande(idCommande, dateCommande, idClient, totaleCommande, remise, etat);
-                    holder.setCommande(selectedCommande);
-                    viderPanier(true);
 
+                    // Créer un objet Commande avec les détails récupérés
+                    Commande selectedCommande = new Commande(idCommande, dateCommande, idClient, totaleCommande, remise, etat);
+                    holder.setCommande(selectedCommande); // Définir la commande dans le conteneur (holder)
+                    viderPanier(true); // Vider le panier après avoir passé la commande
+
+                    // Mettre à jour les lignes de commande pour lier les produits à la nouvelle commande
                     for (LigneCommande prod : ligneCommandes) {
-                        String updateQuery = "UPDATE ligne_commande  SET id_panier= NULL , id_commande=? WHERE id_lc = ? ";
+                        String updateQuery = "UPDATE ligne_commande SET id_panier = NULL, id_commande = ? WHERE id_lc = ?";
                         try (PreparedStatement pstUpdate = cnx.prepareStatement(updateQuery)) {
-                            pstUpdate.setInt(1, idCommande);
-                            pstUpdate.setInt(2, prod.getIdLc());
+                            pstUpdate.setInt(1, idCommande); // ID de la nouvelle commande
+                            pstUpdate.setInt(2, prod.getIdLc()); // ID de la ligne de commande à mettre à jour
                             pstUpdate.executeUpdate();
                         } catch (SQLException e) {
                             System.out.println("Erreur lors de la mise à jour du produit dans le panier : " + e.getMessage());
                         }
                     }
-
-                }}
+                }
+            }
         } catch (SQLException e) {
+            // Gérer les erreurs lors de l'ajout de la commande
             System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
         }
     }
 
 
+
     public void ajouterProduitAuLigneCommande(String refProduit) {
-        int idPanier = ajouterProduitAuPanier(14);
+        // Ajouter le produit au panier et récupérer l'ID du panier
+        int idPanier = ajouterProduitAuPanier(14); // ID du client (à remplacer par une valeur dynamique)
         System.out.println("aa" + idPanier);
+
+        // Vérifier si l'ajout au panier a réussi
         if (idPanier != -1) {
+            // Vérifier si le produit existe déjà dans la ligne de commande
             String checkIfExistsQuery = "SELECT COUNT(*) FROM ligne_commande WHERE ref_produit = ? and id_panier=?";
             try (PreparedStatement pstCheck = cnx.prepareStatement(checkIfExistsQuery)) {
                 pstCheck.setString(1, refProduit);
@@ -390,9 +408,10 @@ public class PanierController {
                 ResultSet rs = pstCheck.executeQuery();
                 rs.next();
                 int count = rs.getInt(1);
+
+                // Si le produit existe, mettre à jour la quantité en l'incrémentant de 1
                 if (count > 0) {
-                    // If the product exists, update the total by incrementing it by 1
-                    String updateQuery = "UPDATE ligne_commande  SET quantite= quantite+ 1 WHERE ref_produit = ? and id_panier=?";
+                    String updateQuery = "UPDATE ligne_commande SET quantite = quantite + 1 WHERE ref_produit = ? and id_panier=?";
                     try (PreparedStatement pstUpdate = cnx.prepareStatement(updateQuery)) {
                         pstUpdate.setString(1, refProduit);
                         pstUpdate.setInt(2, idPanier);
@@ -402,8 +421,8 @@ public class PanierController {
                         System.out.println("Erreur lors de la mise à jour du produit dans le panier : " + e.getMessage());
                     }
                 } else {
-                    // If the product doesn't exist, insert a new row with default values
-                    String insertQuery = "INSERT INTO ligne_commande (id_panier, quantite,ref_produit) VALUES (?, 1, ?)";
+                    // Si le produit n'existe pas, insérer une nouvelle ligne de commande avec une quantité de 1
+                    String insertQuery = "INSERT INTO ligne_commande (id_panier, quantite, ref_produit) VALUES (?, 1, ?)";
                     try (PreparedStatement pstInsert = cnx.prepareStatement(insertQuery)) {
                         pstInsert.setInt(1, idPanier);
                         pstInsert.setString(2, refProduit);
@@ -418,6 +437,42 @@ public class PanierController {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

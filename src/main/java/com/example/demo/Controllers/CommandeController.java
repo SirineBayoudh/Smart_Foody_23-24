@@ -253,6 +253,8 @@ public class CommandeController {
 
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("custom-alert");
             alert.setTitle("Erreur");
             alert.setHeaderText("Pas de Commande séléctionnée");
             alert.setContentText("S'il vous plait de séléctionner une commande");

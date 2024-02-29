@@ -16,7 +16,7 @@
 .table-view .column-header,
 .table-view .column-header-background .filler {
     -fx-cell-size : 20;
-    -fx-background-color:   #5a5958;
+    -fx-background-color:   #77bb58;
 }
 .table-view .column-header .label{
 
@@ -107,20 +107,20 @@
 }
 
 .pane_1{
-    -fx-background-color:#518dfb;
+    -fx-background-color:#77bb58;
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
     -fx-border-style: solid;
-    -fx-border-color: #518dfb;
+    -fx-border-color: #77bb58;
 }
 .pane_2{
-    -fx-background-color:#Fb6868;
+    -fx-background-color:#008000;
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
     -fx-border-style: solid;
-    -fx-border-color: #Fb6868;
+    -fx-border-color: #008000;
 }
 .pane_3{
     -fx-background-color:#77bb58;
@@ -132,10 +132,10 @@
 }
 
 .pane_4{
-    -fx-background-color:#F3c954;
+    -fx-background-color:#008000;
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
     -fx-border-style: solid;
-    -fx-border-color: #F3c954;
+    -fx-border-color: #008000;
 }

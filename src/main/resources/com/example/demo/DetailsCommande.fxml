@@ -84,7 +84,7 @@
             </Text>
             <HBox alignment="CENTER" layoutX="288.0" layoutY="394.0" prefHeight="83.0" prefWidth="619.0" spacing="25.0">
                <children>
-                  <Button fx:id="okbutton" mnemonicParsing="false" onAction="#modifierCommande" prefHeight="30.0" prefWidth="133.0" style="-fx-background-color: #ce9b61;" stylesheets="@css/fullpackstyling.css" text="Ok" textFill="WHITE">
+                  <Button fx:id="okbutton" mnemonicParsing="false" onAction="#modifierCommande" prefHeight="30.0" prefWidth="133.0" style="-fx-background-color: #1C5739;" stylesheets="@css/fullpackstyling.css" text="Ok" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -99,7 +99,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#switchButton" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: #F75868;" stylesheets="@css/fullpackstyling.css" text="Annuler" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#switchButton" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: #2e7d32;" stylesheets="@css/fullpackstyling.css" text="Annuler" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -114,7 +114,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#exportPDF" prefHeight="30.0" prefWidth="165.0" style="-fx-background-color: red;" stylesheets="@css/fullpackstyling.css" text="PDF" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#exportPDF" prefHeight="30.0" prefWidth="165.0" style="-fx-background-color: #5cb85c;" stylesheets="@css/fullpackstyling.css" text="PDF" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -143,7 +143,7 @@
             </Label>
             <VBox layoutX="14.0" layoutY="8.0" prefHeight="500.0" prefWidth="255.0" styleClass="product-details" stylesheets="@css/style_panier.css">
                <children>
-                  <Label styleClass="section-title" text="Liste des Produits" />
+                  <Label prefHeight="41.0" prefWidth="187.0" styleClass="section-title" text="             Votre Commande" />
                   <ScrollPane prefHeight="423.0" prefWidth="222.0" VBox.vgrow="ALWAYS">
                      <content>
                         <VBox fx:id="productsContainer" spacing="10" />
@@ -151,7 +151,10 @@
                   </ScrollPane>
                </children>
             </VBox>
-            <Line endX="11.0" endY="475.0" layoutX="276.0" layoutY="-48.0" startX="11.0" startY="116.0" />
+            <Line endX="13.70001220703125" endY="561.5" layoutX="276.0" layoutY="-48.0" startX="11.29998779296875" startY="51.100006103515625" />
+            <Line endX="-26.20001220703125" endY="399.6000061035156" layoutX="314.0" layoutY="-397.0" startX="596.0000610351562" startY="399.6000061035156" />
+            <Line endX="8.20001220703125" endY="486.0" layoutX="282.0" layoutY="27.0" startX="627.9999389648438" startY="486.0" />
+            <Line endX="10.99993896484375" endY="478.60003662109375" layoutX="899.0" layoutY="32.0" startX="11.50006103515625" startY="-29.899993896484375" />
          </children>
       </Pane>
 

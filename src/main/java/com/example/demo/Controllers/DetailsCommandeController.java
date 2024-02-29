@@ -257,6 +257,8 @@ public class DetailsCommandeController implements Initializable {
 
                     // Afficher un message de succès
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+                    alert .getDialogPane().getStyleClass().add("custom-alert");
                     alert.setTitle("Modification de l'état de la commande");
                     alert.setHeaderText(null);
                     alert.setContentText("L'état de la commande a été modifié avec succès !");

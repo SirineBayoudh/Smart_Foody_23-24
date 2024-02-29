@@ -60,7 +60,7 @@
                 </TableView>
                 <HBox alignment="CENTER_LEFT" prefHeight="28.0" prefWidth="936.0" spacing="15.0" GridPane.rowIndex="1">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#detailsCommande" prefHeight="30.0" prefWidth="164.0" style="-fx-background-color: #5a5958;" stylesheets="@css/fullpackstyling.css" text="Details Commande" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#detailsCommande" prefHeight="30.0" prefWidth="164.0" style="-fx-background-color: #77bb58;" stylesheets="@css/fullpackstyling.css" text="Details Commande" textFill="WHITE">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -75,7 +75,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#statButton" prefHeight="30.0" prefWidth="126.0" style="-fx-background-color: FF8C00;" stylesheets="@css/fullpackstyling.css" text="Statistiques" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#statButton" prefHeight="30.0" prefWidth="126.0" style="-fx-background-color: #008000;" stylesheets="@css/fullpackstyling.css" text="Statistiques" textFill="WHITE">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -90,7 +90,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#exportPDF" prefHeight="30.0" prefWidth="165.0" style="-fx-background-color: red;" stylesheets="@css/fullpackstyling.css" text="PDF" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#exportPDF" prefHeight="30.0" prefWidth="165.0" style="-fx-background-color: #1C5739;" stylesheets="@css/fullpackstyling.css" text="PDF" textFill="WHITE">
                             <font>
                                 <Font size="14.0" />
                             </font>

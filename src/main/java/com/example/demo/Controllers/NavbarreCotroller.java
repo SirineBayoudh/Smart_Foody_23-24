@@ -54,13 +54,20 @@ public class NavbarreCotroller implements Initializable {
       
 
         loadPage("/com/example/demo/produit.fxml");
+        clear();
     }
 
     @FXML
     private void loadPanier() {
-        panier.setStyle("-fx-background-color: #56AB2F");
+        panier.getStyleClass().add("highlighted-basket");
 
         loadPage("/com/example/demo/panier.fxml");
+        clear();
+    }
+    public void clear(){
+        panier.setStyle("-fx-background-color:#ffffff");
+        produit.setStyle("-fx-background-color:#ffffff");
+
     }
 
     private void loadPage(String page) {

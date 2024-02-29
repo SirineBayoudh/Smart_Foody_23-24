@@ -155,48 +155,66 @@ public class CommandeClientController {
     }
 
     public void initData(Commande quest) throws IOException {
+        // Initialisation de la commande courante avec les données passées en paramètre.
         CurrentCommande = quest;
-        String toCurrency = "EUR";
+        String toCurrency = "EUR"; // Définit la devise cible pour la conversion.
 
+        // Met à jour l'interface utilisateur avec les détails de la commande courante.
         holder.setCommande(CurrentCommande);
+
+        // Initialise l'objet de service pour interagir avec les données des commandes.
         commandeService = new ServiceCommande();
+
+        // Convertit la date de la commande de String à LocalDate pour l'affichage.
         LocalDate createdConverted = LocalDate.parse(CurrentCommande.getDate_commande().toString());
         dateCreationInput.setValue(createdConverted);
+
+        // Récupère et affiche le nom d'utilisateur du client à partir de son ID.
         clientInput.setText(String.valueOf(commandeService.usernameById(CurrentCommande.getId_client())));
 
+        // Formatage et affichage de la remise en pourcentage.
         DecimalFormat decimalFormat = new DecimalFormat("#");
         decimalFormat.setRoundingMode(RoundingMode.DOWN);
         String remiseText = decimalFormat.format(CurrentCommande.getRemise() * 100) + " %";
         remiseInput.setText(remiseText);
+
+        // Affichage de l'adresse de l'utilisateur.
         adress.setText(utilisateur.getAdresse());
+
+        // Affichage du total de la commande en TND.
         totaleInputTnd.setText(CurrentCommande.getTotal_commande() + " TND");
-        /** Convertiseur Devise TND -> EUR*/
+
+        // Conversion de la devise de TND à EUR via une requête HTTP à un service de conversion de devises.
+        /** Convertisseur Devise TND -> EUR */
         URL url = new URL(BASE_URL + "pair/TND/" + toCurrency + "/" + CurrentCommande.getTotal_commande());
         HttpURLConnection request = (HttpURLConnection) url.openConnection();
         request.connect();
 
-// Convert to JSON
+        // Convertit la réponse en JSON.
         JsonParser jp = new JsonParser();
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
         JsonObject jsonobj = root.getAsJsonObject();
 
-// Accessing object
+        // Récupère le résultat de la conversion et l'affiche.
         Float req_result = jsonobj.get("conversion_result").getAsFloat();
-
         totaleInputEur.setText(String.format("%.2f %s", req_result, toCurrency));
-
-
-
     }
+
     public void afficherProduits() {
+        // Récupérer les lignes de commande pour afficher les produits
         List<LigneCommande> ligneCommandes = affichageProduitsDansCommande();
+
+        // Nettoyer le conteneur des produits avant d'afficher de nouveaux produits
         productsContainer.getChildren().clear();
 
+        // Boucle à travers chaque ligne de commande
         for (LigneCommande prod : ligneCommandes) {
+            // Requête SQL pour récupérer les détails du produit à partir de la base de données
             String requete = "SELECT p.* FROM produit p where  p.ref = ?";
             try (PreparedStatement pst = cnx.prepareStatement(requete)) {
                 pst.setString(1, prod.getRefProduit());
                 try (ResultSet rs = pst.executeQuery()) {
+                    // Si la requête retourne un résultat, créer un objet Produit
                     if (rs.next()) {
                         Produit p = new Produit(
                                 rs.getString("ref"),
@@ -208,33 +226,35 @@ public class CommandeClientController {
                                 rs.getString("critere")
                         );
 
+                        // Créer un conteneur VBox pour le produit
                         VBox productBox = new VBox(10);
                         productBox.getStyleClass().add("product-box");
                         productsContainer.setStyle("-fx-padding:15px");
 
+                        // Créer et styliser l'image du produit
                         ImageView productImage = new ImageView(new Image(p.getImage()));
                         productImage.setFitHeight(15);
                         productImage.setFitWidth(15);
-
                         Rectangle clip = new Rectangle(15, 15); // Set the dimensions as needed
                         clip.setArcWidth(30); // Adjust the corner radius
                         clip.setArcHeight(30);
                         productImage.setClip(clip);
                         productImage.setEffect(new DropShadow(10, BLACK)); // Adjust the shadow parameters
 
+                        // Créer des étiquettes pour afficher les détails du produit
                         Label labelProduit = new Label(p.getMarque() + " - " + p.getRef());
                         labelProduit.setMinHeight(10);
                         labelProduit.setStyle("-fx-position:absolute ;-fx-top:12px;");
-                        labelProduit.setAlignment(Pos.BOTTOM_CENTER); // Center-align the label
+                        labelProduit.setAlignment(Pos.BOTTOM_CENTER);
+
                         DecimalFormat decimalFormat = new DecimalFormat("0.##");
                         decimalFormat.setDecimalSeparatorAlwaysShown(false);
-
                         Label labelProduit1 = new Label(decimalFormat.format(p.getPrix() * prod.getQuantite()) + " TND");
-
                         labelProduit1.setMinHeight(10);
                         labelProduit1.setStyle("-fx-position:absolute ;-fx-top:12px;");
-                        labelProduit1.setAlignment(Pos.BOTTOM_CENTER); // Center-align the label
+                        labelProduit1.setAlignment(Pos.BOTTOM_CENTER);
 
+                        // Champ de texte pour afficher la quantité du produit
                         TextField quantiteTextField = new TextField(String.valueOf(prod.getQuantite()));
                         quantiteTextField.setEditable(false);
                         quantiteTextField.setMaxWidth(100);
@@ -242,51 +262,62 @@ public class CommandeClientController {
                         quantiteTextField.setStyle("-fx-font-size: 10px;");
                         quantiteTextField.setAlignment(Pos.CENTER);
 
+                        // Ajouter les éléments graphiques au conteneur productBox
                         productBox.setAlignment(Pos.CENTER);
                         productBox.setPrefWidth(166);
                         HBox.setHgrow(productBox, Priority.ALWAYS);
-
                         productBox.getChildren().addAll(productImage, labelProduit, labelProduit1, quantiteTextField);
+
+                        // Ajouter le conteneur productBox au conteneur principal productsContainer
                         productsContainer.getChildren().add(productBox);
-
-
                     }
                 }
             } catch (SQLException e) {
+                // Gérer les erreurs liées à l'affichage du produit dans le panier
                 System.out.println("Erreur lors de l'affichage du produit dans le panier : " + e.getMessage());
             }
-
         }
-        ScrollPane scrollPane = new ScrollPane(productsContainer);
-        scrollPane.setFitToWidth(true); // Adjust to your needs
 
+        // Créer un ScrollPane pour contenir les produits
+        ScrollPane scrollPane = new ScrollPane(productsContainer);
+        scrollPane.setFitToWidth(true); // Ajuster à la largeur du parent
     }
+
 
 
     //////////**************************** Affiche les produits dans le panier en rejoignant les
     // tables `produit` et `panier` par `ref_produit`.***********************************************
     private List<LigneCommande> affichageProduitsDansCommande() {
+        // Création d'une liste pour stocker les lignes de commande des produits
         List<LigneCommande> produits = new ArrayList<>();
+
+        // Requête SQL pour récupérer les lignes de commande des produits dans une commande spécifique
         String requete = "SELECT lc.* FROM produit p " +
-                "JOIN ligne_commande lc  ON p.ref = lc.ref_produit and lc.id_commande=? ";
+                "JOIN ligne_commande lc ON p.ref = lc.ref_produit and lc.id_commande=? ";
+
         try (PreparedStatement pst = cnx.prepareStatement(requete)) {
+            // Remplacer le paramètre de la commande dans la requête SQL avec l'ID de la commande actuelle
             pst.setInt(1, CurrentCommande.getId_commande());
 
             try (ResultSet rs = pst.executeQuery()) {
+                // Parcourir les résultats de la requête
                 while (rs.next()) {
+                    // Créer un objet LigneCommande pour chaque ligne de commande récupérée
                     produits.add(new LigneCommande(
                             rs.getInt("id_lc"),
                             rs.getInt("id_panier"),
                             rs.getInt("quantite"),
                             rs.getString("ref_produit"),
                             rs.getInt("id_commande")
-
                     ));
                 }
             }
         } catch (SQLException e) {
+            // Gérer les erreurs liées à la récupération des produits dans le panier
             System.out.println("Erreur lors de l'affichage des produits dans le panier : " + e.getMessage());
         }
+
+        // Retourner la liste des lignes de commande des produits
         return produits;
     }
 
@@ -351,10 +382,7 @@ public class CommandeClientController {
 
     }
 
-    private void appelerViderPanier(ActionEvent event) {
-        panierController.viderPanier(false); // Appel de la méthode viderPanier avec false pour indiquer que la commande n'est pas validée
-    }
-    // la méthodes qui selectionne tous les commandes passe a partir de base
+
 
 
     public void payer() {
