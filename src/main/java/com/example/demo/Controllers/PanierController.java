@@ -1,5 +1,7 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Models.Commande;
+import com.example.demo.Models.CommandeHolder;
 import com.example.demo.Models.LigneCommande;
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
@@ -54,6 +56,8 @@ public class PanierController {
     double[] totale = {0};
     // Connexion à la base de données
     Connection cnx;
+
+    private CommandeHolder holder = CommandeHolder.getInstance();
 
     // Constructeur
     public PanierController() {
@@ -333,7 +337,7 @@ public class PanierController {
     public void ajouterCommande() {
         List<LigneCommande> ligneCommandes = affichageProduitsDansLePanier();
         String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande,remise,etat) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
             pst.setDate(1, new java.sql.Date(System.currentTimeMillis()));
             pst.setInt(2, 14);
             pst.setFloat(3, (float) totale[0]);
@@ -342,23 +346,32 @@ public class PanierController {
 
             pst.executeUpdate();
             System.out.println("Commande ajoutée avec succès");
-            ResultSet generatedKeys = pst.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int idCommande = generatedKeys.getInt(1);
-                viderPanier(true);
+            String selectCommandeQuery = "SELECT * FROM commande WHERE id_commande = LAST_INSERT_ID()";
+            try (PreparedStatement pstSelect = cnx.prepareStatement(selectCommandeQuery)) {
+                ResultSet rs = pstSelect.executeQuery();
+                if (rs.next()) {
+                    int idCommande = rs.getInt("id_commande");
+                    Date dateCommande = rs.getDate("date_commande");
+                    int idClient = rs.getInt("id_client");
+                    float totaleCommande = rs.getFloat("totalecommande");
+                    float remise = rs.getFloat("remise");
+                    String etat = rs.getString("etat");
+                    Commande selectedCommande = new Commande(idCommande, dateCommande, idClient, totaleCommande, remise, etat);
+                    holder.setCommande(selectedCommande);
+                    viderPanier(true);
 
-                for (LigneCommande prod : ligneCommandes) {
-                    String updateQuery = "UPDATE ligne_commande  SET id_panier= NULL , id_commande=? WHERE id_lc = ? ";
-                    try (PreparedStatement pstUpdate = cnx.prepareStatement(updateQuery)) {
-                        pstUpdate.setInt(1, idCommande);
-                        pstUpdate.setInt(2, prod.getIdLc());
-                        pstUpdate.executeUpdate();
-                    } catch (SQLException e) {
-                        System.out.println("Erreur lors de la mise à jour du produit dans le panier : " + e.getMessage());
+                    for (LigneCommande prod : ligneCommandes) {
+                        String updateQuery = "UPDATE ligne_commande  SET id_panier= NULL , id_commande=? WHERE id_lc = ? ";
+                        try (PreparedStatement pstUpdate = cnx.prepareStatement(updateQuery)) {
+                            pstUpdate.setInt(1, idCommande);
+                            pstUpdate.setInt(2, prod.getIdLc());
+                            pstUpdate.executeUpdate();
+                        } catch (SQLException e) {
+                            System.out.println("Erreur lors de la mise à jour du produit dans le panier : " + e.getMessage());
+                        }
                     }
-                }
 
-            }
+                }}
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
         }

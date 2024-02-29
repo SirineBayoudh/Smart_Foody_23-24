@@ -1,15 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.example.demo.Controllers;
-
-
 import java.awt.*;
 import java.io.*;
 import java.math.RoundingMode;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.*;
 import java.text.DecimalFormat;
@@ -17,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import com.example.demo.Models.LigneCommande;
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
@@ -69,14 +61,10 @@ import javafx.stage.Stage;
 import static com.itextpdf.kernel.pdf.PdfName.Colors;
 import static javafx.scene.paint.Color.*;
 
-/**
- * FXML Controller class
- *
- * @author omarb
- */
+
 public class DetailsCommandeController implements Initializable {
 
-    private static final String API_KEY = "2687d76eef6bf2a7b59beecb";
+    private static final String API_KEY = "da81771213450868d6ffe772";
     private static final String BASE_URL = "https://v6.exchangerate-api.com/v6/" + API_KEY;
     @FXML
     private Pane clickpane;
@@ -113,9 +101,7 @@ public class DetailsCommandeController implements Initializable {
         cnx = MyConnection.getInstance().getCnx();
     }
 
-    /**
-     * Initializes the controller class.
-     */
+
     public void initData(Commande quest) throws IOException {
         CurrentCommande = quest;
         String toCurrency = "EUR";
@@ -319,6 +305,32 @@ public class DetailsCommandeController implements Initializable {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @FXML
     void switchButton(ActionEvent event) throws IOException {
         try {
@@ -333,6 +345,12 @@ public class DetailsCommandeController implements Initializable {
         }
     }
 
+
+
+
+
+
+    //expoter pdf détails commande
     public void exportPDF() {
         Commande commande = CurrentCommande; // Utilisez l'instance CurrentCommande chargée dans l'interface
         if (commande != null) {

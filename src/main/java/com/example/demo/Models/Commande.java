@@ -72,4 +72,13 @@ public class Commande {
         this.id_client = id_client;
         this.total_commande = total_commande;
     }
+
+    public Commande(int id_commande, Date date_commande, int id_client, float total_commande, float remise, String etat) {
+        this.id_commande = id_commande;
+        this.date_commande = date_commande;
+        this.id_client = id_client;
+        this.total_commande = total_commande;
+        this.remise = remise;
+        this.etat = etat;
+    }
 }

@@ -251,7 +251,6 @@ public class CommandeController {
                 // Handle the exception as needed
             }
 
-            //loadUsers();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
@@ -275,6 +274,9 @@ public class CommandeController {
             // Handle the exception as needed
         }
     }
+
+
+    ///export pdf
     @FXML
     public void ExportPDF(List<Commande> commandes) {
         String path = "Commandes.pdf";
