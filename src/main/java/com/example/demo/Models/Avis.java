@@ -1,10 +1,17 @@
 package com.example.demo.Models;
 
+import java.util.Date;
+
 public class Avis {
-    int id_avis;
-    int ref_produit;
-    int nb_etoiles;
-    String commentaire;
+   private int id_avis;
+
+    private int ref_produit;
+    private int nb_etoiles;
+    private String commentaire;
+
+    private int id_client;
+    private Date date_avis;
+
 
     public int getId_avis() {
         return id_avis;
@@ -20,6 +27,14 @@ public class Avis {
 
     public String getCommentaire() {
         return commentaire;
+    }
+
+    public int getId_client() {
+        return id_client;
+    }
+
+    public Date getDate_avis() {
+        return date_avis;
     }
 
     public void setId_avis(int id_avis) {
@@ -38,20 +53,33 @@ public class Avis {
         this.commentaire = commentaire;
     }
 
+    public void setId_client(int id_client) {
+        this.id_client = id_client;
+    }
+
+    public void setDate_avis(Date date_avis) {
+        this.date_avis = date_avis;
+    }
+
+
+
     public Avis() {
     }
 
-    public Avis(int id_avis, int ref_produit, int nb_etoiles, String commentaire) {
+    public Avis(int id_avis, int ref_produit,int id_client, int nb_etoiles, String commentaire, Date date_avis) {
         this.id_avis = id_avis;
         this.ref_produit = ref_produit;
+        this.id_client = id_client;
         this.nb_etoiles = nb_etoiles;
         this.commentaire = commentaire;
+        this.date_avis = date_avis;
     }
 
-    public Avis(int ref_produit,int nb_etoiles, String commentaire) {
+    public Avis(int ref_produit,int id_client,int nb_etoiles, String commentaire) {
         this.ref_produit = ref_produit;
         this.nb_etoiles = nb_etoiles;
         this.commentaire = commentaire;
+        this.id_client = id_client;
     }
 
     @Override
@@ -61,6 +89,8 @@ public class Avis {
                 ", ref_produit=" + ref_produit +
                 ", nb_etoiles=" + nb_etoiles +
                 ", commentaire='" + commentaire + '\'' +
+                ", id_client=" + id_client +
+                ", date_avis=" + date_avis +
                 '}';
     }
 }

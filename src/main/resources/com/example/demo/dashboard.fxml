@@ -49,12 +49,12 @@
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn21" layoutX="12.0" layoutY="462.0" mnemonicParsing="false" onAction="#rec" onMouseClicked="#stock" prefHeight="38.0" prefWidth="162.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="           Réclamations" textFill="WHITE">
+                  <Button fx:id="btnReclamation" layoutX="12.0" layoutY="462.0" mnemonicParsing="false" onAction="#rec" onMouseClicked="#stock" prefHeight="38.0" prefWidth="162.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="           Réclamations" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn22" layoutX="13.0" layoutY="516.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Avis" textFill="WHITE">
+                  <Button fx:id="btnAvis" layoutX="13.0" layoutY="516.0" mnemonicParsing="false" onAction="#avis" onMouseClicked="#stock" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Avis" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
