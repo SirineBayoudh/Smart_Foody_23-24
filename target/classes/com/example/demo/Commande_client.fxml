@@ -196,7 +196,7 @@
                                         <Font name="Arial Rounded MT Bold" size="17.0" />
                                     </font>
                                 </Text>
-                                <Button layoutX="328.0" layoutY="429.0" onAction="#annulerCommande" prefHeight="35.0" prefWidth="255.0" style="-fx-background-color: Commande_client.fxml;" styleClass="validate-button" text="Annuler la Commande">
+                                <Button layoutX="328.0" layoutY="429.0" onAction="#annulerCommande" prefHeight="35.0" prefWidth="255.0" styleClass="validate-button" text="Annuler la Commande">
                                     <graphic>
                                         <ImageView fitHeight="17.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                             <image>

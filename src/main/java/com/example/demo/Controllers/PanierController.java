@@ -331,15 +331,72 @@ public class PanierController {
         List<LigneCommande> produits = affichageProduitsDansLePanier();
         return produits.size();
     }
+    public static int commande_id;
+    public void updatecommande()
+    {
+        // Récupérer les lignes de commande actuellement dans le panier
+        List<LigneCommande> ligneCommandes = affichageProduitsDansLePanier();
+        float longitude=CommandeClientController.latitude;
+        float lat=CommandeClientController.latitude;
+        // Requête SQL pour insérer une nouvelle commande dans la base de données
+        System.out.println(commande_id+" =IDc");
+        String insertCommandeQuery = "UPDATE commande SET longitude=?,latitude=? WHERE id_commande=LAST_INSERT_ID()";
 
+        try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
+            // Spécifier les valeurs des paramètres de la requête
+            pst.setFloat(1, longitude); // Date actuelle
+            pst.setFloat(2, lat);
+
+
+            // Exécuter la requête d'insertion
+            pst.executeUpdate();
+            System.out.println("Commande à jour avec succès");
+
+            // Récupérer l'ID de la dernière commande insérée
+            String selectCommandeQuery = "SELECT * FROM commande WHERE id_commande = LAST_INSERT_ID()";
+            try (PreparedStatement pstSelect = cnx.prepareStatement(selectCommandeQuery)) {
+                ResultSet rs = pstSelect.executeQuery();
+                if (rs.next()) {
+                    // Récupérer les détails de la commande insérée
+                    int idCommande = rs.getInt("id_commande");
+                    Date dateCommande = rs.getDate("date_commande");
+                    int idClient = rs.getInt("id_client");
+                    float totaleCommande = rs.getFloat("totalecommande");
+                    float remise = rs.getFloat("remise");
+                    String etat = rs.getString("etat");
+                    PanierController.commande_id=idCommande;
+
+                    // Créer un objet Commande avec les détails récupérés
+                    Commande selectedCommande = new Commande(idCommande, dateCommande, idClient, totaleCommande, remise, etat);
+                    holder.setCommande(selectedCommande); // Définir la commande dans le conteneur (holder)
+                    viderPanier(true); // Vider le panier après avoir passé la commande
+                    // Mettre à jour les lignes de commande pour lier les produits à la nouvelle commande
+                    for (LigneCommande prod : ligneCommandes) {
+                        String updateQuery = "UPDATE ligne_commande SET id_panier = NULL, id_commande = ? WHERE id_lc = ?";
+                        try (PreparedStatement pstUpdate = cnx.prepareStatement(updateQuery)) {
+                            pstUpdate.setInt(1, idCommande); // ID de la nouvelle commande
+                            pstUpdate.setInt(2, prod.getIdLc()); // ID de la ligne de commande à mettre à jour
+                            pstUpdate.executeUpdate();
+                        } catch (SQLException e) {
+                            System.out.println("Erreur lors de la mise à jour du produit dans le panier : " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            // Gérer les erreurs lors de l'ajout de la commande
+            System.out.println("Erreur lors de l'ajout de la commande : " + e.getMessage());
+        }
+    }
 
     // Ajoute un produit au panier///////////////////////////////////////////////
     public void ajouterCommande() {
         // Récupérer les lignes de commande actuellement dans le panier
         List<LigneCommande> ligneCommandes = affichageProduitsDansLePanier();
-
+        float longitude=CommandeClientController.latitude;
+        float lat=CommandeClientController.latitude;
         // Requête SQL pour insérer une nouvelle commande dans la base de données
-        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat) VALUES (?, ?, ?, ?, ?)";
+        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat,longitude,latitude) VALUES (?, ?, ?, ?, ?,?,?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
             // Spécifier les valeurs des paramètres de la requête
@@ -348,6 +405,8 @@ public class PanierController {
             pst.setFloat(3, (float) totale[0]); // Montant total de la commande
             pst.setFloat(4, (float) remise[0]); // Montant de la remise appliquée
             pst.setString(5, "Non Livre"); // État de la commande
+            pst.setFloat(6,longitude);
+            pst.setFloat(7,lat);
 
             // Exécuter la requête d'insertion
             pst.executeUpdate();
@@ -536,6 +595,9 @@ public class PanierController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void chargecommandes() {
     }
 
     public void navbarre() {

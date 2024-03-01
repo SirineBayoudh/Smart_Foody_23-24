@@ -99,6 +99,7 @@ public class CommandeController {
     private Connection cnx;
 
     private CommandeHolder holder = CommandeHolder.getInstance();
+
     // Constructeur
     public CommandeController() {
         cnx = MyConnection.getInstance().getCnx();

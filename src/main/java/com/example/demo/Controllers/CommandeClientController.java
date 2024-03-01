@@ -10,6 +10,7 @@ import com.google.zxing.WriterException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -48,7 +50,7 @@ import java.util.Optional;
 import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement;
 import static javafx.scene.paint.Color.BLACK;
 
-public class CommandeClientController {
+public class CommandeClientController{
     static Stage stage;
     private CommandeHolder holder = CommandeHolder.getInstance();
     private Commande CurrentCommande = holder.getCommande();
@@ -71,6 +73,18 @@ public class CommandeClientController {
     private ServiceCommande commandeService;
     static NavbarreCotroller navbarreController = new NavbarreCotroller();
 
+    static float latitude;
+    static float longitude;
+    public void savecoords(String latitude, String longitude) {
+        CommandeClientController.latitude =Float.parseFloat(latitude);
+        CommandeClientController.longitude =Float.parseFloat(longitude);
+        System.out.println("Latitude from controller = "+latitude);
+        System.out.println("Longitude from controller= "+longitude);
+        saveOrder();
+    }
+
+    private void saveOrder() {
+    }
 
 
     // Liste observable pour stocker les commandes
@@ -332,9 +346,10 @@ public class CommandeClientController {
         }else{
             validCommande() ;
             loadPage("/com/example/demo/produit.fxml");
-
-
         }
+        panierController.updatecommande();
+
+
 
 
     }
@@ -397,8 +412,16 @@ public class CommandeClientController {
     }
 
 
+
     public void map(ActionEvent actionEvent) {
-        // Create a dialog
+        MapController m=new MapController();
+        m.showWindow();
+        loadPage("/com/example/demo/map.fxml");
+    }
+
+
+
+       /* // Create a dialog
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Insert Location");
 
@@ -449,8 +472,7 @@ public class CommandeClientController {
         result.ifPresent(location -> {
             adress.setText(location);
             // Call a method to show the location on the map
-        });
-    }
+        });*/
 
     @FXML
     private void annulerCommande() throws SQLException {
