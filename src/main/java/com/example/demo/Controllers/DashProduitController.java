@@ -38,7 +38,9 @@ import java.net.URLEncoder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -358,6 +360,11 @@ public class DashProduitController implements Initializable {
 
     @FXML
     void modifierProduit(ActionEvent event) {
+        Produit produit = table.getSelectionModel().getSelectedItem();
+        if (produit == null) {
+            showAlert(Alert.AlertType.ERROR, "Sélection requise", "Veuillez sélectionner un produit à modifier.");
+            return; // Arrêter l'exécution de la méthode si aucun produit n'est sélectionné
+        }
         String update = "UPDATE produit SET Marque = ?, Categorie = ?, Prix = ?, Critere = ? WHERE ref = ?";
         con = MyConnection.getInstance();
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -431,6 +438,11 @@ public class DashProduitController implements Initializable {
 
     @FXML
     void supprimerProduit(ActionEvent event) {
+        Produit produit = table.getSelectionModel().getSelectedItem();
+        if (produit == null) {
+            showAlert(Alert.AlertType.ERROR, "Sélection requise", "Veuillez sélectionner un produit à supprimer.");
+            return; // Arrêter l'exécution de la méthode si aucun produit n'est sélectionné
+        }
         String delete = "delete from produit where ref = ?";
         con = MyConnection.getInstance();
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -555,7 +567,8 @@ public class DashProduitController implements Initializable {
 
         if (file != null) {
             String filePath = file.getAbsolutePath();
-            if (exporterProduitsVersPDF(filePath)) {
+            String exportTitle = "Export des produits"; // Titre de l'exportation
+            if (exporterProduitsVersPDF(filePath, exportTitle)) {
                 // Affichage d'un message de confirmation à l'utilisateur
                 showAlert(Alert.AlertType.INFORMATION, "Exportation réussie", "Les données ont été exportées avec succès vers " + filePath);
 
@@ -567,6 +580,7 @@ public class DashProduitController implements Initializable {
             }
         }
     }
+
 
     private void openPDFFile(String filePath) {
         try {
@@ -581,53 +595,67 @@ public class DashProduitController implements Initializable {
             System.err.println("Erreur lors de l'ouverture du fichier PDF.");
         }
     }
-        private boolean exporterProduitsVersPDF(String filePath) {
-            Document document = null;
-            try {
-                FileOutputStream fileOut = new FileOutputStream(filePath);
-                document = new Document();
-                PdfWriter.getInstance(document, fileOut);
-                document.open();
+    private boolean exporterProduitsVersPDF(String filePath, String exportTitle) {
+        Document document = null;
+        try {
+            FileOutputStream fileOut = new FileOutputStream(filePath);
+            document = new Document();
+            PdfWriter.getInstance(document, fileOut);
+            document.open();
 
-                ObservableList<Produit> produits = table.getItems();
+            // Ajouter le titre de l'exportation
+            Paragraph title = new Paragraph(exportTitle);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
 
-                // Créer un tableau avec 6 colonnes pour les données des produits
-                PdfPTable table = new PdfPTable(6);
+            // Ajouter la date d'exportation
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            String exportDate = "Date d'exportation : " + dateFormat.format(date);
+            Paragraph dateParagraph = new Paragraph(exportDate);
+            dateParagraph.setAlignment(Element.ALIGN_CENTER);
+            document.add(dateParagraph);
+            document.add(Chunk.NEWLINE); // Ajouter un espace
 
-                // Ajouter les en-têtes de colonne
-                String[] headers = {"Ref", "Marque", "Catégorie", "Prix", "Critère", "Image"};
-                for (String header : headers) {
-                    PdfPCell headerCell = new PdfPCell(new Phrase(header));
-                    headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    headerCell.setBackgroundColor(new BaseColor(136, 171, 47));
-                    table.addCell(headerCell);
-                }
+            ObservableList<Produit> produits = table.getItems();
 
-                // Ajouter les données de chaque produit dans le tableau
-                for (Produit produit : produits) {
-                    table.addCell(String.valueOf(produit.getRef()));
-                    table.addCell(produit.getMarque());
-                    table.addCell(produit.getCategorie());
-                    table.addCell(String.valueOf(produit.getPrix()));
-                    table.addCell(produit.getCritere());
-                    table.addCell(produit.getImage());
-                }
+            // Créer un tableau avec 6 colonnes pour les données des produits
+            PdfPTable table = new PdfPTable(6);
 
-                // Ajouter le tableau au document PDF
-                document.add(table);
+            // Ajouter les en-têtes de colonne
+            String[] headers = {"Ref", "Marque", "Catégorie", "Prix", "Critère", "Image"};
+            for (String header : headers) {
+                PdfPCell headerCell = new PdfPCell(new Phrase(header));
+                headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                headerCell.setBackgroundColor(new BaseColor(136, 171, 47));
+                table.addCell(headerCell);
+            }
 
-                System.out.println("Export PDF réussi.");
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Erreur lors de l'export PDF.");
-                return false;
-            } finally {
-                if (document != null) {
-                    document.close();
-                }
+            // Ajouter les données de chaque produit dans le tableau
+            for (Produit produit : produits) {
+                table.addCell(String.valueOf(produit.getRef()));
+                table.addCell(produit.getMarque());
+                table.addCell(produit.getCategorie());
+                table.addCell(String.valueOf(produit.getPrix()));
+                table.addCell(produit.getCritere());
+                table.addCell(produit.getImage());
+            }
+
+            // Ajouter le tableau au document PDF
+            document.add(table);
+
+            System.out.println("Export PDF réussi.");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de l'export PDF.");
+            return false;
+        } finally {
+            if (document != null) {
+                document.close();
             }
         }
+    }
 
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {

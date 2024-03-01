@@ -69,6 +69,8 @@ public class recetteController {
     @FXML
     void initialize() {
         comparerObjectifUtilisateurAvecObjectif();
+        resultatLabel.setStyle("-fx-border-color: #56ab2f; -fx-border-width: 2px; -fx-background-color: #f5f5dc; -fx-text-fill: #56ab2f; -fx-border-radius: 1cm;");
+
 
     }
 
@@ -179,19 +181,29 @@ public class recetteController {
                 // Ajouter les boutons de défilement
                 Button previousButton = new Button("<");
                 previousButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+                previousButton.setMinSize(30, 20);
                 Button nextButton = new Button(">");
                 nextButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
+                nextButton.setMinSize(30, 20);
 
                 previousButton.setOnAction(event -> {
-                    hboxProduits.setTranslateX(hboxProduits.getTranslateX() + 100); // Décalage vers la gauche
+                    scrollPane.setHvalue(scrollPane.getHvalue() - 0.1); // Décaler la barre de défilement horizontale vers la gauche
                 });
 
                 nextButton.setOnAction(event -> {
-                    hboxProduits.setTranslateX(hboxProduits.getTranslateX() - 100); // Décalage vers la droite
+                    scrollPane.setHvalue(scrollPane.getHvalue() + 0.1); // Décaler la barre de défilement horizontale vers la droite
                 });
 
-                // Ajouter les boutons à la VBox des produits recommandés
-                recommendedProductsVBox.getChildren().addAll(previousButton, scrollPane, nextButton);
+
+                // Créer une HBox pour contenir le ScrollPane et les boutons de défilement
+                HBox hbox = new HBox(previousButton, scrollPane, nextButton);
+                hbox.setAlignment(Pos.CENTER); // Aligner les éléments au centre de la HBox
+                hbox.setSpacing(10); // Espacement horizontal entre les éléments
+                // Ajouter la HBox à la VBox recommandée
+                recommendedProductsVBox.getChildren().addAll(hbox);
+
+                // Ajouter la VBox contenant le ScrollPane et les boutons de pagination à la VBox recommandée
+                //recommendedProductsVBox.getChildren().addAll(vboxProducts);
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -351,6 +363,8 @@ public class recetteController {
         int currentPage = 0;
         int[] currentPageHolder = new int[]{currentPage};
 
+
+
         Runnable displayPage = () -> {
             resultatLabel.setText(""); // Effacer le contenu précédent du label
 
@@ -376,7 +390,7 @@ public class recetteController {
         displayPage.run();
 
         Button prevButton = new Button("<");
-        prevButton.setStyle("-fx-background-color: white; -fx-text-fill: #56ab2f;");
+        prevButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill: white;");
         prevButton.setOnAction(e -> {
             if (currentPageHolder[0] > 0) {
                 currentPageHolder[0]--;
@@ -385,7 +399,7 @@ public class recetteController {
         });
 
         Button nextButton = new Button(">");
-        nextButton.setStyle("-fx-background-color: white; -fx-text-fill: #56ab2f;");
+        nextButton.setStyle("-fx-background-color: #56ab2f; -fx-text-fill:white ;");
         nextButton.setOnAction(e -> {
             if (currentPageHolder[0] < numPages - 1) {
                 currentPageHolder[0]++;

@@ -5,10 +5,7 @@ import com.example.demo.Models.ListCritere;
 import com.example.demo.Models.Objectif;
 import com.example.demo.Models.Produit;
 import com.example.demo.Tools.MyConnection;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Phrase;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -39,10 +36,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class objectifController {
@@ -97,7 +93,8 @@ public class objectifController {
 
         if (file != null) {
             String filePath = file.getAbsolutePath();
-            if (exporterObjectifsVersPDF(filePath)) {
+            String exportTitle = "Export des objectifs"; // Titre de l'exportation
+            if (exporterObjectifsVersPDF(filePath, exportTitle)) {
                 // Affichage d'un message de confirmation à l'utilisateur
                 showAlert(Alert.AlertType.INFORMATION, "Exportation réussie", "Les données ont été exportées avec succès vers " + filePath);
 
@@ -109,6 +106,7 @@ public class objectifController {
             }
         }
     }
+
 
     private void openPDFFile(String filePath) {
         try {
@@ -123,13 +121,27 @@ public class objectifController {
             System.err.println("Erreur lors de l'ouverture du fichier PDF.");
         }
     }
-    private boolean exporterObjectifsVersPDF(String filePath) {
+    private boolean exporterObjectifsVersPDF(String filePath, String exportTitle) {
         Document document = null;
         try {
             FileOutputStream fileOut = new FileOutputStream(filePath);
             document = new Document();
             PdfWriter.getInstance(document, fileOut);
             document.open();
+
+            // Ajouter le titre de l'exportation
+            Paragraph title = new Paragraph(exportTitle);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            // Ajouter la date d'exportation
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            String exportDate = "Date d'exportation : " + dateFormat.format(date);
+            Paragraph dateParagraph = new Paragraph(exportDate);
+            dateParagraph.setAlignment(Element.ALIGN_CENTER);
+            document.add(dateParagraph);
+            document.add(Chunk.NEWLINE); // Ajouter un espace
 
             ObservableList<Objectif> objectifs = ObjectifTableView.getItems();
 
@@ -167,6 +179,7 @@ public class objectifController {
             }
         }
     }
+
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -230,14 +243,16 @@ public class objectifController {
         try {
             PreparedStatement statement = MyConnection.getInstance().getCnx().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
+            int index = 0; // Utiliser un index pour identifier chaque série de données
             while (resultSet.next()) {
                 String libelle = resultSet.getString("libelle");
                 String critereString = resultSet.getString("listCritere");
                 int critereCount = calculateCheckedCriteria(critereString);
                 XYChart.Series<String, Number> series = new XYChart.Series<>();
-                series.setName(libelle);
+                series.setName(libelle + " " + index); // Utiliser un nom unique en ajoutant l'index
                 series.getData().add(new XYChart.Data<>(libelle, critereCount));
                 data.add(series);
+                index++; // Incrémenter l'index pour chaque série de données
             }
             NumberAxis yAxis = (NumberAxis) lineChart.getYAxis();
             yAxis.setAutoRanging(false);
@@ -248,7 +263,6 @@ public class objectifController {
         }
         return data;
     }
-
         private int calculateCheckedCriteria(String listCritere) {
         // Compteur pour stocker le nombre de critères cochés
         int count = 0;

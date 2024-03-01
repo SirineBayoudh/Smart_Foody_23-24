@@ -41,7 +41,7 @@ public class PageAccueilController {
     private static final String ACCESS_KEY = "8SwFxNJG53NadG8LlDRnWphLiLd56udZIqAY6v9DE2Y";
     private static final String SEARCH_QUERY = "healthy%20food"; // Modifier cette requête pour rechercher des images de produits alimentaires
     private static final String API_URL = "https://api.unsplash.com/photos/random?query=" + SEARCH_QUERY + "&client_id=" + ACCESS_KEY;
-    private static final int NUM_IMAGES = 30; // Nombre d'images à afficher
+    private static final int NUM_IMAGES = 20; // Nombre d'images à afficher
     private static final int IMAGE_WIDTH = 750; // Largeur fixe des images
     private static final int IMAGE_HEIGHT = 350;
     @FXML
