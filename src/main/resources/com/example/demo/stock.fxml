@@ -55,8 +55,8 @@
             <Image url="@Images/8666693_search_icon.png" />
          </image>
       </ImageView>
-      <Label layoutX="923.0" layoutY="43.0" prefHeight="25.0" prefWidth="57.0" text="Admin" />
-      <ImageView fitHeight="35.0" fitWidth="41.0" layoutX="916.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+      <Label layoutX="926.0" layoutY="40.0" prefHeight="25.0" prefWidth="57.0" text="Admin" />
+      <ImageView fitHeight="35.0" fitWidth="41.0" layoutX="923.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/thumbnail_image.png" />
          </image>
@@ -113,12 +113,12 @@
                </font></TextField>
             </children>
         </Pane>
-        <ScatterChart fx:id="scatterChart" layoutX="576.0" layoutY="31.0" prefHeight="192.0" prefWidth="342.0" style="-fx-border-color: #bbddab; -fx-border-width: 2;">
+        <ScatterChart fx:id="scatterChart" layoutX="581.0" layoutY="24.0" prefHeight="198.0" prefWidth="342.0" style="-fx-border-color: #bbddab; -fx-border-width: 3;">
             <xAxis>
-                <CategoryAxis prefHeight="0.0" prefWidth="254.0" side="BOTTOM" />
+                <CategoryAxis prefHeight="19.0" prefWidth="264.0" side="BOTTOM" />
             </xAxis>
             <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis prefHeight="152.0" prefWidth="43.0" side="LEFT" />
             </yAxis>
         </ScatterChart>
         <Button fx:id="btnEuro" layoutX="865.0" layoutY="270.0" mnemonicParsing="false" onAction="#convertCostToEuro" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
@@ -137,10 +137,8 @@
       <TextField fx:id="tstexport" editable="false" layoutX="721.0" layoutY="637.0" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Exporter Tout" />
       <TextField fx:id="tstadd" layoutX="255.0" layoutY="261.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Add" />
       <TextField fx:id="tstsmodif" editable="false" layoutX="405.0" layoutY="637.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Modifier" />
-      <Text fx:id="ref_pr" layoutX="696.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Réference de produit" />
       <Text fx:id="qtvendu" boundsType="LOGICAL_VERTICAL_CENTER" layoutX="546.0" layoutY="118.0" rotate="270" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="Nombre Vendus" />
       <Text fx:id="qtpr_stock" layoutX="650.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantités de produit par stock" />
-      <Text fx:id="id_st" layoutX="384.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id stock" />
       <Text fx:id="qtbarchart" boundsType="LOGICAL_VERTICAL_CENTER" layoutX="213.0" layoutY="118.0" rotate="270" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="Quantités" />
       <Text fx:id="Titlebarchart" layoutX="334.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantités de produit par stock" />
 

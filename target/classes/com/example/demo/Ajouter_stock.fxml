@@ -56,7 +56,7 @@
                   <TextField fx:id="tNom" layoutX="70.0" layoutY="106.0" prefHeight="25.0" prefWidth="251.0" style="-fx-background-color: #eff6ea; -fx-border-color: #bbddab; -fx-border-width: 0 0 2 0;" />
                   <Button fx:id="btnSave" layoutX="401.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleAddStock" style="-fx-background-color: white;" textFill="WHITE" />
                   <ComboBox fx:id="refComboBox" layoutX="74.0" layoutY="183.0" prefHeight="25.0" prefWidth="251.0" style="-fx-border-color: #bbddab; -fx-background-color: #eff6ea; -fx-border-width: 0 0 2 0;" />
-                 
+
                   <ComboBox fx:id="marqueCombobox" layoutX="70.0" layoutY="250.0" prefHeight="25.0" prefWidth="251.0" style="-fx-border-color: #bbddab; -fx-background-color: #eff6ea; -fx-border-width: 0 0 2 0;" />
                </children>
             </Pane>

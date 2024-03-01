@@ -627,6 +627,7 @@ public class StockController implements Initializable , LanguageObserver{
     }
 
     /*****************************Stat *******************************/
+    /*****************************Stat *******************************/
     private void updateBarChart(ObservableList<Stock> stockData) {
         barchart.getData().clear();
         stockData.sort(Comparator.comparingInt(Stock::getId_s));
@@ -636,20 +637,20 @@ public class StockController implements Initializable , LanguageObserver{
             try {
                 int quantity = stock.getQuantite();
                 String id_s = String.valueOf(stock.getId_s());
-                String nom = stock.getNom(); // Retrieve the 'nom' property
+                String nom = stock.getNom(); // Récupérer la propriété 'nom'
 
-                // Combine 'id_s' and 'nom' for the X-axis label
-                String xAxisLabel = id_s + " - " + nom;
+                // Utiliser 'nom' comme étiquette pour l'axe des abscisses
+                String xAxisLabel = nom;
 
-                // Use BarChart.Data to specify X and Y axis values
+                // Utiliser BarChart.Data pour spécifier les valeurs des axes X et Y
                 BarChart.Data<String, Number> data = new BarChart.Data<>(xAxisLabel, quantity);
                 series.getData().add(data);
 
-                // If you need to customize the appearance of the bars, you can do it here
+                // Si vous avez besoin de personnaliser l'apparence des barres, vous pouvez le faire ici
                 Node bar = data.getNode();
-                // Add your bar customization here if necessary
+                // Ajoutez ici votre personnalisation de la barre (si nécessaire)
             } catch (NumberFormatException e) {
-                System.err.println("Invalid reference format: " + stock.getId_s());
+                System.err.println("Format d'identifiant invalide : " + stock.getId_s());
             }
         }
 
@@ -686,22 +687,20 @@ public class StockController implements Initializable , LanguageObserver{
             try {
                 int quantite = stock.getQuantite();
                 int nbVendu = stock.getNbVendu();
-                String referenceCategory = String.valueOf(stock.getProduitRef());
+                String marque = stock.getProduitMarque(); // Remplacez par la méthode appropriée pour obtenir la marque
 
                 // Utilisez ScatterChart.Data pour spécifier les valeurs des axes X et Y
-                ScatterChart.Data<String, Number> data = new ScatterChart.Data<>(referenceCategory, nbVendu);
+                ScatterChart.Data<String, Number> data = new ScatterChart.Data<>(marque, nbVendu);
                 series.getData().add(data);
 
-                // Si vous avez besoin de personnaliser l'apparence des points, vous pouvez le faire ici
                 Node point = data.getNode();
                 // Ajoutez ici votre personnalisation du point (si nécessaire)
             } catch (NumberFormatException e) {
-                System.err.println("Invalid reference format: " + stock.getProduitRef());
+                System.err.println("Format d'identifiant invalide : " + stock.getProduitRef());
             }
         }
 
         scatterChart.getData().add(series);
-
     }
 
 /****************export excel****************/
@@ -820,10 +819,10 @@ private void exportStockToExcel() {
         tstexport.setText(LanguageManager.getInstance().getText("tstexport"));
         tstTotal.setText(LanguageManager.getInstance().getText("tstTotal"));
         /***************stat********************************/
-        ref_pr.setText(LanguageManager.getInstance().getText("ref_pr"));
+        //ref_pr.setText(LanguageManager.getInstance().getText("ref_pr"));
         qtvendu.setText(LanguageManager.getInstance().getText("qtvendu"));
         qtpr_stock.setText(LanguageManager.getInstance().getText("qtpr_stock"));
-        id_st.setText(LanguageManager.getInstance().getText("id_st"));
+       // id_st.setText(LanguageManager.getInstance().getText("id_st"));
         Titlebarchart.setText(LanguageManager.getInstance().getText("Titlebarchart"));
         qtbarchart.setText(LanguageManager.getInstance().getText("qtbarchart"));
 
@@ -831,10 +830,9 @@ private void exportStockToExcel() {
         //Trecherche.setText(LanguageManager.getInstance().getText("Trecherche"));
         updateMarqueColumnContent();
         updateNomColumnContent();
+
     }
     public void updateMarqueColumnContent() {
-        // Suppose your TableColumn "marqueColumn" is already defined in your FXML or code
-        // TableColumn<Stock, String> marqueColumn = ...
 
         marqueColumn.setCellValueFactory(cellData -> {
             Stock stock = cellData.getValue();
@@ -878,6 +876,7 @@ private void exportStockToExcel() {
     @Override
     public void onLanguageChanged() {
         updateLabels();
+
     }
 
 
