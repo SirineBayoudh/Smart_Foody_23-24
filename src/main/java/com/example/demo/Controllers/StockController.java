@@ -331,7 +331,7 @@ public class StockController implements Initializable , LanguageObserver{
                     // Vérifier si la quantité est égale au nombre vendu
                     if (quantiteStock == nb_vendu) {
                         // Envoyer un SMS
-                        sendSMS("+21692150166", "Stock terminé : " + stockEntry.getNom());
+                        sendSMS("+21690537252", "Stock terminé : " + stockEntry.getNom());
                     }
                 }
 
@@ -543,6 +543,7 @@ public class StockController implements Initializable , LanguageObserver{
                 lowestStock = new Stock();
                 lowestStock.setId_s(stock.getId_s());
                 lowestStock.setQuantite(stock.getQuantite());
+                lowestStock.setNom(stock.getNom());
                 lowestStock.setNbVendu(stock.getNbVendu());
 
             }
@@ -885,7 +886,7 @@ private void exportStockToExcel() {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
         Message twilioMessage = Message.creator(
-                new PhoneNumber("+21692150166"), // To phone number
+                new PhoneNumber("+21690537252"), // To phone number
                 new PhoneNumber(FROM_PHONE_NUMBER), // From Twilio phone number
                 message
         ).create();

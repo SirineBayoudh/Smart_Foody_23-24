@@ -72,10 +72,10 @@ public class Main extends Application {
                 Stock lowestStock = stockController.findLowestStock(stockController.displayAllStock());
 
                 if (lowestStock != null) {
-                    String message = "Le stock avec l'ID " + lowestStock.getId_s()  + " " + lowestStock.getNom() + " contient la plus petite quantité : " + lowestStock.getQuantite();
+                    String message = "Le stock de "  + lowestStock.getNom() + " contient la plus petite quantité : " + lowestStock.getQuantite();
                     alerteController.insertAlert(lowestStock.getId_s(), new Date(), message,false);
                     System.out.println(lowestStock.getNbVendu());
-                    System.out.println(lowestStock.getId_s());
+
                     System.out.println(lowestStock.getNom());
                     System.out.println(lowestStock.getQuantite());
                  //pour exécuter l'affichage de la notification sur le thread JavaFX.
