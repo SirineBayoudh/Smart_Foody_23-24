@@ -92,7 +92,7 @@
                <Label prefHeight="26.0" prefWidth="76.0" style="-fx-font-weight: bold;" text="Bonjour " translateX="10.0" translateY="25.0" />
                <Label fx:id="infos" layoutY="-18.0" onMouseClicked="#infosUser" prefHeight="18.0" prefWidth="186.0" style="-fx-font-weight: bold;" text="Données personelles et adresses " translateX="10.0" translateY="120.0" />
                <Label layoutX="10.0" layoutY="167.0" prefHeight="26.0" prefWidth="162.0" style="-fx-font-weight: bold;" text="Historique des commandes" />
-               <Label fx:id="prenomUser" layoutX="64.0" layoutY="29.0" prefHeight="18.0" prefWidth="54.0" style="-fx-font-weight: bold;" />
+               <Label fx:id="prenomUser" layoutX="64.0" layoutY="29.0" prefHeight="18.0" prefWidth="94.0" style="-fx-font-weight: bold;" />
                <Label fx:id="infosmdp" layoutX="10.0" layoutY="132.0" onMouseClicked="#mdpUser" prefHeight="18.0" prefWidth="186.0" style="-fx-font-weight: bold;" text="Mot de passe" />
             </children>
          </AnchorPane>
@@ -145,7 +145,7 @@
                            <PasswordField fx:id="ancienMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="100.0" />
                            <Label text="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
                            <PasswordField fx:id="nouveauMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
-                           <Button fx:id="modifierMDP" mnemonicParsing="false" onAction="#modifierMDP" text="Modifier" translateX="400.0" translateY="35.0" />
+                           <Button fx:id="modifierMDP" mnemonicParsing="false" onAction="#modifierMDP" text="Modifier" translateX="30.0" translateY="35.0" />
                            <ImageView fx:id="eyeClosedA" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#Close_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-90.0">
                               <image>
                                  <Image url="@Images/visibilite_noir.png" />
@@ -170,6 +170,50 @@
                            <TextField fx:id="nouveauMDPshow" layoutX="10.0" layoutY="419.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="-325.0" />
                         </children>
                      </VBox>
+                     <Label fx:id="majus" layoutX="44.0" layoutY="35.0" prefHeight="18.0" prefWidth="67.0" text="1 majuscule" translateX="330.0" translateY="140.0" />
+                     <ImageView fx:id="verif1" fitHeight="16.0" fitWidth="26.0" layoutX="35.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" translateX="320.0" translateY="110.0" visible="false">
+                        <image>
+                           <Image url="@Images/coche.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="error1" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="310.0" translateY="100.0">
+                        <image>
+                           <Image url="@Images/supprimer.png" />
+                        </image>
+                     </ImageView>
+                     <Label fx:id="minuscule" layoutX="54.0" layoutY="45.0" prefHeight="18.0" prefWidth="67.0" text="1 minuscule" translateX="320.0" translateY="150.0" />
+                     <ImageView fx:id="verif2" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="310.0" translateY="120.0" visible="false">
+                        <image>
+                           <Image url="@Images/coche.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="error2" fitHeight="16.0" fitWidth="26.0" layoutX="55.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateX="300.0" translateY="110.0">
+                        <image>
+                           <Image url="@Images/supprimer.png" />
+                        </image>
+                     </ImageView>
+                     <Label fx:id="special" layoutX="64.0" layoutY="55.0" prefHeight="18.0" prefWidth="100.0" text="1 carctère spécial" translateX="310.0" translateY="160.0" />
+                     <ImageView fx:id="verif3" fitHeight="16.0" fitWidth="26.0" layoutX="55.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateX="300.0" translateY="130.0" visible="false">
+                        <image>
+                           <Image url="@Images/coche.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="error3" fitHeight="16.0" fitWidth="26.0" layoutX="65.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" translateX="290.0" translateY="120.0">
+                        <image>
+                           <Image url="@Images/supprimer.png" />
+                        </image>
+                     </ImageView>
+                     <Label fx:id="longueur" layoutX="74.0" layoutY="65.0" prefHeight="18.0" prefWidth="72.0" text="longueur &gt;8" translateX="300.0" translateY="170.0" />
+                     <ImageView fx:id="verif4" fitHeight="16.0" fitWidth="26.0" layoutX="65.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" translateX="290.0" translateY="140.0" visible="false">
+                        <image>
+                           <Image url="@Images/coche.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="error4" fitHeight="16.0" fitWidth="26.0" layoutX="75.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" translateX="280.0" translateY="130.0">
+                        <image>
+                           <Image url="@Images/supprimer.png" />
+                        </image>
+                     </ImageView>
                   </children>
                </AnchorPane>
             </left>

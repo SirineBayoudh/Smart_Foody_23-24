@@ -35,6 +35,19 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.scene.control.Pagination;
 
+
+import java.io.FileOutputStream;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import java.awt.Desktop;
+import java.io.File;
+
 public class GestionUserController implements Initializable {
 
     @FXML
@@ -292,6 +305,160 @@ public class GestionUserController implements Initializable {
 
         collectGenderData();
         totalClient();
+    }
+
+    @FXML
+    void exportToPDF(ActionEvent event) {
+        ObservableList<Utilisateur> listUsers = getUtilisateurs();
+
+        ObservableList<Utilisateur> clients = FXCollections.observableArrayList();
+        ObservableList<Utilisateur> conseillers = FXCollections.observableArrayList();
+
+        for (Utilisateur utilisateur : listUsers) {
+            if (utilisateur.getRole().equals("Client")) {
+                clients.add(utilisateur);
+            } else if (utilisateur.getRole().equals("Conseiller")) {
+                conseillers.add(utilisateur);
+            }
+        }
+
+        try {
+            // Créer un document pour les clients
+            Document documentClients = new Document(PageSize.A4);
+            PdfWriter.getInstance(documentClients, new FileOutputStream("utilisateurs_clients.pdf"));
+            documentClients.open();
+
+            Paragraph phraseClients = new Paragraph("Tableau des clients", FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD));
+            phraseClients.setAlignment(Element.ALIGN_CENTER);
+            phraseClients.setSpacingAfter(10);
+            documentClients.add(phraseClients);
+
+
+            PdfPTable tableClients = createTable(clients, false); // false pour indiquer que c'est un client
+            documentClients.add(tableClients);
+            documentClients.close();
+
+            // Créer un document pour les conseillers
+            Document documentConseillers = new Document(PageSize.A4);
+            PdfWriter.getInstance(documentConseillers, new FileOutputStream("utilisateurs_conseillers.pdf"));
+            documentConseillers.open();
+
+            Paragraph phraseConseillers = new Paragraph("Tableau des conseillers", FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD));
+            phraseConseillers.setAlignment(Element.ALIGN_CENTER);
+            phraseConseillers.setSpacingAfter(10);
+            documentConseillers.add(phraseConseillers);
+
+
+            PdfPTable tableConseillers = createTable(conseillers, true); // true pour indiquer que c'est un conseiller
+            documentConseillers.add(tableConseillers);
+            documentConseillers.close();
+
+            // Ouvrir les fichiers PDF générés
+            openPDF("utilisateurs_clients.pdf");
+            openPDF("utilisateurs_conseillers.pdf");
+
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private PdfPTable createTable(ObservableList<Utilisateur> utilisateurs, boolean isConseiller) {
+        // Déterminez le nombre de colonnes en fonction du rôle
+        int numColumns = isConseiller? 9:11;
+
+        PdfPTable table = new PdfPTable(numColumns);
+        table.setWidthPercentage(100); // Utilisez 100% de la largeur de la page
+
+        // Ajoutez des en-têtes de colonne
+        String[] headers;
+        if (isConseiller) {
+            headers = new String[]{"Nom", "Prénom", "Genre", "Email", "Mot de passe", "Numéro tel",
+                    "Rôle", "Matricule", "Attestation"};
+        } else {
+            headers = new String[]{"Nom", "Prénom", "Genre", "Email", "Mot de passe", "Numéro tel",
+                        "Rôle", "Adresse", "Objectif", "Taille", "Poids"};
+        }
+
+        for (String header : headers) {
+            PdfPCell cell = new PdfPCell(new Phrase(header));
+            cell.setBackgroundColor(new BaseColor(82, 171, 38));
+            cell.setPadding(5);
+            table.addCell(cell);
+        }
+
+        for (Utilisateur utilisateur : utilisateurs) {
+
+            PdfPCell nomCell = new PdfPCell(new Phrase(utilisateur.getNom()));
+            nomCell.setPadding(5);
+            table.addCell(nomCell);
+
+            PdfPCell prenomCell = new PdfPCell(new Phrase(utilisateur.getPrenom()));
+            prenomCell.setPadding(5);
+            table.addCell(prenomCell);
+
+            PdfPCell genreCell = new PdfPCell(new Phrase(utilisateur.getGenre()));
+            genreCell.setPadding(5);
+            table.addCell(genreCell);
+
+            PdfPCell emailCell = new PdfPCell(new Phrase(utilisateur.getEmail()));
+            emailCell.setPadding(5);
+            table.addCell(emailCell);
+
+            PdfPCell mdpCell = new PdfPCell(new Phrase(utilisateur.getMot_de_passe()));
+            mdpCell.setPadding(5);
+            table.addCell(mdpCell);
+
+            PdfPCell numTelCell = new PdfPCell(new Phrase(String.valueOf(utilisateur.getNum_tel())));
+            numTelCell.setPadding(5);
+            table.addCell(numTelCell);
+
+            PdfPCell roleCell = new PdfPCell(new Phrase(utilisateur.getRole()));
+            roleCell.setPadding(5);
+            table.addCell(roleCell);
+
+            // Ajoutez les données spécifiques au rôle
+            if (!isConseiller) {
+                PdfPCell adresseCell = new PdfPCell(new Phrase(utilisateur.getAdresse()));
+                adresseCell.setPadding(5);
+                table.addCell(adresseCell);
+
+                PdfPCell objectifCell = new PdfPCell(new Phrase(utilisateur.getObjectif()));
+                objectifCell.setPadding(5);
+                table.addCell(objectifCell);
+
+                PdfPCell tailleCell = new PdfPCell(new Phrase(String.valueOf(utilisateur.getTaille())));
+                tailleCell.setPadding(5);
+                table.addCell(tailleCell);
+
+                PdfPCell poidsCell = new PdfPCell(new Phrase(String.valueOf(utilisateur.getPoids())));
+                poidsCell.setPadding(5);
+                table.addCell(poidsCell);
+
+            } else {
+                PdfPCell matriculeCell = new PdfPCell(new Phrase(utilisateur.getMatricule()));
+                matriculeCell.setPadding(5);
+                table.addCell(matriculeCell);
+
+                PdfPCell attestationCell = new PdfPCell(new Phrase(utilisateur.getAttestation()));
+                attestationCell.setPadding(5);
+                table.addCell(attestationCell);
+            }
+        }
+
+        return table;
+    }
+
+    private void openPDF(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                System.out.println("Le fichier PDF n'existe pas : " + filePath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void rechercher(String searchText) {

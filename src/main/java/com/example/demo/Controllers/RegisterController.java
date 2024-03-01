@@ -268,6 +268,16 @@ public class RegisterController implements Initializable {
 
         calculerIMC();
 
+        errorConfirm1.setVisible(false);
+        errorConfirm2.setVisible(false);
+        errorConfirm3.setVisible(false);
+        errorConfirm4.setVisible(false);
+
+        majusConfirm.setVisible(false);
+        minusculeConfirm.setVisible(false);
+        specialConfirm.setVisible(false);
+        longueurConfirm.setVisible(false);
+
     }
     private void calculerIMC() {
         double taille = spinnerTaille.getValue() / 100.0; // Convertir la taille en mètres
@@ -317,20 +327,20 @@ public class RegisterController implements Initializable {
     void HidePasswordConfirmOnAction(KeyEvent event) {
         confirmPassword = tpwdconfirm.getText();
         tpwdshowconfirm.setText(confirmPassword);
-        checkForUpperCaseLetterConfirm(confirmPassword);
+        /*checkForUpperCaseLetterConfirm(confirmPassword);
         checkForLowerCaseLetterConfirm(confirmPassword);
         checkSpecialConfirm(confirmPassword);
-        checkLengthConfirm(confirmPassword);
+        checkLengthConfirm(confirmPassword);*/
     }
 
     @FXML
     void ShowPasswordConfirmOnAction(KeyEvent event) {
         confirmPassword = tpwdshowconfirm.getText();
         tpwdconfirm.setText(confirmPassword);
-        checkForUpperCaseLetterConfirm(confirmPassword);
+        /*checkForUpperCaseLetterConfirm(confirmPassword);
         checkForLowerCaseLetterConfirm(confirmPassword);
         checkSpecialConfirm(confirmPassword);
-        checkLengthConfirm(confirmPassword);
+        checkLengthConfirm(confirmPassword);*/
     }
 
     @FXML
@@ -603,6 +613,15 @@ public class RegisterController implements Initializable {
             } else if (complx.getNb() == 12){
                 register1.setVisible(false);
                 register2.setVisible(true);
+
+                verif1.setVisible(false);
+                verif2.setVisible(false);
+                verif3.setVisible(false);
+                verif4.setVisible(false);
+                majus.setVisible(false);
+                minuscule.setVisible(false);
+                special.setVisible(false);
+                longueur.setVisible(false);
             }
         }
     }

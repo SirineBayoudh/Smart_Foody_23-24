@@ -148,6 +148,7 @@
                   <Image url="@Images/poubelle-de-recyclage.png" />
                </image>
             </ImageView>
+            <Button layoutX="404.0" layoutY="1.0" mnemonicParsing="false" onAction="#exportToPDF" style="-fx-background-color: #56ab2f; -fx-text-fill: white;" text="Exporter PDF" />
 
                      </children>
       </AnchorPane>

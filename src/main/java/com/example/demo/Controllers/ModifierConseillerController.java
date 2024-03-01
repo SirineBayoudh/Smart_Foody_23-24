@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class ModifierConseillerController implements Initializable {
@@ -69,6 +70,8 @@ public class ModifierConseillerController implements Initializable {
 
     private GestionUserController gestionUserController;
 
+    Random random = new Random();
+
     Connection  cnx = MyConnection.getInstance().getCnx();
 
     public void setGestionUserController(GestionUserController gestionUserController) {
@@ -83,7 +86,10 @@ public class ModifierConseillerController implements Initializable {
 
         tfprenomc.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
-                tfmatricule.setText("CNS-" + newValue);
+                int randomNumber = random.nextInt(100);
+                String formattedNumber = String.format("%02d", randomNumber);
+
+                tfmatricule.setText("CNS-" + newValue + "-" + formattedNumber);
             } else {
                 tfmatricule.clear();
             }
@@ -192,7 +198,7 @@ public class ModifierConseillerController implements Initializable {
             if(existe){
                 modif();
             } else {
-                showAlert("Mots non trouvés", "Les mots 'Conseiller' ou 'Nutritionniste' ne sont pas présents dans le fichier d'attestation.");
+                showAlert("Attestation non valide", "L'attestation est non valide.");
             }
         }else {
             modif();

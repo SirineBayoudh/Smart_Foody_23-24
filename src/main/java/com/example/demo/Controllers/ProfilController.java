@@ -26,6 +26,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProfilController implements Initializable {
 
@@ -123,6 +125,42 @@ public class ProfilController implements Initializable {
     @FXML
     private Button modifierMDP;
 
+    @FXML
+    private ImageView verif1;
+
+    @FXML
+    private ImageView error1;
+
+    @FXML
+    private Label majus;
+
+    @FXML
+    private ImageView verif2;
+
+    @FXML
+    private ImageView error2;
+
+    @FXML
+    private Label minuscule;
+
+    @FXML
+    private ImageView verif3;
+
+    @FXML
+    private ImageView error3;
+
+    @FXML
+    private Label special;
+
+    @FXML
+    private ImageView verif4;
+
+    @FXML
+    private ImageView error4;
+
+    @FXML
+    private Label longueur;
+
     Encryptor encryptor = new Encryptor();
     ComplexiteMdp complx = new ComplexiteMdp();
     Connection cnx = MyConnection.getInstance().getCnx();
@@ -170,12 +208,20 @@ public class ProfilController implements Initializable {
     void HidePasswordOnActionN(KeyEvent event) {
         nouveauPwd = nouveauMDP.getText();
         nouveauMDPshow.setText(nouveauPwd);
+        checkForUpperCaseLetter(nouveauPwd);
+        checkForLowerCaseLetter(nouveauPwd);
+        checkSpecial(nouveauPwd);
+        checkLength(nouveauPwd);
     }
 
     @FXML
     void ShowPasswordOnActionN(KeyEvent event) {
         nouveauPwd = nouveauMDPshow.getText();
         nouveauMDP.setText(nouveauPwd);
+        checkForUpperCaseLetter(nouveauPwd);
+        checkForLowerCaseLetter(nouveauPwd);
+        checkSpecial(nouveauPwd);
+        checkLength(nouveauPwd);
     }
 
     @FXML
@@ -192,6 +238,71 @@ public class ProfilController implements Initializable {
         eyeClosedN.setVisible(true);
         nouveauMDPshow.setVisible(false);
         eyeOpenN.setVisible(false);
+    }
+
+    private void checkForUpperCaseLetter(String password) {
+        boolean containsUpperCase = false;
+        for (int i = 0; i < password.length(); i++) {
+            if (Character.isUpperCase(password.charAt(i))) {
+                containsUpperCase = true;
+                break;
+            }
+        }
+        if (containsUpperCase) {
+            majus.setStyle("-fx-text-fill: green;");
+            verif1.setVisible(true);
+            error1.setVisible(false);
+        } else {
+            majus.setStyle("");
+            verif1.setVisible(false);
+            error1.setVisible(true);
+        }
+    }
+
+    private void checkForLowerCaseLetter(String password) {
+        boolean containsLowerCase = false;
+        for (int i = 0; i < password.length(); i++) {
+            if (Character.isLowerCase(password.charAt(i))) {
+                containsLowerCase = true;
+                break;
+            }
+        }
+        if (containsLowerCase) {
+            minuscule.setStyle("-fx-text-fill: green;");
+            verif2.setVisible(true);
+            error2.setVisible(false);
+        } else {
+            minuscule.setStyle("");
+            verif2.setVisible(false);
+            error2.setVisible(true);
+        }
+    }
+
+    private void checkSpecial(String password) {
+        Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
+        Matcher specialCharMatcher = specialCharPattern.matcher(password);
+        if (specialCharMatcher.find()) {
+            special.setStyle("-fx-text-fill: green;");
+            verif3.setVisible(true);
+            error3.setVisible(false);
+        } else {
+            special.setStyle("");
+            verif3.setVisible(false);
+            error3.setVisible(true);
+        }
+
+    }
+
+    private void checkLength(String password){
+        if (password.length() >= 8) {
+            longueur.setStyle("-fx-text-fill: green;");
+            verif4.setVisible(true);
+            error4.setVisible(false);
+        } else {
+            longueur.setStyle("");
+            verif4.setVisible(false);
+            error4.setVisible(true);
+        }
     }
 
     @Override
@@ -343,20 +454,20 @@ public class ProfilController implements Initializable {
         rsMDP.next();
         String mdp = rsMDP.getString("mot_de_passe");
 
-        if (!encryptor.encryptString(ancienMDP.getText()).equals(mdp)) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Mot de passe incorrect");
-            alert.setHeaderText(null);
-            alert.setContentText("L'ancien mot de passe saisi est incorrect.");
-            alert.showAndWait();
-            return;
-        }
-
         if (ancienMDP.getText().isEmpty() || nouveauMDP.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Champs manquants");
             alert.setHeaderText(null);
             alert.setContentText("Veuillez remplir tous les champs obligatoires.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (!encryptor.encryptString(ancienMDP.getText()).equals(mdp)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Mot de passe incorrect");
+            alert.setHeaderText(null);
+            alert.setContentText("L'ancien mot de passe saisi est incorrect.");
             alert.showAndWait();
             return;
         }
@@ -409,6 +520,19 @@ public class ProfilController implements Initializable {
             alert2.setHeaderText(null);
             alert2.setContentText("Vos informations ont été mises à jour avec succès.");
             alert2.showAndWait();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
+            try {
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+                Stage loginStage = (Stage) tfemailp.getScene().getWindow();
+                loginStage.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }

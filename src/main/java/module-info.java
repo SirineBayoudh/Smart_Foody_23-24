@@ -8,6 +8,8 @@ module com.example.demo {
     requires java.sql;
     requires java.mail;
     requires tess4j;
+    requires itextpdf;
+    requires java.desktop;
 
     opens com.example.demo to javafx.fxml;
     exports com.example.demo;

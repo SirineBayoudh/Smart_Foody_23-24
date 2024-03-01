@@ -331,6 +331,19 @@ public class ProfilAdminController implements Initializable {
             alert2.setHeaderText(null);
             alert2.setContentText("Vos informations ont été mises à jour avec succès.");
             alert2.showAndWait();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
+            try {
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+                Stage loginStage = (Stage) tfemailp.getScene().getWindow();
+                loginStage.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
