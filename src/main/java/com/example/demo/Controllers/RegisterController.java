@@ -25,8 +25,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.net.ssl.SSLSession;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStreamReader;
+import java.net.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,6 +40,10 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RegisterController implements Initializable {
 
@@ -212,6 +218,9 @@ public class RegisterController implements Initializable {
     @FXML
     private Label longueurConfirm;
 
+    @FXML
+    private Label indicatif;
+
     Connection cnx = MyConnection.getInstance().getCnx();
 
     private void chargerOptionsObjectif() {
@@ -277,6 +286,60 @@ public class RegisterController implements Initializable {
         minusculeConfirm.setVisible(false);
         specialConfirm.setVisible(false);
         longueurConfirm.setVisible(false);
+
+        /*String ipAddress = "";
+        try {
+            ipAddress = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        System.out.println(ipAddress);*/
+
+        try {
+
+            // API FREEGEOIP pour le nom du pays à partir de l'adresse ip
+            URL url2 = new URL("https://freegeoip.app/json/" + "197.2.48.207"); //102.129.65.0 france 
+
+            HttpURLConnection conn = (HttpURLConnection) url2.openConnection();
+            conn.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            String countryName = response.toString().split("\"country_name\":\"")[1].split("\"")[0];
+            System.out.println("Pays: " + countryName);
+
+            conn.disconnect();
+
+            // API RESTCOUNTRIES pour l'indicatif du pays à partir du nom du pays
+
+            URL url3 = new URL("https://restcountries.com/v2/name/" + countryName);
+            HttpURLConnection conn2 = (HttpURLConnection) url3.openConnection();
+            conn2.setRequestMethod("GET");
+
+            BufferedReader reader2 = new BufferedReader(new InputStreamReader(conn2.getInputStream()));
+            StringBuilder response2 = new StringBuilder();
+            while ((line = reader2.readLine()) != null) {
+                response2.append(line);
+            }
+
+            // Analyse de la réponse JSON pour obtenir l'indicatif téléphonique
+            String phoneCode = response2.toString().split("\"callingCodes\":\\[\"")[1].split("\"")[0];
+            System.out.println("Indicatif téléphonique: " + phoneCode);
+
+            reader2.close();
+            conn2.disconnect();
+
+            indicatif.setText("+" + phoneCode);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     private void calculerIMC() {
@@ -532,7 +595,9 @@ public class RegisterController implements Initializable {
     }
 
     @FXML
-    void addUser(ActionEvent event)  {
+    void addUser(ActionEvent event) throws IOException {
+
+        indicatif.setVisible(true);
 
         if (tnom.getText().isEmpty() || tprenom.getText().isEmpty() || temail.getText().isEmpty() || tpwd.getText().isEmpty() || genreChoisi == null || tftel.getText().isEmpty()  || villeChoisie == null || tfrue.getText().isEmpty() || objectifChoisi == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -622,12 +687,17 @@ public class RegisterController implements Initializable {
                 minuscule.setVisible(false);
                 special.setVisible(false);
                 longueur.setVisible(false);
+
+                indicatif.setVisible(false);
             }
         }
     }
 
     @FXML
     void addUserIMC(ActionEvent event) throws NoSuchAlgorithmException{
+
+        indicatif.setVisible(false);
+
         Utilisateur user = new Utilisateur(tnom.getText(), tprenom.getText(), genreChoisi, temail.getText(), encryptor.encryptString(tpwd.getText()), Integer.parseInt(tftel.getText()), Role.Client.toString(), "", "", villeChoisie + ", " + tfrue.getText(), objectifChoisi, 0,spinnerTaille.getValue(),spinnerPoids.getValue());
         UserCrud usc = new UserCrud();
         usc.ajouterEntite(user);

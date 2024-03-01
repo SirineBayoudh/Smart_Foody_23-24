@@ -20,7 +20,7 @@
                 <Image url="@Images/trans_logo.png" />
             </image>
         </ImageView>
-        <Text fx:id="t1" layoutX="90.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="login-form-container" text="Se connecter" translateY="10.0" />
+        <Text fx:id="t1" layoutX="90.0" layoutY="127.0" onMouseClicked="#redirectToLogin" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="login-form-container" text="Se connecter" translateY="10.0" />
         <Text fill="#56ab2f" layoutX="246.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold; -fx-underline: true;" text="S'inscrire" translateY="10.0" />
         <VBox fx:id="register1" layoutX="36.0" layoutY="102.0" minHeight="-Infinity" prefHeight="388.0" prefWidth="347.0" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="60.0">
             <children>
@@ -52,7 +52,7 @@
                     </image>
                 </ImageView>
                 <ComboBox fx:id="choixGenre" prefWidth="150.0" promptText="Genre" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-255.0" />
-            <TextField fx:id="tftel" maxWidth="-Infinity" prefWidth="150.0" promptText="Num Tel" translateX="170.0" translateY="-304.0" />
+            <TextField fx:id="tftel" maxWidth="-Infinity" prefWidth="110.0" promptText="Num Tel" translateX="200.0" translateY="-304.0" />
                 <ComboBox fx:id="choixVille" prefWidth="150.0" promptText="Ville" styleClass="login-form-container" stylesheets="@css/style_login.css" translateY="-305.0" visibleRowCount="4" />
                 <TextField fx:id="tfrue" layoutX="10.0" layoutY="106.0" maxWidth="-Infinity" prefHeight="0.0" prefWidth="140.0" promptText="Rue" translateX="170.0" translateY="-353.0" />
                 <ComboBox fx:id="choixObjectif" prefWidth="310.0" promptText="Objectif" styleClass="combo-box" stylesheets="@css/style_login.css" translateY="-355.0" />
@@ -172,6 +172,7 @@
             <Image url="@Images/supprimer.png" />
          </image>
       </ImageView>
+      <Label fx:id="indicatif" layoutX="40.0" layoutY="23.0" prefHeight="18.0" prefWidth="51.0" translateX="160.0" translateY="400.0" />
     </children>
     <styleClass>
         <String fx:value="login-container" />
