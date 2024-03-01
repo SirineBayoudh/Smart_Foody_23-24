@@ -55,8 +55,8 @@
             <Image url="@Images/8666693_search_icon.png" />
          </image>
       </ImageView>
-      <Label layoutX="923.0" layoutY="43.0" prefHeight="25.0" prefWidth="57.0" text="Admin" />
-      <ImageView fitHeight="35.0" fitWidth="41.0" layoutX="916.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+      <Label layoutX="926.0" layoutY="40.0" prefHeight="25.0" prefWidth="57.0" text="Admin" />
+      <ImageView fitHeight="35.0" fitWidth="41.0" layoutX="923.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/thumbnail_image.png" />
          </image>
@@ -113,7 +113,7 @@
                </font></TextField>
             </children>
         </Pane>
-        <ScatterChart fx:id="scatterChart" layoutX="581.0" layoutY="30.0" prefHeight="192.0" prefWidth="342.0" style="-fx-border-color: #bbddab; -fx-border-width: 3;">
+        <ScatterChart fx:id="scatterChart" layoutX="581.0" layoutY="24.0" prefHeight="198.0" prefWidth="342.0" style="-fx-border-color: #bbddab; -fx-border-width: 3;">
             <xAxis>
                 <CategoryAxis prefHeight="19.0" prefWidth="264.0" side="BOTTOM" />
             </xAxis>

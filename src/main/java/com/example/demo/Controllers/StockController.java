@@ -155,9 +155,9 @@ public class StockController implements Initializable , LanguageObserver{
 
     @FXML
     private Text Titlebarchart;
-    private static final String ACCOUNT_SID = "AC65cc060d1e8324522666575b59ffd53b";
-    private static final String AUTH_TOKEN = "b0620372cecd4c84f99c069d8c554fda";
-    private static final String FROM_PHONE_NUMBER = "+18607820963";
+    private static final String ACCOUNT_SID = "AC3205c7a8ab040d60ad422ae1d7996405";
+    private static final String AUTH_TOKEN = "";
+    private static final String FROM_PHONE_NUMBER = "+19497102922";
     private LanguageManager languageManager = LanguageManager.getInstance();
 
     @Override
