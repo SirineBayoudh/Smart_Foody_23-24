@@ -52,7 +52,7 @@
                     <columns>
                         <TableColumn fx:id="id_commandeColumn" prefWidth="108.0" text="#" />
                         <TableColumn fx:id="date_commandeColumn" maxWidth="265.0" minWidth="-1.0" prefWidth="210.0" text="Date Commande" />
-                        <TableColumn fx:id="id_clientColumn" maxWidth="377.0" minWidth="0.0" prefWidth="154.0" text="ID Client" />
+                        <TableColumn fx:id="id_clientColumn" maxWidth="377.0" minWidth="0.0" prefWidth="154.0" text=" Client" />
                         <TableColumn fx:id="total_commandeColumn" maxWidth="421.0" minWidth="67.0" prefWidth="173.0" text="Total Commande" />
                         <TableColumn fx:id="remise" maxWidth="421.0" minWidth="67.0" prefWidth="130.0" text="Remise" />
                         <TableColumn fx:id="etat" maxWidth="421.0" minWidth="67.0" prefWidth="160.0" text="Etat" />

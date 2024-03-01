@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class PanierController {
 
     @FXML
     private VBox productsContainer;
-
+    private VBox vboxpanier;
     @FXML
     private Label remiseid;
 
@@ -50,7 +51,7 @@ public class PanierController {
 
     @FXML
     private Label totaleid;
-
+    private HBox  soldeBand;
     double[] sousTotale = {0};
     double[] remise = {0};
     double[] totale = {0};
@@ -538,23 +539,47 @@ public class PanierController {
     //Métier de calcul de prix total ainsi de recalculer avec la remise selon le nombre de commande par client
 
     private void recalculate(double[] sousTotale, double[] remise, double[] totale) {
-        if (9 > nbrCommande(14) && nbrCommande(14) > 3) {
-            remise[0] = 0.15; // 15% remise
+        if(isPeriodOfSale()){
+
+            remise[0] = 0.50; // 50% remise
             totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]);
-        } else if (nbrCommande(14) > 9) {
-            remise[0] = 0.25; // 25% remise
-            totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]);
-        } else {
-            totale[0] = sousTotale[0];
+            remiseid.setText("Profitez jusqu'à 50% de reduction");
+
+        }else{
+            vboxpanier.getChildren().remove(soldeBand);
+
+
+            if (9 > nbrCommande(14) && nbrCommande(14) > 3) {
+                remise[0] = 0.15; // 15% remise
+                totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]);
+            } else if (nbrCommande(14) > 9) {
+                remise[0] = 0.25; // 25% remise
+                totale[0] = sousTotale[0] - (sousTotale[0] * remise[0]);
+            } else {
+                totale[0] = sousTotale[0];
+            }
+            if (remise[0] == 0) {
+                remiseid.setText("Aucune remise");
+            } else {
+                remiseid.setText(String.format("%.0f%% de remise", remise[0] * 100));
+            }
         }
-        if (remise[0] == 0) {
-            remiseid.setText("Aucune remise");
-        } else {
-            remiseid.setText(String.format("%.0f%% de remise", remise[0] * 100));
-        }
+
+
 
         soustotaleid.setText(String.format("Sous-Totale : %.2f TND", sousTotale[0]));
         totaleid.setText(String.format("Totale : %.2f TND", totale[0]));
+    }
+    private boolean isPeriodOfSale() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Define the start and end dates of the sale period
+        LocalDate saleStartDate = LocalDate.of(2024, 2, 1); // February 1, 2024
+        LocalDate saleEndDate = LocalDate.of(2024, 3, 29); // February 29, 2024
+
+        // Check if the current date is within the sale period
+        return currentDate.isAfter(saleStartDate) && currentDate.isBefore(saleEndDate);
     }
 
     private Integer nbrCommande(int clientId) {

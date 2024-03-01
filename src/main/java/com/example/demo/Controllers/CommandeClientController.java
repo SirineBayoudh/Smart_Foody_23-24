@@ -49,6 +49,7 @@ import java.util.Optional;
 
 import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement;
 import static javafx.scene.paint.Color.BLACK;
+import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement;
 
 public class CommandeClientController{
     static Stage stage;
@@ -407,10 +408,9 @@ public class CommandeClientController{
         stage.setScene(scene);
         stage.setTitle("Paiement Stripe");
         stage.show();
-        creerSessionPaiement(webView);
+        creerSessionPaiement(webView,CurrentCommande);
 
     }
-
 
 
     public void map(ActionEvent actionEvent) {

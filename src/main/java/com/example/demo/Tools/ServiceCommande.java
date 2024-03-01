@@ -27,7 +27,7 @@ public class ServiceCommande implements IServiceCommande<Commande> {
 
     @Override
     public void deleteOne(int id) throws SQLException {
-        String req = "DELETE FROM `commande` WHERE `id`=?";
+        String req = "DELETE FROM `commande` WHERE `id_commande`=?";
         PreparedStatement ps = cnx.prepareStatement(req);
         ps.setInt(1, id);
         ps.executeUpdate();

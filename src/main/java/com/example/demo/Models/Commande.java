@@ -8,8 +8,9 @@ public class Commande {
     private Date date_commande;
     private int id_client;
     private float total_commande;
+    private float total_commande_devise;
     private float remise;
-
+    private String clientUsername;
     private String etat;
 
 
@@ -46,6 +47,13 @@ public class Commande {
         this.total_commande = total_commande;
     }
 
+    public float getTotal_commande_devise() {
+        return total_commande_devise;
+    }
+
+    public void setTotal_commande_devise(float total_commande_devise) {
+        this.total_commande_devise = total_commande_devise;
+    }
 
     public float getRemise() {
         return remise;
@@ -61,6 +69,14 @@ public class Commande {
 
     public void setEtat(String etat) {
         this.etat = etat;
+    }
+
+    public String getClientUsername() {
+        return clientUsername;
+    }
+
+    public void setClientUsername(String clientUsername) {
+        this.clientUsername = clientUsername;
     }
 
     public Commande() {
@@ -80,5 +96,18 @@ public class Commande {
         this.total_commande = total_commande;
         this.remise = remise;
         this.etat = etat;
+    }
+
+    @Override
+    public String toString() {
+        return "Commande{" +
+                "id_commande=" + id_commande +
+                ", date_commande=" + date_commande +
+                ", id_client=" + id_client +
+                ", total_commande=" + total_commande +
+                ", remise=" + remise +
+                ", clientUsername='" + clientUsername + '\'' +
+                ", etat='" + etat + '\'' +
+                '}';
     }
 }

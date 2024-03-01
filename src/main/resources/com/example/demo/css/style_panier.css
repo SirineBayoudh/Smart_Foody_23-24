@@ -178,7 +178,7 @@
     -fx-background-color: #45a049;
 }
 .my-alert {
-    -fx-background-color: #f0f0f0; /* Couleur de fond */
+    -fx-background-color: #4CAF50; /* Couleur de fond */
 }
 
 .custom-alert {
@@ -195,9 +195,7 @@
     -fx-background-color: #f44336;
     -fx-text-fill: white;
 }
-.annuler-button {
-    -fx-background-color: #f44336;
-    -fx-text-fill: white;
-}
+
+
 
 
