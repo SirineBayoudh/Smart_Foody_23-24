@@ -35,14 +35,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
+
+import static javax.swing.JOptionPane.showInputDialog;
 
 
 public class DashProduitController implements Initializable {
@@ -50,6 +51,7 @@ public class DashProduitController implements Initializable {
     PreparedStatement st = null;
     ResultSet rs = null;
     int ref = 0;
+    private static final String FILENAME = "categories.txt";
 
 
     @FXML
@@ -67,7 +69,7 @@ public class DashProduitController implements Initializable {
     private TableView<Produit> table;
 
     @FXML
-    private TextField tfCategorie;
+    private ComboBox<String> cbCategorie;
 
     @FXML
     private TextField tfCritere;
@@ -235,9 +237,9 @@ public class DashProduitController implements Initializable {
                 showAlert("La marque ne doit contenir que des lettres.");
                 return;
             }
-            String categorie = tfCategorie.getText();
-            if (categorie.isEmpty()) {
-                showAlert("Veuillez saisir une catégorie.");
+            String categorie = cbCategorie.getValue();
+            if (categorie == null) {
+                showAlert("Veuillez sélectionner une catégorie.");
                 return;
             } else if (!categorie.matches("[a-zA-Z]+")) {
                 showAlert("La catégorie ne doit contenir que des lettres.");
@@ -281,12 +283,8 @@ public class DashProduitController implements Initializable {
                 System.out.println("Produit ajouté avec succès !");
                 showProduits();
                 tfMarque.clear();
-                tfCategorie.clear();
-                //tfPrix.getValueFactory().setValue(0,0);
-                // Ne pas effacer les CheckBox pour permettre à l'utilisateur de conserver sa sélection
-                // tfCritere.clear();
+                cbCategorie.getSelectionModel().clearSelection();
                 tfImage.clear();
-                //btnModifier.setVisible(true);
                 updateTotalPriceLabel();
             } else {
                 System.out.println("Échec de l'ajout du produit !");
@@ -349,7 +347,6 @@ public class DashProduitController implements Initializable {
                     // Ajoutez d'autres cas pour chaque critère si nécessaire
                 }
             }
-            tfCategorie.setText(produit.getCategorie());
             btnAjouter.setDisable(true);
             btnModifier.setDisable(false);
             btnSupprimer.setDisable(false);
@@ -377,7 +374,7 @@ public class DashProduitController implements Initializable {
                 try {
                     st = con.getCnx().prepareStatement(update);
                     st.setString(1, tfMarque.getText());
-                    st.setString(2, tfCategorie.getText());
+                    st.setString(2, cbCategorie.getSelectionModel().getSelectedItem());
 
                     // Récupérer la valeur du prix du Spinner en tant que Float
                     Number prixValue = tfPrix.getValue();
@@ -412,7 +409,7 @@ public class DashProduitController implements Initializable {
                         System.out.println("Produit modifié avec succès !");
                         showProduits();
                         tfMarque.clear();
-                        tfCategorie.clear();
+                        cbCategorie.setValue(produit.getCategorie());
                         //tfPrix.getValueFactory().setValue(0f);
                         tfImage.clear();
                         checkboxCritere1.setSelected(false); // Décocher la première case à cocher
@@ -464,7 +461,7 @@ public class DashProduitController implements Initializable {
                                 checkboxCritere2.setSelected(false); // Décocher la deuxième case à cocher
                                 checkboxCritere3.setSelected(false);
                                 checkboxCritere4.setSelected(false);
-                                tfCategorie.clear();
+                                cbCategorie.getSelectionModel().clearSelection();
                                 updateTotalPriceLabel();
                             } else {
                                 System.out.println("Échec de la suppression du produit !");
@@ -549,9 +546,51 @@ public class DashProduitController implements Initializable {
         labelTotalProduits.setText("Total des produits :\n " + totalProduits);
         labelSommePrixProduit.setText("Total des prix des produits :\n" + getTotalPrixProduits());
         updateTotalPriceLabel();
+        chargerCategoriesDepuisBaseDeDonnees();
+
+
+        // Ajout de l'écouteur sur la ComboBox
+        cbCategorie.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if ("Autre".equals(newValue)) {
+                String nouvelleCategorie = showInputDialog("Nouvelle Catégorie", "Veuillez saisir le nom de la nouvelle catégorie :");
+                if (nouvelleCategorie != null && !nouvelleCategorie.trim().isEmpty() && !cbCategorie.getItems().contains(nouvelleCategorie)) {
+                    cbCategorie.getItems().add(nouvelleCategorie);
+                    cbCategorie.getSelectionModel().select(nouvelleCategorie);
+                } else {
+                    cbCategorie.getSelectionModel().select(oldValue);
+                }
+            }
+        });
 
 
     }
+
+    private void chargerCategoriesDepuisBaseDeDonnees() {
+        Set<String> categories = new HashSet<>();
+        try {
+            // Récupérer une instance de la connexion à la base de données
+            Connection connection = MyConnection.getInstance().getCnx();
+            // Création de la requête SQL pour récupérer les catégories distinctes
+            String query = "SELECT DISTINCT categorie FROM produit";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                // Exécution de la requête
+                ResultSet resultSet = statement.executeQuery();
+                // Parcourir les résultats et ajouter les catégories à l'ensemble
+                while (resultSet.next()) {
+                    String categorie = resultSet.getString("categorie");
+                    categories.add(categorie);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer l'erreur de connexion ou de requête SQL
+        }
+
+        // Ajouter les catégories à la ComboBox
+        cbCategorie.getItems().addAll(categories);
+        cbCategorie.getItems().add("Autre");
+    }
+
     private void updateTotalPriceLabel() {
         int totalProduits = getTotalProduits();
         labelTotalProduits.setText("Total des produits :\n " + totalProduits);

@@ -41,10 +41,11 @@
                <font>
                   <Font name="Cambria" size="14.0" />
                </font></Text>
-            <TextField fx:id="tfCategorie">
+            <ComboBox fx:id="cbCategorie" prefHeight="28.0" prefWidth="235.0" style="-fx-background-color: #ffffff;" styleClass="comboBox" stylesheets="@css/style_pageClient.css">
                <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin></TextField>
+                  <Insets left="20.0" />
+               </VBox.margin>
+            </ComboBox>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="prix">
                <VBox.margin>
                   <Insets left="30.0" />
