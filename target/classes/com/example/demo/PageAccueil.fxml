@@ -33,12 +33,12 @@
                         <Insets left="90.0" right="90.0" />
                      </padding>
                   </VBox>
-                  <Label layoutX="467.0" layoutY="411.0" text="Tops Catégories " textFill="#56ab2f">
+                  <Label layoutX="467.0" layoutY="411.0" text="Top Catégories " textFill="#56ab2f">
                      <font>
                         <Font name="Cambria Bold" size="36.0" />
                      </font>
                   </Label>
-                  <HBox layoutX="-1.0" layoutY="473.0" prefHeight="131.0" prefWidth="1202.0" style="-fx-background-color: #ddeed5;">
+                  <HBox layoutX="-1.0" layoutY="473.0" prefHeight="109.0" prefWidth="1202.0" style="-fx-background-color: #ddeed5;">
                      <children>
                         <Separator orientation="VERTICAL" prefHeight="155.0" prefWidth="300.0" visible="false" />
                         <ImageView fx:id="AllProductImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleAllProductImageClick" pickOnBounds="true" preserveRatio="true">
@@ -128,7 +128,46 @@
                         <Font name="Cambria" size="14.0" />
                      </font>
                   </Button>
-                  <ChoiceBox fx:id="categorieChoiceBox" layoutX="777.0" layoutY="672.0" prefHeight="30.0" prefWidth="200.0" styleClass="comboBox" stylesheets="@css/style_pageClient.css" />
+                  <ChoiceBox fx:id="categorieChoiceBox" layoutX="776.0" layoutY="691.0" prefHeight="30.0" prefWidth="200.0" styleClass="comboBox" stylesheets="@css/style_pageClient.css" />
+                  <HBox layoutX="-1.0" layoutY="577.0" prefHeight="39.0" prefWidth="1190.0" style="-fx-background-color: #ddeed5;">
+                     <children>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="330.0" />
+                        <Label prefHeight="18.0" prefWidth="29.0" text="Tout" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="94.0" visible="false" />
+                        <Label text="Fruit" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="96.0" visible="false" />
+                        <Label text="Légume" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="84.0" visible="false" />
+                        <Label prefHeight="18.0" prefWidth="45.0" text="Laitier" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="88.0" visible="false" />
+                        <Label text="Grain" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label layoutX="824.0" layoutY="663.0" text="Filre par critère : " textFill="#56ab2f">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
         </content>

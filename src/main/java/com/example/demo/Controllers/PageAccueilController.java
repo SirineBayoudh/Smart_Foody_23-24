@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -55,6 +56,17 @@ public class PageAccueilController {
     double totalWidth = 0.0;
     @FXML
     private ChoiceBox<String> categorieChoiceBox;
+    @FXML
+    private ImageView fruitImageView;
+
+    @FXML
+    private ImageView grainImageView;
+    @FXML
+    private ImageView laitImageView;
+    @FXML
+    private ImageView vegImageView;
+    @FXML
+    private ImageView AllProductImageView;
 
 
     @FXML
@@ -364,6 +376,19 @@ public class PageAccueilController {
             System.out.println("Erreur lors de la récupération des produits depuis la base de données : " + e.getMessage());
         }
     }
+    private void addHoverAnimation(ImageView imageView) {
+        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(200), imageView);
+        scaleIn.setToX(1.1);
+        scaleIn.setToY(1.1);
+
+        ScaleTransition scaleOut = new ScaleTransition(Duration.millis(200), imageView);
+        scaleOut.setToX(1.0);
+        scaleOut.setToY(1.0);
+
+        imageView.setOnMouseEntered(event -> scaleIn.play());
+        imageView.setOnMouseExited(event -> scaleOut.play());
+    }
+
 
     @FXML
     void initialize() {
@@ -373,7 +398,13 @@ public class PageAccueilController {
             System.err.println("La connexion à la base de données n'est pas établie.");
             return;
         }
+        addHoverAnimation(AllProductImageView);
+        addHoverAnimation(fruitImageView);
+        addHoverAnimation(vegImageView);
+        addHoverAnimation(laitImageView);
+        addHoverAnimation(grainImageView);
         categorieChoiceBox.setItems(criteres);
+        fetchAndDisplayImagesFromAPI();
 
         // Ajouter un écouteur d'événement pour le choix de filtre
         categorieChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -418,6 +449,9 @@ public class PageAccueilController {
         // Affiche les produits par page
         displayProductsByPage(0);
 
+
+    }
+    private void fetchAndDisplayImagesFromAPI() {
         try {
             // Ouvrir une connexion HTTP
             URL url = new URL(API_URL + "&count=" + NUM_IMAGES);
@@ -452,7 +486,7 @@ public class PageAccueilController {
                 imageView.setFitWidth(IMAGE_WIDTH); // Fixer la largeur de l'image
                 imageView.setFitHeight(IMAGE_HEIGHT); // Fixer la hauteur de l'image
                 imageView.setPreserveRatio(false); // Désactiver le maintien du ratio d'aspect
-                imageView.setTranslateX(IMAGE_WIDTH * i); // Position initiale de l'image
+                //imageView.setTranslateX(IMAGE_WIDTH * i); // Position initiale de l'image
 
                 // Ajouter l'image à imageContainer
                 imageContainer.getChildren().add(imageView);
