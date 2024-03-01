@@ -1,10 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.example.demo.Controllers;
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -66,11 +60,11 @@ public class StatsCommandeController implements Initializable {
         );
 
         PieChart pieChart = new PieChart(pieChartData);
-        pieChart.setTitle("Clients Fideles");
+        pieChart.setTitle("clients fidèles");
         pieChart.setClockwise(true);
-        pieChart.setLabelLineLength(50);
+        pieChart.setLabelLineLength(140);
         pieChart.setLabelsVisible(true);
-        pieChart.setStartAngle(180);
+        pieChart.setStartAngle(130);
 
         //add bar chart to borderPane
         borderPane.setCenter(pieChart);
@@ -89,15 +83,7 @@ public class StatsCommandeController implements Initializable {
             tooltip.setText(String.format("%d commandes", (int) data.getPieValue()));
             Tooltip.install(node, tooltip);
 
-            data.getNode().setOnMouseClicked(e -> {
-                try {
-                    afficherQuestion(e, Integer.parseInt(data.getName().substring(14) ));
-                } catch (SQLException ex) {
-                    Logger.getLogger(StatsCommandeController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(StatsCommandeController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
+
         }
     }
 

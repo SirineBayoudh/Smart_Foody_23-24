@@ -195,6 +195,9 @@
     -fx-background-color: #f44336;
     -fx-text-fill: white;
 }
-
+.annuler-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+}
 
 

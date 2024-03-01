@@ -234,49 +234,71 @@ public class DetailsCommandeController implements Initializable {
     }
 
 
+
+
     @FXML
     public void modifierCommande(ActionEvent event) {
-        try {
-            // Si vous souhaitez changer l'état de la commande dans les deux cas :
-            if (CurrentCommande.getEtat().toLowerCase().equals("en cours")) {
-                CurrentCommande.setEtat("livré"); // Modifier l'état de la commande à "livré"
-            } else {
-                CurrentCommande.setEtat("en cours"); // Modifier l'état de la commande à "en cours"
-            }
+        // Créer une boîte de dialogue de confirmation
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+        confirmationAlert.getDialogPane().getStyleClass().add("custom-alert");
+        confirmationAlert.setTitle("Confirmation de modification");
+        confirmationAlert.setHeaderText("Modification de l'état de la commande");
+        confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier l'état  ?");
 
-            // Mise à jour de l'état dans la base de données
-            String updateQuery = "UPDATE commande SET etat = ? WHERE id_commande = ?";
-            try (PreparedStatement pst = cnx.prepareStatement(updateQuery)) {
-                pst.setString(1, CurrentCommande.getEtat());
-                pst.setInt(2, CurrentCommande.getId_commande());
-                int rowsAffected = pst.executeUpdate();
-                if (rowsAffected > 0) {
-                    // Mise à jour réussie
-                    // Mise à jour de l'état dans l'interface graphique
-                    etatInput.setText(CurrentCommande.getEtat());
+        // Ajouter des boutons
+        confirmationAlert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+        Button cancelBtn = (Button) confirmationAlert.getDialogPane().lookupButton(ButtonType.CANCEL);
+        cancelBtn.getStyleClass().add("cancel-button");
 
-                    // Afficher un message de succès
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
-                    alert .getDialogPane().getStyleClass().add("custom-alert");
-                    alert.setTitle("Modification de l'état de la commande");
-                    alert.setHeaderText(null);
-                    alert.setContentText("L'état de la commande a été modifié avec succès !");
-                    alert.showAndWait();
-                } else {
-                    // Aucune ligne mise à jour
-                    throw new SQLException("Aucune ligne mise à jour dans la base de données.");
+        // Attendre la réponse de l'utilisateur
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    // Si l'utilisateur confirme, changer l'état de la commande
+                    if (CurrentCommande.getEtat().toLowerCase().equals("en cours")) {
+                        CurrentCommande.setEtat("livré");
+                    } else {
+                        CurrentCommande.setEtat("en cours");
+                    }
+
+                    // Mise à jour de l'état dans la base de données
+                    String updateQuery = "UPDATE commande SET etat = ? WHERE id_commande = ?";
+                    try (PreparedStatement pst = cnx.prepareStatement(updateQuery)) {
+                        pst.setString(1, CurrentCommande.getEtat());
+                        pst.setInt(2, CurrentCommande.getId_commande());
+                        int rowsAffected = pst.executeUpdate();
+                        if (rowsAffected > 0) {
+                            // Mise à jour réussie dans la base de données, maintenant mettre à jour l'interface utilisateur
+                            etatInput.setText(CurrentCommande.getEtat());
+
+                            // Afficher un message de succès
+                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                            successAlert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+
+                            successAlert.getDialogPane().getStyleClass().add("custom-alert");
+                            successAlert.setTitle("Modification réussie");
+                            successAlert.setHeaderText(null);
+                            successAlert.setContentText("L'état de la commande a été modifié avec succès !");
+                            successAlert.showAndWait();
+                        } else {
+                            // Aucune ligne mise à jour
+                            throw new SQLException("Aucune ligne mise à jour dans la base de données.");
+                        }
+                    }
+                } catch (SQLException e) {
+                    // Afficher un message d'erreur en cas d'échec de mise à jour
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+
+                    errorAlert.setTitle("Erreur");
+                    errorAlert.setHeaderText(null);
+                    errorAlert.setContentText("Une erreur est survenue lors de la modification de l'état de la commande : " + e.getMessage());
+                    errorAlert.showAndWait();
                 }
             }
-        } catch (SQLException e) {
-            // Afficher un message d'erreur en cas d'échec
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText(null);
-            alert.setContentText("Une erreur est survenue lors de la modification de l'état de la commande : " + e.getMessage());
-            alert.showAndWait();
-        }
+        });
     }
+
 
 
     private List<LigneCommande> affichageProduitsDansCommande() {
