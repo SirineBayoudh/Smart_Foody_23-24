@@ -11,6 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -18,10 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -202,6 +201,12 @@ public class ajoutAvisController  {
 
     int note;
 
+    // Map qui contient les mots à filtrer et les mots à ignorer en combinaison avec ces mots
+    static Map<String, String[]> mots = new HashMap<>();
+
+    // Longueur du plus long mot dans la liste
+    static int longueurPlusGrandMot = 0;
+
     @FXML
     void AjouterPanier(ActionEvent event) {
 
@@ -264,6 +269,15 @@ public class ajoutAvisController  {
             updateStatement.setString(2, tfCom.getText());
             updateStatement.setInt(3, Integer.parseInt(tfId.getText()));
             int rowsAffected = updateStatement.executeUpdate();
+
+            // Vérification des gros mots
+            String filteredText = filterText(tfCom.getText(), tfNom.getText());
+            if (!tfCom.getText().equals(filteredText)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Nous avons détecté des mots inappropriés dans votre message. \n Veuillez reformuler votre message sans utiliser de langage offensant.", ButtonType.OK);
+                alert.show();
+                return;
+            }
+
             if (rowsAffected > 0) {
                 afficherConfirmation("Succès", null, "L'avis a été modifié avec succès.");
                 // Mettre à jour la liste des avis après la modification
@@ -319,6 +333,9 @@ public class ajoutAvisController  {
 
     @FXML
     private void initialize() {
+
+        //telechargement de la listes des mots
+        loadConfigs();
 
         //Initialisation des textes
           MoyenneText.setText(String.valueOf(moyenneAvis(ref)));
@@ -504,6 +521,7 @@ public class ajoutAvisController  {
             List<AvisData> avisList = getAvis(ref);
             ObservableList<AvisData> observableList = FXCollections.observableArrayList(avisList);
             listAvis.setItems(observableList);
+            initialize();
         }
     }
 
@@ -585,6 +603,15 @@ public class ajoutAvisController  {
                     insertStatement.setInt(2, id);
                     insertStatement.setInt(3, nb);
                     insertStatement.setString(4, tfCom.getText());
+
+                    // Vérification des gros mots
+                    String filteredText = filterText(tfCom.getText(), tfNom.getText());
+                    if (!tfCom.getText().equals(filteredText)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Nous avons détecté des mots inappropriés dans votre message. \n Veuillez reformuler votre message sans utiliser de langage offensant.", ButtonType.OK);
+                        alert.show();
+                        return;
+                    }
+
                     insertStatement.executeUpdate();
                     insertStatement.close();
 
@@ -599,6 +626,18 @@ public class ajoutAvisController  {
                     insertStatement.setInt(2, id);
                     insertStatement.setInt(3, note); // Assurez-vous que note a une valeur appropriée avant cette étape
                     insertStatement.setString(4, tfCom.getText());
+
+
+                    // Vérification des gros mots
+                    String filteredText = filterText(tfCom.getText(), tfNom.getText());
+                    if (!tfCom.getText().equals(filteredText)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Nous avons détecté des mots inappropriés dans votre message. \n Veuillez reformuler votre message sans utiliser de langage offensant.", ButtonType.OK);
+                        alert.show();
+                        return;
+                    }
+
+
+
                     insertStatement.executeUpdate();
                     insertStatement.close();
 
@@ -618,6 +657,7 @@ public class ajoutAvisController  {
             btnSu.setDisable(true);
         }
         intDonnerAvis.setVisible(false);
+        initialize();
     }
 
     @FXML
@@ -832,64 +872,113 @@ public class ajoutAvisController  {
         return commentaireExiste > 0;
     }
 
-}
 
 
 
-
-
-/*
-public class ajoutAvisController {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private Button btnSu;
-
-    @FXML
-    private TextArea tfCom;
-
-    @FXML
-    private TextField tfNote;
-    MyConnection con = null;
-    PreparedStatement st = null;
-    ResultSet rs = null;
-    int ref = 120;
-
-
-    @FXML
-    void initialize() {
-
-    }
-
-    @FXML
-    void donnerAvis(ActionEvent event) {
-        con = MyConnection.getInstance();
-        String inserer = "INSERT INTO avis (ref_produit, nb_etoiles, commentaire) VALUES (?, ?, ?)";
-        try {
-            st = con.getCnx().prepareStatement(inserer);
-            st.setInt(1, ref);
-            st.setInt(2, Integer.parseInt(tfNote.getText()));
-            st.setString(3, tfCom.getText()); // Utiliser setString pour un champ de texte
-            st.executeUpdate();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION,"Avis ajouté avec succès!", ButtonType.OK);
-            alert.show();
-            clear();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+    // Méthode pour charger les configurations de mots à filtrer
+    public static void loadConfigs() {
+        String filePath = "src/main/resources/com/example/demo/ImagesGestionReclamations/LISTE_DES_GROS_MOTS_A_IGNORER_AVEC_.txt";
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("Le fichier spécifié n'existe pas : " + filePath);
+            return;
         }
+        try {
+            BufferedReader lecteur = new BufferedReader(new FileReader(filePath));
+            String ligne = "";
+            int compteur = 0;
+            while((ligne = lecteur.readLine()) != null) {
+                compteur++;
+                String[] contenu = null;
+                try {
+                    contenu = ligne.split(",");
+                    if(contenu.length == 0) {
+                        continue;
+                    }
+                    String mot = contenu[0];
+                    String[] ignorerEnCombinaisonAvecMots = new String[]{};
+                    if(contenu.length > 1) {
+                        ignorerEnCombinaisonAvecMots = contenu[1].split("_");
+                    }
+
+                    if(mot.length() > longueurPlusGrandMot) {
+                        longueurPlusGrandMot = mot.length();
+                    }
+                    mots.put(mot.replaceAll(" ", ""), ignorerEnCombinaisonAvecMots);
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            System.out.println("Chargé " + compteur + " mots à filtrer");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    void clear(){
-        tfNote.setText(null);
-        tfCom.setText(null);
+    /**
+     * Parcourt une chaîne de caractères en entrée et vérifie si un mot grossier a été trouvé dans la liste, puis vérifie si le mot doit être ignoré (par exemple, "bass" contient le mot "*ss").
+     * @param input
+     * @return
+     */
+    public static ArrayList<String> badWordsFound(String input) {
+        if(input == null) {
+            return new ArrayList<>();
+        }
+
+        // N'oubliez pas de supprimer le leet speak, vous voudrez probablement déplacer cela dans sa propre fonction et utiliser des regex si vous voulez utiliser ceci
+
+        input = input.replaceAll("1","i");
+        input = input.replaceAll("!","i");
+        input = input.replaceAll("3","e");
+        input = input.replaceAll("4","a");
+        input = input.replaceAll("@","a");
+        input = input.replaceAll("5","s");
+        input = input.replaceAll("7","t");
+        input = input.replaceAll("0","o");
+        input = input.replaceAll("9","g");
+
+        ArrayList<String> motsGrossiers = new ArrayList<>();
+        input = input.toLowerCase().replaceAll("[^a-zA-Z]", "");
+
+        // parcourir chaque lettre dans le mot
+        for(int debut = 0; debut < input.length(); debut++) {
+            // à partir de chaque lettre, continuez à chercher des mots grossiers jusqu'à ce que la fin de la phrase soit atteinte ou que la longueur maximale du mot soit atteinte.
+            for(int decalage = 1; decalage < (input.length()+1 - debut) && decalage < longueurPlusGrandMot; decalage++)  {
+                String motÀVérifier = input.substring(debut, debut + decalage);
+                if(mots.containsKey(motÀVérifier)) {
+                    // par exemple, si vous voulez dire le mot "bass", cela devrait être possible.
+                    String[] vérificationIgnorer = mots.get(motÀVérifier);
+                    boolean ignorer = false;
+                    for(int s = 0; s < vérificationIgnorer.length; s++ ) {
+                        if(input.contains(vérificationIgnorer[s])) {
+                            ignorer = true;
+                            break;
+                        }
+                    }
+                    if(!ignorer) {
+                        motsGrossiers.add(motÀVérifier);
+                    }
+                }
+            }
+        }
+
+
+        for(String s: motsGrossiers) {
+            System.out.println(s + " qualifié comme un mot grossier dans un nom d'utilisateur");
+        }
+        return motsGrossiers;
+
+    }
+
+    public static String filterText(String input, String username) {
+        ArrayList<String> motsGrossiers = badWordsFound(input);
+        if(motsGrossiers.size() > 0) {
+            return "Ce message a été bloqué car un mot grossier a été trouvé. Si vous pensez que ce mot ne devrait pas être bloqué, veuillez contacter le support.";
+        }
+        return input;
     }
 
 }
-
-
- */
