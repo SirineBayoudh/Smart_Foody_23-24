@@ -1179,9 +1179,15 @@ public class CommandeClientController{
 
 
     public void map(ActionEvent actionEvent) {
-        MapController m=new MapController();
-        m.showWindow();
-        loadPage("/com/example/demo/map.fxml");
+        try {
+            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/map.fxml"));
+            Scene commandeScene = new Scene(commandeParent);
+            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            window.setScene(commandeScene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -1226,4 +1232,6 @@ public class CommandeClientController{
         }
     }
 
+    public void switchButton(ActionEvent actionEvent) {
+    }
 }

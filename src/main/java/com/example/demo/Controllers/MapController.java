@@ -1,5 +1,6 @@
 package com.example.demo.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -78,5 +79,8 @@ public class MapController implements Initializable {
         System.out.println("TEST Initialize");
         WebEngine webEngine = webView.getEngine();
         webEngine.load(getClass().getResource("/googlemaps.html").toExternalForm());
+    }
+
+    public void switchButton(ActionEvent actionEvent) {
     }
 }
