@@ -341,14 +341,16 @@ public class PanierController {
         List<LigneCommande> ligneCommandes = affichageProduitsDansLePanier();
         float longitude=CommandeClientController.latitude;
         float lat=CommandeClientController.latitude;
+        String address=CommandeClientController.address;
         // Requête SQL pour insérer une nouvelle commande dans la base de données
         System.out.println(commande_id+" =IDc");
-        String insertCommandeQuery = "UPDATE commande SET longitude=?,latitude=? WHERE id_commande=LAST_INSERT_ID()";
+        String insertCommandeQuery = "UPDATE commande SET longitude=?,latitude=?,address=? WHERE id_commande=LAST_INSERT_ID()";
 
         try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
             // Spécifier les valeurs des paramètres de la requête
             pst.setFloat(1, longitude); // Date actuelle
             pst.setFloat(2, lat);
+            pst.setString(3,address);
 
 
             // Exécuter la requête d'insertion
@@ -398,8 +400,10 @@ public class PanierController {
         List<LigneCommande> ligneCommandes = affichageProduitsDansLePanier();
         float longitude=CommandeClientController.latitude;
         float lat=CommandeClientController.latitude;
+        String address=CommandeClientController.address;
+
         // Requête SQL pour insérer une nouvelle commande dans la base de données
-        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat,longitude,latitude) VALUES (?, ?, ?, ?, ?,?,?)";
+        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat,longitude,latitude,address) VALUES (?, ?, ?, ?, ?,?,?,?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
             // Spécifier les valeurs des paramètres de la requête
@@ -410,6 +414,7 @@ public class PanierController {
             pst.setString(5, "Non Livre"); // État de la commande
             pst.setFloat(6,longitude);
             pst.setFloat(7,lat);
+            pst.setString(8, address);
 
             // Exécuter la requête d'insertion
             pst.executeUpdate();
@@ -579,7 +584,8 @@ public class PanierController {
 
         // Define the start and end dates of the sale period
         LocalDate saleStartDate = LocalDate.of(2024, 2, 1); // February 1, 2024
-        LocalDate saleEndDate = LocalDate.of(2024, 3, 29); // February 29, 2024
+        LocalDate saleEndDate = LocalDate.of(2024, 3, 29); // Mars 29, 2024
+
 
         // Check if the current date is within the sale period
         return currentDate.isAfter(saleStartDate) && currentDate.isBefore(saleEndDate);
@@ -628,18 +634,7 @@ public class PanierController {
     private void chargecommandes() {
     }
 
-    public void navbarre() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) productsContainer.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
     // Affiche les produits disponibles pour être ajoutés au panier juste pour le test dans l'intégration elle sera supprimé
     public List<Produit> afficherProduitDansPanier() {
         List<Produit> produits = new ArrayList<>();

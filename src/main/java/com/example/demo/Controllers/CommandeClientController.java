@@ -66,18 +66,27 @@ public class CommandeClientController{
     private static ServiceCommande commandeService;
     static NavbarreCotroller navbarreController = new NavbarreCotroller();
 
+
     static float latitude;
-    static float longitude;
-    public void savecoords(String latitude, String longitude) {
-        CommandeClientController.latitude =Float.parseFloat(latitude);
-        CommandeClientController.longitude =Float.parseFloat(longitude);
-        System.out.println("Latitude from controller = "+latitude);
-        System.out.println("Longitude from controller= "+longitude);
+    private static float longitude;
+    static String address;
+
+    public void savecoords(String latitude, String longitude, String address) {
+        this.latitude = Float.parseFloat(latitude);
+        this.longitude = Float.parseFloat(longitude);
+        this.address = address;
+        System.out.println("Latitude from controller = " + latitude);
+        System.out.println("Longitude from controller = " + longitude);
+        System.out.println("Address from controller = " + address);
         saveOrder();
     }
 
     private void saveOrder() {
+        // Ajoutez ici votre logique pour enregistrer la commande dans la base de données
+        // Utilisez les valeurs de latitude, longitude et address pour cela
+        System.out.println("Order saved successfully! Latitude: " + latitude + ", Longitude: " + longitude + ", Address: " + address);
     }
+
 
 
     // Liste observable pour stocker les commandes

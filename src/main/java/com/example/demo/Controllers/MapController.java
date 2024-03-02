@@ -58,8 +58,14 @@ public class MapController implements Initializable {
             if (parts.length == 2) {
                 String latitude = parts[0].trim();
                 String longitude = parts[1].trim();
+
+                // Récupérer l'adresse à partir de la div
+                String address = (String) webEngine.executeScript("document.getElementById('address').innerText");
+
+                // Passer les coordonnées et l'adresse à la méthode savecoords
                 CommandeClientController commandeClientController=new CommandeClientController();
-                commandeClientController.savecoords(latitude,longitude);
+                commandeClientController.savecoords(latitude,longitude,address);
+
                 // Now you can navigate back to commande_client.fxml
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/demo/commande_client.fxml")));
                 Scene scene = new Scene(root);
@@ -72,7 +78,6 @@ public class MapController implements Initializable {
             System.err.println("Latitude and longitude not found in HTML");
         }
     }
-
 
 
     @Override
