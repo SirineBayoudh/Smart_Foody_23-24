@@ -1,5 +1,6 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Tools.MyConnection;
 import com.microsoft.schemas.vml.CTGroup;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,8 +11,15 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class NavbarreCotroller implements Initializable {
@@ -20,12 +28,24 @@ public class NavbarreCotroller implements Initializable {
     public ImageView panier;
     public Button produit;
     @FXML
+    public Pane badge;
+
+    @FXML
     private BorderPane centerPane;
 
+    @FXML
+    public Text nbrCommande;
+
+    Connection cnx;
+    String idClient="14";
+
+    public NavbarreCotroller() {
+        cnx = MyConnection.getInstance().getCnx();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialisation initiale, si nécessaire
+        badge.setVisible(false);
     }
 
     @FXML
@@ -51,7 +71,7 @@ public class NavbarreCotroller implements Initializable {
     @FXML
     private void loadProduit() {
         produit.setStyle("-fx-background-color: #56AB2F");
-      
+
 
         loadPage("/com/example/demo/produit.fxml");
         clear();
@@ -71,15 +91,35 @@ public class NavbarreCotroller implements Initializable {
     }
 
     private void loadPage(String page) {
+
         try {
             Parent root = FXMLLoader.load(getClass().getResource(page));
             if (centerPane != null) {
                 centerPane.setCenter(root);
+
+                String checkIfExistsQuery = "SELECT count(*) FROM ligne_commande lc JOIN panier p on lc.id_panier=p.id_panier WHERE id_client = ?";
+                try (PreparedStatement pstCheck = cnx.prepareStatement(checkIfExistsQuery)) {
+                    pstCheck.setInt(1, Integer.parseInt(idClient));
+                    ResultSet rs = pstCheck.executeQuery();
+                    if (rs.next()) {
+
+
+                        int nbrCommandes = rs.getInt(1);
+                        if(nbrCommandes>0){
+                            nbrCommande.setText(String.valueOf(nbrCommandes));
+                            badge.setVisible(true);
+                        }else {
+                            badge.setVisible(false);
+                        }
+                    }
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 System.out.println("centerPane is null");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-}
+    }}
+

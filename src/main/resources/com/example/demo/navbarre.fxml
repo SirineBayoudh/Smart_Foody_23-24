@@ -7,9 +7,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="902.0" stylesheets="@css/style_navbarre.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.NavbarreCotroller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="902.0" stylesheets="@css/style_navbarre.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.NavbarreCotroller">
    <top>
       <!-- Ajustement de l'espacement entre les éléments de la HBox -->
       <HBox prefHeight="75.0" prefWidth="902.0" spacing="30" styleClass="navbar" BorderPane.alignment="CENTER">
@@ -68,15 +71,26 @@
                   <String fx:value="nav-item" />
                </styleClass>
             </Button>
-            <!-- Ajustement de la taille des icônes de navigation -->
-            <ImageView fx:id="panier" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#loadPanier" pickOnBounds="true" preserveRatio="true" styleClass="nav-item">
-               <image>
-                  <Image url="@Images/panier.png" />
-               </image>
-               <HBox.margin>
-                  <Insets left="20.0" top="25.0" />
-               </HBox.margin>
-            </ImageView>
+            <Pane prefHeight="83.0" prefWidth="109.0">
+               <children>
+                  <!-- Ajustement de la taille des icônes de navigation -->
+                  <ImageView fx:id="panier" fitHeight="40.0" fitWidth="40.0" layoutX="32.0" layoutY="26.0" onMouseClicked="#loadPanier" pickOnBounds="true" preserveRatio="true" styleClass="nav-item">
+                     <image>
+                        <Image url="@Images/panier.png" />
+                     </image>
+                  </ImageView>
+                  <Pane fx:id="badge" layoutX="56.0" layoutY="9.0" prefHeight="30.0" prefWidth="33.0">
+                     <children>
+                        <Circle fill="#62d797" layoutX="14.0" layoutY="14.0" radius="13.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Text fx:id="nbrCommande" layoutX="10.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
             <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="nav-icon">
                <image>
                   <Image url="@Images/homme.png" />

@@ -1,4 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ */
 package com.example.demo.Controllers;
+
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -60,21 +66,16 @@ public class StatsCommandeController implements Initializable {
         );
 
         PieChart pieChart = new PieChart(pieChartData);
-        pieChart.setTitle("clients fidèles");
+        pieChart.setTitle("Clients Fideles");
         pieChart.setClockwise(true);
-        pieChart.setLabelLineLength(140);
+        pieChart.setLabelLineLength(50);
         pieChart.setLabelsVisible(true);
-        pieChart.setStartAngle(130);
+        pieChart.setStartAngle(180);
 
         //add bar chart to borderPane
         borderPane.setCenter(pieChart);
         for (PieChart.Data data : pieChart.getData()) {
-            data.getNode().setOnMouseEntered(ev -> {
-                borderPane.setCursor(Cursor.HAND);
-            });
-            data.getNode().setOnMouseExited(ev -> {
-                borderPane.setCursor(Cursor.DEFAULT);
-            });
+
             Node node = data.getNode();
             Tooltip tooltip = new Tooltip();
             // set the style of the tooltip
@@ -87,11 +88,7 @@ public class StatsCommandeController implements Initializable {
         }
     }
 
-    @FXML
-    void afficherQuestion(MouseEvent event, int id) throws SQLException, IOException {
 
-
-    }
 
     @FXML
     void switchButton(ActionEvent event) throws IOException {
