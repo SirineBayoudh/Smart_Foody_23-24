@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import javax.mail.MessagingException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -166,6 +168,9 @@ public class reclamationController{
     private TextField tfType;
 
     @FXML
+    private Label nbArchives;
+
+    @FXML
     private ImageView rechercheIcon;
 
     // Connexion à la base de données
@@ -178,9 +183,9 @@ public class reclamationController{
 
     @FXML
     void initialize() {
-
         // Initialisation des éléments de l'interface
         nombreNotification();
+        nombreMessageArchive();
         showReclamations();
         showReclamationsArchivées();
         setProgressCollab();
@@ -213,6 +218,7 @@ public class reclamationController{
                     throw new RuntimeException(e);
                 }
                nombreNotification();
+               nombreMessageArchive();
             }else{
                 tfTitre.setText(null);
                 tfType.setText(null);
@@ -272,7 +278,7 @@ public class reclamationController{
                                         String nom = rs.getString("nom");
                                         String prenom = rs.getString("prenom");
                                         String email = rs.getString("email");
-                                        tfNom.setText(nom + " & " + prenom);
+                                        tfNom.setText(nom + "  " + prenom);
                                         tfMail.setText(email);
                                     }
                                 } catch (SQLException e) {
@@ -293,6 +299,7 @@ public class reclamationController{
                                 throw new RuntimeException(e);
                             }
                             nombreNotification();
+                            nombreMessageArchive();
                         } else {
                             clear();
                         }
@@ -361,14 +368,33 @@ public class reclamationController{
             // Afficher un message d'alerte si l'un des champs est vide
             afficherAlerte("Champs manquants", "Veuillez remplir tous les champs avant d'envoyer le courriel.");
         } else {
-            if(tfReponse == null || tfReponse.getText().isEmpty()) {
+            if (tfReponse == null || tfReponse.getText().isEmpty()) {
                 afficherAlerte("Réponse manquante", "Veuillez saisir une réponse avant d'envoyer le courriel.");
             } else {
-
-                // Ajoutez le code pour envoyer le courriel et mettre à jour le statut de la réclamation
-                String req = "UPDATE reclamation SET statut = 'Repondu' WHERE id_reclamation = ?";
-                con = MyConnection.getInstance();
                 try {
+                    // Récupération du contenu de tfReponse
+                    String reponse = tfReponse.getText();
+                    String Nom = tfNom.getText();
+
+// Construction du contenu HTML avec le texte, le chemin de l'image et le contenu de tfReponse
+                    String corpsMailHTML ="<p style=\"font-style: regular; font-size: 14px;\">Bonjour Mr/Mme "+ Nom +"!<br/>" + reponse + "</p>" + "<p><span style=\"font-weight: bold; font-style: italic;\">Bonne journée !</span><br/>" +
+                            "<span style=\"font-style: italic;\">Nous vous remercions pour l'intérêt que vous portez à Smart Foody. <br/>" +
+                            "Veuillez recevoir nos salutations.</span></p>" ;
+
+// Construction du pied de page du mail
+                    String piedPageHTML = "<p style=\"font-size: 14px;\">Smart Foody &copy; 2024</p>" +
+                            "<p style=\"font-size: 14px;\">123 Rue Principale, Ville, Pays</p>" +
+                            "<p style=\"font-size: 14px;\">Téléphone: +123456789 | Email: contact@smartfoody.com</p>" +
+                            "<p style=\"font-size: 14px;\">Suivez-nous sur <a href=\"https://www.facebook.com/smartfoody.tn\">Facebook</a></p>";
+
+// Concaténation du corps du mail et du pied de page dans le contenu final du mail
+                    String contenuHTML = corpsMailHTML + piedPageHTML;
+                    // Appel de la méthode fonctionMail pour envoyer l'email avec le contenu HTML et le chemin de l'image
+                    EmailUtil.fonctionMail(tfMail.getText(), tfTitre.getText(), contenuHTML, "src/main/resources/com/example/demo/ImagesGestionReclamations/grand logo.png");
+
+                    // Le reste de votre code pour mettre à jour le statut de la réclamation et afficher les notifications
+                    String req = "UPDATE reclamation SET statut = 'Repondu' WHERE id_reclamation = ?";
+                    con = MyConnection.getInstance();
                     st = con.getCnx().prepareStatement(req);
                     st.setInt(1, Integer.parseInt(tfId_reclamation.getText()));
                     st.executeUpdate();
@@ -379,7 +405,7 @@ public class reclamationController{
                     showReclamations();
                     showReclamationsArchivées();
                     nombreNotification();
-                } catch (SQLException e) {
+                } catch (SQLException | MessagingException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -445,6 +471,26 @@ public class reclamationController{
                 if (resultSet.next()) {
                     int nombreReclamationsAttente = resultSet.getInt("nombre_reclamations_attente");
                     nbNotif.setText(String.valueOf(nombreReclamationsAttente));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void nombreMessageArchive() {
+        // Calcul du nombre de réclamations archivées
+        String nbNot = "SELECT COUNT(*) AS nombre_reclamations_attente FROM reclamation WHERE archive = 1";
+        con = MyConnection.getInstance();
+        try {
+            st = con.getCnx().prepareStatement(nbNot);
+            try (ResultSet resultSet = st.executeQuery()) {
+                if (resultSet.next()) {
+                    Integer nombreReclamationsArchive = resultSet.getInt("nombre_reclamations_attente");
+                    if (nombreReclamationsArchive == null) {
+                        nombreReclamationsArchive = 0;
+                    }
+                    nbArchives.setText(String.valueOf(nombreReclamationsArchive));
                 }
             }
         } catch (SQLException e) {
@@ -652,6 +698,7 @@ public class reclamationController{
             clear();
             tfRechercher.setText(null);
             nombreNotification();
+            nbArchives.setVisible(false);
         } else if (event.getSource() == btnRetourListe) {
             ensembleArchives.setVisible(false);
             ensembleReclamations.setVisible(true);
@@ -663,6 +710,7 @@ public class reclamationController{
             clear();
             tfRechercher.setText(null);
             nombreNotification();
+            nbArchives.setVisible(true);
         }else if(event.getSource() == btnEnvoyerMail){
             nombreNotification();
             clear();

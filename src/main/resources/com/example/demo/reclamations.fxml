@@ -357,6 +357,11 @@
       </Pane>
       <Button fx:id="btnRetourListe" layoutX="35.0" layoutY="692.0" mnemonicParsing="false" onAction="#AfficherListeNormal" prefHeight="30.0" prefWidth="163.0" style="-fx-background-color: #2b5517; -fx-text-fill: white;" text="Retour" visible="false" />
       <TextField fx:id="tfId_reclamation" disable="true" editable="false" layoutX="42.0" layoutY="59.0" visible="false" />
+      <Label fx:id="nbArchives" layoutX="143.0" layoutY="697.0" prefHeight="18.0" prefWidth="31.0" styleClass="Archive" text="8" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
    <effect>
       <ColorAdjust />

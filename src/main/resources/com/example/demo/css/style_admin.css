@@ -107,3 +107,7 @@ Label{
 .button:hover {
     -fx-background-color: #2A3A10;
 }
+
+.Archive{
+    -fx-text-fill: white;
+}

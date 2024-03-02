@@ -69,6 +69,16 @@
             <version>1.6.2</version> <!-- ou la dernière version disponible -->
         </dependency>
 
+        <!-- Pour charger du contenu du mail image...-->
+
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>javax.activation-api</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
+
+
         <!-- Implémentation pour utilisation des progress-->
         <dependency>
             <groupId>org.controlsfx</groupId>
