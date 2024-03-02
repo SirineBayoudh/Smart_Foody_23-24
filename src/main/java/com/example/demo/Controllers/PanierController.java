@@ -42,6 +42,7 @@ public class PanierController {
 
     @FXML
     private VBox productsContainer;
+    @FXML
     private VBox vboxpanier;
     @FXML
     private Label remiseid;
@@ -51,6 +52,7 @@ public class PanierController {
 
     @FXML
     private Label totaleid;
+    @FXML
     private HBox  soldeBand;
     double[] sousTotale = {0};
     double[] remise = {0};

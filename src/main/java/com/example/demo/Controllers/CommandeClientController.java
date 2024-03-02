@@ -7,14 +7,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.zxing.WriterException;
-import javafx.application.Platform;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,10 +22,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -37,20 +33,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement;
-import static com.example.demo.Controllers.PanierController.commande_id;
 import static javafx.scene.paint.Color.BLACK;
-import static com.example.demo.Controllers.PaiementStripeUI.creerSessionPaiement;
 
 public class CommandeClientController{
     static Stage stage;
@@ -356,10 +347,12 @@ public class CommandeClientController{
     public void ajouterCommande() throws IOException, WriterException, MessagingException {
         if(!payOnDeliveryCheckBox.isSelected()){
             payer();
+            validCommande();
+          navbarre();
 
         }else{
             validCommande() ;
-            loadPage("/com/example/demo/produit.fxml");
+            navbarre();
         }
         panierController.updatecommande();
 
@@ -1194,44 +1187,38 @@ public class CommandeClientController{
 
 
     @FXML
-    public void annulerCommande() throws SQLException {
+    public void annulerCommande(ActionEvent actionEvent) throws SQLException {
+        commandeService.deleteOne(CurrentCommande.getId_commande());
         try {
-            commandeService.deleteOne(CurrentCommande.getId_commande());
-            loadPanier();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    @FXML
-    private void loadProduit() {
-        loadPage("/com/example/demo/produit.fxml");
-    }
-
-    @FXML
-    private void loadPanier() {
-        loadPage("/com/example/demo/produit.fxml");
-    }
-
-    public void loadValidCommande() {
-        loadPage("/com/example/demo/commande_client.fxml");
-    }
-
-    public void loadPage(String page) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(page));
-            if (centerPane != null) {
-                centerPane.setCenter(root);
-                centerPane.setPrefWidth(1200);
-            } else {
-                System.out.println("centerPane is null");
-            }
+            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/navbarre.fxml"));
+            Scene commandeScene = new Scene(commandeParent);
+            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            window.setScene(commandeScene);
+            window.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void switchButton(ActionEvent actionEvent) {
+
+
+
+
+
+
+
+
+
+    public void navbarre() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) productsContainer.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

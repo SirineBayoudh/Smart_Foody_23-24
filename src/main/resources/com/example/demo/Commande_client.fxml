@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -102,7 +103,7 @@
                         <Line endX="12.29998779296875" endY="531.3999633789062" layoutX="276.0" layoutY="-48.0" startX="12.29998779296875" startY="58.39993667602539" />
                         <Label fx:id="titleLabel" layoutX="572.0" layoutY="14.0" styleClass="title-label" stylesheets="@css/style_commande.css" text="Validation de la Commande" />
                         <Label layoutX="317.0" layoutY="346.0" text="Choisir une adresse de livraison :" />
-                        <Button layoutX="669.0" layoutY="334.0" minHeight="-Infinity" onAction="#map" prefHeight="40.0" prefWidth="146.0" text="Ouvrir la carte ">
+                        <Button layoutX="669.0" layoutY="334.0" minHeight="-Infinity" onAction="#map" prefHeight="40.0" prefWidth="146.0" style="-fx-background-color: green;" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="Ouvrir la carte ">
                             <graphic>
                                 <ImageView fitHeight="24.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -122,7 +123,7 @@
                                 <Font name="Arial Rounded MT Bold" size="17.0" />
                             </font>
                         </Text>
-                        <Button layoutX="445.0" layoutY="418.0" onAction="#annulerCommande" prefHeight="35.0" prefWidth="255.0" styleClass="validate-button" text="Annuler la Commande">
+                        <Button layoutX="445.0" layoutY="418.0" onAction="#annulerCommande" prefHeight="35.0" prefWidth="255.0" style="-fx-background-color: green;" stylesheets="@css/style_dash.css" text="Annuler la Commande">
                             <graphic>
                                 <ImageView fitHeight="17.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -133,13 +134,17 @@
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
+                     <styleClass>
+                        <String fx:value="validate-button" />
+                        <String fx:value="ajouter_stock" />
+                     </styleClass>
                         </Button>
                         <Line endX="-91.20001220703125" endY="353.89996337890625" layoutX="380.0" layoutY="130.0" startX="664.699951171875" startY="353.89996337890625" />
                         <Line endX="-91.20001220703125" endY="376.39996337890625" layoutX="380.0" layoutY="-367.0" startX="663.992919921875" startY="376.39996337890625" />
                     </children>
                 </Pane>
          </top></BorderPane>
-        <Button layoutX="62.0" layoutY="113.0" mnemonicParsing="false" onAction="#switchButton" style="-fx-background-color: none;">
+        <Button layoutX="62.0" layoutY="113.0" mnemonicParsing="false" onAction="#navbarre" style="-fx-background-color: none;">
             <graphic>
                 <ImageView fitHeight="27.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -158,7 +163,7 @@
             </cursor>
         </Button>
         <Line endX="741.699951171875" endY="835.3999633789062" layoutX="357.0" layoutY="-185.0" startX="741.699951171875" startY="361.79998779296875" />
-            <Button layoutX="805.0" layoutY="585.0" onAction="#ajouterCommande" prefHeight="35.0" prefWidth="255.0" styleClass="validate-button" text="Valider la Commande">
+            <Button layoutX="805.0" layoutY="585.0" onAction="#ajouterCommande" prefHeight="35.0" prefWidth="255.0" style="-fx-background-color: green;" stylesheets="@css/style_dash.css" text="Valider la Commande">
                 <graphic>
                     <ImageView fitHeight="17.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                         <image>
@@ -169,6 +174,10 @@
                 <cursor>
                     <Cursor fx:constant="HAND" />
                 </cursor>
+         <styleClass>
+            <String fx:value="validate-button" />
+            <String fx:value="ajouter_stock" />
+         </styleClass>
             </Button>
 
     </children>

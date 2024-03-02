@@ -1,11 +1,11 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Models.Commande;
-import com.example.demo.Models.CommandeHolder;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -69,11 +69,11 @@ public class PaiementStripeUI extends Application {
                 if (newValue != null) {
                     if (newValue.equals("https://checkout.stripe.com/success")) {
                         // Payment was successful, load the produit.fxml page
-                        controller.loadPage("/com/example/demo/produit.fxml");
+                        controller.navbarre();
                     } else if (newValue.equals("https://checkout.stripe.com/cancel")) {
                         // Payment was canceled, call annulerCommande
                         try {
-                            controller.annulerCommande();
+                            controller.annulerCommande(new ActionEvent());
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

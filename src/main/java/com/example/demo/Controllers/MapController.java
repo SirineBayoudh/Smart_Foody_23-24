@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -82,5 +83,15 @@ public class MapController implements Initializable {
     }
 
     public void switchButton(ActionEvent actionEvent) {
+        try {
+            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/navbarre.fxml"));
+            Scene commandeScene = new Scene(commandeParent);
+            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            window.setScene(commandeScene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
