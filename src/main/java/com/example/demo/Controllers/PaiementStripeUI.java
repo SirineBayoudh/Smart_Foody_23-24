@@ -1,5 +1,7 @@
 package com.example.demo.Controllers;
 
+import com.example.demo.Models.Commande;
+import com.example.demo.Models.CommandeHolder;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -7,6 +9,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class PaiementStripeUI extends Application {
 
@@ -24,14 +28,15 @@ public class PaiementStripeUI extends Application {
         primaryStage.show();
 
         // Appel de la méthode pour créer la session de paiement et charger l'URL dans le WebView
-        creerSessionPaiement(webView);
+        creerSessionPaiement(webView,null,null);
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    public static void creerSessionPaiement(WebView webView) {
+    public static void creerSessionPaiement(WebView webView, Commande commande, CommandeClientController controller) {
+        System.out.println("gg"+commande.toString());
         // Assurez-vous que la clé secrète Stripe est initialisée
         StripeConfig.init();
 
@@ -46,10 +51,10 @@ public class PaiementStripeUI extends Application {
                                 .setPriceData(
                                         SessionCreateParams.LineItem.PriceData.builder()
                                                 .setCurrency("eur")
-                                                .setUnitAmount(2000L) // Montant en centimes
+                                                .setUnitAmount((long) (commande.getTotal_commande_devise() * 100)) // Montant en centimes
                                                 .setProductData(
                                                         SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                .setName("Votre produit")
+                                                                .setName("Bonjour " +commande.getClientUsername()+", le Montant Totale de commande est")
                                                                 .build())
                                                 .build())
                                 .build())
@@ -60,6 +65,21 @@ public class PaiementStripeUI extends Application {
             // Redirection de l'utilisateur vers la page de paiement
             // Charger l'URL dans le WebView pour l'afficher à l'utilisateur
             webView.getEngine().load(session.getUrl());
+            webView.getEngine().locationProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    if (newValue.equals("https://checkout.stripe.com/success")) {
+                        // Payment was successful, load the produit.fxml page
+                        controller.loadPage("/com/example/demo/produit.fxml");
+                    } else if (newValue.equals("https://checkout.stripe.com/cancel")) {
+                        // Payment was canceled, call annulerCommande
+                        try {
+                            controller.annulerCommande();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
         } catch (StripeException e) {
             e.printStackTrace();
             // Gérer les erreurs Stripe

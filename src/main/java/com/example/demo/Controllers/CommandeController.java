@@ -3,6 +3,7 @@ package com.example.demo.Controllers;
 import com.example.demo.Models.Commande;
 import com.example.demo.Models.CommandeHolder;
 import com.example.demo.Tools.MyConnection;
+import com.example.demo.Tools.ServiceCommande;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.color.DeviceRgb;
@@ -18,7 +19,6 @@ import java.io.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.property.TextAlignment;
-
 
 
 import com.itextpdf.layout.element.Table;
@@ -98,6 +98,7 @@ public class CommandeController {
     // Connexion à la base de données
     private Connection cnx;
 
+    private ServiceCommande serviceCommande;
     private CommandeHolder holder = CommandeHolder.getInstance();
 
     // Constructeur
@@ -108,7 +109,7 @@ public class CommandeController {
     public void initialize() {
         id_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("id_commande"));
         date_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("date_commande"));
-        id_clientColumn.setCellValueFactory(new PropertyValueFactory<>("id_client"));
+        id_clientColumn.setCellValueFactory(new PropertyValueFactory<>("clientUsername"));
         total_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("total_commande"));
         remise.setCellValueFactory(new PropertyValueFactory<>("remise"));
         etat.setCellValueFactory(new PropertyValueFactory<>("etat"));
@@ -127,11 +128,10 @@ public class CommandeController {
         cmdencours.setText(String.valueOf(commandesEncours.size()));
 
 
-
-
     }
+
     @FXML
-    private void dynamicSearch()  {
+    private void dynamicSearch() {
 
 
         FilteredList<Commande> filteredData = new FilteredList<>(commandeList, b -> true);
@@ -144,7 +144,6 @@ public class CommandeController {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                System.out.println(lowerCaseFilter);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Customize the format as needed
                 String formattedDate = dateFormat.format(g.getDate_commande());
@@ -153,6 +152,9 @@ public class CommandeController {
                     return true;
 
                 } else if (Integer.toString(g.getId_commande()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+
+                } else if (serviceCommande.usernameById(g.getId_client()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true;
 
                 } else {
@@ -166,8 +168,11 @@ public class CommandeController {
         commandeTableView.setItems(sortedData);
 
     }
+
     // la méthodes qui selectionne tous les commandes passe a partir de base
     private List<Commande> AfficherCommandes(String etat) {
+        serviceCommande = new ServiceCommande();
+
         List<Commande> commandes = new ArrayList<>();
         try {
             // Création de la requête SELECT
@@ -190,7 +195,9 @@ public class CommandeController {
                 commande.setTotal_commande(resultSet.getFloat("totalecommande"));
                 commande.setRemise(resultSet.getFloat("remise"));
                 commande.setEtat(resultSet.getString("etat"));
-
+                // Fetch the username using the serviceCommande.usernameById method
+                String username = serviceCommande.usernameById(resultSet.getInt("id_client"));
+                commande.setClientUsername(username);
                 commandes.add(commande);
             }
 
@@ -234,7 +241,7 @@ public class CommandeController {
         commandeList.addAll(commandes);
     }
 
-    /************** Modifier Question *******************/
+    /************** Modifier Commande *******************/
     @FXML
     void detailsCommande(ActionEvent event) throws SQLException, IOException {
         Commande selectedCommande = commandeTableView.getSelectionModel().getSelectedItem();
@@ -343,8 +350,6 @@ public class CommandeController {
             e.printStackTrace();
         }
     }
-
-
 
 
     @FXML

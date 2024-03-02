@@ -452,6 +452,7 @@ public class PanierController {
 
 
 
+
     public void ajouterProduitAuLigneCommande(String refProduit) {
         // Ajouter le produit au panier et récupérer l'ID du panier
         int idPanier = ajouterProduitAuPanier(14); // ID du client (à remplacer par une valeur dynamique)
