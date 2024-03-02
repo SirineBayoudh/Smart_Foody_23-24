@@ -1,0 +1,109 @@
+.root {
+    -fx-background-radius: 10px;
+    -fx-background-color: #ffff;
+}
+
+Label{
+   -fx-text-fill: #000000;
+}
+
+
+
+
+/*#btnAdd, #btnUpdate, #btnDelete, #btnClear {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+
+}
+
+#btnAdd:hover,#btnUpdate:hover, #btnClear:hover {
+    -fx-background-color: #56ab2f;
+    -fx-font-size: 16px;
+}
+#btnDelete:hover{
+    -fx-background-color: #FF0000;
+    -fx-font-size: 16px;
+}*/
+
+/* Style pour le TableView */
+#table1, #table11 {
+    -fx-background-color: #eef6ea;
+}
+
+/* Style pour les en-têtes de colonne */
+#table11 Label {
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-text-fill: #ffff;
+    -fx-background-color:  #2b5517   ;
+    -fx-end-margin: 1;
+    -fx-start-margin: 1;
+}
+#table1 Label {
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-text-fill: #ffff;
+    -fx-background-color:  #2b5517   ;
+    -fx-end-margin: 1;
+    -fx-start-margin: 1;
+}
+
+.table-view .column-header {
+    -fx-padding: 0 1.1 0 1.1;
+}
+.table-view .column-header > .label {
+    -fx-padding: 0 0 0 5px;
+}
+.text-area {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: #BDBDBD;
+    -fx-border-width: 0.3;
+}
+
+.notif{
+    -fx-background-radius: transparent;
+}
+.notif-lb1{
+    -fx-background-color: red;
+    -fx-border-color: transparent;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+}
+.progres-lb1{
+    -fx-background-color: white;
+    -fx-background-radius: 40;
+}
+
+.text-field {
+    -fx-border-color: #BDBDBD;
+    -fx-border-width: 0.3;
+}
+.ColorTexte{
+    -fx-border-color: #BDBDBD;
+    -fx-border-width: 0.3;
+    -fx-text-fill: white;
+}
+
+.round-box{
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-width: 3px;
+}
+.progres-lb1{
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-background-radius: 40;
+}
+.DescRep{
+    -fx-border-color: transparent;
+    -fx-text-fill: #000000;
+}
+.button {
+    -fx-background-color: #56ab2f;
+    -fx-text-fill: white;
+    -fx-border-width: 3px;
+}
+
+.button:hover {
+    -fx-background-color: #2A3A10;
+}

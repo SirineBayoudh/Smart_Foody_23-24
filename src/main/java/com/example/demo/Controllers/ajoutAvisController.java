@@ -2,7 +2,10 @@ package com.example.demo.Controllers;
 
 import com.example.demo.Models.Avis;
 import com.example.demo.Models.AvisData;
+import com.example.demo.Models.Reclamation;
 import com.example.demo.Tools.MyConnection;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +35,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
 
 import java.io.File;
 
@@ -177,6 +181,10 @@ public class ajoutAvisController  {
     @FXML
     private ListView<AvisData> listAvis;
 
+
+    @FXML
+    private Pane paneNote;
+
     @FXML
     private Button btnApk;
 
@@ -184,7 +192,7 @@ public class ajoutAvisController  {
     private TextField tfId;
 
 
-    int id = 15;
+    int id = 19;
     int ref = 120;
 
     // Connexion à la base de données
@@ -204,12 +212,36 @@ public class ajoutAvisController  {
         intDonnerAvis.setVisible(true);
         btnApk.setVisible(false);
         btnSu.setVisible(true);
+
+
+        // Appelez la fonction pour vérifier si un commentaire existe déjà
+        boolean commentaireExiste = commentaireExisteDeja(ref, id);
+        paneNote.setVisible(!commentaireExiste); // Si un commentaire existe déjà, paneNote ne doit pas être visible
+
+
         updateValues();
 
         // Mettre à jour la liste des avis après l'ajout d'un nouvel avis
         List<AvisData> avisList = getAvis(ref);
         ObservableList<AvisData> observableList = FXCollections.observableArrayList(avisList);
         listAvis.setItems(observableList);
+
+        // Ajoutez un écouteur d'événements sur le champ tfDesc
+        tfCom.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Vérifiez si le texte a été saisi dans tfCom
+                if (!newValue.isEmpty()) {
+                    // Activer le bouton Envoyer
+                    btnSu.setDisable(false);
+                    btnApk.setDisable(false);
+                } else {
+                    // Désactiver le bouton Envoyer si aucun texte n'est saisi
+                    btnSu.setDisable(true);
+                    btnApk.setDisable(true);
+                }
+            }
+        });
     }
     @FXML
     void retourPage(MouseEvent event) {
@@ -258,6 +290,31 @@ public class ajoutAvisController  {
         listAvis.setItems(observableList);
     }
 
+    public void switchStar(){
+        // Initialiser les événements de clic sur les étoiles
+        starVal11.setOnMouseClicked(event -> {
+            note = 1;
+            updateStars(note);
+        });
+        starVal21.setOnMouseClicked(event -> {
+            note = 2;
+            updateStars(note);
+        });
+        starVal31.setOnMouseClicked(event -> {
+            note = 3;
+            updateStars(note);
+        });
+        starVal41.setOnMouseClicked(event -> {
+            note = 4;
+            updateStars(note);
+        });
+        starVal51.setOnMouseClicked(event -> {
+            note = 5;
+            updateStars(note);
+        });
+
+    }
+
 
 
     @FXML
@@ -265,13 +322,16 @@ public class ajoutAvisController  {
 
         //Initialisation des textes
           MoyenneText.setText(String.valueOf(moyenneAvis(ref)));
-          nbAvis.setText("( " + (NombreAvisPersonne(ref))+ " )" );
+          nbAvis.setText("( " + (NombreAvisPersonne(ref))+ " Personnes ont donné leurs avis )" );
           nbPersonne1.setText("( " + (nbAvisEtoile(ref,1))+ " )");
           nbPersonne2.setText("( " + (nbAvisEtoile(ref,2))+ " )");
           nbPersonne3.setText("( " + (nbAvisEtoile(ref,3))+ " )");
           nbPersonne4.setText("( " + (nbAvisEtoile(ref,4))+ " )");
           nbPersonne5.setText("( " + (nbAvisEtoile(ref,5))+ " )");
           recupeInfo(ref);
+
+          //notes et mise à jour des stars
+            switchStar();
 
           //Initialisation des progress
 
@@ -282,27 +342,6 @@ public class ajoutAvisController  {
             progress5.setProgress(moyenneParEtoile(ref,5));
 
 
-            // Initialiser les événements de clic sur les étoiles
-            starVal11.setOnMouseClicked(event -> {
-                note = 1;
-                updateStars();
-            });
-            starVal21.setOnMouseClicked(event -> {
-                note = 2;
-                updateStars();
-            });
-            starVal31.setOnMouseClicked(event -> {
-                note = 3;
-                updateStars();
-            });
-            starVal41.setOnMouseClicked(event -> {
-                note = 4;
-                updateStars();
-            });
-            starVal51.setOnMouseClicked(event -> {
-                note = 5;
-                updateStars();
-            });
 
         // Affichage des avis dans la liste
         List<AvisData> avisList = getAvis(ref); // Récupération des avis depuis la base de données
@@ -332,7 +371,7 @@ public class ajoutAvisController  {
                             tfCom.setText(avisData.getCommentaire());
                             note = avisData.getNbEtoiles();
                             tfId.setText(String.valueOf(avisData.getId_avis()));
-                            updateStars();
+                            updateStars(note);
 
                             // Afficher le panneau pour donner un avis
                             intDonnerAvis.setVisible(true);
@@ -366,7 +405,11 @@ public class ajoutAvisController  {
                         setGraphic(gridPane);
                     } else {
                         // Si l'identifiant du client connecté n'est pas égal à celui de l'avis, afficher null pour effacer les boutons
-                        setGraphic(null);
+                        // Créer un bouton de suppression
+                        Button signalerButton = new Button("Signaler");
+                        signalerButton.getStyleClass().add("supprimer-button"); // Ajouter une classe CSS pour la couleur
+                        signalerButton.setOnAction(event -> signalerFonction(avisData));
+                        setGraphic(signalerButton);
                     }
                 }
             }
@@ -375,8 +418,34 @@ public class ajoutAvisController  {
 
     }
 
+    private void signalerFonction(AvisData avisData) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Voulez-vous signaler ce commentaire ?");
+        alert.setContentText("Veuillez confirmer votre choix.");
+        ButtonType boutonArch = new ButtonType("Oui");
+        ButtonType boutonAnn = new ButtonType("Non");
+        alert.getButtonTypes().setAll(boutonArch, boutonAnn);
+        alert.showAndWait().ifPresent(reponse -> {
+            if(reponse == boutonArch){
+                String req = "UPDATE avis SET signaler = signaler + 1 WHERE id_avis=?";
+                con = MyConnection.getInstance();
+                try {
+                    st = con.getCnx().prepareStatement(req);
+                    st.setInt(1,avisData.getId_avis());
+                    st.executeUpdate();
+                    afficherConfirmation("Succès", null, "Message reussi avec succès");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+
+            }
+        });
+    }
+
     private List<AvisData> getAvis(int ref) {
-        String sql = "SELECT utilisateur.nom, utilisateur.prenom,avis.id_avis,avis.id_client ,avis.date_avis, avis.nb_etoiles, avis.commentaire " +
+        String sql = "SELECT utilisateur.nom, utilisateur.prenom, avis.id_avis, avis.id_client, avis.date_avis, avis.nb_etoiles, avis.commentaire " +
                 "FROM avis " +
                 "JOIN utilisateur ON avis.id_client = utilisateur.id_utilisateur " +
                 "WHERE ref_produit = ? " +
@@ -399,7 +468,6 @@ public class ajoutAvisController  {
                 avisData.setCommentaire(resultSet.getString("commentaire"));
                 avisList.add(avisData);
             }
-
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -442,9 +510,17 @@ public class ajoutAvisController  {
 
 
 
-    private void updateStars() {
-        // Afficher les étoiles sélectionnées et les précédentes étoiles remplies
+    private void updateStars(int note) {
+        // Mettre à jour l'affichage des étoiles en fonction de la note passée en paramètre
         switch (note) {
+            case 0:
+                // Réinitialiser toutes les étoiles
+                starRep11.setVisible(false);
+                starRep21.setVisible(false);
+                starRep31.setVisible(false);
+                starRep41.setVisible(false);
+                starRep51.setVisible(false);
+                break;
             case 1:
                 starRep11.setVisible(true);
                 starRep21.setVisible(false);
@@ -482,30 +558,66 @@ public class ajoutAvisController  {
                 break;
         }
     }
-
     @FXML
     private void EnvoyerAvis() {
-        String inserer = "INSERT INTO avis (ref_produit,id_client, nb_etoiles, commentaire) VALUES (?, ?, ?, ?)";
-        try {
-            st = con.getCnx().prepareStatement(inserer);
-            st.setInt(1, ref);
-            st.setInt(2,id);
-            st.setInt(3,note);
-            st.setString(4, tfCom.getText());
-            st.executeUpdate();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION,"Avis ajouté avec succès!", ButtonType.OK);
-            alert.show();
-            clear();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-        clear();
-        updateValues();
+        if (tfCom.getText().isEmpty()) {
+            // Afficher un message d'alerte si l'un des champs est vide
+            afficherAlerte("Champs manquants", "Veuillez remplir tous les champs avant d'envoyer le courriel.");
+        } else {
+            String selectQuery = "SELECT COUNT(*) FROM avis WHERE ref_produit = ? AND id_client = ?";
+            String insererAvecNote = "INSERT INTO avis (ref_produit, id_client, nb_etoiles, commentaire) VALUES (?, ?, ?, ?)";
 
-        // Mettre à jour la liste des avis après l'ajout d'un nouvel avis
-        List<AvisData> avisList = getAvis(ref);
-        ObservableList<AvisData> observableList = FXCollections.observableArrayList(avisList);
-        listAvis.setItems(observableList);
+            try {
+                // Vérifier si le commentaire existe déjà pour cette référence et cet ID client
+                PreparedStatement checkStatement = con.getCnx().prepareStatement(selectQuery);
+                checkStatement.setInt(1, ref);
+                checkStatement.setInt(2, id);
+                ResultSet resultSet = checkStatement.executeQuery();
+                resultSet.next();
+                int commentaireExiste = resultSet.getInt(1);
+                checkStatement.close();
+
+                if (commentaireExiste > 0) {
+                        int nb = 0;
+                    // Insérer le nouveau commentaire sans la note dans la base de données
+                    PreparedStatement insertStatement = con.getCnx().prepareStatement(insererAvecNote);
+                    insertStatement.setInt(1, ref);
+                    insertStatement.setInt(2, id);
+                    insertStatement.setInt(3, nb);
+                    insertStatement.setString(4, tfCom.getText());
+                    insertStatement.executeUpdate();
+                    insertStatement.close();
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Avis ajouté avec succès!", ButtonType.OK);
+                    alert.show();
+                    clear();
+                    updateValues();
+                } else {
+                    // Sinon, insérer le nouveau commentaire avec la note dans la base de données
+                    PreparedStatement insertStatement = con.getCnx().prepareStatement(insererAvecNote);
+                    insertStatement.setInt(1, ref);
+                    insertStatement.setInt(2, id);
+                    insertStatement.setInt(3, note); // Assurez-vous que note a une valeur appropriée avant cette étape
+                    insertStatement.setString(4, tfCom.getText());
+                    insertStatement.executeUpdate();
+                    insertStatement.close();
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Avis ajouté avec succès!", ButtonType.OK);
+                    alert.show();
+                    clear();
+                    updateValues();
+                }
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            // Mettre à jour la liste des avis après l'ajout d'un nouvel avis
+            List<AvisData> avisList = getAvis(ref);
+            ObservableList<AvisData> observableList = FXCollections.observableArrayList(avisList);
+            listAvis.setItems(observableList);
+            btnSu.setDisable(true);
+        }
+        intDonnerAvis.setVisible(false);
     }
 
     @FXML
@@ -515,8 +627,8 @@ public class ajoutAvisController  {
     }
 
     public int NombreAvisPersonne(int ref){
-        // Calcul le nombre total des avis pour un produit
-        String sqlTotal = "SELECT COUNT(*) AS total_avis FROM avis WHERE ref_produit=?";
+        // Calcul le nombre total de personne ayant donner leurs avis pour un produit
+        String sqlTotal = "SELECT COUNT(*) AS total_avis FROM avis WHERE ref_produit=? AND nb_etoiles != 0 ";
         con = MyConnection.getInstance();
         int totalAvis = 0;
         int sommeNotes = 0;
@@ -543,7 +655,7 @@ public class ajoutAvisController  {
 
     public float moyenneAvis(int ref) {
         // Calcul de la moyenne des avis pour un produit
-        String sqlTotal = "SELECT COUNT(*) AS total_avis FROM avis WHERE ref_produit=?";
+        String sqlTotal = "SELECT COUNT(*) AS total_avis FROM avis WHERE ref_produit=? AND nb_etoiles != 0 ";
         con = MyConnection.getInstance();
         int totalAvis = 0;
         int sommeNotes = 0;
@@ -699,6 +811,25 @@ public class ajoutAvisController  {
         confirmation.setHeaderText(header);
         confirmation.setContentText(message);
         confirmation.showAndWait();
+    }
+
+    // Créez une fonction distincte pour vérifier si un commentaire existe déjà
+    private boolean commentaireExisteDeja(int ref, int idClient) {
+        String selectQuery = "SELECT COUNT(*) FROM avis WHERE ref_produit = ? AND id_client = ?";
+        con = MyConnection.getInstance();
+        int commentaireExiste = 0;
+        try {
+            PreparedStatement checkStatement = con.getCnx().prepareStatement(selectQuery);
+            checkStatement.setInt(1, ref);
+            checkStatement.setInt(2, idClient);
+            ResultSet resultSet = checkStatement.executeQuery();
+            resultSet.next();
+            commentaireExiste = resultSet.getInt(1);
+            checkStatement.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return commentaireExiste > 0;
     }
 
 }

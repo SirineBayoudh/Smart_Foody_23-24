@@ -13,21 +13,21 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="757.0" prefWidth="907.0" stylesheets="@css/AjoutAvis.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.ajoutAvisController">
+<AnchorPane prefHeight="807.0" prefWidth="910.0" stylesheets="@css/AjoutAvis.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.ajoutAvisController">
    <children>
-      <Pane layoutX="22.0" layoutY="367.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="176.0" prefWidth="864.0" styleClass="paneAvis" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="21.199999999999932">
+      <Pane layoutX="20.0" layoutY="320.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="176.0" prefWidth="864.0" styleClass="paneAvis" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="23.200000000000045">
          <children>
             <Label layoutX="31.0" layoutY="21.0" prefHeight="45.0" prefWidth="267.0" text="Moyenne Generale du Produit:">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="MoyenneText" layoutX="69.0" layoutY="115.0" prefHeight="28.0" prefWidth="67.0" text="4.11">
+            <Label fx:id="MoyenneText" layoutX="31.0" layoutY="114.0" prefHeight="28.0" prefWidth="67.0" text="4.11">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="nbAvis" layoutX="136.0" layoutY="119.0" prefHeight="25.0" prefWidth="124.0" text="( 104 Avis )">
+            <Label fx:id="nbAvis" layoutX="91.0" layoutY="119.0" prefHeight="30.0" prefWidth="310.0" text="( 104 Avis )">
                <font>
                   <Font size="20.0" />
                </font>
@@ -148,13 +148,13 @@
             <Label fx:id="nbPersonne5" layoutX="806.0" layoutY="18.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="50.0" styleClass="textStar" text="( 150 )" />
          </children>
       </Pane>
-      <Button fx:id="btnAvis" layoutX="788.0" layoutY="316.0" mnemonicParsing="false" onAction="#DonnerAvis" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: green;" text="Donner avis" AnchorPane.rightAnchor="21.59999999999991" />
-      <ImageView fx:id="tfImage" fitHeight="257.0" fitWidth="239.0" layoutX="42.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="btnAvis" layoutX="789.0" layoutY="269.0" mnemonicParsing="false" onAction="#DonnerAvis" prefHeight="30.0" prefWidth="97.0" style="-fx-background-color: green;" text="Donner avis" AnchorPane.rightAnchor="23.600000000000023" />
+      <ImageView fx:id="tfImage" fitHeight="222.0" fitWidth="225.0" layoutX="40.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@ImagesGestionReclamations/flocon.jpg" />
          </image>
       </ImageView>
-      <Pane layoutX="280.0" layoutY="93.0" prefHeight="222.0" prefWidth="490.0" styleClass="textStar" stylesheets="@css/AjoutAvis.css">
+      <Pane layoutX="262.0" layoutY="61.0" prefHeight="222.0" prefWidth="490.0" styleClass="textStar" stylesheets="@css/AjoutAvis.css">
          <children>
             <Label layoutX="27.0" layoutY="37.0" prefHeight="21.0" prefWidth="50.0" styleClass="textProduit" stylesheets="@css/AjoutAvis.css" text="Nom : ">
                <font>
@@ -223,7 +223,7 @@
                   <Font size="41.0" />
                </font>
             </Label>
-            <Pane layoutX="174.0" layoutY="95.0" prefHeight="50.0" prefWidth="267.0">
+            <Pane fx:id="paneNote" layoutX="174.0" layoutY="95.0" prefHeight="50.0" prefWidth="267.0">
                <children>
                   <ImageView fx:id="starVal11" fitHeight="50.0" fitWidth="50.0" layoutX="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -290,15 +290,6 @@
             <TextField fx:id="tfId" editable="false" layoutX="14.0" layoutY="408.0" prefHeight="26.0" prefWidth="60.0" visible="false" />
          </children>
       </Pane>
-      <ListView fx:id="listAvis" layoutX="25.0" layoutY="560.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="196.0" prefWidth="864.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="18.0" />
-      <Pane layoutY="-5.0" prefHeight="59.0" prefWidth="909.0" style="-fx-background-color: green;">
-         <children>
-            <Label layoutX="298.0" layoutY="7.0" prefHeight="30.0" prefWidth="314.0" text="Détails sur le produit" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="30.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
+      <ListView fx:id="listAvis" layoutX="23.0" layoutY="513.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="176.0" prefWidth="867.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="20.200000000000045" />
    </children>
 </AnchorPane>

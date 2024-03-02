@@ -54,6 +54,8 @@ public class avisController {
 
     @FXML
     private TableColumn<Avis, Integer> colRefProduit;
+    @FXML
+    private TableColumn<Avis, Integer> colSignaler;
 
     @FXML
     private TableView<Avis> table1;
@@ -79,10 +81,15 @@ public class avisController {
     private TextField tfrecherche;
 
     @FXML
+    private TextField nbNotif;
+
+    @FXML
     private CategoryAxis xAxis;
 
     @FXML
     private NumberAxis yAxis;
+
+    private boolean triParTypeActif = false;
 
     private MyConnection con = null;
     private PreparedStatement st = null;
@@ -94,6 +101,7 @@ public class avisController {
     void initialize() {
         showAvis();
         afficherCharteAvis();
+        nombreNotification();
 
         // Initialisation de la bareCharte
         if(xAxis != null) {
@@ -101,6 +109,7 @@ public class avisController {
         } else {
             System.err.println("xAxis is null, initialization failed!");
         }
+
     }
 
 
@@ -128,7 +137,7 @@ public class avisController {
             ResultSet rs = st.executeQuery();
             if(rs.next()) {
                 String marque = rs.getString("marque");
-                tfNomProduit.setText(marque);
+                tfNomProduit.setText(marque + " (" + avis.getRef_produit() + ")");
             } else {
                 tfNomProduit.setText("Marque inconnue");
             }
@@ -156,6 +165,7 @@ public class avisController {
                     st.setNb_etoiles(rs.getInt("nb_etoiles"));
                     st.setCommentaire(rs.getString("commentaire"));
                     st.setDate_avis(rs.getDate("date_avis"));
+                    st.setSignaler(rs.getInt("signaler"));
                     avis.add(st); // Ajouter l'avis à la liste
 
                 }
@@ -204,6 +214,7 @@ public class avisController {
             }
         });
         afficherCharteAvis();
+        nombreNotification();
         BarChartAvis.getData().clear();
 
     }
@@ -223,6 +234,7 @@ public class avisController {
                 st.setNb_etoiles(rs.getInt("nb_etoiles"));
                 st.setCommentaire(rs.getString("commentaire"));
                 st.setDate_avis(rs.getDate("date_avis"));
+                st.setSignaler(rs.getInt("signaler"));
                 avis.add(st);
             }
         } catch (SQLException e) {
@@ -240,6 +252,7 @@ public class avisController {
         colNotes.setCellValueFactory(new PropertyValueFactory<>("nb_etoiles"));
         colCommentaire.setCellValueFactory(new PropertyValueFactory<>("commentaire"));
         colDateAvis.setCellValueFactory(new PropertyValueFactory<>("date_avis"));
+        colSignaler.setCellValueFactory(new PropertyValueFactory<>("signaler"));
     }
 
     private void afficherCharteAvis() {
@@ -259,6 +272,47 @@ public class avisController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void trieTable(MouseEvent event) {
+        if (triParTypeActif) {
+            // Si le tri est actif, annuler le tri en rechargeant les réclamations non triées
+            showAvis();
+            // Mettre à jour l'état du tri
+            triParTypeActif = false;
+        } else {
+            // Si le tri n'est pas actif, activer le tri par type
+            // Requête SQL pour trier les réclamations par type
+            String req = "SELECT * FROM avis WHERE signaler !=0 ";
+            con = MyConnection.getInstance();
+            try {
+                st = con.getCnx().prepareStatement(req);
+                rs = st.executeQuery();
+                ObservableList<Avis> avis = FXCollections.observableArrayList();
+                while (rs.next()) {
+                    Avis st = new Avis();
+                    st.setId_avis(rs.getInt("id_avis"));
+                    st.setRef_produit(rs.getInt("ref_produit"));
+                    st.setId_client(rs.getInt("id_client"));
+                    st.setNb_etoiles(rs.getInt("nb_etoiles"));
+                    st.setCommentaire(rs.getString("commentaire"));
+                    st.setDate_avis(rs.getDate("date_avis"));
+                    st.setSignaler(rs.getInt("signaler"));
+                    avis.add(st); // Ajouter l'avis à la liste
+                }
+                table1.setItems(avis);
+
+                // Mettre à jour l'état du tri
+                triParTypeActif = true;
+            } catch (SQLException e) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Erreur lors du tri par type");
+                alert.show();
+            }
+
+        }
+    }
+
     private void afficheBarCharte(int ref) {
             con = MyConnection.getInstance();
             try {
@@ -293,6 +347,22 @@ public class avisController {
             }
     }
 
+    void nombreNotification() {
+        // Calcul du nombre de réclamations en attente et affichage dans le champ correspondant
+        String nbNot = "SELECT COUNT(*) AS nombre_signal FROM avis WHERE signaler != 0 ";
+        con = MyConnection.getInstance();
+        try {
+            st = con.getCnx().prepareStatement(nbNot);
+            try (ResultSet resultSet = st.executeQuery()) {
+                if (resultSet.next()) {
+                    int nbSignal = resultSet.getInt("nombre_signal");
+                    nbNotif.setText(String.valueOf(nbSignal));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     void clear() {
         tfIdAvis.clear();

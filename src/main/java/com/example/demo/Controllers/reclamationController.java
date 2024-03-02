@@ -174,7 +174,7 @@ public class reclamationController{
     private ResultSet rs = null;
 
     // Déclarer un indicateur booléen pour suivre l'état du tri
-    private boolean triParTypeActif = false;
+    boolean triParTypeActif = false;
 
     @FXML
     void initialize() {
@@ -212,6 +212,7 @@ public class reclamationController{
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+               nombreNotification();
             }else{
                 tfTitre.setText(null);
                 tfType.setText(null);
@@ -244,7 +245,15 @@ public class reclamationController{
                     ButtonType boutonOui = new ButtonType("Repondre");
                     ButtonType boutonArch = new ButtonType("Archiver");
                     ButtonType boutonAnn = new ButtonType("Annuler");
-                    alert.getButtonTypes().setAll(boutonOui, boutonArch, boutonAnn);
+
+
+                    // Vérifier le statut avant d'ajouter le bouton "Repondre"
+                    if (!reclamation.getStatut().equals("Repondu")) {
+                        alert.getButtonTypes().setAll(boutonOui, boutonArch, boutonAnn);
+                    } else {
+                        alert.getButtonTypes().setAll(boutonArch, boutonAnn);
+                    }
+
                     alert.showAndWait().ifPresent(reponse -> {
                         if (reponse == boutonOui) {
                             // Vérifier le statut avant de permettre de répondre
@@ -283,6 +292,7 @@ public class reclamationController{
                             } catch (SQLException e) {
                                 throw new RuntimeException(e);
                             }
+                            nombreNotification();
                         } else {
                             clear();
                         }
@@ -316,7 +326,7 @@ public class reclamationController{
         } else {
             // Si le tri n'est pas actif, activer le tri par type
             // Requête SQL pour trier les réclamations par type
-            String req = "SELECT * FROM reclamation WHERE archive=0 ORDER BY statut ";
+            String req = "SELECT * FROM reclamation WHERE archive=0 AND statut = 'Attente'";
             con = MyConnection.getInstance();
             try {
                 st = con.getCnx().prepareStatement(req);
@@ -351,9 +361,10 @@ public class reclamationController{
             // Afficher un message d'alerte si l'un des champs est vide
             afficherAlerte("Champs manquants", "Veuillez remplir tous les champs avant d'envoyer le courriel.");
         } else {
-            if(tfReponse.getText().isEmpty()) {
+            if(tfReponse == null || tfReponse.getText().isEmpty()) {
                 afficherAlerte("Réponse manquante", "Veuillez saisir une réponse avant d'envoyer le courriel.");
             } else {
+
                 // Ajoutez le code pour envoyer le courriel et mettre à jour le statut de la réclamation
                 String req = "UPDATE reclamation SET statut = 'Repondu' WHERE id_reclamation = ?";
                 con = MyConnection.getInstance();
@@ -361,6 +372,7 @@ public class reclamationController{
                     st = con.getCnx().prepareStatement(req);
                     st.setInt(1, Integer.parseInt(tfId_reclamation.getText()));
                     st.executeUpdate();
+
                     afficherConfirmation("Courriel envoyé", "Réponse de Smart Foody", "Le courriel a été envoyé avec succès.");
                     clear();
                     nombreNotification();
@@ -425,7 +437,7 @@ public class reclamationController{
 
     void nombreNotification() {
         // Calcul du nombre de réclamations en attente et affichage dans le champ correspondant
-        String nbNot = "SELECT COUNT(*) AS nombre_reclamations_attente FROM reclamation WHERE statut = 'Attente'";
+        String nbNot = "SELECT COUNT(*) AS nombre_reclamations_attente FROM reclamation WHERE statut = 'Attente' AND archive = 0";
         con = MyConnection.getInstance();
         try {
             st = con.getCnx().prepareStatement(nbNot);

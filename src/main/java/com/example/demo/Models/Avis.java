@@ -12,6 +12,25 @@ public class Avis {
     private int id_client;
     private Date date_avis;
 
+    private int signaler;
+
+    public int getSignaler() {
+        return signaler;
+    }
+
+    public Avis(int id_avis, int ref_produit, int nb_etoiles, String commentaire, int id_client, Date date_avis, int signaler) {
+        this.id_avis = id_avis;
+        this.ref_produit = ref_produit;
+        this.nb_etoiles = nb_etoiles;
+        this.commentaire = commentaire;
+        this.id_client = id_client;
+        this.date_avis = date_avis;
+        this.signaler = signaler;
+    }
+
+    public void setSignaler(int signaler) {
+        this.signaler = signaler;
+    }
 
     public int getId_avis() {
         return id_avis;
@@ -91,6 +110,7 @@ public class Avis {
                 ", commentaire='" + commentaire + '\'' +
                 ", id_client=" + id_client +
                 ", date_avis=" + date_avis +
+                ", signaler=" + signaler +
                 '}';
     }
 }

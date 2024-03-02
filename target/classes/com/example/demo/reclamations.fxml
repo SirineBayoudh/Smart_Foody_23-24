@@ -1,61 +1,364 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.repondreReclamationController">
+<AnchorPane focusTraversable="true" prefHeight="737.0" prefWidth="969.0" styleClass="root" stylesheets="@css/style_admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.reclamationController">
    <children>
-      <VBox layoutX="14.0" layoutY="95.0" prefHeight="310.0" prefWidth="197.0" spacing="5.0">
+      <Pane layoutY="-1.0" prefHeight="54.0" prefWidth="969.0" style="-fx-background-color: #19330e;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID Client :" wrappingWidth="132.53667449951172" />
-            <TextField fx:id="tfIdClient" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Titre  :" wrappingWidth="132.53667449951172" />
-            <TextField fx:id="tfTitre" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Statut :" wrappingWidth="132.53667449951172" />
-            <TextField fx:id="tfStatut" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type :" wrappingWidth="132.53667449951172" />
-            <TextField fx:id="tfType" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description :" wrappingWidth="132.53667449951172" />
-            <TextArea fx:id="tfDescription" prefHeight="60.0" prefWidth="198.0" />
+            <Label layoutX="325.0" layoutY="8.0" prefHeight="39.0" prefWidth="319.0" style="-fx-text-fill: white;" styleClass="notif" text="Gestion des Réclamations" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Ebrima" size="27.0" />
+               </font>
+            </Label>
+            <Pane layoutX="799.0" layoutY="4.0" prefHeight="46.0" prefWidth="163.0">
+               <children>
+                  <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="113.0" layoutY="6.0" onMouseClicked="#trieTable" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@ImagesGestionReclamations/notification.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="nbNotif" alignment="CENTER" editable="false" layoutX="128.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="23.0" prefWidth="26.0" text="8">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="notif-lb1" />
+                        <String fx:value="notif" />
+                     </styleClass>
+                  </TextField>
+               </children>
+            </Pane>
          </children>
-      </VBox>
-      <Label layoutX="315.0" layoutY="28.0" prefHeight="36.0" prefWidth="181.0" text="Réclamation" textAlignment="CENTER">
-         <font>
-            <Font name="Arial" size="30.0" />
-         </font>
-      </Label>
-      <TableView fx:id="table" layoutX="273.0" layoutY="95.0" onMouseClicked="#getData" prefHeight="310.0" prefWidth="530.0">
-        <columns>
-          <TableColumn fx:id="colIdReclamation" prefWidth="75.0" text="ID Réclamation" />
-          <TableColumn fx:id="colIdClient" prefWidth="75.0" text="ID Client" />
-            <TableColumn fx:id="colDescription" prefWidth="75.0" text="Déscription" />
-            <TableColumn fx:id="colTitre" prefWidth="75.0" text="Titre" />
-            <TableColumn fx:id="colStatut" prefWidth="75.0" text="Statut" />
-            <TableColumn fx:id="colType" prefWidth="75.0" text="Type" />
-            <TableColumn fx:id="colDateReclamation" prefWidth="75.0" text="Date de Réclamation" />
-        </columns>
-      </TableView>
-      <ButtonBar layoutX="218.0" layoutY="454.0" prefHeight="40.0" prefWidth="393.0">
-        <buttons>
-            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addReclamation" text="Ajouter" />
-            <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#updateReclamation" text="Modifier" />
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteReclamation" text="Supprimer" />
-          <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearReclamation" text="Clear" />
-        </buttons>
+      </Pane>
+      <HBox layoutX="712.0" layoutY="72.0" prefHeight="31.0" prefWidth="181.0" AnchorPane.rightAnchor="75.4">
+         <children>
+            <TextField fx:id="tfRechercher" alignment="CENTER" promptText="Rechercher" style="-fx-background-color: #F3F3F3; -fx-border-color: BLACK;">
+               <HBox.margin>
+                  <Insets top="1.5" />
+               </HBox.margin>
+            </TextField>
+            <ImageView fx:id="rechercheIcon" fitHeight="27.0" fitWidth="26.0" onMouseClicked="#rechercherRec" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ImagesGestionReclamations/8666693_search_icon.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="2.5" top="2.5" />
+               </HBox.margin>
+            </ImageView>
+         </children>
+      </HBox>
+      <VBox layoutX="4.0" layoutY="102.0" prefHeight="523.0" prefWidth="251.0" style="-fx-background-color: #2b5517;" AnchorPane.leftAnchor="4.0">
+         <children>
+            <HBox prefHeight="17.0" prefWidth="250.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom :" wrappingWidth="45.6489372253418">
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="tfNom" editable="false" prefHeight="26.0" prefWidth="174.0" styleClass="DescRep">
+                     <HBox.margin>
+                        <Insets left="3.0" right="5.0" top="6.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="42.0" prefWidth="250.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Email :" wrappingWidth="45.6489372253418">
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="tfMail" editable="false" prefHeight="26.0" prefWidth="173.0" styleClass="DescRep">
+                     <HBox.margin>
+                        <Insets left="3.0" top="6.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="42.0" prefWidth="250.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Type :" wrappingWidth="48.84894561767578">
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="tfType" editable="false" prefHeight="26.0" prefWidth="173.0" styleClass="DescRep">
+                     <HBox.margin>
+                        <Insets top="6.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="42.0" prefWidth="250.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Titre :" wrappingWidth="48.04893112182617">
+                     <HBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="tfTitre" editable="false" prefHeight="26.0" prefWidth="173.0" styleClass="DescRep">
+                     <HBox.margin>
+                        <Insets right="5.0" top="6.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
+            </HBox>
+            <VBox prefHeight="141.0" prefWidth="250.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :" wrappingWidth="108.04895401000977">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextArea fx:id="tfDescription" editable="false" prefHeight="200.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="6.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="DescRep" />
+                        <String fx:value="ColorTexte" />
+                     </styleClass>
+                  </TextArea>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox prefHeight="141.0" prefWidth="250.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Réponse :" wrappingWidth="108.04895401000977">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextArea fx:id="tfReponse" prefHeight="200.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="6.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="DescRep" />
+                        <String fx:value="ColorTexte" />
+                     </styleClass>
+                  </TextArea>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="12.0" />
+               </VBox.margin>
+            </VBox>
+            <Pane prefHeight="57.0" prefWidth="250.0">
+               <children>
+                  <Button fx:id="btnEnvoyerMail" contentDisplay="CENTER" layoutX="50.0" layoutY="7.0" mnemonicParsing="false" onAction="#envoyerMail" prefHeight="30.0" prefWidth="134.0" text="Envoyer">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <ImageView fitHeight="20.0" fitWidth="26.0" layoutX="67.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@ImagesGestionReclamations/enveloppe.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </children>
          <padding>
-            <Insets right="17.0" />
+            <Insets bottom="10.0" top="10.0" />
          </padding>
-      </ButtonBar>
+      </VBox>
+      <HBox layoutX="263.0" layoutY="552.0" prefHeight="180.0" prefWidth="690.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="15.600000000000023">
+         <children>
+            <Pane prefHeight="180.0" prefWidth="127.0" style="-fx-background-color: #97BBF0;">
+               <children>
+                  <Pane layoutX="1.0" prefHeight="45.0" prefWidth="134.0" style="-fx-background-color: #85A4D2;">
+                     <children>
+                        <Label fx:id="recPersonnes" layoutX="13.0" layoutY="10.0" prefHeight="25.0" prefWidth="98.0" text="Personnes">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Label layoutX="13.0" layoutY="154.0" prefHeight="25.0" prefWidth="98.0" text="Réclamations">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ProgressIndicator fx:id="recRaduis" layoutX="25.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="70.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="180.0" prefWidth="142.0" style="-fx-background-color: #5BCDC6;">
+               <children>
+                  <Pane prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: #2D9A94;">
+                     <children>
+                        <Label fx:id="infoPersonnes" layoutX="28.0" layoutY="10.0" prefHeight="25.0" prefWidth="98.0" text="Personnes">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Label layoutX="8.0" layoutY="154.0" prefHeight="25.0" prefWidth="121.0" text="Demande d'infos">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ProgressIndicator fx:id="infoRaduis" layoutX="34.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="70.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="180.0" prefWidth="138.0" style="-fx-background-color: #FF5733;">
+               <children>
+                  <Pane layoutX="1.0" prefHeight="45.0" prefWidth="142.0" style="-fx-background-color: #FD380E;">
+                     <children>
+                        <Label fx:id="remerpersonnes" layoutX="13.0" layoutY="10.0" prefHeight="25.0" prefWidth="106.0" text="Personnes">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Label layoutX="19.0" layoutY="154.0" prefHeight="25.0" prefWidth="98.0" text="Remerciement">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ProgressIndicator fx:id="remerRaduis" layoutX="33.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="70.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="180.0" prefWidth="138.0" style="-fx-background-color: #900C3F;">
+               <children>
+                  <Pane prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: #7C0634;">
+                     <children>
+                        <Label fx:id="collabPersonnes" layoutX="7.0" layoutY="9.0" prefHeight="25.0" prefWidth="106.0" text="Personnes">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Label layoutX="9.0" layoutY="154.0" prefHeight="25.0" prefWidth="121.0" text="Demande de collab">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ProgressIndicator fx:id="collabRaduis" layoutX="31.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="70.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="180.0" prefWidth="143.0" style="-fx-background-color: #581845;">
+               <children>
+                  <Pane layoutX="1.0" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: #470E36;">
+                     <children>
+                        <Label fx:id="autresPersonnes" layoutX="9.0" layoutY="7.0" prefHeight="25.0" prefWidth="106.0" text="Personnes">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Label layoutX="38.0" layoutY="154.0" prefHeight="25.0" prefWidth="57.0" style="-fx-text-fill: #968F94;" text="Autres" textFill="#5e5656">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ProgressIndicator fx:id="autresRaduis" layoutX="33.0" layoutY="64.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="70.0" />
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+      <Button fx:id="btnArchives" contentDisplay="CENTER" layoutX="35.0" layoutY="692.0" mnemonicParsing="false" onAction="#AfficherListeArchives" prefHeight="30.0" prefWidth="163.0" style="-fx-text-fill: white;" styleClass="btnTout" text="Archives">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Button>
+      <ImageView fx:id="Archivebtn" fitHeight="26.0" fitWidth="31.0" layoutX="63.0" layoutY="694.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@ImagesGestionReclamations/corbeille.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="ensembleReclamations" layoutX="266.0" layoutY="115.0" prefHeight="438.0" prefWidth="702.0" AnchorPane.rightAnchor="0.6000000000000227">
+         <children>
+            <TableView fx:id="table1" layoutY="29.0" onMouseClicked="#getData" prefHeight="395.0" prefWidth="690.0">
+               <columns>
+                  <TableColumn fx:id="colIdReclamation1" prefWidth="89.60002136230469" text="ID Réclamation" />
+                  <TableColumn fx:id="colIdClient1" prefWidth="88.79998779296875" text="ID Client" />
+                  <TableColumn fx:id="colDescription1" prefWidth="140.0" text="Déscription" />
+                  <TableColumn fx:id="colTitre1" prefWidth="78.39996337890625" text="Titre" />
+                  <TableColumn fx:id="colStatut1" prefWidth="88.00006103515625" text="Statut" />
+                  <TableColumn fx:id="colType1" prefWidth="93.5999755859375" text="Type" />
+                  <TableColumn fx:id="colDateReclamation1" prefWidth="111.2000732421875" text="Date de Réclamation" />
+               </columns>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <effect>
+                  <ColorAdjust brightness="-0.02" hue="0.09" saturation="-0.49" />
+               </effect>
+            </TableView>
+            <Label layoutX="283.0" layoutY="6.0" text="Listes des Réclamations" />
+         </children>
+      </Pane>
+      <Pane fx:id="ensembleArchives" layoutX="265.0" layoutY="115.0" prefHeight="426.0" prefWidth="690.0" visible="false" AnchorPane.rightAnchor="13.600000000000023">
+         <children>
+            <TableView fx:id="table11" layoutX="4.0" layoutY="31.0" onMouseClicked="#getDataTableArchive" prefHeight="395.0" prefWidth="682.0">
+               <columns>
+                  <TableColumn fx:id="colIdReclamation11" prefWidth="89.60002136230469" text="ID Réclamation" />
+                  <TableColumn fx:id="colIdClient11" prefWidth="88.79998779296875" text="ID Client" />
+                  <TableColumn fx:id="colDescription11" prefWidth="124.79998779296875" text="Déscription" />
+                  <TableColumn fx:id="colTitre11" prefWidth="87.20001220703125" text="Titre" />
+                  <TableColumn fx:id="colStatut11" prefWidth="81.5999755859375" text="Statut" />
+                  <TableColumn fx:id="colType11" prefWidth="84.0" text="Type" />
+                  <TableColumn fx:id="colDateReclamation11" prefWidth="126.39996337890625" text="Date de Réclamation" />
+               </columns>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <effect>
+                  <ColorAdjust brightness="-0.02" hue="0.09" saturation="-0.49" />
+               </effect>
+            </TableView>
+            <Label fx:id="titreTabArchive" layoutX="299.0" layoutY="6.0" text="Liste des archives" />
+         </children>
+      </Pane>
+      <Button fx:id="btnRetourListe" layoutX="35.0" layoutY="692.0" mnemonicParsing="false" onAction="#AfficherListeNormal" prefHeight="30.0" prefWidth="163.0" style="-fx-background-color: #2b5517; -fx-text-fill: white;" text="Retour" visible="false" />
+      <TextField fx:id="tfId_reclamation" disable="true" editable="false" layoutX="42.0" layoutY="59.0" visible="false" />
    </children>
+   <effect>
+      <ColorAdjust />
+   </effect>
 </AnchorPane>

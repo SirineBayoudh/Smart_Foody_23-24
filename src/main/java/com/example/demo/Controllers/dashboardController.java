@@ -27,6 +27,12 @@ public class dashboardController implements Initializable {
     @FXML
     private Text tt;
 
+    @FXML
+    private Button btnAvis;
+
+    @FXML
+    private Button btnReclamation;
+
     private boolean isClicked = false;
 
     @FXML
@@ -79,7 +85,9 @@ public class dashboardController implements Initializable {
     }
     @FXML
     void rec(ActionEvent event) {
-        loadPage("/com/example/demo/avis.fxml");
+        btnReclamation.setTextFill(Color.BLACK);
+        loadPage("/com/example/demo/reclamations.fxml");
+        btnAvis.setTextFill(Color.WHITE);
     }
     private void loadPage(String page) {
         try {
@@ -97,4 +105,9 @@ public class dashboardController implements Initializable {
     }
 
 
+    public void avis(ActionEvent actionEvent) {
+        btnAvis.setTextFill(Color.BLACK);
+        loadPage("/com/example/demo/avis.fxml");
+        btnReclamation.setTextFill(Color.WHITE);
+    }
 }

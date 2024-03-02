@@ -24,3 +24,12 @@
     -fx-font-size: 15px;
 }
 
+.notif{
+    -fx-background-radius: transparent;
+}
+.notif-lb1{
+    -fx-background-color: red;
+    -fx-border-color: transparent;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+}
