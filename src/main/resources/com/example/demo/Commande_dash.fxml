@@ -50,12 +50,13 @@
             <children>
                 <TableView fx:id="commandeTableView" prefHeight="259.0" prefWidth="889.0" stylesheets="@css/fullpackstyling.css">
                     <columns>
-                        <TableColumn fx:id="id_commandeColumn" prefWidth="108.0" text="#" />
-                        <TableColumn fx:id="date_commandeColumn" maxWidth="265.0" minWidth="-1.0" prefWidth="210.0" text="Date Commande" />
-                        <TableColumn fx:id="id_clientColumn" maxWidth="377.0" minWidth="0.0" prefWidth="154.0" text=" Client" />
-                        <TableColumn fx:id="total_commandeColumn" maxWidth="421.0" minWidth="67.0" prefWidth="173.0" text="Total Commande" />
-                        <TableColumn fx:id="remise" maxWidth="421.0" minWidth="67.0" prefWidth="130.0" text="Remise" />
-                        <TableColumn fx:id="etat" maxWidth="421.0" minWidth="67.0" prefWidth="160.0" text="Etat" />
+                        <TableColumn fx:id="id_commandeColumn" prefWidth="56.799991607666016" text="#" />
+                        <TableColumn fx:id="date_commandeColumn" maxWidth="265.0" minWidth="-1.0" prefWidth="137.60003662109375" text="     Date Commande" />
+                        <TableColumn fx:id="id_clientColumn" maxWidth="377.0" minWidth="0.0" prefWidth="164.7999725341797" text="                    Client" />
+                        <TableColumn fx:id="total_commandeColumn" maxWidth="421.0" minWidth="67.0" prefWidth="157.60003662109375" text="        Total Commande" />
+                        <TableColumn fx:id="remise" maxWidth="421.0" minWidth="67.0" prefWidth="80.00006103515625" text="     Remise" />
+                  <TableColumn fx:id="address_livraisonColumn" prefWidth="170.4000244140625" text="         Adresse de Livraison" />
+                        <TableColumn fx:id="etat" maxWidth="421.0" minWidth="67.0" prefWidth="250.40008544921875" text="Etat" />
                     </columns>
                 </TableView>
                 <HBox alignment="CENTER_LEFT" prefHeight="28.0" prefWidth="936.0" spacing="15.0" GridPane.rowIndex="1">

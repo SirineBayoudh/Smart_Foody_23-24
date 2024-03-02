@@ -74,7 +74,7 @@ public class CommandeClientController{
     public void savecoords(String latitude, String longitude, String address) {
         this.latitude = Float.parseFloat(latitude);
         this.longitude = Float.parseFloat(longitude);
-        this.address = address;
+        this.address =address;
         System.out.println("Latitude from controller = " + latitude);
         System.out.println("Longitude from controller = " + longitude);
         System.out.println("Address from controller = " + address);
@@ -354,21 +354,23 @@ public class CommandeClientController{
     // Méthode appelée lorsque l'utilisateur valide la livraison
     @FXML
     public void ajouterCommande() throws IOException, WriterException, MessagingException {
-        if(!payOnDeliveryCheckBox.isSelected()){
+        if (!payOnDeliveryCheckBox.isSelected()) {
             payer();
+//            try {
+//                // Mettre en pause l'exécution pendant 50 secondes
+//                Thread.sleep(61000); // 50 secondes en millisecondes
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            validCommande();
+            navbarre();
+        } else {
             validCommande();
-          navbarre();
-
-        }else{
-            validCommande() ;
             navbarre();
         }
         panierController.updatecommande();
-
-
-
-
     }
+
 
     //* valid commande finale
     public static void validCommande() throws IOException, WriterException, MessagingException {

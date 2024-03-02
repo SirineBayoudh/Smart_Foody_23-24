@@ -12,7 +12,11 @@ public class Commande {
     private float remise;
     private String clientUsername;
     private String etat;
+    private String address;
 
+    public String getAddress() {
+        return address;
+    }
 
     public int getId_commande() {
         return id_commande;
@@ -98,6 +102,20 @@ public class Commande {
         this.etat = etat;
     }
 
+
+
+    public Commande(int id_commande, Date date_commande, int id_client, float total_commande, float total_commande_devise, float remise, String clientUsername, String etat, String address) {
+        this.id_commande = id_commande;
+        this.date_commande = date_commande;
+        this.id_client = id_client;
+        this.total_commande = total_commande;
+        this.total_commande_devise = total_commande_devise;
+        this.remise = remise;
+        this.clientUsername = clientUsername;
+        this.etat = etat;
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "Commande{" +
@@ -105,9 +123,15 @@ public class Commande {
                 ", date_commande=" + date_commande +
                 ", id_client=" + id_client +
                 ", total_commande=" + total_commande +
+                ", total_commande_devise=" + total_commande_devise +
                 ", remise=" + remise +
                 ", clientUsername='" + clientUsername + '\'' +
                 ", etat='" + etat + '\'' +
+                ", address='" + address + '\'' +
                 '}';
+    }
+
+    public void setAddress(String address) {
+        this.address=address;
     }
 }

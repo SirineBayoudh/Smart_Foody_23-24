@@ -52,6 +52,7 @@ import java.awt.Desktop;
 public class CommandeController {
 
 
+
     @FXML
     private TextField searchField;
 
@@ -88,6 +89,8 @@ public class CommandeController {
 
     @FXML
     private TableColumn<Commande, Float> total_commandeColumn;
+    @FXML
+    private TableColumn<Commande, String> address_livraisonColumn;
 
     @FXML
     private TableColumn<Commande, Integer> nbre_commandeColumn;
@@ -112,7 +115,9 @@ public class CommandeController {
         id_clientColumn.setCellValueFactory(new PropertyValueFactory<>("clientUsername"));
         total_commandeColumn.setCellValueFactory(new PropertyValueFactory<>("total_commande"));
         remise.setCellValueFactory(new PropertyValueFactory<>("remise"));
+        address_livraisonColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         etat.setCellValueFactory(new PropertyValueFactory<>("etat"));
+
 
         // Set the items of the table view to the observable list
         commandeTableView.setItems(commandeList);
@@ -194,6 +199,7 @@ public class CommandeController {
                 commande.setId_client(resultSet.getInt("id_client"));
                 commande.setTotal_commande(resultSet.getFloat("totalecommande"));
                 commande.setRemise(resultSet.getFloat("remise"));
+                commande.setAddress(resultSet.getString("address"));
                 commande.setEtat(resultSet.getString("etat"));
                 // Fetch the username using the serviceCommande.usernameById method
                 String username = serviceCommande.usernameById(resultSet.getInt("id_client"));
