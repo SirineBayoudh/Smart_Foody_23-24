@@ -331,7 +331,7 @@ public class PanierController {
 
 
     /////////////////////// Méthode pour obtenir le nombre de produits dans le panier////////////////////////////
-    int obtenirNombreProduitsDansLePanier() {
+    private int obtenirNombreProduitsDansLePanier() {
         List<LigneCommande> produits = affichageProduitsDansLePanier();
         return produits.size();
     }

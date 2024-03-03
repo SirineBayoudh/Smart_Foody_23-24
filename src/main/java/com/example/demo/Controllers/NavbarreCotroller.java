@@ -1,11 +1,15 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Tools.MyConnection;
-import com.microsoft.schemas.vml.CTGroup;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -13,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,6 +51,34 @@ public class NavbarreCotroller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         badge.setVisible(false);
+        // Actualiser le nombre d'articles dans le panier toutes les x secondes (par exemple, toutes les 10 secondes)
+        Timeline timeline = new Timeline(new KeyFrame(
+                javafx.util.Duration.seconds(1), // Intervalles de temps
+                event -> updateNumberOfItems())); // Action à exécuter
+        timeline.setCycleCount(Timeline.INDEFINITE); // Répéter indéfiniment
+        timeline.play();
+    }
+
+    private void updateNumberOfItems() {
+        try {
+            String checkIfExistsQuery = "SELECT quantite FROM ligne_commande lc JOIN panier p on lc.id_panier=p.id_panier WHERE id_client = ?";
+            try (PreparedStatement pstCheck = cnx.prepareStatement(checkIfExistsQuery)) {
+                pstCheck.setInt(1, Integer.parseInt(idClient));
+                ResultSet rs = pstCheck.executeQuery();
+                int nbrCommandes = 0;
+                while (rs.next()) {
+                    nbrCommandes += rs.getInt("quantite");
+                }
+                if(nbrCommandes > 0){
+                    nbrCommande.setText(String.valueOf(nbrCommandes));
+                    badge.setVisible(true);
+                } else {
+                    badge.setVisible(false);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -71,8 +104,6 @@ public class NavbarreCotroller implements Initializable {
     @FXML
     private void loadProduit() {
         produit.setStyle("-fx-background-color: #56AB2F");
-
-
         loadPage("/com/example/demo/produit.fxml");
         clear();
     }
@@ -80,61 +111,25 @@ public class NavbarreCotroller implements Initializable {
     @FXML
     private void loadPanier() {
         panier.getStyleClass().add("highlighted-basket");
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/panier.fxml"));
-            try {
-                Parent root = loader.load();
-                PanierController panierController = loader.getController();
-                centerPane.setCenter(root);
-
-                int nbrCommandes = panierController.obtenirNombreProduitsDansLePanier();
-                if (nbrCommandes > 0) {
-                    nbrCommande.setText(String.valueOf(nbrCommandes));
-                    badge.setVisible(true);
-                } else {
-                    badge.setVisible(false);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        loadPage("/com/example/demo/panier.fxml");
+        clear();
+    }
 
     public void clear(){
         panier.setStyle("-fx-background-color:#ffffff");
         produit.setStyle("-fx-background-color:#ffffff");
-
     }
 
     private void loadPage(String page) {
-
         try {
             Parent root = FXMLLoader.load(getClass().getResource(page));
             if (centerPane != null) {
                 centerPane.setCenter(root);
-
-                String checkIfExistsQuery = "SELECT count(*) FROM ligne_commande lc JOIN panier p on lc.id_panier=p.id_panier WHERE id_client = ?";
-                try (PreparedStatement pstCheck = cnx.prepareStatement(checkIfExistsQuery)) {
-                    pstCheck.setInt(1, Integer.parseInt(idClient));
-                    ResultSet rs = pstCheck.executeQuery();
-                    if (rs.next()) {
-
-
-                        int nbrCommandes = rs.getInt(1);
-                        if(nbrCommandes>0){
-                            nbrCommande.setText(String.valueOf(nbrCommandes));
-                            badge.setVisible(true);
-                        }else {
-                            badge.setVisible(false);
-                        }
-                    }
-                }catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
             } else {
                 System.out.println("centerPane is null");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }}
-
+    }
+}
