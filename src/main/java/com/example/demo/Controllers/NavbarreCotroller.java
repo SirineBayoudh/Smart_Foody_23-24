@@ -53,7 +53,7 @@ public class NavbarreCotroller implements Initializable {
         badge.setVisible(false);
         // Actualiser le nombre d'articles dans le panier toutes les x secondes (par exemple, toutes les 10 secondes)
         Timeline timeline = new Timeline(new KeyFrame(
-                javafx.util.Duration.seconds(1), // Intervalles de temps
+                javafx.util.Duration.seconds(0.5), // Intervalles de temps
                 event -> updateNumberOfItems())); // Action à exécuter
         timeline.setCycleCount(Timeline.INDEFINITE); // Répéter indéfiniment
         timeline.play();

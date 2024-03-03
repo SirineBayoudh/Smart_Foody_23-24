@@ -361,7 +361,7 @@ public class CommandeClientController{
 
 
         } else {
-            validCommande();
+            validCommande2();
             navbarre();
         }
         panierController.updatecommande();
@@ -603,7 +603,7 @@ public class CommandeClientController{
                                 rs.getString("critere")
                         );
 
-                        contenuEmail += "<tr><td align=\"left\" class=\"esd-block-text es-p25t es-p25b es-p20r es-m-txt-c es-p20l\"><h3 class=\"p_name\" style=\"line-height: 150%;\">" + p.getMarque() + "</h3> <p class=\"p_description\" style=\"line-height: 150%;\">CATEGORY: " + p.getCategorie() + "</p>  <p style=\"line-height: 150%;\">QTY:&nbsp;" + prod.getQuantite() + "</p> <h3 style=\"line-height: 150%;\" class=\"p_price\">€ " + p.getPrix() + "</h3></td> </tr>\n";
+                        contenuEmail += "<tr><td align=\"left\" class=\"esd-block-text es-p25t es-p25b es-p20r es-m-txt-c es-p20l\"><h3 class=\"p_name\" style=\"line-height: 150%;\">" + p.getMarque() + "</h3> <p class=\"p_description\" style=\"line-height: 150%;\">CATEGORY: " + p.getCategorie() + "</p>  <p style=\"line-height: 150%;\">QTY:&nbsp;" + prod.getQuantite() + "</h3></td> </tr>\n";
                     }
                 }
             } catch (SQLException e) {
@@ -769,6 +769,716 @@ public class CommandeClientController{
                 "                        <tbody>\n" +
                 "                         <tr>\n" +
                 "                          <td align=\"right\" class=\"esd-block-text es-m-txt-r\"><h3>€" + CurrentCommande.getTotal_commande_devise() + "</h3></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p40t es-p30b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20\" align=\"left\">\n" +
+                "               <!--[if mso]><table width=\"560\" cellpadding=\"0\" cellspacing=\"0\"><tr><td width=\"270\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"270\" class=\"es-m-p20b esd-container-frame\" align=\"left\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td><td width=\"20\"></td><td width=\"270\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"270\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td></tr></table><![endif]--></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20\" align=\"left\">\n" +
+                "               <!--[if mso]><table width=\"560\" cellpadding=\"0\" cellspacing=\"0\"><tr><td width=\"270\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"270\" class=\"es-m-p20b esd-container-frame\" align=\"left\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td><td width=\"20\"></td><td width=\"270\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"270\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td></tr></table><![endif]--></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p30t es-p40b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"560\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "            </tbody>\n" +
+                "           </table></td>\n" +
+                "         </tr>\n" +
+                "        </tbody>\n" +
+                "       </table>\n" +
+                "       <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-content\" align=\"center\">\n" +
+                "        <tbody>\n" +
+                "         <tr>\n" +
+                "          <td class=\"esd-stripe\" align=\"center\">\n" +
+                "           <table bgcolor=\"#ffffff\" class=\"es-content-body\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\n" +
+                "            <tbody>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p40t es-p20b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure esdev-adapt-off es-p20\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"560\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p40b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-spacer es-p5t es-p5b\" style=\"font-size:0\">\n" +
+                "                       <table border=\"0\" width=\"100%\" height=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "                          <td style=\"border-bottom: 5px dotted #a7c957; background: unset; height: 1px; width: 100%; margin: 0px;\"></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "            </tbody>\n" +
+                "           </table></td>\n" +
+                "         </tr>\n" +
+                "        </tbody>\n" +
+                "       </table>\n" +
+                "       <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-footer\" align=\"center\">\n" +
+                "        <tbody>\n" +
+                "         <tr>\n" +
+                "          <td class=\"esd-stripe\" align=\"center\">\n" +
+                "           <table bgcolor=\"#ffffff\" class=\"es-footer-body\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\n" +
+                "            <tbody>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"600\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-spacer es-p5t es-p5b\" style=\"font-size:0\">\n" +
+                "                       <table border=\"0\" width=\"100%\" height=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "                          <td style=\"border-bottom: 2px solid #eff7f6; background: unset; height: 1px; width: 100%; margin: 0px;\"></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p30t es-p30b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"560\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-social es-m-txt-c es-p20t es-p20b\" style=\"font-size:0\">\n" +
+                "                       <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-table-not-adapt es-social\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "                          <td align=\"center\" valign=\"top\" class=\"es-p20r\"><a target=\"_blank\" href=\'" + facebookPageURL + "'\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png\" alt=\"Fb\" title=\"Facebook\" height=\"24\"></a></td>\n" +
+                "                          <td align=\"center\" valign=\"top\" class=\"es-p20r\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/x-logo-black.png\" alt=\"X\" title=\"X.com\" height=\"24\"></a></td>\n" +
+                "                          <td align=\"center\" valign=\"top\" class=\"es-p20r\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/youtube-logo-black.png\" alt=\"Yt\" title=\"Youtube\" height=\"24\"></a></td>\n" +
+                "                          <td align=\"center\" valign=\"top\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/instagram-logo-black.png\" alt=\"Ig\" title=\"Instagram\" height=\"24\"></a></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                     \n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "            </tbody>\n" +
+                "           </table></td>\n" +
+                "         </tr>\n" +
+                "        </tbody>\n" +
+                "       </table>\n" +
+                "       <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-content esd-footer-popover\" align=\"center\">\n" +
+                "        <tbody>\n" +
+                "         <tr>\n" +
+                "          <td class=\"esd-stripe\" align=\"center\">\n" +
+                "           <table class=\"es-content-body\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"background-color: transparent;\">\n" +
+                "            <tbody>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "            </tbody>\n" +
+                "           </table></td>\n" +
+                "         </tr>\n" +
+                "        </tbody>\n" +
+                "       </table></td>\n" +
+                "     </tr>\n" +
+                "    </tbody>\n" +
+                "   </table>\n" +
+                "  </div>\n" +
+                " \n" +
+                "</body></html>";
+
+        // Assurez-vous que la méthode envoyerEmailAvecImageInline est adaptée pour gérer plusieurs images (logo et code QR)
+        EmailUtil.envoyerEmailAvecImageInline(emailClient, sujetEmail, contenuEmail, qrCodePath, "qrCode", "C:\\Users\\INFOTEC\\Desktop\\3A\\uml\\Smart_Foody_23-24\\qr_code.png", "logo");
+
+        // Afficher une alerte de succès
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("Commande passée");
+        successAlert.setHeaderText(null);
+        successAlert.setContentText("La commande a été ajoutée avec succès et un e-mail de confirmation a été envoyé.");
+        successAlert.getDialogPane().getStylesheets().add(CommandeClientController.class.getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+        successAlert.getDialogPane().getStyleClass().add("custom-alert");
+        successAlert.showAndWait();
+
+        System.out.println("Commande ajoutée avec succès");
+        panierController.viderPanier(true);
+
+
+    }
+    public static void validCommande2() throws IOException, WriterException, MessagingException {
+        // Récupérer les lignes de commande pour afficher les produits
+        List<LigneCommande> ligneCommandes = affichageProduitsDansCommande();
+        commandeService = new ServiceCommande();
+
+        // URL de votre page Facebook Smart Foody
+        String facebookPageURL = "https://www.facebook.com/smartfoody.tn";
+
+        // Générer le code QR pour la commande avec l'URL de la page Facebook
+        String qrCodePath = "C:\\Users\\INFOTEC\\Desktop\\3A\\uml\\Smart_Foody_23-24\\qr_code.png"; // Remplacer par le chemin où vous souhaitez enregistrer le code QR
+        QRCodeGenerator.generateQRCode(facebookPageURL, 200, 200, qrCodePath);
+
+        // Informations pour l'email
+        // String emailClient = commandeService.emailById(CurrentCommande.getId_client());
+        String emailClient= "sfadhila1234@gmail.com";
+        String sujetEmail = "Confirmation de commande";
+
+        // Modifier le contenuEmail pour inclure le code QR
+        String contenuEmail = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html dir=\"ltr\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\"><head>\n" +
+                "  <meta charset=\"UTF-8\">\n" +
+                "  <meta content=\"width=device-width, initial-scale=1\" name=\"viewport\">\n" +
+                "  <meta name=\"x-apple-disable-message-reformatting\">\n" +
+                "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                "  <meta content=\"telephone=no\" name=\"format-detection\">\n" +
+                "  <title></title>\n" +
+                "  <!--[if (mso 16)]>\n" +
+                "    <style type=\"text/css\">\n" +
+                "    a {text-decoration: none;}\n" +
+                "    </style>\n" +
+                "    <![endif]-->\n" +
+                "  <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->\n" +
+                "  <!--[if gte mso 9]>\n" +
+                "<xml>\n" +
+                "    <o:OfficeDocumentSettings>\n" +
+                "    <o:AllowPNG></o:AllowPNG>\n" +
+                "    <o:PixelsPerInch>96</o:PixelsPerInch>\n" +
+                "    </o:OfficeDocumentSettings>\n" +
+                "</xml>\n" +
+                "<![endif]-->\n" +
+                "  <!--[if !mso]><!-- -->\n" +
+                "  <link href=\"https://fonts.googleapis.com/css2?family=Raleway&display=swap\" rel=\"stylesheet\">\n" +
+                "  <!--<![endif]-->\n" +
+                " <!--[if mso]>\n" +
+                " <style type=\"text/css\">\n" +
+                "     ul {\n" +
+                "  margin: 0 !important;\n" +
+                "  }\n" +
+                "  ol {\n" +
+                "  margin: 0 !important;\n" +
+                "  }\n" +
+                "  li {\n" +
+                "  margin-left: 47px !important;\n" +
+                "  }\n" +
+                "\n" +
+                " </style><![endif]\n" +
+                "--></head>\n" +
+                " <body class=\"body\">\n" +
+                "  <div dir=\"ltr\" class=\"es-wrapper-color\">\n" +
+                "   <!--[if gte mso 9]>\n" +
+                "\t\t\t<v:background xmlns:v=\"urn:schemas-microsoft-com:vml\" fill=\"t\">\n" +
+                "\t\t\t\t<v:fill type=\"tile\" color=\"#eff7f6\"></v:fill>\n" +
+                "\t\t\t</v:background>\n" +
+                "\t\t<![endif]-->\n" +
+                "   <table class=\"es-wrapper\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "    <tbody>\n" +
+                "     <tr>\n" +
+                "      <td class=\"esd-email-paddings\" valign=\"top\">\n" +
+                "       <table cellpadding=\"0\" cellspacing=\"0\" class=\"esd-header-popover es-header\" align=\"center\">\n" +
+                "        <tbody>\n" +
+                "         <tr>\n" +
+                "          <td class=\"esd-stripe\" align=\"center\">\n" +
+                "           <table bgcolor=\"#ffffff\" class=\"es-header-body\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\n" +
+                "            <tbody>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20 es-m-p0b\" align=\"left\">\n" +
+                "               <!--[if mso]><table width=\"560\" cellpadding=\"0\" cellspacing=\"0\"><tr><td width=\"281\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"261\" class=\"es-m-p0r es-m-p20b esd-container-frame\" valign=\"top\" align=\"center\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"left\" class=\"esd-block-image es-p5t es-p5b es-m-txt-c\" style=\"font-size: 0px;\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/guids/CABINET_02d1bc47a643a3e7bfe02b0f41d6cb58a6c2703f13c0ecd11cddd42b47af504e/images/image.png\" alt=\"Logo\" style=\"display:block\" height=\"45\" title=\"Logo\" class=\"adapt-img\"></a></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                  <td class=\"es-hidden\" width=\"20\"></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td><td width=\"128\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"128\" align=\"left\" class=\"esd-container-frame es-m-p20b\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td><td width=\"20\"></td><td width=\"131\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"131\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td></tr></table><![endif]--></td>\n" +
+                "             </tr>\n" +
+                "            </tbody>\n" +
+                "           </table></td>\n" +
+                "         </tr>\n" +
+                "        </tbody>\n" +
+                "       </table>\n" +
+                "       <table class=\"es-content\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\n" +
+                "        <tbody>\n" +
+                "         <tr>\n" +
+                "          <td class=\"esd-stripe\" align=\"center\">\n" +
+                "           <table class=\"es-content-body\" style=\"background-color: #ffffff;\" width=\"600\" cellspacing=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" align=\"center\">\n" +
+                "            <tbody>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure\" align=\"left\">\n" +
+                "               <table cellspacing=\"0\" cellpadding=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td class=\"es-m-p0r esd-container-frame\" width=\"600\" valign=\"top\" align=\"center\">\n" +
+                "                   <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-banner\" style=\"position: relative;\"><a target=\"_blank\"><img src=\"https://eetnmyy.stripocdn.email/content/guids/bannerImgGuid/images/image16788672966342121.png\" title=\"\" alt=\"\" class=\"adapt-img\" width=\"600\" height=\"200\"></a><esd-stored-config-block style=\"display: none;\">\n" +
+                "                       </esd-stored-config-block></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p30t es-p30b es-p20r es-p20l\" align=\"left\" bgcolor=\"#6a994e\" style=\"background-color: #6a994e;\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-text es-p10 es-m-txt-c\"><h3 style=\"color: #ffffff;\">Hello " + commandeService.usernameById(CurrentCommande.getId_client()) + ",</h3></td>\n" +
+                "                     </tr>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-text es-m-txt-c es-p20t\"><p style=\"color: #ffffff;\">Merci pour votre commande récente. Nous sommes heureux de confirmer que nous avons reçu votre commande et qu’elle est en cours de traitement.</p></td>\n" +
+                "                     </tr>\n" +
+                "                     \n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "            </tbody>\n" +
+                "           </table></td>\n" +
+                "         </tr>\n" +
+                "        </tbody>\n" +
+                "       </table>\n" +
+                "       <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-content\" align=\"center\">\n" +
+                "        <tbody>\n" +
+                "         <tr>\n" +
+                "          <td class=\"esd-stripe\" align=\"center\">\n" +
+                "           <table bgcolor=\"#ffffff\" class=\"es-content-body\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\n" +
+                "            <tbody>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p40t es-p30b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-text\"><h1>Récapitulatif de la commande</h1></td>\n" +
+                "                     </tr>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-text es-p40t es-p20r es-p20l es-m-p10t\"><h3 class=\"b_title\">COMMANDE NUM " + CurrentCommande.getId_commande() + "<br>" + CurrentCommande.getDate_commande() + "</h3></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p40b es-p20r es-p20l\" align=\"left\">\n" +
+
+                "               <!--[if mso]></td><td width=\"20\"></td><td width=\"345\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                          <td width=\"560\" class=\"esd-container-frame\" align=\"left\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-left:1px solid #386641;border-right:1px solid #386641;border-top:1px solid #386641;border-bottom:1px solid #386641;border-radius: 10px; border-collapse: separate;\">\n" +
+                "                    <tbody>\n" +
+                "                     ";
+
+        for (LigneCommande prod : ligneCommandes) {
+            // Requête SQL pour récupérer les détails du produit à partir de la base de données
+            String requete = "SELECT p.* FROM produit p where  p.ref = ?";
+            try (PreparedStatement pst = cnx.prepareStatement(requete)) {
+                pst.setString(1, prod.getRefProduit());
+                try (ResultSet rs = pst.executeQuery()) {
+                    // Si la requête retourne un résultat, créer un objet Produit
+                    if (rs.next()) {
+                        Produit p = new Produit(
+                                rs.getString("ref"),
+                                rs.getString("marque"),
+                                rs.getString("categorie"),
+                                rs.getFloat("prix"),
+                                rs.getString("image"),
+                                rs.getString("objectif"),
+                                rs.getString("critere")
+                        );
+
+                        contenuEmail += "<tr><td align=\"left\" class=\"esd-block-text es-p25t es-p25b es-p20r es-m-txt-c es-p20l\"><h3 class=\"p_name\" style=\"line-height: 150%;\">" + p.getMarque() + "</h3> <p class=\"p_description\" style=\"line-height: 150%;\">CATEGORY: " + p.getCategorie() + "</p>  <p style=\"line-height: 150%;\">QTY:&nbsp;" + prod.getQuantite() + "</p> <h3 style=\"line-height: 150%;\" class=\"p_price\"> " + p.getPrix() + "dt</h3></td> </tr>\n";
+                    }
+                }
+            } catch (SQLException e) {
+                // Gérer les erreurs liées à l'affichage du produit dans le panier
+                System.out.println("Erreur lors de l'affichage du produit dans le panier : " + e.getMessage());
+            }
+        }
+        contenuEmail += " " +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td></tr></table><![endif]--></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p40b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <!--[if mso]><table width=\"560\" cellpadding=\"0\" cellspacing=\"0\"><tr><td width=\"195\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"195\" align=\"left\" class=\"esd-container-frame es-m-p20b\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td><td width=\"20\"></td><td width=\"345\" valign=\"top\"><![endif]-->\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                      \n" +
+                "                  <td width=\"345\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-left:1px solid #386641;border-right:1px solid #386641;border-top:1px solid #386641;border-bottom:1px solid #386641;border-radius: 10px; border-collapse: separate;\">\n" +
+                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
+                "                      </tr></tbody></table>\n" +
+                "                  </td>\n" +
+                "              \n" +
+                "                      \n" +
+                "              </tr>\n" +
+                "                </tbody>\n" +
+                "               </table>\n" +
+                "               <!--[if mso]></td></tr></table><![endif]--></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p40t es-p30b es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-text\"><h1>Total de la commande</h1></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20 esdev-adapt-off\" align=\"left\">\n" +
+                "               <table width=\"560\" cellpadding=\"0\" cellspacing=\"0\" class=\"esdev-mso-table\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td class=\"esdev-mso-td\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td width=\"270\" class=\"esd-container-frame\" align=\"left\">\n" +
+                "                       <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "                          <td align=\"left\" class=\"esd-block-text\"><p>Sous-total <br>Remise</p></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                  <td width=\"20\"></td>\n" +
+                "                  <td class=\"esdev-mso-td\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td width=\"270\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                       <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "<td align=\"right\" class=\"esd-block-text\"><p>" + CurrentCommande.getTotal_commande()  / CurrentCommande.getRemise() + " dt<br>%";
+
+        DecimalFormat decimalFormat = new DecimalFormat("#");
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+        String remiseText = decimalFormat.format(CurrentCommande.getRemise() * 100) ;
+        contenuEmail += remiseText;
+        contenuEmail += "</p></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20r es-p20l\" align=\"left\">\n" +
+                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td align=\"center\" class=\"esd-block-spacer es-p5t es-p5b\" style=\"font-size:0\">\n" +
+                "                       <table border=\"0\" width=\"100%\" height=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "                          <td style=\"border-bottom: 5px dotted #a7c957; background: unset; height: 1px; width: 100%; margin: 0px;\"></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                 </tr>\n" +
+                "                </tbody>\n" +
+                "               </table></td>\n" +
+                "             </tr>\n" +
+                "             <tr>\n" +
+                "              <td class=\"esd-structure es-p20 esdev-adapt-off\" align=\"left\">\n" +
+                "               <table width=\"560\" cellpadding=\"0\" cellspacing=\"0\" class=\"esdev-mso-table\">\n" +
+                "                <tbody>\n" +
+                "                 <tr>\n" +
+                "                  <td class=\"esdev-mso-td\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td width=\"270\" class=\"esd-container-frame\" align=\"left\">\n" +
+                "                       <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "                          <td align=\"left\" class=\"esd-block-text es-m-txt-l\"><h3>Total</h3></td>\n" +
+                "                         </tr>\n" +
+                "                        </tbody>\n" +
+                "                       </table></td>\n" +
+                "                     </tr>\n" +
+                "                    </tbody>\n" +
+                "                   </table></td>\n" +
+                "                  <td width=\"20\"></td>\n" +
+                "                  <td class=\"esdev-mso-td\" valign=\"top\">\n" +
+                "                   <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
+                "                    <tbody>\n" +
+                "                     <tr>\n" +
+                "                      <td width=\"270\" align=\"left\" class=\"esd-container-frame\">\n" +
+                "                       <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
+                "                        <tbody>\n" +
+                "                         <tr>\n" +
+                "                          <td align=\"right\" class=\"esd-block-text es-m-txt-r\"><h3>" + CurrentCommande.getTotal_commande() + "dt</h3></td>\n" +
                 "                         </tr>\n" +
                 "                        </tbody>\n" +
                 "                       </table></td>\n" +
