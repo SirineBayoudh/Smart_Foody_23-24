@@ -382,12 +382,20 @@ public class CommandeClientController{
         List<LigneCommande> ligneCommandes = affichageProduitsDansCommande();
         commandeService = new ServiceCommande();
 
-        // URL de votre page Facebook Smart Foody
-        String facebookPageURL = "https://www.facebook.com/smartfoody.tn";
+        StringBuilder qrCodeInfoBuilder = new StringBuilder();
+        qrCodeInfoBuilder.append("Commande Numéro: ").append(CurrentCommande.getId_commande()).append("\n");
+        qrCodeInfoBuilder.append("Date: ").append(CurrentCommande.getDate_commande()).append("\n");
+        for (LigneCommande ligne : ligneCommandes) {
+            qrCodeInfoBuilder.append("Produit: ").append(ligne.getRefProduit()) // Assumer que getNomProduit() récupère le nom du produit
+                    .append(", Quantité: ").append(ligne.getQuantite())
+                    .append(", Prix: ").append(CurrentCommande.getTotal_commande()).append("€\n"); // Assumer que getPrix() récupère le prix
+        }
+        qrCodeInfoBuilder.append("Total: ").append(CurrentCommande.getTotal_commande_devise()).append("€");
 
-        // Générer le code QR pour la commande avec l'URL de la page Facebook
-        String qrCodePath = "C:\\Users\\INFOTEC\\Desktop\\3A\\uml\\Smart_Foody_23-24\\qr_code.png"; // Remplacer par le chemin où vous souhaitez enregistrer le code QR
-        QRCodeGenerator.generateQRCode(facebookPageURL, 200, 200, qrCodePath);
+        // Générer le QR Code avec les informations de la commande
+        String qrCodePath = "C:\\Users\\INFOTEC\\Desktop\\Smart_Foody_23-24\\qr_code.png"; // Spécifiez le chemin où enregistrer le QR Code
+        QRCodeGenerator.generateQRCode(qrCodeInfoBuilder.toString(), 200, 200, qrCodePath);
+
 
         // Informations pour l'email
         // String emailClient = commandeService.emailById(CurrentCommande.getId_client());
@@ -1014,7 +1022,7 @@ public class CommandeClientController{
                 "                       <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-table-not-adapt es-social\">\n" +
                 "                        <tbody>\n" +
                 "                         <tr>\n" +
-                "                          <td align=\"center\" valign=\"top\" class=\"es-p20r\"><a target=\"_blank\" href=\'" + facebookPageURL + "'\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png\" alt=\"Fb\" title=\"Facebook\" height=\"24\"></a></td>\n" +
+                "                          <td align=\"center\" valign=\"top\" class=\"es-p20r\"><a target=\"_blank\" href=\'" + qrCodeInfoBuilder + "'\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png\" alt=\"Fb\" title=\"Facebook\" height=\"24\"></a></td>\n" +
                 "                          <td align=\"center\" valign=\"top\" class=\"es-p20r\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/x-logo-black.png\" alt=\"X\" title=\"X.com\" height=\"24\"></a></td>\n" +
                 "                          <td align=\"center\" valign=\"top\" class=\"es-p20r\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/youtube-logo-black.png\" alt=\"Yt\" title=\"Youtube\" height=\"24\"></a></td>\n" +
                 "                          <td align=\"center\" valign=\"top\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/assets/img/social-icons/logo-black/instagram-logo-black.png\" alt=\"Ig\" title=\"Instagram\" height=\"24\"></a></td>\n" +
@@ -1070,7 +1078,7 @@ public class CommandeClientController{
                 "</body></html>";
 
         // Assurez-vous que la méthode envoyerEmailAvecImageInline est adaptée pour gérer plusieurs images (logo et code QR)
-        EmailUtil.envoyerEmailAvecImageInline(emailClient, sujetEmail, contenuEmail, qrCodePath, "qrCode", "C:\\Users\\INFOTEC\\Desktop\\3A\\uml\\Smart_Foody_23-24\\qr_code.png", "logo");
+        EmailUtil.envoyerEmailAvecImageInline(emailClient, sujetEmail, contenuEmail, qrCodePath, "qrCode", "C:\\Users\\INFOTEC\\Desktop\\Smart_Foody_23-24\\qr_code.png", "logo");
 
         // Afficher une alerte de succès
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -1095,7 +1103,7 @@ public class CommandeClientController{
         String facebookPageURL = "https://www.facebook.com/smartfoody.tn";
 
         // Générer le code QR pour la commande avec l'URL de la page Facebook
-        String qrCodePath = "C:\\Users\\INFOTEC\\Desktop\\3A\\uml\\Smart_Foody_23-24\\qr_code.png"; // Remplacer par le chemin où vous souhaitez enregistrer le code QR
+        String qrCodePath = "C:\\Users\\INFOTEC\\Desktop\\Smart_Foody_23-24\\qr_code.png"; // Remplacer par le chemin où vous souhaitez enregistrer le code QR
         QRCodeGenerator.generateQRCode(facebookPageURL, 200, 200, qrCodePath);
 
         // Informations pour l'email

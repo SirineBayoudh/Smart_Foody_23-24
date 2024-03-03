@@ -4,7 +4,7 @@ module com.example.demo {
 
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
-    requires javax.mail.api;
+    //requires javax.mail.api;
    // requires stripe.java;
     requires javafx.web;
     requires org.apache.poi.ooxml;
@@ -18,6 +18,7 @@ module com.example.demo {
     requires activation;
     requires com.google.gson;
     requires stripe.java;
+    requires java.mail;
     // requires com.google.gson;
 
 

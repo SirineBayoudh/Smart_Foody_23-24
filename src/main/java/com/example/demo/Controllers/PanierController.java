@@ -70,10 +70,11 @@ public class PanierController {
 
     // Méthode d'initialisation
     public void initialize() {
-        afficherProduits();
         int nombreProduits = obtenirNombreProduitsDansLePanier();
         btnViderPanier.setDisable(nombreProduits == 0);
         btnValiderCommande.setDisable(nombreProduits == 0);
+        afficherProduits();
+
     }
 
     // CRUD (Create, Read, Update, Delete) Operations

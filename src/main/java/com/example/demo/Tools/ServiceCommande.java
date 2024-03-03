@@ -22,6 +22,38 @@ public class ServiceCommande implements IServiceCommande<Commande> {
     public ServiceCommande() {
         cnx = MyConnection.getInstance().getCnx();
     }
+    public List<Commande> commandeByClient (int clientId){
+        List<Commande> commandes = new ArrayList<>();
+
+        String requete = "SELECT * FROM commande c where c.id_client=? ";
+
+        try (PreparedStatement pst = cnx.prepareStatement(requete)) {
+            pst.setInt(1, clientId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                // Parcourir les résultats de la requête
+                while (rs.next()) {
+                    Commande commande = new Commande();
+                    commande.setId_commande(rs.getInt("id_commande"));
+                    commande.setDate_commande(rs.getDate("date_commande"));
+                    commande.setId_client(rs.getInt("id_client"));
+                    commande.setTotal_commande(rs.getFloat("totalecommande"));
+                    commande.setRemise(rs.getFloat("remise"));
+                    commande.setEtat(rs.getString("etat"));
+                    // Fetch the username using the serviceCommande.usernameById method
+                    String username = usernameById(rs.getInt("id_client"));
+                    commande.setClientUsername(username);
+                    commandes.add(commande);
+                }
+            }
+        } catch (SQLException e) {
+            // Gérer les erreurs liées à la récupération des produits dans le panier
+            System.out.println("Erreur lors de l'affichage des produits dans le panier : " + e.getMessage());
+        }
+
+        // Retourner la liste des lignes de commande des produits
+        return commandes;
+    }
 
 
 
