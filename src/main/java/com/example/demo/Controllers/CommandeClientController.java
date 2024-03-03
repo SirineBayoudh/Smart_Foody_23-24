@@ -356,14 +356,10 @@ public class CommandeClientController{
     public void ajouterCommande() throws IOException, WriterException, MessagingException {
         if (!payOnDeliveryCheckBox.isSelected()) {
             payer();
-//            try {
-//                // Mettre en pause l'exécution pendant 50 secondes
-//                Thread.sleep(61000); // 50 secondes en millisecondes
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            validCommande();
-            navbarre();
+
+
+
+
         } else {
             validCommande();
             navbarre();
@@ -899,86 +895,6 @@ public class CommandeClientController{
                 "             <tr>\n" +
                 "              <td class=\"esd-structure es-p40t es-p20b es-p20r es-p20l\" align=\"left\">\n" +
                 "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
-                "                <tbody>\n" +
-                "                 <tr>\n" +
-                "                  <td width=\"560\" class=\"esd-container-frame\" align=\"center\" valign=\"top\">\n" +
-                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
-                "                    <tbody>\n" +
-                "                     <tr>\n" +
-                "                      <td align=\"center\" class=\"esd-block-text\"><h1>Votre information</h1></td>\n" +
-                "                     </tr>\n" +
-                "                    </tbody>\n" +
-                "                   </table></td>\n" +
-                "                 </tr>\n" +
-                "                </tbody>\n" +
-                "               </table></td>\n" +
-                "             </tr>\n" +
-                "             <tr>\n" +
-                "              <td class=\"esd-structure es-p15t es-p15b es-p20r es-p20l\" align=\"left\">\n" +
-                "               <!--[if mso]><table width=\"560\" cellpadding=\"0\" cellspacing=\"0\"><tr><td width=\"129\" valign=\"top\"><![endif]-->\n" +
-                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
-                "                <tbody>\n" +
-                "                 <tr>\n" +
-                "                  <td width=\"109\" class=\"es-m-p20b esd-container-frame\" align=\"left\">\n" +
-                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
-                "                    <tbody>\n" +
-                "                     <tr>\n" +
-                "                      <td align=\"right\" class=\"esd-block-image es-m-txt-c\" style=\"font-size: 0px;\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/guids/CABINET_128e4efa46af80b67022aaf8a3e25095/images/jakenackosif9tk5uykiunsplash_1_3_eWU.png\" alt=\"\" style=\"display: block;\" width=\"109\"></a></td>\n" +
-                "                     </tr>\n" +
-                "                    </tbody>\n" +
-                "                   </table></td>\n" +
-                "                  <td class=\"es-hidden\" width=\"20\"></td>\n" +
-                "                 </tr>\n" +
-                "                </tbody>\n" +
-                "               </table>\n" +
-                "               <!--[if mso]></td><td width=\"178\" valign=\"top\"><![endif]-->\n" +
-                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-left\" align=\"left\">\n" +
-                "                <tbody>\n" +
-                "                 <tr>\n" +
-                "                  <td class=\"es-m-p0r esd-container-frame es-m-p20b\" width=\"178\" valign=\"top\" align=\"center\">\n" +
-                "                   <table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">\n" +
-                "                    <tbody>\n" +
-                "                     <tr>\n" +
-                "                      <td align=\"left\" class=\"esd-block-text es-m-txt-c es-p5b es-m-p5t\"><h3>" + commandeService.usernameById(CurrentCommande.getId_client()) + "</h3></td>\n" +
-                "                     </tr>\n" +
-                "                     <tr>\n" +
-                "                      <td align=\"left\" class=\"esd-block-image es-p10t es-m-txt-c\" style=\"font-size: 0px;\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/guids/CABINET_af08f412597e682bf2508636e5fc6513/images/vector_251_Wop.png\" alt=\"Signature\" style=\"display: block;\" width=\"60\" title=\"Signature\"></a></td>\n" +
-                "                     </tr>\n" +
-                "                    </tbody>\n" +
-                "                   </table></td>\n" +
-                "                 </tr>\n" +
-                "                </tbody>\n" +
-                "               </table>\n" +
-                "               <!--[if mso]></td><td width=\"20\"></td><td width=\"233\" valign=\"top\"><![endif]-->\n" +
-                "               <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-right\" align=\"right\">\n" +
-                "                <tbody>\n" +
-                "                 <tr>\n" +
-                "                      \n" +
-                "                  <td width=\"233\" align=\"left\" class=\"esd-container-frame\">\n" +
-                "                      <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
-                "                          <tbody><tr><td align=\"center\" class=\"esd-empty-container\" style=\"display: none\"></td>\n" +
-                "                      </tr></tbody></table>\n" +
-                "                  </td>\n" +
-                "              \n" +
-                "                      \n" +
-                "              </tr>\n" +
-                "                </tbody>\n" +
-                "               </table>\n" +
-                "               <!--[if mso]></td></tr></table><![endif]--></td>\n" +
-                "             </tr>\n" +
-                "             <tr>\n" +
-                "              <td class=\"esd-structure esdev-adapt-off es-p20\" align=\"left\">\n" +
-                "               <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
-                "                <tbody>\n" +
-                "                 <tr>\n" +
-                "                  <td width=\"560\" align=\"left\" class=\"esd-container-frame\">\n" +
-                "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
-                "                    <tbody>\n" +
-                "                     <tr>\n" +
-                "                      <td align=\"left\" class=\"esd-block-text\"><p>Bonjour!\n" +
-                " &nbsp;</p><p>\u200B</p><p>Merci pour votre commande récente. Nous sommes heureux de confirmer que nous avons reçu votre commande et qu’elle est en cours de traitement.</p></td>\n" +
-                "                     </tr>\n" +
-                "                    </tbody>\n" +
                 "                   </table></td>\n" +
                 "                 </tr>\n" +
                 "                </tbody>\n" +
@@ -1085,10 +1001,6 @@ public class CommandeClientController{
                 "                  <td width=\"560\" align=\"left\" class=\"esd-container-frame\">\n" +
                 "                   <table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n" +
                 "                    <tbody>\n" +
-                "                     <tr>\n" +
-                "                      <td align=\"center\" class=\"esd-block-image es-p20b es-m-txt-c\" style=\"font-size: 0px;\"><a target=\"_blank\" href=\"https://viewstripo.email\"><img src=\"https://eetnmyy.stripocdn.email/content/guids/CABINET_02d1bc47a643a3e7bfe02b0f41d6cb58a6c2703f13c0ecd11cddd42b47af504e/images/image.png\" alt=\"Logo\" style=\"display:block\" title=\"Logo\" height=\"50\" class=\"adapt-img\"></a></td>\n" +
-                "                     </tr>\n" +
-                "                     \n" +
                 "                     <tr>\n" +
                 "                      <td align=\"center\" class=\"esd-block-social es-m-txt-c es-p20t es-p20b\" style=\"font-size:0\">\n" +
                 "                       <table cellpadding=\"0\" cellspacing=\"0\" class=\"es-table-not-adapt es-social\">\n" +
@@ -1198,14 +1110,15 @@ public class CommandeClientController{
 
 
     @FXML
-    public void annulerCommande(ActionEvent actionEvent) throws SQLException {
+    public void annulerCommande() throws SQLException {
         commandeService.deleteOne(CurrentCommande.getId_commande());
         try {
-            Parent commandeParent = FXMLLoader.load(getClass().getResource("/com/example/demo/navbarre.fxml"));
-            Scene commandeScene = new Scene(commandeParent);
-            Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            window.setScene(commandeScene);
-            window.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) productsContainer.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

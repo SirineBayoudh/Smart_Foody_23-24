@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import com.example.demo.Models.Commande;
+import com.google.zxing.WriterException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -10,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class PaiementStripeUI extends Application {
@@ -68,12 +71,21 @@ public class PaiementStripeUI extends Application {
             webView.getEngine().locationProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     if (newValue.equals("https://checkout.stripe.com/success")) {
+                        try {
+                            controller.validCommande();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        } catch (WriterException e) {
+                            throw new RuntimeException(e);
+                        } catch (MessagingException e) {
+                            throw new RuntimeException(e);
+                        }
                         // Payment was successful, load the produit.fxml page
                         controller.navbarre();
                     } else if (newValue.equals("https://checkout.stripe.com/cancel")) {
                         // Payment was canceled, call annulerCommande
                         try {
-                            controller.annulerCommande(new ActionEvent());
+                            controller.annulerCommande();
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }

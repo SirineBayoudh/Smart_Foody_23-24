@@ -37,6 +37,7 @@ public class PanierController {
     @FXML
     private Button btnValiderCommande;
 
+
     @FXML
     private Button btnViderPanier;
 
@@ -330,7 +331,7 @@ public class PanierController {
 
 
     /////////////////////// Méthode pour obtenir le nombre de produits dans le panier////////////////////////////
-    private int obtenirNombreProduitsDansLePanier() {
+    int obtenirNombreProduitsDansLePanier() {
         List<LigneCommande> produits = affichageProduitsDansLePanier();
         return produits.size();
     }

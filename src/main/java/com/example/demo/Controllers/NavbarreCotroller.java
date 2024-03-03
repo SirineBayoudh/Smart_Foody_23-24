@@ -81,9 +81,24 @@ public class NavbarreCotroller implements Initializable {
     private void loadPanier() {
         panier.getStyleClass().add("highlighted-basket");
 
-        loadPage("/com/example/demo/panier.fxml");
-        clear();
-    }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/panier.fxml"));
+            try {
+                Parent root = loader.load();
+                PanierController panierController = loader.getController();
+                centerPane.setCenter(root);
+
+                int nbrCommandes = panierController.obtenirNombreProduitsDansLePanier();
+                if (nbrCommandes > 0) {
+                    nbrCommande.setText(String.valueOf(nbrCommandes));
+                    badge.setVisible(true);
+                } else {
+                    badge.setVisible(false);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     public void clear(){
         panier.setStyle("-fx-background-color:#ffffff");
         produit.setStyle("-fx-background-color:#ffffff");
