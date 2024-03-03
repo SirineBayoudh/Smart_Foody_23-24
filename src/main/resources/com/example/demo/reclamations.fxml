@@ -185,12 +185,12 @@
             </VBox>
             <Pane prefHeight="57.0" prefWidth="250.0">
                <children>
-                  <Button fx:id="btnEnvoyerMail" contentDisplay="CENTER" layoutX="50.0" layoutY="7.0" mnemonicParsing="false" onAction="#envoyerMail" prefHeight="30.0" prefWidth="134.0" text="Envoyer">
+                  <Button fx:id="btnEnvoyerMail" contentDisplay="CENTER" layoutX="59.0" layoutY="8.0" mnemonicParsing="false" onAction="#envoyerMail" prefHeight="30.0" prefWidth="134.0" text="Envoyer">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </Button>
-                  <ImageView fitHeight="20.0" fitWidth="26.0" layoutX="67.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="20.0" fitWidth="26.0" layoutX="75.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@ImagesGestionReclamations/enveloppe.png" />
                      </image>
@@ -313,7 +313,7 @@
       </ImageView>
       <Pane fx:id="ensembleReclamations" layoutX="266.0" layoutY="115.0" prefHeight="438.0" prefWidth="702.0" AnchorPane.rightAnchor="0.6000000000000227">
          <children>
-            <TableView fx:id="table1" layoutY="29.0" onMouseClicked="#getData" prefHeight="395.0" prefWidth="690.0">
+            <TableView fx:id="table1" layoutY="46.0" onMouseClicked="#getData" prefHeight="378.0" prefWidth="690.0">
                <columns>
                   <TableColumn fx:id="colIdReclamation1" prefWidth="89.60002136230469" text="ID Réclamation" />
                   <TableColumn fx:id="colIdClient1" prefWidth="88.79998779296875" text="ID Client" />
@@ -331,6 +331,7 @@
                </effect>
             </TableView>
             <Label layoutX="283.0" layoutY="6.0" text="Listes des Réclamations" />
+            <Button fx:id="btnExcel" layoutX="568.0" layoutY="11.0" mnemonicParsing="false" onAction="#exporterExcel" prefHeight="25.0" prefWidth="98.0" text="Export Excel" />
          </children>
       </Pane>
       <Pane fx:id="ensembleArchives" layoutX="265.0" layoutY="115.0" prefHeight="426.0" prefWidth="690.0" visible="false" AnchorPane.rightAnchor="13.600000000000023">

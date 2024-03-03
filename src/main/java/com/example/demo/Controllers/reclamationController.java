@@ -14,13 +14,24 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+
 import javax.mail.MessagingException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
+
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.awt.Desktop;
 public class reclamationController{
 
     @FXML
@@ -133,6 +144,9 @@ public class reclamationController{
     private Button btnEnvoyerMail;
 
     @FXML
+    private Button btnExcel;
+
+    @FXML
     private ImageView Archivebtn;
 
     @FXML
@@ -173,6 +187,9 @@ public class reclamationController{
     @FXML
     private ImageView rechercheIcon;
 
+    @FXML
+    private ImageView micro;
+
     // Connexion à la base de données
     private MyConnection con = null;
     private PreparedStatement st = null;
@@ -180,6 +197,9 @@ public class reclamationController{
 
     // Déclarer un indicateur booléen pour suivre l'état du tri
     boolean triParTypeActif = false;
+
+    ObservableList<Reclamation> reclamations = FXCollections.observableArrayList();
+
 
     @FXML
     void initialize() {
@@ -500,7 +520,6 @@ public class reclamationController{
 
     private ObservableList<Reclamation> getReclamation(int val) {
         // Récupération des réclamations en fonction de leur statut (0: non archivées, 1: archivées)
-        ObservableList<Reclamation> reclamations = FXCollections.observableArrayList();
         String query = "SELECT * FROM reclamation WHERE archive = ?";
         con = MyConnection.getInstance();
         try {
@@ -720,6 +739,76 @@ public class reclamationController{
         }
     }
 
+    public void exporterExcel(ActionEvent event) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Reclamation");
+
+            // Créer l'en-tête
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Id_Réclaamtion");
+            headerRow.createCell(1).setCellValue("Id_client ");
+            headerRow.createCell(2).setCellValue("description");
+            headerRow.createCell(3).setCellValue("titre");
+            headerRow.createCell(4).setCellValue("statut");
+            headerRow.createCell(5).setCellValue("type");
+
+            // Remplir les données
+            int rowNum = 1;
+            for (Reclamation reclamation : reclamations) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(reclamation.getId_reclamation());
+                row.createCell(1).setCellValue(reclamation.getId_client());
+                row.createCell(2).setCellValue(reclamation.getDescription());
+                row.createCell(3).setCellValue(reclamation.getTitre());
+                row.createCell(4).setCellValue(reclamation.getStatut());
+                row.createCell(5).setCellValue(reclamation.getType());
+
+            }
+
+            String fileName = "export.xlsx"; // nom du fichier
+            try (FileOutputStream fileOut = new FileOutputStream(fileName)) {
+                workbook.write(fileOut);
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Export Excel réussi !");
+                openFile(fileName); // passer le nom du fichier à la méthode openFile
+            } catch (IOException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur s'est produite lors de l'export Excel : " + e.getMessage());
+            } finally { try {
+                workbook.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+    private static void openFile(String fileName) {
+        try {
+            File file = new File(fileName);
+
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                Desktop.getDesktop().open(file);
+            } else {
+                System.out.println("Impossible d'ouvrir le fichier. Veuillez le faire manuellement.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erreur lors de l'ouverture du fichier Excel.");
+        }
+
+
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 }
 
 

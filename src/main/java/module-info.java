@@ -6,6 +6,9 @@ module com.example.demo {
     requires java.sql;
     requires javax.mail.api;
     requires activation;
+    requires poi;
+    requires poi.ooxml;
+    requires java.desktop;
 
     opens com.example.demo to javafx.fxml;
     exports com.example.demo;
