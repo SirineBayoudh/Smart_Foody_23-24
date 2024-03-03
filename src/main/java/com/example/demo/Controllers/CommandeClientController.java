@@ -354,17 +354,25 @@ public class CommandeClientController{
     // Méthode appelée lorsque l'utilisateur valide la livraison
     @FXML
     public void ajouterCommande() throws IOException, WriterException, MessagingException {
-        if (!payOnDeliveryCheckBox.isSelected()) {
-            payer();
-
-
-
-
+        // Vérifier si les champs de longitude, latitude et adresse sont vides
+        if (longitude == 0 || latitude == 0 || address.isEmpty()) {
+            // Afficher une boîte de dialogue pour informer que les champs sont vides
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Champs manquants");
+            alert.setContentText("Veuillez sélectionner une adresse sur la carte.");
+            alert.getDialogPane().getStylesheets().add(getClass().getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+            alert.getDialogPane().getStyleClass().add("custom-alert");
+            alert.showAndWait();
         } else {
-            validCommande2();
-            navbarre();
+            if (!payOnDeliveryCheckBox.isSelected()) {
+                payer();
+            } else {
+                validCommande2();
+                navbarre();
+            }
+            panierController.updatecommande();
         }
-        panierController.updatecommande();
     }
 
 
