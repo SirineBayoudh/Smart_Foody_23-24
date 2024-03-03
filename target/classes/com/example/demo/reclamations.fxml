@@ -331,7 +331,7 @@
                </effect>
             </TableView>
             <Label layoutX="283.0" layoutY="6.0" text="Listes des Réclamations" />
-            <Button fx:id="btnExcel" layoutX="568.0" layoutY="11.0" mnemonicParsing="false" onAction="#exporterExcel" prefHeight="25.0" prefWidth="98.0" text="Export Excel" />
+            <Button fx:id="btnExcel" layoutX="538.0" layoutY="11.0" mnemonicParsing="false" onAction="#exporterExcel" prefHeight="25.0" prefWidth="121.0" text="Exporter sur excel" />
          </children>
       </Pane>
       <Pane fx:id="ensembleArchives" layoutX="265.0" layoutY="115.0" prefHeight="426.0" prefWidth="690.0" visible="false" AnchorPane.rightAnchor="13.600000000000023">

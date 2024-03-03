@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane focusTraversable="true" prefHeight="737.0" prefWidth="969.0" styleClass="root" stylesheets="@css/style_admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.reclamationController">
+<AnchorPane fx:id="btnExcel" focusTraversable="true" onDragDetected="#exportExcel" prefHeight="737.0" prefWidth="969.0" styleClass="root" stylesheets="@css/style_admin.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.reclamationController">
    <children>
       <Pane layoutY="-1.0" prefHeight="54.0" prefWidth="969.0" style="-fx-background-color: #19330e;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
@@ -331,7 +331,7 @@
                </effect>
             </TableView>
             <Label layoutX="283.0" layoutY="6.0" text="Listes des Réclamations" />
-            <Button fx:id="btnExcel" layoutX="568.0" layoutY="11.0" mnemonicParsing="false" onAction="#exporterExcel" prefHeight="25.0" prefWidth="98.0" text="Export Excel" />
+            <Button layoutX="538.0" layoutY="11.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Exporter sur excel" />
          </children>
       </Pane>
       <Pane fx:id="ensembleArchives" layoutX="265.0" layoutY="115.0" prefHeight="426.0" prefWidth="690.0" visible="false" AnchorPane.rightAnchor="13.600000000000023">

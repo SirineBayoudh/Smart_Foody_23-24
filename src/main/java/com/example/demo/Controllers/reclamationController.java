@@ -198,7 +198,6 @@ public class reclamationController{
     // Déclarer un indicateur booléen pour suivre l'état du tri
     boolean triParTypeActif = false;
 
-    ObservableList<Reclamation> reclamations = FXCollections.observableArrayList();
 
 
     @FXML
@@ -218,6 +217,7 @@ public class reclamationController{
     @FXML
     void getDataTableArchive(MouseEvent event) {
         // Récupération des données lorsqu'une ligne de la table est sélectionnée
+        ObservableList<Reclamation> list = FXCollections.observableArrayList();
         Reclamation reclamation = table11.getSelectionModel().getSelectedItem();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
@@ -433,55 +433,61 @@ public class reclamationController{
     }
     @FXML
     void rechercherRec(MouseEvent event) {
-        // Requête SQL pour récupérer les détails de la réclamation selon l'ID
-        String req = "SELECT * FROM reclamation WHERE id_reclamation=? ";
-        con = MyConnection.getInstance();
-        try {
-            st = con.getCnx().prepareStatement(req);
-            if (!tfRechercher.getText().isEmpty() && isInteger(tfRechercher.getText())) {
-                st.setInt(1, Integer.parseInt(tfRechercher.getText()));
-                rs = st.executeQuery();
-                ObservableList<Reclamation> reclamations = FXCollections.observableArrayList();
-                ObservableList<Reclamation> reclamationsArchives = FXCollections.observableArrayList();
-                while (rs.next()) {
-                    Reclamation reclamation = new Reclamation();
-                    reclamation.setId_reclamation(rs.getInt("id_reclamation"));
-                    reclamation.setId_client(rs.getInt("id_client"));
-                    reclamation.setDescription(rs.getString("description"));
-                    reclamation.setTitre(rs.getString("titre"));
-                    reclamation.setStatut(rs.getString("statut"));
-                    reclamation.setType(rs.getString("type"));
-                    reclamation.setDate_reclamation(rs.getDate("date_reclamation"));
+        // Vérification que tfRechercher est non null
+        if (tfRechercher != null) {
+            // Requête SQL pour récupérer les détails de la réclamation selon l'ID
+            String req = "SELECT * FROM reclamation WHERE id_reclamation=? ";
+            con = MyConnection.getInstance();
+            try {
+                st = con.getCnx().prepareStatement(req);
+                if (isInteger(tfRechercher.getText())) {
+                    st.setInt(1, Integer.parseInt(tfRechercher.getText()));
+                    rs = st.executeQuery();
+                    ObservableList<Reclamation> reclamations = FXCollections.observableArrayList();
+                    ObservableList<Reclamation> reclamationsArchives = FXCollections.observableArrayList();
+                    while (rs.next()) {
+                        Reclamation reclamation = new Reclamation();
+                        reclamation.setId_reclamation(rs.getInt("id_reclamation"));
+                        reclamation.setId_client(rs.getInt("id_client"));
+                        reclamation.setDescription(rs.getString("description"));
+                        reclamation.setTitre(rs.getString("titre"));
+                        reclamation.setStatut(rs.getString("statut"));
+                        reclamation.setType(rs.getString("type"));
+                        reclamation.setDate_reclamation(rs.getDate("date_reclamation"));
 
-                    int etat = rs.getInt("archive");
+                        int etat = rs.getInt("archive");
 
-                    // Afficher les résultats dans la table
-                    if (etat == 0) {
-                        reclamations.add(reclamation);
-                    } else {
-                        reclamationsArchives.add(reclamation);
+                        // Afficher les résultats dans la table
+                        if (etat == 0) {
+                            reclamations.add(reclamation);
+                        } else {
+                            reclamationsArchives.add(reclamation);
+                        }
                     }
+                    // Définir les éléments dans la table non archivée
+                    table1.setItems(reclamations);
+                    // Définir les éléments dans la table archivée
+                    table11.setItems(reclamationsArchives);
+                } else {
+                    // Si l'entrée n'est pas un nombre valide
+                    afficherAlerte("Recherche", "Veuillez saisir un identifiant existant");
+                    // Recharge la liste des réclamations non archivées
+                    showReclamations();
+                    // Recharge la liste des réclamations archivées
+                    showReclamationsArchivées();
                 }
-                // Définir les éléments dans la table non archivée
-                table1.setItems(reclamations);
-                // Définir les éléments dans la table archivée
-                table11.setItems(reclamationsArchives);
-            } else {
-                // Si l'entrée n'est pas un nombre valide
-                afficherAlerte("Recherche","Veuillez saisir un identifiant existant");
-                // Recharge la liste des réclamations non archivées
-                showReclamations();
-                // Recharge la liste des réclamations archivées
-                showReclamationsArchivées();
+            } catch (SQLException e) {
+                afficherAlerte("Recherche", "Veuillez saisir un Identifiant");
             }
-        } catch (SQLException e) {
-            afficherAlerte("Recherche","Veuillez saisir un Identifiant");
+            tfRechercher.setText(null);
+        } else {
+            showReclamations();
         }
-        tfRechercher.setText(null);
     }
 
 
-    void nombreNotification() {
+
+        void nombreNotification() {
         // Calcul du nombre de réclamations en attente et affichage dans le champ correspondant
         String nbNot = "SELECT COUNT(*) AS nombre_reclamations_attente FROM reclamation WHERE statut = 'Attente' AND archive = 0";
         con = MyConnection.getInstance();
@@ -520,6 +526,7 @@ public class reclamationController{
 
     private ObservableList<Reclamation> getReclamation(int val) {
         // Récupération des réclamations en fonction de leur statut (0: non archivées, 1: archivées)
+        ObservableList<Reclamation> reclamations = FXCollections.observableArrayList();
         String query = "SELECT * FROM reclamation WHERE archive = ?";
         con = MyConnection.getInstance();
         try {
@@ -752,9 +759,12 @@ public class reclamationController{
             headerRow.createCell(4).setCellValue("statut");
             headerRow.createCell(5).setCellValue("type");
 
+            //Remplissage de la liste
+            ObservableList<Reclamation> list = getReclamation(0);
+
             // Remplir les données
             int rowNum = 1;
-            for (Reclamation reclamation : reclamations) {
+            for (Reclamation reclamation : list) {
                 Row row = sheet.createRow(rowNum++);
                 row.createCell(0).setCellValue(reclamation.getId_reclamation());
                 row.createCell(1).setCellValue(reclamation.getId_client());
@@ -762,7 +772,6 @@ public class reclamationController{
                 row.createCell(3).setCellValue(reclamation.getTitre());
                 row.createCell(4).setCellValue(reclamation.getStatut());
                 row.createCell(5).setCellValue(reclamation.getType());
-
             }
 
             String fileName = "export.xlsx"; // nom du fichier
@@ -810,9 +819,6 @@ public class reclamationController{
         alert.showAndWait();
     }
 }
-
-
-
 
 
 
