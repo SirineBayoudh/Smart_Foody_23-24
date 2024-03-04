@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -12,7 +13,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -38,7 +38,7 @@
             </Label>
          </children>
       </Pane>
-      <Pane layoutX="17.0" layoutY="143.0" prefHeight="519.0" prefWidth="910.0">
+      <Pane layoutX="17.0" layoutY="143.0" prefHeight="492.0" prefWidth="887.0" styleClass="pricing-details" stylesheets="@css/style_panier.css">
          <children>
             <DatePicker fx:id="dateCreationInput" disable="true" layoutX="598.0" layoutY="72.0" prefHeight="27.0" prefWidth="206.0" promptText="dateCreationInput" />
             <Label layoutX="311.0" layoutY="75.0" prefHeight="21.0" prefWidth="236.0" text="Date de Creation de Commande">
@@ -141,9 +141,13 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <VBox layoutX="14.0" layoutY="8.0" prefHeight="500.0" prefWidth="255.0" styleClass="product-details" stylesheets="@css/style_panier.css">
+            <VBox prefHeight="492.0" prefWidth="266.0" styleClass="product-details" stylesheets="@css/style_panier.css">
                <children>
-                  <Label prefHeight="41.0" prefWidth="187.0" styleClass="section-title" text="             Votre Commande" />
+                  <Label prefHeight="56.0" prefWidth="242.0" stylesheets="@css/style_commande.css" text="           Achats ">
+                     <styleClass>
+                        <String fx:value="section-title" />
+                        <String fx:value="header-label" />
+                     </styleClass></Label>
                   <ScrollPane prefHeight="423.0" prefWidth="222.0" VBox.vgrow="ALWAYS">
                      <content>
                         <VBox fx:id="productsContainer" spacing="10" />
@@ -151,10 +155,16 @@
                   </ScrollPane>
                </children>
             </VBox>
-            <Line endX="13.70001220703125" endY="561.5" layoutX="276.0" layoutY="-48.0" startX="11.29998779296875" startY="51.100006103515625" />
-            <Line endX="-26.20001220703125" endY="399.6000061035156" layoutX="314.0" layoutY="-397.0" startX="596.0000610351562" startY="399.6000061035156" />
-            <Line endX="8.20001220703125" endY="486.0" layoutX="282.0" layoutY="27.0" startX="627.9999389648438" startY="486.0" />
-            <Line endX="10.99993896484375" endY="478.60003662109375" layoutX="899.0" layoutY="32.0" startX="11.50006103515625" startY="-29.899993896484375" />
+            <Label layoutX="312.0" layoutY="344.0" prefHeight="21.0" prefWidth="99.0" text="Adresse">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Text fx:id="adresseInput" layoutX="471.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="28 rue exemple" wrappingWidth="359.20001220703125">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
 

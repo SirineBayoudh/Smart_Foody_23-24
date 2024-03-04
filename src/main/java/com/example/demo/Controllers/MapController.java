@@ -49,37 +49,55 @@ public class MapController implements Initializable {
 
     @FXML
     private void confirm() throws IOException {
-
+        // Récupérer l'adresse à partir de la div
         WebEngine webEngine = webView.getEngine();
+        String address = (String) webEngine.executeScript("document.getElementById('address').innerText");
 
-        String script = "document.getElementById('latitude').innerText + ',' + document.getElementById('longitude').innerText";
+        // Créer une boîte de dialogue de confirmation
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Confirmation de localisation");
+        confirmationDialog.setHeaderText("Êtes-vous sûr de la localisation suivante ?");
+        confirmationDialog.setContentText(address);
+        confirmationDialog.getDialogPane().getStylesheets().add(CommandeClientController.class.getResource("/com/example/demo/css/style_panier.css").toExternalForm());
+        confirmationDialog.getDialogPane().getStyleClass().add("custom-alert");
 
-        String latLong = (String) webEngine.executeScript(script);
+        // Ajouter les boutons "Oui" et "Non"
+        confirmationDialog.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
 
-        if (latLong != null && !latLong.isEmpty()) {
-            String[] parts = latLong.split(",");
-            if (parts.length == 2) {
-                String latitude = parts[0].trim();
-                String longitude = parts[1].trim();
+        // Afficher la boîte de dialogue et attendre la réponse de l'utilisateur
+        confirmationDialog.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == ButtonType.YES) {
+                // Si l'utilisateur clique sur "Oui", exécuter le code pour sauvegarder les coordonnées et l'adresse
+                String script = "document.getElementById('latitude').innerText + ',' + document.getElementById('longitude').innerText";
+                String latLong = (String) webEngine.executeScript(script);
 
-                // Récupérer l'adresse à partir de la div
-                String address = (String) webEngine.executeScript("document.getElementById('address').innerText");
+                if (latLong != null && !latLong.isEmpty()) {
+                    String[] parts = latLong.split(",");
+                    if (parts.length == 2) {
+                        String latitude = parts[0].trim();
+                        String longitude = parts[1].trim();
 
-                // Passer les coordonnées et l'adresse à la méthode savecoords
-                CommandeClientController commandeClientController=new CommandeClientController();
-                commandeClientController.savecoords(latitude,longitude,address);
+                        // Passer les coordonnées et l'adresse à la méthode savecoords
+                        CommandeClientController commandeClientController = new CommandeClientController();
+                        commandeClientController.savecoords(latitude, longitude, address);
 
-                // Now you can navigate back to commande_client.fxml
-                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/demo/commande_client.fxml")));
-                Scene scene = new Scene(root);
-                Stage currentStage = (Stage) webView.getScene().getWindow();
-                currentStage.setScene(scene);
-            } else {
-                System.err.println("Error parsing latitude and longitude");
+                        // Now you can navigate back to commande_client.fxml
+                        try {
+                            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/demo/commande_client.fxml")));
+                            Scene scene = new Scene(root);
+                            Stage currentStage = (Stage) webView.getScene().getWindow();
+                            currentStage.setScene(scene);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.err.println("Error parsing latitude and longitude");
+                    }
+                } else {
+                    System.err.println("Latitude and longitude not found in HTML");
+                }
             }
-        } else {
-            System.err.println("Latitude and longitude not found in HTML");
-        }
+        });
     }
 
 

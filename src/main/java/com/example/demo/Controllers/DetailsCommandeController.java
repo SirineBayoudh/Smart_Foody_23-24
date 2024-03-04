@@ -70,6 +70,8 @@ public class DetailsCommandeController implements Initializable {
     private Pane clickpane;
     @FXML
     private TextArea clientInput;
+    @FXML
+    private Text adresseInput;
 
     @FXML
     private VBox productsContainer;
@@ -111,6 +113,7 @@ public class DetailsCommandeController implements Initializable {
         LocalDate createdConverted = LocalDate.parse(CurrentCommande.getDate_commande().toString());
         dateCreationInput.setValue(createdConverted);
         clientInput.setText(String.valueOf(commandeService.usernameById(CurrentCommande.getId_client())));
+        adresseInput.setText(quest.getAddress());
 
         DecimalFormat decimalFormat = new DecimalFormat("#");
         decimalFormat.setRoundingMode(RoundingMode.DOWN);
@@ -184,10 +187,10 @@ public class DetailsCommandeController implements Initializable {
                         productsContainer.setStyle("-fx-padding:15px");
 
                         ImageView productImage = new ImageView(new Image(p.getImage()));
-                        productImage.setFitHeight(15);
-                        productImage.setFitWidth(15);
+                        productImage.setFitHeight(30);
+                        productImage.setFitWidth(30);
 
-                        Rectangle clip = new Rectangle(15, 15); // Set the dimensions as needed
+                        Rectangle clip = new Rectangle(30, 30); // Set the dimensions as needed
                         clip.setArcWidth(30); // Adjust the corner radius
                         clip.setArcHeight(30);
                         productImage.setClip(clip);

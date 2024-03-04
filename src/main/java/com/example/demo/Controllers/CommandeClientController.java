@@ -58,7 +58,7 @@ public class CommandeClientController{
     private  VBox productsContainer1;
     static PanierController panierController = new PanierController(); // Création d'une instance de PanierController
 
-    private static final String API_KEY = "2687d76eef6bf2a7b59beecb";
+    private static final String API_KEY = "da81771213450868d6ffe772";
     private static final String BASE_URL = "https://v6.exchangerate-api.com/v6/" + API_KEY;
     public CommandeClientController(PanierController panierController) {
         this.panierController = panierController;
@@ -262,11 +262,11 @@ public class CommandeClientController{
 
                         // Créer et styliser l'image du produit
                         ImageView productImage = new ImageView(new Image(p.getImage()));
-                        productImage.setFitHeight(15);
-                        productImage.setFitWidth(15);
-                        Rectangle clip = new Rectangle(15, 15); // Set the dimensions as needed
-                        clip.setArcWidth(30); // Adjust the corner radius
-                        clip.setArcHeight(30);
+                        productImage.setFitHeight(40);
+                        productImage.setFitWidth(40);
+                        Rectangle clip = new Rectangle(40, 40); // Set the dimensions as needed
+                        clip.setArcWidth(40); // Adjust the corner radius
+                        clip.setArcHeight(40);
                         productImage.setClip(clip);
                         productImage.setEffect(new DropShadow(10, BLACK)); // Adjust the shadow parameters
 
@@ -293,7 +293,7 @@ public class CommandeClientController{
 
                         // Ajouter les éléments graphiques au conteneur productBox
                         productBox.setAlignment(Pos.CENTER);
-                        productBox.setPrefWidth(166);
+                        productBox.setPrefWidth(180);
                         HBox.setHgrow(productBox, Priority.ALWAYS);
                         productBox.getChildren().addAll(productImage, labelProduit, labelProduit1, quantiteTextField);
 

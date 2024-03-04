@@ -153,7 +153,7 @@ public class PanierController {
                         sousTotale[0] += prod.getQuantite() * p.getPrix();
                         recalculate(sousTotale, remise, totale);
 
-                        HBox productBox = new HBox(80);
+                        HBox productBox = new HBox(90);
                         productBox.getStyleClass().add("product-box");
                         productsContainer.setStyle("-fx-padding:15px");
                         ImageView productImage = new ImageView(new Image(p.getImage()));
@@ -584,14 +584,19 @@ public class PanierController {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
 
-        // Define the start and end dates of the sale period
-        LocalDate saleStartDate = LocalDate.of(2024, 2, 1); // February 1, 2024
-        LocalDate saleEndDate = LocalDate.of(2024, 3, 29); // Mars 29, 2024
+        // Define the start and end dates of the summer sale period
+        LocalDate summerSaleStartDate = LocalDate.of(2024, 2, 1); // February 1, 2024
+        LocalDate summerSaleEndDate = LocalDate.of(2024, 3, 29); // March 29, 2024
 
+        // Define the start and end dates of the winter sale period
+        LocalDate winterSaleStartDate = LocalDate.of(2024, 8, 7); // August 7, 2024
+        LocalDate winterSaleEndDate = LocalDate.of(2024, 9, 17); // September 17, 2024
 
-        // Check if the current date is within the sale period
-        return currentDate.isAfter(saleStartDate) && currentDate.isBefore(saleEndDate);
+        // Check if the current date is within either the summer or winter sale period
+        return (currentDate.isAfter(summerSaleStartDate) && currentDate.isBefore(summerSaleEndDate)) ||
+                (currentDate.isAfter(winterSaleStartDate) && currentDate.isBefore(winterSaleEndDate));
     }
+
 
     private Integer nbrCommande(int clientId) {
         String query = "SELECT COUNT(*) AS commande FROM commande WHERE id_client = ?";

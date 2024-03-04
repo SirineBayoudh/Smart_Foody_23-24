@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.ProfileController">
+   <children>
+      <AnchorPane layoutX="-1.0" layoutY="68.0" prefHeight="538.0" prefWidth="1087.0">
+         <children>
+            <AnchorPane layoutY="-7.0" prefHeight="542.0" prefWidth="295.0">
+               <children>
+                  <Label layoutX="5.0" layoutY="-16.0" prefHeight="26.0" prefWidth="76.0" style="-fx-font-weight: bold;" text="Bonjour " translateX="10.0" translateY="25.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="infos" layoutX="5.0" layoutY="-34.0" onMouseClicked="#infosUser" prefHeight="20.0" prefWidth="222.0" style="-fx-font-weight: bold;" text="Données personelles et adresses " translateX="10.0" translateY="120.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="151.0" prefHeight="26.0" prefWidth="199.0" style="-fx-font-weight: bold;" text="Historique des commandes">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="prenomUser" layoutX="78.0" layoutY="80.0" prefHeight="26.0" prefWidth="133.0" style="-fx-font-weight: bold;">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="infosmdp" layoutX="15.0" layoutY="116.0" onMouseClicked="#mdpUser" prefHeight="18.0" prefWidth="186.0" style="-fx-font-weight: bold;" text="Mot de passe">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <BorderPane fx:id="centerPane" layoutX="253.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="507.0" prefWidth="834.0">
+               <top>
+                  <AnchorPane fx:id="infosForm" prefHeight="498.0" prefWidth="798.0" visible="false" BorderPane.alignment="CENTER">
+                     <children>
+                        <VBox layoutX="217.0" layoutY="32.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="433.0" prefWidth="570.0" styleClass="form-container">
+                           <children>
+                              <Label style="-fx-font-weight: bold;" text="Nom" translateX="20.0" translateY="15.0" />
+                              <TextField fx:id="tfnomp" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" />
+                              <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Prénom" translateX="300.0" translateY="-70.0" />
+                              <TextField fx:id="tfprenomp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-83.0" />
+                              <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Email" translateX="20.0" translateY="-85.0" />
+                              <TextField fx:id="tfemailp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-100.0" />
+                              <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Objectif" translateX="300.0" translateY="-170.0" />
+                              <ComboBox fx:id="choixObjectifp" layoutX="10.0" layoutY="544.0" prefWidth="230.0" stylesheets="@css/style_dash.css" translateX="300.0" translateY="-183.0">
+                                 <styleClass>
+                                    <String fx:value="combo-box" />
+                                    <String fx:value="list-cell" />
+                                 </styleClass>
+                              </ComboBox>
+                              <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Genre" translateX="20.0" translateY="-185.0" />
+                              <ComboBox fx:id="choixGenrep" prefWidth="230.0" translateX="20.0" translateY="-200.0">
+                                 <styleClass>
+                                    <String fx:value="combo-box" />
+                                    <String fx:value="list-cell" />
+                                 </styleClass>
+                              </ComboBox>
+                              <TextField fx:id="tfnumtelp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-249.0" />
+                              <Label layoutX="10.0" layoutY="343.0" style="-fx-font-weight: bold;" text="Numéro de téléphone" translateX="300.0" translateY="-317.0" />
+                              <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Ville" translateX="20.0" translateY="-275.0" />
+                              <ComboBox fx:id="choixVillep" layoutX="10.0" layoutY="377.0" prefWidth="230.0" translateX="20.0" translateY="-290.0">
+                                 <styleClass>
+                                    <String fx:value="combo-box" />
+                                    <String fx:value="list-cell" />
+                                 </styleClass>
+                              </ComboBox>
+                              <Label layoutX="10.0" layoutY="509.0" style="-fx-font-weight: bold;" text="Rue" translateX="300.0" translateY="-358.0" />
+                              <TextField fx:id="tfruep" layoutX="10.0" layoutY="544.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-373.0" />
+                              <Button fx:id="btn_modif" maxWidth="-Infinity" mnemonicParsing="false" onAction="#modifierProfil" prefWidth="100.0" text="Modifier" translateX="350.0" translateY="-370.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </top>
+               <left>
+                  <AnchorPane fx:id="pwdForm" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="492.0" prefWidth="684.0" translateX="180.0" translateY="-255.0" visible="false" BorderPane.alignment="CENTER">
+                     <children>
+                        <VBox layoutX="-88.0" prefHeight="312.0" prefWidth="632.0" styleClass="form-container">
+                           <children>
+                              <Label text="Ancien mot de passe" translateX="30.0" translateY="100.0" />
+                              <PasswordField fx:id="ancienMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="100.0" />
+                              <Label text="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
+                              <PasswordField fx:id="nouveauMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
+                              <Button fx:id="modifierMDP" mnemonicParsing="false" onAction="#modifierMDP" text="Modifier" translateX="30.0" translateY="35.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <ImageView fx:id="eyeClosedA" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#Close_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-90.0" />
+                              <ImageView fx:id="eyeOpenA" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="233.0" onMouseClicked="#Open_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-128.0" />
+                              <ImageView fx:id="eyeClosedN" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="233.0" onMouseClicked="#Close_Eye_OnClickN" pickOnBounds="true" preserveRatio="true" translateX="502.0" translateY="-183.0" />
+                              <ImageView fx:id="eyeOpenN" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="280.0" onMouseClicked="#Open_Eye_OnClickN" pickOnBounds="true" preserveRatio="true" translateX="502.0" translateY="-220.0" />
+                              <TextField fx:id="ancienMDPshow" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="-277.0" />
+                              <TextField fx:id="nouveauMDPshow" layoutX="10.0" layoutY="419.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="-327.0" />
+                              <ToggleButton fx:id="histButton" mnemonicParsing="false" onAction="#onPaneClicked" prefHeight="34.0" prefWidth="141.0" text="Historique Commandes" />
+                              <Pane prefHeight="69.0" prefWidth="544.0" />
+                           </children>
+                        </VBox>
+                        <Label fx:id="majus" layoutX="44.0" layoutY="35.0" prefHeight="18.0" prefWidth="67.0" text="1 majuscule" translateX="330.0" translateY="140.0" />
+                        <ImageView fx:id="verif1" fitHeight="16.0" fitWidth="26.0" layoutX="35.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" translateX="320.0" translateY="110.0" visible="false" />
+                        <ImageView fx:id="error1" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="310.0" translateY="100.0" />
+                        <Label fx:id="minuscule" layoutX="54.0" layoutY="45.0" prefHeight="18.0" prefWidth="67.0" text="1 minuscule" translateX="320.0" translateY="150.0" />
+                        <ImageView fx:id="verif2" fitHeight="16.0" fitWidth="26.0" layoutX="45.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" translateX="310.0" translateY="120.0" visible="false" />
+                        <ImageView fx:id="error2" fitHeight="16.0" fitWidth="26.0" layoutX="55.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateX="300.0" translateY="110.0" />
+                        <Label fx:id="special" layoutX="64.0" layoutY="55.0" prefHeight="18.0" prefWidth="100.0" text="1 caractère spécial" translateX="310.0" translateY="160.0" />
+                        <ImageView fx:id="verif3" fitHeight="16.0" fitWidth="26.0" layoutX="55.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true" translateX="300.0" translateY="130.0" visible="false" />
+                        <ImageView fx:id="error3" fitHeight="16.0" fitWidth="26.0" layoutX="65.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" translateX="290.0" translateY="120.0" />
+                        <Label fx:id="longueur" layoutX="74.0" layoutY="65.0" prefHeight="18.0" prefWidth="72.0" text="longueur &gt;8" translateX="300.0" translateY="170.0" />
+                        <ImageView fx:id="verif4" fitHeight="16.0" fitWidth="26.0" layoutX="65.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" translateX="290.0" translateY="140.0" visible="false" />
+                        <ImageView fx:id="error4" fitHeight="16.0" fitWidth="26.0" layoutX="75.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" translateX="280.0" translateY="130.0" />
+                     </children>
+                  </AnchorPane>
+               </left>
+               <center>
+                  <AnchorPane fx:id="detailsCommande" prefHeight="550.0" prefWidth="805.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Pane fx:id="detailsCommandesPane" layoutX="-694.0" layoutY="-543.0" prefHeight="496.0" prefWidth="806.0">
+                           <children>
+                              <VBox fx:id="vboxCommande" prefHeight="499.0" prefWidth="834.0" styleClass="product-details" stylesheets="@css/style_panier.css">
+                                 <children>
+                                    <Label contentDisplay="CENTER" prefHeight="20.0" prefWidth="798.0" styleClass="header-label" stylesheets="@css/style_commande.css" text="                                             Vos Commandes" />
+                                    <ScrollPane prefHeight="423.0" prefWidth="222.0" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <VBox fx:id="productsContainer" spacing="10" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="detailsCommandesPane1" layoutX="-708.0" layoutY="-543.0" prefHeight="496.0" prefWidth="857.0" styleClass="product-details" stylesheets="@css/style_panier.css">
+                           <children>
+                              <DatePicker fx:id="dateCreationInput" disable="true" layoutX="584.0" layoutY="60.0" prefHeight="27.0" prefWidth="206.0" promptText="dateCreationInput" />
+                              <Label layoutX="299.0" layoutY="75.0" prefHeight="21.0" prefWidth="236.0" text="Date de Creation de Commande">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="299.0" layoutY="275.0" prefHeight="21.0" prefWidth="99.0" text="Total en TND">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="totaleInputTnd" layoutX="598.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.000 TND" wrappingWidth="140.0">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="299.0" layoutY="172.0" prefHeight="21.0" prefWidth="99.0" text="Remise">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="remiseInput" layoutX="609.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10%" wrappingWidth="89.0">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="totaleInputEur" layoutX="598.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0.000 $" wrappingWidth="147.0">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="17.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="299.0" layoutY="356.0" prefHeight="21.0" prefWidth="112.0" text="Total en Devise">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <VBox layoutX="1.0" prefHeight="496.0" prefWidth="276.0" styleClass="product-details" stylesheets="@css/style_panier.css">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="394.0" styleClass="header-label" stylesheets="@css/style_commande.css" text="  Votre Commande" />
+                                    <ScrollPane prefHeight="423.0" prefWidth="222.0" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <VBox fx:id="productsContainer1" spacing="10" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </VBox>
+                              <Button layoutX="547.0" layoutY="434.0" mnemonicParsing="false" onAction="#switchButton" prefHeight="30.0" prefWidth="140.0" style="-fx-background-color: #2e7d32;" styleClass="btn_home" text="Retour">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="17.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: white;">
+                                       <image>
+                                          <Image url="@Images/arrow_back.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <stylesheets>
+                                    <URL value="@css/fullpackstyling.css" />
+                                    <URL value="@css/style_dash.css" />
+                                 </stylesheets>
+                              </Button>
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+      <Label fx:id="labelMDP" alignment="CENTER" layoutX="385.0" layoutY="41.0" prefHeight="34.0" prefWidth="352.0" text="Modifier Votre Mot De Passe" textFill="#56ab2f" translateX="150.0" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelDonnees" alignment="CENTER" layoutX="360.0" layoutY="41.0" text="Modifier Vos Données Personnelles" textFill="#56ab2f" translateX="150.0" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="23.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
