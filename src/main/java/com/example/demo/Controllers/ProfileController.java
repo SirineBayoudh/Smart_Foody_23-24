@@ -84,6 +84,7 @@ public class ProfileController {
     }
     private static final String API_KEY = "da81771213450868d6ffe772";
     private static final String BASE_URL = "https://v6.exchangerate-api.com/v6/" + API_KEY;
+    //ici on va mettre id de user connecté
     int idClient = 14;
 
     public void initialize() throws IOException {

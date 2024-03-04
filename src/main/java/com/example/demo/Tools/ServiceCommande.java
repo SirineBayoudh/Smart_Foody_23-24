@@ -74,6 +74,28 @@ public class ServiceCommande implements IServiceCommande<Commande> {
 
     }
 
+    public String emailById(int clientId) {
+        String name = "";
+        String lastname="";
+
+
+        try {
+            String req = "SELECT email FROM utilisateur WHERE id_utilisateur = ?";
+            PreparedStatement ps = cnx.prepareStatement(req);
+            ps.setInt(1, clientId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("nom");
+                lastname = rs.getString("prenom");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ServiceCommande.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return name+" "+lastname;
+
+    }
+
 
     @Override
     public String usernameById(int id) {

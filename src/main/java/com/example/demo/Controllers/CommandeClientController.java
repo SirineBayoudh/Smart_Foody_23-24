@@ -398,7 +398,7 @@ public class CommandeClientController{
 
 
         // Informations pour l'email
-        // String emailClient = commandeService.emailById(CurrentCommande.getId_client());
+        //String emailClient = commandeService.emailById(CurrentCommande.getId_client());
         String emailClient= "sfadhila1234@gmail.com";
         String sujetEmail = "Confirmation de commande";
 
@@ -1107,8 +1107,8 @@ public class CommandeClientController{
         QRCodeGenerator.generateQRCode(facebookPageURL, 200, 200, qrCodePath);
 
         // Informations pour l'email
-        // String emailClient = commandeService.emailById(CurrentCommande.getId_client());
-        String emailClient= "sfadhila1234@gmail.com";
+      // String emailClient = commandeService.emailById(CurrentCommande.getId_client());
+       String emailClient= "sfadhila1234@gmail.com";
         String sujetEmail = "Confirmation de commande";
 
         // Modifier le contenuEmail pour inclure le code QR

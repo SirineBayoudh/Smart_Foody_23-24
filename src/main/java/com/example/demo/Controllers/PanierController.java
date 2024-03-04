@@ -251,23 +251,44 @@ public class PanierController {
 
             confirmationDialog.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    String requete = "DELETE FROM panier";
-                    try (Statement statement = cnx.createStatement()) {
-                        int rowCount = statement.executeUpdate(requete);
+                    // Supprimer le panier et toutes les lignes de commande associées
+                    String requete = "DELETE panier, ligne_commande FROM panier " +
+                            "LEFT JOIN ligne_commande ON panier.id_panier = ligne_commande.id_panier " +
+                            "WHERE panier.id_panier = ?";
+                    try (PreparedStatement pst = cnx.prepareStatement(requete)) {
+                        int idPanier = ajouterProduitAuPanier(14);
+                        pst.setInt(1, idPanier);
+                        int rowCount = pst.executeUpdate();
                         if (rowCount > 0) {
-                            System.out.println("Le panier a été vidé avec succès.");
+                            System.out.println("Le panier et les lignes de commande associées ont été supprimés avec succès.");
                             afficherProduits();
                         } else {
                             System.out.println("Le panier est déjà vide.");
                         }
                     } catch (SQLException e) {
-                        System.out.println("Erreur lors de la suppression des éléments du panier : " + e.getMessage());
+                        System.out.println("Erreur lors de la suppression du panier et des lignes de commande : " + e.getMessage());
                     }
                 } else {
                     System.out.println("Opération annulée.");
                 }
             });
         }
+    }
+
+
+    public List<Integer> obtenirIdsLignesCommandeDuPanier() {
+        List<Integer> idsLignesCommande = new ArrayList<>();
+        String requete = "SELECT id_lc FROM ligne_commande";
+        try (Statement statement = cnx.createStatement();
+             ResultSet resultSet = statement.executeQuery(requete)) {
+            while (resultSet.next()) {
+                int id_lc = resultSet.getInt("id_lc");
+                idsLignesCommande.add(id_lc);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des IDs des lignes de commande du panier : " + e.getMessage());
+        }
+        return idsLignesCommande;
     }
 
 
@@ -305,7 +326,7 @@ public class PanierController {
         } else {
             // Si le panier est vide, afficher un message ou désactiver le bouton ici
             // Par exemple, désactiver le bouton :
-            // boutonViderPanier.setDisable(true);
+             btnViderPanier.setDisable(true);
         }
     }
 
@@ -405,7 +426,9 @@ public class PanierController {
         String address=CommandeClientController.address;
 
         // Requête SQL pour insérer une nouvelle commande dans la base de données
-        String insertCommandeQuery = "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat,longitude,latitude,address) VALUES (?, ?, ?, ?, ?,?,?,?)";
+        String insertCommandeQuery =
+                "INSERT INTO commande (date_commande, id_client, totalecommande, remise, etat,longitude,latitude,address) " +
+                        "VALUES (?, ?, ?, ?, ?,?,?,?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(insertCommandeQuery)) {
             // Spécifier les valeurs des paramètres de la requête
