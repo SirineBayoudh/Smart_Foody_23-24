@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AccueilDashboardController">
+   <children>
+      <AnchorPane layoutX="574.0" layoutY="14.0" prefHeight="222.0" prefWidth="278.0">
+         <children>
+            <AnchorPane layoutY="11.0" prefHeight="200.0" prefWidth="270.0" styleClass="card" stylesheets="@css/style_tableUser.css">
+               <children>
+                  <ImageView fitHeight="78.0" fitWidth="96.0" layoutX="14.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/groupe.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="35.0" layoutY="130.0" text="Total Utilisateurs" textFill="#fffafa">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="totalUsers" alignment="CENTER_RIGHT" layoutX="106.0" layoutY="17.0" prefHeight="18.0" prefWidth="150.0" text="0" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="chart" layoutX="45.0" layoutY="19.0" prefHeight="200.0" prefWidth="478.0">
+         <children>
+            <BarChart fx:id="barChart" layoutX="28.0" layoutY="14.0" prefHeight="186.0" prefWidth="450.0" stylesheets="@css/style_dash.css">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </BarChart>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

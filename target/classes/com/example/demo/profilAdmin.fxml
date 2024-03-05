@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.ProfilAdminController">
+    <AnchorPane layoutX="14.0" layoutY="31.0" prefHeight="498.0" prefWidth="902.0">
+        <children>
+            <BorderPane fx:id="centerPane" layoutX="116.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="507.0" prefWidth="603.0">
+                <top>
+                    <AnchorPane fx:id="infosForm" prefHeight="498.0" prefWidth="649.0" BorderPane.alignment="CENTER">
+                        <children>
+                            <VBox layoutX="47.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="238.0" prefWidth="570.0" styleClass="form-container" stylesheets="@css/style_profil.css">
+                                <children>
+                                    <Label style="-fx-font-weight: bold;" text="Nom" translateX="20.0" translateY="15.0" />
+                                    <TextField fx:id="tfnomp" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" />
+                                    <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Prénom" translateX="300.0" translateY="-70.0" />
+                                    <TextField fx:id="tfprenomp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-83.0" />
+                                    <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Email" translateX="20.0" translateY="-85.0" />
+                                    <TextField fx:id="tfemailp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="20.0" translateY="-100.0" />
+                                    <Label layoutX="10.0" layoutY="10.0" style="-fx-font-weight: bold;" text="Genre" translateX="20.0" translateY="-100.0" />
+                                    <ComboBox fx:id="choixGenrep" prefWidth="230.0" translateX="20.0" translateY="-115.0" />
+                                    <TextField fx:id="tfnumtelp" layoutX="10.0" layoutY="44.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="230.0" translateX="300.0" translateY="-232.0" />
+                                    <Label layoutX="10.0" layoutY="343.0" style="-fx-font-weight: bold;" text="Numéro de téléphone" translateX="300.0" translateY="-299.0" />
+                                    <Button fx:id="modifInfos" maxWidth="-Infinity" mnemonicParsing="false" onAction="#modifierProfil" prefWidth="100.0" text="Modifier" translateX="380.0" translateY="-240.0" />
+                                </children>
+                            </VBox>
+                            <VBox layoutX="54.0" layoutY="234.0" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="212.0" prefWidth="544.0" styleClass="form-container" stylesheets="@css/style_profil.css">
+                                <children>
+                                    <Label text="Ancien mot de passe" translateX="30.0" translateY="100.0" />
+                                    <PasswordField fx:id="ancienMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="100.0" />
+                                    <Label text="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
+                                    <PasswordField fx:id="nouveauMDP" maxWidth="-Infinity" onKeyReleased="#HidePasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="15.0" />
+                                    <Button fx:id="modifierMDP" mnemonicParsing="false" onAction="#modifierMDP" text="Modifier" translateX="400.0" translateY="35.0" />
+                                    <ImageView fx:id="eyeClosedA" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#Close_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-90.0">
+                                        <image>
+                                            <Image url="@Images/visibilite_noir.png" />
+                                        </image>
+                                    </ImageView>
+                                    <ImageView fx:id="eyeOpenA" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="233.0" onMouseClicked="#Open_Eye_OnClickA" pickOnBounds="true" preserveRatio="true" translateX="182.0" translateY="-128.0">
+                                        <image>
+                                            <Image url="@Images/fermer-les-yeux-noir.png" />
+                                        </image>
+                                    </ImageView>
+                                    <ImageView fx:id="eyeClosedN" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="233.0" onMouseClicked="#Close_Eye_OnClickN" pickOnBounds="true" preserveRatio="true" translateX="502.0" translateY="-183.0">
+                                        <image>
+                                            <Image url="@Images/visibilite_noir.png" />
+                                        </image>
+                                    </ImageView>
+                                    <ImageView fx:id="eyeOpenN" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="280.0" onMouseClicked="#Open_Eye_OnClickN" pickOnBounds="true" preserveRatio="true" translateX="502.0" translateY="-220.0">
+                                        <image>
+                                            <Image url="@Images/fermer-les-yeux-noir.png" />
+                                        </image>
+                                    </ImageView>
+                                    <TextField fx:id="ancienMDPshow" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionA" prefWidth="150.0" promptText="Mot de passe actuel" translateX="30.0" translateY="-275.0" />
+                                    <TextField fx:id="nouveauMDPshow" layoutX="10.0" layoutY="419.0" maxWidth="-Infinity" onKeyReleased="#ShowPasswordOnActionN" prefWidth="150.0" promptText="Nouveau mot de passe" translateX="350.0" translateY="-325.0" />
+                                </children>
+                            </VBox>
+                     <Label layoutX="14.0" layoutY="6.0" prefHeight="18.0" prefWidth="266.0" text="Modifier vos informations personnelles" />
+                     <Label layoutX="-10.0" layoutY="252.0" prefHeight="18.0" prefWidth="266.0" text="Modifier votre mot de passe" translateX="30.0" translateY="20.0" />
+                        </children>
+                    </AnchorPane>
+                </top>
+            </BorderPane>
+         <Label layoutX="752.0" layoutY="494.0" onMouseClicked="#logout" prefHeight="18.0" prefWidth="95.0" style="-fx-font-weight: bold;" text="Se déconnecter" />
+        </children>
+    </AnchorPane>
+   <ImageView fitHeight="32.0" fitWidth="43.0" layoutX="727.0" layoutY="518.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@Images/deconnexion.png" />
+      </image>
+   </ImageView>
+</AnchorPane>

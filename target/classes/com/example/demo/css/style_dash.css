@@ -50,3 +50,21 @@
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
 }
+
+
+.objectif1 {
+    -fx-bar-fill: #224412;
+}
+
+.objectif2 {
+    -fx-bar-fill: #33661c;
+}
+
+.objectif3 {
+    -fx-bar-fill: #4d992a;
+}
+
+.objectif4 {
+    -fx-bar-fill: #77bb58;
+}
+
