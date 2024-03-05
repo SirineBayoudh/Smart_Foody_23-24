@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
+<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
 <left>
     <VBox prefHeight="800.0" prefWidth="184.0">
         <children>
@@ -90,7 +90,17 @@
                         <Image url="@Images/service-clients.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btn1" layoutX="17.0" layoutY="230.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="150.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Produits" textFill="WHITE">
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/homme.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="btnProduit" layoutX="17.0" layoutY="230.0" mnemonicParsing="false" onAction="#produit" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Produits" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn11" layoutX="14.0" layoutY="170.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="154.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Utilisateurs" textFill="WHITE" AnchorPane.topAnchor="170.0">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -110,24 +120,14 @@
                         <Image url="@Images/notification.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btnUser" layoutX="16.0" layoutY="172.0" mnemonicParsing="false" onAction="#user" prefHeight="46.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="     Utilisateurs" textFill="#f7f7f7">
+                  <Button fx:id="btnObjectif" layoutX="14.0" layoutY="612.0" mnemonicParsing="false" onAction="#Objectif" prefHeight="44.0" prefWidth="158.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Objectifs" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <ImageView fitHeight="30.0" fitWidth="35.0" layoutX="27.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="33.0" fitWidth="37.0" layoutX="25.0" layoutY="617.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Images/homme.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="btnProfil" layoutX="15.0" layoutY="617.0" mnemonicParsing="false" onAction="#profil" onMouseClicked="#stock" prefHeight="42.0" prefWidth="151.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Profil" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <ImageView fitHeight="24.0" fitWidth="28.0" layoutX="30.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/profil-de-lutilisateur.png" />
+                        <Image url="@Images/goal.png" />
                      </image>
                   </ImageView>
                     <!-- Autres boutons et images... -->
@@ -138,6 +138,6 @@
     </VBox>
 </left>
     <center>
-        <BorderPane fx:id="centerPane" prefHeight="665.0" prefWidth="900.0" />
+        <BorderPane fx:id="centerPane" prefHeight="665.0" prefWidth="747.0" />
     </center>
 </BorderPane>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="637.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.objectifController">
+   <children>
+      <TableView fx:id="ObjectifTableView" layoutX="408.0" layoutY="317.0" prefHeight="288.0" prefWidth="508.0">
+        <columns>
+            <TableColumn fx:id="colIdObj" minWidth="0.0" prefWidth="156.79998779296875" text="ID_obj" />
+          <TableColumn fx:id="colLibelle" prefWidth="172.800048828125" text="Libelle" />
+          <TableColumn fx:id="colCritere" minWidth="0.0" prefWidth="177.5999755859375" text="Critere" />
+        </columns>
+      </TableView>
+      <VBox layoutX="75.0" layoutY="319.0" prefHeight="233.0" prefWidth="250.0" style="-fx-background-color: #56ab2f;" stylesheets="@css/style_pageClient.css">
+         <children>
+            <Label prefHeight="18.0" prefWidth="57.0" text="Libelle" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Label>
+            <ComboBox fx:id="tfLibelle" prefHeight="26.0" prefWidth="211.0" style="-fx-background-color: #ffffff;" styleClass="comboBox" stylesheets="@css/style_pageClient.css">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin></ComboBox>
+            <Label prefHeight="18.0" prefWidth="82.0" text="Critere" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="30.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="14.0" />
+               </font></Label>
+            <CheckBox fx:id="tfCritere1" mnemonicParsing="false" prefHeight="18.0" prefWidth="91.0" text="sans gluten" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="tfCritere2" mnemonicParsing="false" text="sans glucose" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="tfCritere3" mnemonicParsing="false" text="sans lactose" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
+            <CheckBox fx:id="tfCritere4" mnemonicParsing="false" text="protein" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="20.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Cambria" size="12.0" />
+               </font></CheckBox>
+         </children>
+         <styleClass>
+            <String fx:value="chosen-fruit-card" />
+            <String fx:value="shadow" />
+         </styleClass>
+      </VBox>
+      <ButtonBar layoutX="31.0" layoutY="565.0" prefHeight="40.0" prefWidth="339.0">
+        <buttons>
+          <Button fx:id="btnAjouter" mnemonicParsing="false" onAction="#createObjectif" stylesheets="@css/style_pageClient.css" text="Ajouter" textFill="WHITE">
+               <styleClass>
+                  <String fx:value="add-btn" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
+            <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#updateObjectif" stylesheets="@css/style_pageClient.css" text="Modifier" textFill="WHITE">
+               <styleClass>
+                  <String fx:value="add-btn" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
+            <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerObjectif" stylesheets="@css/style_pageClient.css" text="Supprimer" textFill="WHITE">
+               <styleClass>
+                  <String fx:value="add-btn" />
+                  <String fx:value="shadow" />
+               </styleClass>
+               <font>
+                  <Font name="Cambria" size="15.0" />
+               </font></Button>
+        </buttons>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
+      </ButtonBar>
+      <LineChart fx:id="lineChart" layoutX="66.0" layoutY="14.0" prefHeight="278.0" prefWidth="621.0" title="Évolution des critères par Objectif">
+        <xAxis>
+          <CategoryAxis label="Libellé" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Critère" side="LEFT" />
+        </yAxis>
+      </LineChart>
+      <ComboBox fx:id="critereFilterCombobox" layoutX="747.0" layoutY="267.0" onAction="#filterByCritere" prefWidth="150.0" />
+      <Label layoutX="775.0" layoutY="235.0" text="Filtrer par critère : " textFill="#56ab2f" />
+      <Button fx:id="buttonExportPDF" layoutX="773.0" layoutY="174.0" mnemonicParsing="false" onAction="#exportFichierPDF" stylesheets="@css/style_pageClient.css" text="Exporter en PDF" textFill="WHITE">
+         <styleClass>
+            <String fx:value="add-btn" />
+            <String fx:value="shadow" />
+         </styleClass>
+      </Button>
+   </children>
+</AnchorPane>

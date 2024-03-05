@@ -29,12 +29,6 @@ public class dashboardController implements Initializable {
     @FXML
     private Text tt;
 
-    @FXML
-    private Button btnUser;
-
-    @FXML
-    private Button btnProfil;
-
     private boolean isClicked = false;
 
     @FXML
@@ -44,7 +38,9 @@ public class dashboardController implements Initializable {
             tt.setFill(Color.valueOf("#faf6f6"));
             isClicked = false;
         } else {
+            // Changer le fond lors du clic
             tt.setFill(Color.rgb(250, 246, 246, 0.5));
+            // Vous pouvez ajuster les valeurs RGBA selon vos besoins
             isClicked = true;
         }
     }
@@ -58,69 +54,52 @@ public class dashboardController implements Initializable {
 
     @FXML
     public void initialize() {
-
+        // Ajouter un gestionnaire d'événements générique pour réinitialiser l'état
         Parent root = tt.getParent();  // ou récupérez la référence au conteneur principal
         root.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-
+            // Vérifier si l'événement provient d'un bouton
             if (event.getTarget() instanceof Button) {
-                resetState();  // reset etat initial
+                // Réinitialiser l'état normal
+                resetState();
             }
         });
     }
     @FXML
     private void dashboard() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/navbarre.fxml"));
-        try {
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-            //Pour fermer la fenêtre du login
-            Stage loginStage = (Stage) btnUser.getScene().getWindow();
-            loginStage.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            try {
+                Parent navbarreRoot = FXMLLoader.load(getClass().getResource("/com/example/demo/navbarre.fxml"));
+
+                Stage navbarreStage = new Stage();
+                navbarreStage.setScene(new Scene(navbarreRoot));
+                navbarreStage.setHeight(700);
+                navbarreStage.setWidth(1200);
+                navbarreStage.setTitle("Smart foody");
+                navbarreStage.show();
+
+                Stage dashboardStage = (Stage) btn_home.getScene().getWindow();
+                dashboardStage.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-    }
 
     @FXML
     private void stock() {
-        clear();
+
+    }
+    @FXML
+    void produit(ActionEvent event) {
+        loadPage("/com/example/demo/dash_produit.fxml");
     }
     @FXML
     private void user() {
-        clear();
-        btnUser.setTextFill(Color.BLACK);
-        loadPage("/com/example/demo/gestionUser.fxml");
-    }
-    public void clear() {
-        btnUser.setTextFill(Color.WHITE);
-    }
 
+    }
     @FXML
-    void profil(ActionEvent event) {
-        clear();
-        btnUser.setTextFill(Color.BLACK);
-        loadPage("/com/example/demo/profilAdmin.fxml");
+    void Objectif(ActionEvent event) {
+        loadPage("/com/example/demo/objectif.fxml");
     }
-
-    /*@FXML
-    void logout(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/demo/Login.fxml"));
-        try {
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-            //Pour fermer la fenêtre du login
-            Stage loginStage = (Stage) btnLogout.getScene().getWindow();
-            loginStage.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
     private void loadPage(String page) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(page));
@@ -135,6 +114,8 @@ public class dashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+
 
 
 }

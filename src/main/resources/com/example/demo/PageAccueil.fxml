@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.PageAccueilController">
+   <children>
+      <ScrollPane layoutY="58.0" prefHeight="665.0" prefWidth="1202.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1650.0" prefWidth="1202.0">
+               <children>
+                  <HBox fx:id="imageContainer" layoutX="-11.0" prefHeight="370.0" prefWidth="1211.0" />
+                  <VBox fx:id="imagesVbox" layoutX="-1.0" layoutY="832.0" prefHeight="634.0" prefWidth="1202.0" styleClass="carte-sans-bordure">
+                     <stylesheets>
+                        <URL value="@css/style_dash.css" />
+                        <URL value="@css/style_pageClient.css" />
+                     </stylesheets>
+                     <padding>
+                        <Insets left="90.0" right="90.0" />
+                     </padding>
+                  </VBox>
+                  <Label layoutX="467.0" layoutY="411.0" text="Top Catégories " textFill="#56ab2f">
+                     <font>
+                        <Font name="Cambria Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="-1.0" layoutY="473.0" prefHeight="109.0" prefWidth="1202.0" style="-fx-background-color: #ddeed5;">
+                     <children>
+                        <Separator orientation="VERTICAL" prefHeight="155.0" prefWidth="300.0" visible="false" />
+                        <ImageView fx:id="AllProductImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleAllProductImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_all.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="fruitImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleFruitImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_fruit.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="vegImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleVegImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_veg.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="laitImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleLaitierImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_laitier.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="50.0" visible="false" />
+                        <ImageView fx:id="grainImageView" fitHeight="80.0" fitWidth="80.0" onMouseClicked="#handleGrainImageClick" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/categ_grain.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Separator orientation="VERTICAL" prefHeight="156.0" prefWidth="300.0" visible="false" />
+                     </children>
+                  </HBox>
+                  <VBox layoutX="184.0" layoutY="663.0" prefHeight="131.0" prefWidth="458.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="318.0" stylesheets="@css/style_pageClient.css">
+                           <children>
+                              <TextField fx:id="searchResultTextField" prefHeight="25.0" prefWidth="150.0" promptText="Tapez ici pour rechercher" styleClass="transparent" stylesheets="@css/style_pageClient.css">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Separator orientation="VERTICAL" prefHeight="50.0" prefWidth="34.0" visible="false" />
+                              <Button mnemonicParsing="false" onAction="#searchProducts" prefHeight="35.0" prefWidth="75.0" styleClass="search-button" stylesheets="@css/style_pageClient.css" text="Rechercher" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <styleClass>
+                              <String fx:value="search-box" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                        </HBox>
+                        <ListView fx:id="suggestionsListView" prefHeight="80.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <Button layoutX="460.0" layoutY="1523.0" mnemonicParsing="false" onAction="#goToPreviousPage" prefHeight="28.0" prefWidth="85.0" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="Précédent" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="600.0" layoutY="1523.0" mnemonicParsing="false" onAction="#goToNextPage" prefHeight="28.0" prefWidth="85.0" styleClass="add-btn" stylesheets="@css/style_pageClient.css" text="Suivant" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Button>
+                  <ChoiceBox fx:id="categorieChoiceBox" layoutX="776.0" layoutY="691.0" prefHeight="30.0" prefWidth="200.0" styleClass="comboBox" stylesheets="@css/style_pageClient.css" />
+                  <HBox layoutX="-1.0" layoutY="577.0" prefHeight="39.0" prefWidth="1190.0" style="-fx-background-color: #ddeed5;">
+                     <children>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="330.0" />
+                        <Label prefHeight="18.0" prefWidth="29.0" text="Tout" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="94.0" visible="false" />
+                        <Label text="Fruit" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="96.0" visible="false" />
+                        <Label text="Légume" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="84.0" visible="false" />
+                        <Label prefHeight="18.0" prefWidth="45.0" text="Laitier" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="39.0" prefWidth="88.0" visible="false" />
+                        <Label text="Grain" textFill="#56ab2f">
+                           <font>
+                              <Font name="Cambria" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label layoutX="824.0" layoutY="663.0" text="Filre par critère : " textFill="#56ab2f">
+                     <font>
+                        <Font name="Cambria" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
