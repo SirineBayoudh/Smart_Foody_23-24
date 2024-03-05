@@ -149,5 +149,9 @@ public class Stock {
         return coutWithSymbol;
     }
 
+    public int calculateMargin() {
+        return getQuantite() - getNbVendu();
+    }
+
 
 }

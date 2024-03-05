@@ -156,7 +156,7 @@ public class StockController implements Initializable , LanguageObserver{
     @FXML
     private Text Titlebarchart;
     private static final String ACCOUNT_SID = "AC3205c7a8ab040d60ad422ae1d7996405";
-    private static final String AUTH_TOKEN = "";
+    private static final String AUTH_TOKEN = "fb69b0eea44ddd29add1cc1b6025d0ba";
     private static final String FROM_PHONE_NUMBER = "+19497102922";
     private LanguageManager languageManager = LanguageManager.getInstance();
 
@@ -301,11 +301,9 @@ public class StockController implements Initializable , LanguageObserver{
 
         try {
             Connection connection = MyConnection.getInstance().getCnx();
-
-            String selectQuery = "SELECT s.id_s, s.nom, p.ref AS ref_produit, p.marque, lc.id_lc, lc.quantite AS quantite_commandee, s.quantite, s.nbVendu " +
+            String selectQuery = "SELECT s.id_s, s.nom, p.ref AS ref_produit, p.marque, s.quantite, s.nbVendu " +
                     "FROM stock s " +
-                    "JOIN produit p ON s.ref_produit = p.ref " +
-                    "LEFT JOIN ligne_commande lc ON p.ref = lc.ref_produit";
+                    "JOIN produit p ON s.ref_produit = p.ref";
 
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(selectQuery)) {
@@ -315,26 +313,18 @@ public class StockController implements Initializable , LanguageObserver{
                     String nom = resultSet.getString("nom");
                     int refProduit = resultSet.getInt("ref_produit");
                     String marque = resultSet.getString("marque");
-                    int idLigneCommande = resultSet.getInt("id_lc");
-                    int quantiteCommandee = resultSet.getInt("quantite_commandee");
                     int quantiteStock = resultSet.getInt("quantite");
                     int nb_vendu = resultSet.getInt("nbVendu");
-                    // Mettez à jour nb_vendu avec la quantité commandée
-                    mettreAJourNbVendu(idLigneCommande);
 
                     Produit produit = new Produit(refProduit, marque, "category", 0); // Assurez-vous de fournir les valeurs correctes
                     float cout = calculateTotalValue(refProduit);
 
                     Stock stockEntry = new Stock(id_s, produit, quantiteStock, nom, nb_vendu, cout);
                     stockData.add(stockEntry);
-
-                    // Vérifier si la quantité est égale au nombre vendu
-                    if (quantiteStock == nb_vendu) {
-                        // Envoyer un SMS
-                        sendSMS("+21690537252", "Stock terminé : " + stockEntry.getNom());
-                    }
                 }
 
+                // Mettre à jour nbVendu pour tous les produits existants dans la ligne de commande
+                mettreAJourNbVendu(connection);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -343,9 +333,22 @@ public class StockController implements Initializable , LanguageObserver{
         return stockData;
     }
 
+    private void mettreAJourNbVendu(Connection connection) {
+        // Mettre à jour le nbVendu pour tous les produits existants dans la ligne de commande
+        String updateQuery = "UPDATE stock s " +
+                "JOIN (SELECT ref_produit, SUM(quantite) AS totalQuantite FROM ligne_commande GROUP BY ref_produit) lc " +
+                "ON s.ref_produit = lc.ref_produit " +
+                "SET s.nbVendu = lc.totalQuantite";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
-     /*********Fnct si je clique dans le pane j'annule les selectionner *********/
+    /*********Fnct si je clique dans le pane j'annule les selectionner *********/
     @FXML
     private void handlePaneClick(MouseEvent event) {
         // annuler select in the TableView when the Pane is clicked
@@ -363,53 +366,54 @@ public class StockController implements Initializable , LanguageObserver{
 
 
          /************pour mettre a jour le nb vendu , a partir de ligne commande responsable de l'exécution de la mise à jou**********/
-        public void mettreAJourNbVendu(int idLigneCommande) {
-        String updateQuery = "UPDATE stock s " +
-                "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
-                "SET s.nbVendu = lc.quantite " +
-                "WHERE lc.id_lc = ?";   //mettre à jour la colonne nbVendu de la table stock en fonction de la quantité (quantite) de la ligne de commande associée.
+//         public void mettreAJourNbVendu(int idLigneCommande) {
+//             String updateQuery = "UPDATE stock s " +
+//                     "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
+//                     "SET s.nbVendu = s.nbVendu + lc.quantite " +
+//                     "WHERE lc.id_lc = ?";
+//
+//             try {
+//                 Connection connection = MyConnection.getInstance().getCnx();
+//                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+//
+//                 preparedStatement.setInt(1, idLigneCommande);
+//
+//                 int rowsAffected = preparedStatement.executeUpdate();
+//
+//                 if (rowsAffected > 0) {
+//                     System.out.println("Updated nbVendu for id_lc " + idLigneCommande);
+//                     // Now fetch and print the updated nbVendu from the stock entry
+//                     printUpdatedNbVendu(connection, idLigneCommande);
+//                 } else {
+//                     System.out.println("Aucune ligne n'a été modifiée ou la référence produit n'existe pas dans stock");
+//                 }
+//             } catch (SQLException e) {
+//                 e.printStackTrace();
+//             }
+//         }
 
-        try {
-            Connection connection = MyConnection.getInstance().getCnx();
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
-
-            preparedStatement.setInt(1, idLigneCommande);
-
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Updated nbVendu for id_s " + idLigneCommande);
-                // Now fetch and print the updated nbVendu from the stock entry
-                printUpdatedNbVendu(connection, idLigneCommande);
-            } else {
-                System.out.println("aucune ligne a été modifié");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-        /*************printUpdatedNbVendu pour afficher la nouvelle valeur de nbVendu.***************/
-    private void printUpdatedNbVendu(Connection connection, int idLigneCommande) {
-        String selectQuery = "SELECT s.id_s, s.nbVendu " +
-                "FROM stock s " +
-                "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
-                "WHERE lc.id_lc = ?";  //récupérer la nouvelle valeur de nbVendu à partir de la table stock après la mise à jour.
-
-        try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
-            selectStatement.setInt(1, idLigneCommande);
-            ResultSet resultSet = selectStatement.executeQuery();
-
-            if (resultSet.next()) {
-                int id_s = resultSet.getInt("id_s");
-                int nbVendu = resultSet.getInt("nbVendu");
-                System.out.println("Updated nbVendu value for id_s " + id_s + ": " + nbVendu);
-            } else {
-                System.out.println("Failed to fetch updated nbVendu value.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    /*************printUpdatedNbVendu pour afficher la nouvelle valeur de nbVendu.***************/
+//    private void printUpdatedNbVendu(Connection connection, int idLigneCommande) {
+//        String selectQuery = "SELECT s.id_s, s.nbVendu " +
+//                "FROM stock s " +
+//                "JOIN ligne_commande lc ON s.ref_produit = lc.ref_produit " +
+//                "WHERE lc.id_lc = ?";  //récupérer la nouvelle valeur de nbVendu à partir de la table stock après la mise à jour.
+//
+//        try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+//            selectStatement.setInt(1, idLigneCommande);
+//            ResultSet resultSet = selectStatement.executeQuery();
+//
+//            if (resultSet.next()) {
+//                int id_s = resultSet.getInt("id_s");
+//                int nbVendu = resultSet.getInt("nbVendu");
+//                System.out.println("Updated nbVendu value for id_s " + id_s + ": " + nbVendu);
+//            } else {
+//                System.out.println("Failed to fetch updated nbVendu value.");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
         /************calcul cout ***************/
     public float calculateTotalValue(int ref_produit) {
         try {
@@ -532,26 +536,22 @@ public class StockController implements Initializable , LanguageObserver{
         tTotal.setText(String.valueOf(totalValue));
     }
 
-    public static Stock findLowestStock(ObservableList<Stock> stockData) {
-        Stock lowestStock = null;
-        int minQuantity = Integer.MAX_VALUE;
+    public static Stock findLowestMarginStock(ObservableList<Stock> stockData) {
+        Stock lowestMarginStock = null;
+        int minMargin = Integer.MAX_VALUE;
 
         for (Stock stock : stockData) {
-            int quantity = stock.getQuantite();
-            if (quantity < minQuantity) {
-                minQuantity = quantity;
-                lowestStock = new Stock();
-                lowestStock.setId_s(stock.getId_s());
-                lowestStock.setQuantite(stock.getQuantite());
-                lowestStock.setNom(stock.getNom());
-                lowestStock.setNbVendu(stock.getNbVendu());
+            int margin = stock.calculateMargin();
 
+            // Update if the current stock has a smaller margin
+            if (margin < minMargin) {
+                minMargin = margin;
+                lowestMarginStock = stock;
             }
         }
-        return lowestStock;
+
+        return lowestMarginStock;
     }
-
-
 
 
 

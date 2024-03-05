@@ -66,7 +66,7 @@
 .ajouter_stock:pressed {
     -fx-background-color: #86bf91;
     -fx-transition: background-color 0s;
-    -fx-transform: translateY(2px);
+    /*-fx-transform: translateY(2px);*/
 }
 
 
