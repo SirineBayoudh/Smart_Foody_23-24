@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.ScatterChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="clickpane" onMouseClicked="#handlePaneClick" prefHeight="674.0" prefWidth="954.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.StockController">
+    <children>
+        <!-- Le contenu spécifique de votre page de stocks -->
+        <TableView fx:id="stockTableView" layoutX="229.0" layoutY="307.0" onMouseClicked="#getData" prefHeight="324.0" prefWidth="703.0" styleClass="table-row-cell" stylesheets="@css/table-view-sa.css">
+            <columns>
+            <TableColumn fx:id="id_stockColumn" editable="false" prefWidth="103.20001602172852" text="Id Stock" />
+                <TableColumn fx:id="NomColumn" minWidth="20.0" prefWidth="91.199951171875" style="-fx-text-fill: #448825;" text="Nom" />
+                <TableColumn fx:id="refProduitColumn" prefWidth="143.20001220703125" style="-fx-text-fill: #448825;" text="Réference du produits" />
+                <TableColumn fx:id="marqueColumn" style="-fx-text-fill: #448825;" text="Marque" />
+                <TableColumn fx:id="quantiteColumn" prefWidth="77.5999755859375" style="-fx-text-fill: #448825;" text="Quantité" />
+            <TableColumn fx:id="nbVenduColumn" minWidth="0.0" prefWidth="130.39996337890625" style="-fx-text-fill: #448825;" text="Nombre vendus" />
+            <TableColumn fx:id="tTotal" prefWidth="77.79998779296875" style="-fx-text-fill: #448825;" text="cout" />
+
+            </columns>
+<!--            <styleClass>-->
+<!--                <String fx:value="table-cell" />-->
+<!--                <String fx:value="table-row-cell" />-->
+<!--            </styleClass>-->
+        </TableView>
+      <Button fx:id="btnupdate" layoutX="359.0" layoutY="631.0" mnemonicParsing="false" onAction="#UpdateStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+      <Button fx:id="btnsupprimer" layoutX="523.0" layoutY="632.0" mnemonicParsing="false" onAction="#deleteStock" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+        <Button fx:id="btnExporterTout" layoutX="697.0" layoutY="632.0" mnemonicParsing="false" onAction="#exporterToutesLesDonnees" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+
+        <ImageView fitHeight="23.0" fitWidth="35.0" layoutX="373.0" layoutY="635.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/editer.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="35.0" layoutX="533.0" layoutY="636.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/effacer.png" />
+         </image>
+      </ImageView>
+
+      <ImageView fitHeight="23.0" fitWidth="19.0" layoutX="846.0" layoutY="245.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/8666693_search_icon.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="926.0" layoutY="40.0" prefHeight="25.0" prefWidth="57.0" text="Admin" />
+      <ImageView fitHeight="35.0" fitWidth="41.0" layoutX="923.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/thumbnail_image.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="Trecherche" layoutX="688.0" layoutY="243.0" promptText="Rechercher :" />
+      <VBox fx:id="Vboxupdate" layoutX="12.0" layoutY="337.0" prefHeight="216.0" prefWidth="197.0" style="-fx-background-color: #66b343;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="500.0" layoutY="100.0" lineSpacing="1000.0" prefHeight="27.0" prefWidth="86.0" text="Modifier" textAlignment="RIGHT" textFill="WHITE" translateX="50.0">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <Text fill="WHITE" fontSmoothingType="LCD" lineSpacing="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  Id stock  :">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <TextField fx:id="Idfield" alignment="TOP_LEFT" editable="false" mouseTransparent="true" style="-fx-background-color: #eff6ea; -fx-border-color: #bbddab; -fx-border-width: 0 0 2 0;" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text=" Réference du produit :" wrappingWidth="191.32382202148438">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <TextField fx:id="Refield" editable="false" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text=" Quantité  :" wrappingWidth="121.5999984741211">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <TextField fx:id="Qntfield" prefHeight="26.0" prefWidth="181.0" style="-fx-border-width: 15;" />
+         </children>
+      </VBox>
+      <Button fx:id="ajouter_stock" layoutX="209.0" layoutY="255.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="35.0" prefWidth="133.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" />
+      <ImageView fitHeight="28.0" fitWidth="45.0" layoutX="216.0" layoutY="259.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/ajouter.png" />
+         </image>
+      </ImageView>
+      <BarChart fx:id="barchart" layoutX="225.0" layoutY="30.0" prefHeight="192.0" prefWidth="342.0" style="-fx-border-color: #bbddab; -fx-border-width: 2;">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis prefHeight="152.0" prefWidth="43.0" side="LEFT" />
+        </yAxis>
+      </BarChart>
+        <Pane fx:id="pane_1" layoutX="20.0" layoutY="35.0" prefHeight="158.0" prefWidth="191.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+            <children>
+                <Label fx:id="countAllStock" layoutX="78.0" layoutY="79.0" prefHeight="30.0" prefWidth="35.0" text=" 0" textFill="#f2eaea">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            <TextField fx:id="tstTotal" editable="false" layoutX="21.0" layoutY="24.0" prefHeight="35.0" prefWidth="149.0" styleClass="ajouter_stock" stylesheets="@css/style_dash.css" text="  Total de stock">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></TextField>
+            </children>
+        </Pane>
+        <ScatterChart fx:id="scatterChart" layoutX="581.0" layoutY="24.0" prefHeight="198.0" prefWidth="342.0" style="-fx-border-color: #bbddab; -fx-border-width: 3;">
+            <xAxis>
+                <CategoryAxis prefHeight="19.0" prefWidth="264.0" side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis prefHeight="152.0" prefWidth="43.0" side="LEFT" />
+            </yAxis>
+        </ScatterChart>
+        <Button fx:id="btnEuro" layoutX="865.0" layoutY="270.0" mnemonicParsing="false" onAction="#convertCostToEuro" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
+      <ImageView fitHeight="13.0" fitWidth="12.0" layoutX="873.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/euro.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnDollar" layoutX="899.0" layoutY="270.0" mnemonicParsing="false" onAction="#convertCostToDollar" prefHeight="25.0" prefWidth="35.0" style="-fx-background-color: #ffffff;" textFill="WHITE" />
+      <ImageView fitHeight="19.0" fitWidth="19.0" layoutX="908.0" layoutY="273.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/do.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tstdelete" editable="false" layoutX="563.0" layoutY="637.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="supprimer" />
+      <TextField fx:id="tstexport" editable="false" layoutX="721.0" layoutY="637.0" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Exporter Tout" />
+      <TextField fx:id="tstadd" layoutX="255.0" layoutY="261.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Add" />
+      <TextField fx:id="tstsmodif" editable="false" layoutX="405.0" layoutY="637.0" prefHeight="12.0" prefWidth="70.0" style="-fx-background-color: #aad597;" stylesheets="@css/style_dash.css" text="Modifier" />
+      <Text fx:id="qtvendu" boundsType="LOGICAL_VERTICAL_CENTER" layoutX="546.0" layoutY="118.0" rotate="270" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="Nombre Vendus" />
+      <Text fx:id="qtpr_stock" layoutX="650.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantités de produit par stock" />
+      <Text fx:id="qtbarchart" boundsType="LOGICAL_VERTICAL_CENTER" layoutX="213.0" layoutY="118.0" rotate="270" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.0" text="Quantités" />
+      <Text fx:id="Titlebarchart" layoutX="334.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantités de produit par stock" />
+
+
+    </children>
+</Pane>
