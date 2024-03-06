@@ -78,7 +78,12 @@
     -fx-padding: 5;
 }
 
-
+.highlighted-basket {
+    -fx-stroke: green;
+    -fx-stroke-width: 3px;
+    -fx-effect: dropshadow(three-pass-box, green, 10, 0, 0, 0);
+}
 .navbar {
     -fx-background-color: white;
 }
+

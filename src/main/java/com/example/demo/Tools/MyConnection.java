@@ -9,8 +9,6 @@ public class MyConnection {
     public String login="root";
     public String pwd="" ;
     Connection cnx;
-
-    private int userId;
     public static MyConnection instance ;
     private MyConnection()
     {
@@ -30,13 +28,5 @@ public class MyConnection {
             instance=new MyConnection() ;
         }
         return instance ;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 }

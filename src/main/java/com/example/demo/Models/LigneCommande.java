@@ -1,33 +1,38 @@
 package com.example.demo.Models;
 
+
 public class LigneCommande {
-    private int id_lc;
-    private int id_commande;
-    private int quantite ;
-    private int  ref_produit ;
+    private int idLc;
+    private int idPanier;
+    private int quantite;
+    private String refProduit;
 
-    public LigneCommande(int id_lc, int id_commande, int quantite, int ref_produit) {
-        this.id_lc = id_lc;
-        this.id_commande = id_commande;
+    public LigneCommande(int idLc, int idPanier, int quantite, String refProduit, int idCommande) {
+        this.idLc = idLc;
+        this.idPanier = idPanier;
         this.quantite = quantite;
-        this.ref_produit = ref_produit;
+        this.refProduit = refProduit;
     }
 
-    public int getId_lc() {
-        return id_lc;
+    // Getters et setters
+
+
+    public int getIdPanier() {
+        return idPanier;
     }
 
-    public void setId_lc(int id_lc) {
-        this.id_lc = id_lc;
+    public void setIdPanier(int idPanier) {
+        this.idPanier = idPanier;
     }
 
-    public int getId_commande() {
-        return id_commande;
+    public int getIdLc() {
+        return idLc;
     }
 
-    public void setId_commande(int id_commande) {
-        this.id_commande = id_commande;
+    public void setIdLc(int idLc) {
+        this.idLc = idLc;
     }
+
 
     public int getQuantite() {
         return quantite;
@@ -37,21 +42,11 @@ public class LigneCommande {
         this.quantite = quantite;
     }
 
-    public int getRef_produit() {
-        return ref_produit;
+    public String getRefProduit() {
+        return refProduit;
     }
 
-    public void setRef_produit(int ref_produit) {
-        this.ref_produit = ref_produit;
-    }
-
-    @Override
-    public String toString() {
-        return "LigneCommande{" +
-                "id_lc=" + id_lc +
-                ", id_commande=" + id_commande +
-                ", quantite=" + quantite +
-                ", ref_produit=" + ref_produit +
-                '}';
+    public void setRefProduit(String refProduit) {
+        this.refProduit = refProduit;
     }
 }
