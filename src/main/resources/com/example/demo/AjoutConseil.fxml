@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#clear" prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #ddeed5;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.AjoutConseilController">
+    <children>
+        <TextArea fx:id="demandeLabel" layoutX="93.0" layoutY="60.0" prefHeight="90.0" prefWidth="202.0" promptText="Demande" style="-fx-border-color: #232323;" />
+        <!--
+        <Label layoutX="22.0" layoutY="186.0" text="Note :" textFill="#56ab2f">
+            <font>
+                <Font name="System Bold Italic" size="17.0" />
+            </font></Label>
+        <ChoiceBox fx:id="noteChoiceBox" layoutX="126.0" layoutY="185.0" prefHeight="26.0" prefWidth="56.0" style="-fx-background-color: #ffffff; -fx-border-color: #232323; -fx-background-radius: 0; -fx-border-radius: 0;">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="1" />
+                    <String fx:value="2" />
+                    <String fx:value="3" />
+                    <String fx:value="4" />
+                    <String fx:value="5" />
+                </FXCollections>
+            </items>
+        </ChoiceBox>
+        -->
+        <Text fill="#3c7720" layoutX="45.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajout d'une demande de conseil">
+            <font>
+                <Font name="System Bold Italic" size="20.0" />
+            </font>
+        </Text>
+      <Button fx:id="addBtn" layoutX="142.0" layoutY="164.0" mnemonicParsing="false" onAction="#ajoutConseil" prefHeight="38.0" prefWidth="102.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 12, 0, 0, 0);" styleClass="btn" stylesheets="@css/style_dash.css" text="        Ajouter">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <ImageView fitHeight="26.0" fitWidth="40.0" layoutX="154.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/plus.png" />
+         </image>
+      </ImageView>
+        <TableView fx:id="table" layoutX="367.0" layoutY="60.0" onMouseClicked="#getData" prefHeight="198.0" prefWidth="504.0" stylesheets="@css/table_view.css">
+            <columns>
+                <TableColumn fx:id="colidconseil" minWidth="20.0" prefWidth="64.79997253417969" style="-fx-background-color: #66b343;" text="ID Conseil" />
+                <TableColumn fx:id="colstatut" prefWidth="69.5999755859375" style="-fx-background-color: #66b343;" text="Statut" />
+                <TableColumn fx:id="coldemande" prefWidth="104.0" style="-fx-background-color: #66b343;" text="Demande" />
+                <TableColumn fx:id="colreponse" maxWidth="113.5999755859375" prefWidth="113.5999755859375" style="-fx-background-color: #66b343;" text="Réponse" />
+                <TableColumn fx:id="colnote" prefWidth="43.199951171875" style="-fx-background-color: #66b343;" text="Note" />
+                <TableColumn fx:id="coldate" maxWidth="129.5999755859375" prefWidth="101.5999755859375" style="-fx-background-color: #66b343;" text="Date" />
+            </columns>
+         <styleClass>
+            <String fx:value="table-cell" />
+            <String fx:value="table-row-cell" />
+            <String fx:value="table-view" />
+         </styleClass>
+        </TableView>
+      <Text fill="#3c7720" layoutX="483.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des demandes envoyées">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <Pane layoutX="897.0" layoutY="411.0" prefHeight="107.0" prefWidth="246.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+         <children>
+              <Button layoutX="38.0" layoutY="54.0" onAction="#openChatBotWindow" prefHeight="36.0" prefWidth="170.0" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Commencer le chat" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Text fill="WHITE" layoutX="52.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notre ChatBot" wrappingWidth="142.89453125">
+               <font>
+                  <Font name="System Bold Italic" size="20.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="40.0" fitWidth="36.0" layoutX="8.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/chat-bot.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+        <VBox fx:id="vboxUpdate" layoutX="916.0" layoutY="60.0" prefHeight="258.0" prefWidth="208.0" styleClass="pane_1" stylesheets="@css/style_dash.css">
+            <children>
+                <Pane prefHeight="2.0" prefWidth="208.0" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text=" Évaluer le conseiller :">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Text>
+                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Demande : ">
+                    <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="10.0" />
+                    </VBox.margin></Text>
+                <Pane prefHeight="6.0" prefWidth="188.0" />
+                <TextArea fx:id="tDemande" editable="false" prefHeight="101.0" prefWidth="182.0">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin></TextArea>
+                <Pane prefHeight="6.0" prefWidth="208.0" />
+                <Text fill="WHITE" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Note :">
+                    <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets left="10.0" />
+                    </VBox.margin></Text>
+                <Pane prefHeight="8.0" prefWidth="208.0" />
+                <Spinner fx:id="spinnerNote">
+                    <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </VBox.margin>
+                </Spinner>
+            </children>
+        </VBox>
+        <Button fx:id="btnUpdate" layoutX="973.0" layoutY="325.0" mnemonicParsing="false" onAction="#updateConseil" prefHeight="40.0" prefWidth="102.0" styleClass="btn" stylesheets="@css/style_dash.css" text="       Envoyer">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="90.0" fitWidth="26.0" layoutX="985.0" layoutY="332.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/editer.png" />
+         </image>
+      </ImageView>
+        <Button layoutX="655.0" layoutY="304.0" onAction="#searchFood" prefHeight="30.0" prefWidth="85.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 12, 0, 0, 0);" styleClass="btn" stylesheets="@css/style_dash.css" text="Chercher">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <TextArea fx:id="foodLabel" layoutX="520.0" layoutY="304.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="126.0" promptText="Food" style="-fx-border-color: #232323;" />
+      <Text fill="#3c7720" layoutX="485.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calories des aliments (100g)">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="24.0" fitWidth="20.0" layoutX="496.0" layoutY="309.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/8666693_search_icon.png" />
+         </image>
+      </ImageView>
+        <VBox layoutX="83.0" layoutY="223.0" prefHeight="324.0" prefWidth="220.0" spacing="10.0" style="-fx-border-color: #3c7720; -fx-border-width: 2; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <Button onAction="#selectImage" prefHeight="30.0" prefWidth="181.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 12, 0, 0, 0);" styleClass="btn" stylesheets="@css/style_dash.css" text="Insérer code à barres">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets left="2.0" />
+            </VBox.margin></Button>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Code à barres scanné : ">
+            <font>
+               <Font name="Arial" size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets top="15.0" />
+            </VBox.margin></Text>
+            <Text fx:id="barcodeLabel" fill="#3c7720" text="">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font></Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Produit : ">
+            <font>
+               <Font name="Arial" size="14.0" />
+            </font></Text>
+            <Text fx:id="productLabel" fill="#3c7720">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font></Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Marque : ">
+            <font>
+               <Font name="Arial" size="14.0" />
+            </font></Text>
+            <Text fx:id="marqueLabel" fill="#3c7720">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font></Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Informations nutritionnelles :">
+            <font>
+               <Font name="Arial" size="14.0" />
+            </font></Text>
+         <TextArea fx:id="calLabel" editable="false" prefHeight="31.0" prefWidth="175.0">
+            <font>
+               <Font name="System Bold" size="14.0" />
+            </font></TextArea>
+        </VBox>
+      <StackPane fx:id="pane" layoutX="475.0" layoutY="375.0" prefHeight="143.0" prefWidth="286.0">
+         <children>
+            <Text fill="#3c7720" strokeType="OUTSIDE" strokeWidth="0.0" text="Citation de motivation ">
+               <font>
+                  <Font name="System Bold Italic" size="20.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets bottom="105.0" left="10.0" />
+               </StackPane.margin>
+            </Text>
+              <Text fx:id="quoteText" fill="#3c7720" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="211.7999885082245">
+                  <font>
+                      <Font name="System Bold Italic" size="13.0" />
+                  </font>
+               <StackPane.margin>
+                  <Insets left="10.0" top="8.0" />
+               </StackPane.margin>
+              </Text>
+            <ImageView fitHeight="38.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/main.png" />
+               </image>
+               <StackPane.margin>
+                  <Insets bottom="95.0" right="250.0" />
+               </StackPane.margin>
+            </ImageView>
+         </children>
+      </StackPane>
+        <Text fx:id="foodInfoText" fill="#3c7720" layoutX="516.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="341.705078125">
+            <font>
+                <Font name="System Bold Italic" size="14.0" />
+            </font>
+        </Text>
+    </children>
+
+</AnchorPane>
