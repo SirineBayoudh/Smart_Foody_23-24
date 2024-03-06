@@ -50,7 +50,3 @@
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
 }
-
-.carte-sans-bordure {
-    -fx-border-width: 0; /* Supprimer la bordure */
-}

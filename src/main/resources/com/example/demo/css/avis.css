@@ -1,0 +1,35 @@
+/* Style pour le TableView */
+#table1 {
+    -fx-background-color: #eef6ea;
+}
+
+/* Style pour les en-têtes de colonne */
+#table1 Label {
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-text-fill: #ffff;
+    -fx-background-color:  #2b5517   ;
+    -fx-end-margin: 1;
+    -fx-start-margin: 1;
+}
+
+.table-view .column-header {
+    -fx-padding: 0 1.1 0 1.1;
+}
+.table-view .column-header > .label {
+    -fx-padding: 0 0 0 5px;
+}
+
+.btnSupprimer:hover{
+    -fx-background-color: #56AB2F;
+    -fx-font-size: 15px;
+}
+
+.notif{
+    -fx-background-radius: transparent;
+}
+.notif-lb1{
+    -fx-background-color: red;
+    -fx-border-color: transparent;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+}

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,269 +9,124 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--        <?xml version="1.0" encoding="UTF-8"?>-->
-<!--<?import javafx.scene.control.RadioButton?>-->
-<!--<?import javafx.scene.layout.AnchorPane?>-->
-<!--<?import javafx.scene.layout.BorderPane?>-->
-<!--<?import javafx.scene.layout.VBox?>-->
-<!--<?import javafx.scene.image.ImageView?>-->
-<!--<?import javafx.scene.control.Button?>-->
-<!--<?import javafx.scene.text.Font?>-->
-<!--<?import javafx.scene.image.Image?>-->
-<!--<?import javafx.scene.layout.Pane?>-->
-<!--<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">-->
-<!--<left>-->
-<!--    <VBox prefHeight="800.0" prefWidth="184.0">-->
-<!--        <children>-->
-<!--            <AnchorPane fx:id="side_ankerpane" prefHeight="666.0" prefWidth="184.0" styleClass="side_ankerpane" stylesheets="@css/style_dash.css">-->
-<!--                <children>-->
-<!--                    <Pane fx:id="inner_pane" layoutX="7.0" layoutY="14.0" prefHeight="78.0" prefWidth="167.0" styleClass="inner_pane" stylesheets="@css/style_dash.css">-->
-<!--                        <children>-->
-<!--                            <ImageView fitHeight="89.0" fitWidth="100.0" layoutX="32.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                                <image>-->
-<!--                                </image>-->
-<!--                            </ImageView>-->
-<!--                        <ImageView fitHeight="103.0" fitWidth="104.0" layoutX="30.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                           <image>-->
-<!--                              <Image url="@Images/trans_logo.png" />-->
-<!--                           </image>-->
-<!--                        </ImageView>-->
-<!--                        </children>-->
-<!--                    </Pane>-->
-<!--                    <Button fx:id="btn_home" layoutX="15.0" layoutY="118.0" mnemonicParsing="false" onAction="#dashboard" prefHeight="40.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Accueil" textFill="WHITE">-->
-<!--                        <font>-->
-<!--                            <Font size="15.0" />-->
-<!--                        </font>-->
-<!--                    </Button>-->
-<!--                    <Button fx:id="btn" layoutX="15.0" layoutY="288.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Stocks" textFill="WHITE">-->
-<!--                        <font>-->
-<!--                            <Font size="15.0" />-->
-<!--                        </font>-->
-<!--                    </Button>-->
-<!--                  <Button fx:id="btn2" layoutX="13.0" layoutY="403.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="     Conseils" textFill="WHITE">-->
-<!--                     <font>-->
-<!--                        <Font size="15.0" />-->
-<!--                     </font>-->
-<!--                  </Button>-->
-<!--                  <Button fx:id="btn3" layoutX="13.0" layoutY="345.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="46.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="          Commandes" textFill="#f7f7f7">-->
-<!--                     <font>-->
-<!--                        <Font size="15.0" />-->
-<!--                     </font>-->
-<!--                  </Button>-->
-<!--                  <Button fx:id="btn21" layoutX="12.0" layoutY="462.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="38.0" prefWidth="162.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="           Réclamations" textFill="WHITE">-->
-<!--                     <font>-->
-<!--                        <Font size="15.0" />-->
-<!--                     </font>-->
-<!--                  </Button>-->
-<!--                  <Button fx:id="btn22" layoutX="13.0" layoutY="516.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Avis" textFill="WHITE">-->
-<!--                     <font>-->
-<!--                        <Font size="15.0" />-->
-<!--                     </font>-->
-<!--                  </Button>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" />-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/abri.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/en-stock.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="355.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/panier.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="410.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/nutritionniste.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="466.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/fichier.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/service-clients.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/homme.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <Button fx:id="btn1" layoutX="17.0" layoutY="230.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Produits" textFill="WHITE">-->
-<!--                     <font>-->
-<!--                        <Font size="15.0" />-->
-<!--                     </font>-->
-<!--                  </Button>-->
-<!--                  <Button fx:id="btn11" layoutX="14.0" layoutY="170.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="154.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Utilisateurs" textFill="WHITE" AnchorPane.topAnchor="170.0">-->
-<!--                     <font>-->
-<!--                        <Font size="15.0" />-->
-<!--                     </font>-->
-<!--                  </Button>-->
-<!--                  <ImageView fitHeight="30.0" fitWidth="35.0" layoutX="27.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/aliments.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                  <Button fx:id="btn221" layoutX="13.0" layoutY="565.0" mnemonicParsing="false" onAction="#alerte" onMouseClicked="#alerte" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="  Alertes" textFill="WHITE">-->
-<!--                     <font>-->
-<!--                        <Font size="15.0" />-->
-<!--                     </font>-->
-<!--                  </Button>-->
-<!--                  <ImageView fitHeight="24.0" fitWidth="28.0" layoutX="30.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true">-->
-<!--                     <image>-->
-<!--                        <Image url="@Images/notification.png" />-->
-<!--                     </image>-->
-<!--                  </ImageView>-->
-<!--                </children>-->
-<!--                <VBox layoutX="183.0" layoutY="70.0" prefHeight="79.0" prefWidth="156.0" />-->
-<!--                  <RadioButton fx:id="frenchRadioButton" layoutX="18.0" layoutY="583.0" mnemonicParsing="false" onAction="#onFrenchSelected" text="Francais" />-->
-<!--                  <RadioButton fx:id="englishRadioButton" layoutX="21.0" layoutY="622.0" mnemonicParsing="false" onAction="#onEnglishSelected" text="Anglais" />-->
-<!--            </AnchorPane>-->
-<!--        </children>-->
-<!--    </VBox>-->
-<!--</left>-->
-<!--    <center>-->
-<!--        <BorderPane fx:id="centerPane" prefHeight="665.0" prefWidth="747.0" />-->
-<!--    </center>-->
-<!--</BorderPane>-->
+<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
+<left>
+    <VBox prefHeight="800.0" prefWidth="184.0">
+        <children>
+            <AnchorPane fx:id="side_ankerpane" prefHeight="666.0" prefWidth="184.0" styleClass="side_ankerpane" stylesheets="@css/style_dash.css">
+                <children>
+                    <Pane fx:id="inner_pane" layoutX="7.0" layoutY="14.0" prefHeight="78.0" prefWidth="167.0" styleClass="inner_pane" stylesheets="@css/style_dash.css">
+                        <children>
+                            <ImageView fitHeight="89.0" fitWidth="100.0" layoutX="32.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                                <image>
 
-<BorderPane fx:id="r" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="931.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.dashboardController">
-    <left>
-        <VBox prefHeight="800.0" prefWidth="184.0">
-            <children>
-                <AnchorPane fx:id="side_ankerpane" prefHeight="686.0" prefWidth="185.0" styleClass="side_ankerpane" stylesheets="@css/style_dash.css">
-                    <children>
-                        <Pane fx:id="inner_pane" layoutX="7.0" layoutY="14.0" prefHeight="78.0" prefWidth="167.0" styleClass="inner_pane" stylesheets="@css/style_dash.css">
-                            <children>
-                                <ImageView fitHeight="89.0" fitWidth="100.0" layoutX="32.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-
-                                    </image>
-                                </ImageView>
-                                <ImageView fitHeight="103.0" fitWidth="104.0" layoutX="30.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@Images/trans_logo.png" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </Pane>
-                        <Button fx:id="btn_home" layoutX="15.0" layoutY="118.0" mnemonicParsing="false" onAction="#dashboard" prefHeight="40.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Accueil" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="btn" layoutX="15.0" layoutY="288.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Stocks" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="btn2" layoutX="13.0" layoutY="403.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="   Conseils" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="btn3" layoutX="22.0" layoutY="342.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="49.0" prefWidth="162.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Commandes" textFill="#f7f7f7">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="btn21" layoutX="20.0" layoutY="458.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="42.0" prefWidth="160.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="      Réclamations" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="btn22" layoutX="13.0" layoutY="516.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Avis" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/abri.png" />
-                            </image>
+                                </image>
+                            </ImageView>
+                        <ImageView fitHeight="103.0" fitWidth="104.0" layoutX="30.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/trans_logo.png" />
+                           </image>
                         </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/en-stock.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="353.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/panier.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="410.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/nutritionniste.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="466.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/fichier.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/service-clients.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/homme.png" />
-                            </image>
-                        </ImageView>
-                        <Button fx:id="btn1" layoutX="17.0" layoutY="230.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Produits" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="btn11" layoutX="14.0" layoutY="170.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="162.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="      Utilisateurs" textFill="WHITE" AnchorPane.topAnchor="170.0">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <ImageView fitHeight="30.0" fitWidth="35.0" layoutX="27.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/aliments.png" />
-                            </image>
-                        </ImageView>
-                        <Button fx:id="btn221" layoutX="13.0" layoutY="565.0" mnemonicParsing="false" onAction="#alerte" onMouseClicked="#alerte" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="   Alertes" textFill="WHITE">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Button>
-                        <ImageView fitHeight="24.0" fitWidth="28.0" layoutX="30.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/notification.png" />
-                            </image>
-                        </ImageView>
-                        <RadioButton fx:id="frenchRadioButton" layoutX="5.0" layoutY="649.0" mnemonicParsing="false" onAction="#onFrenchSelected" prefHeight="27.0" prefWidth="97.0" text="Français" textFill="WHITE" /> 
-                        <RadioButton fx:id="englishRadioButton" layoutX="94.0" layoutY="651.0" mnemonicParsing="false" onAction="#onEnglishSelected" prefHeight="23.0" prefWidth="87.0" text="Anglais" textFill="WHITE" />
-                  <Button fx:id="btn2211" defaultButton="true" layoutX="17.0" layoutY="613.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="154.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="   Langues" textFill="WHITE">
+                        </children>
+                    </Pane>
+                    <Button fx:id="btn_home" layoutX="15.0" layoutY="118.0" mnemonicParsing="false" onAction="#dashboard" prefHeight="40.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Accueil" textFill="WHITE">
+                        <font>
+                            <Font size="15.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="btn" layoutX="15.0" layoutY="288.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Stocks" textFill="WHITE">
+                        <font>
+                            <Font size="15.0" />
+                        </font>
+                    </Button>
+                  <Button fx:id="btn2" layoutX="13.0" layoutY="403.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="     Conseils" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <ImageView fitHeight="24.0" fitWidth="28.0" layoutX="30.0" layoutY="615.0" pickOnBounds="true" preserveRatio="true">
+                  <Button fx:id="btn3" layoutX="13.0" layoutY="345.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="46.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="          Commandes" textFill="#f7f7f7">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnReclamation" layoutX="12.0" layoutY="462.0" mnemonicParsing="false" onAction="#rec" onMouseClicked="#stock" prefHeight="38.0" prefWidth="162.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="           Réclamations" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnAvis" layoutX="13.0" layoutY="516.0" mnemonicParsing="false" onAction="#avis" onMouseClicked="#stock" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Avis" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Images/langue.png" />
+                        <Image url="@Images/abri.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/en-stock.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="355.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/panier.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="410.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/nutritionniste.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="27.0" layoutY="466.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/fichier.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/service-clients.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="25.0" layoutY="177.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/homme.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="btn1" layoutX="17.0" layoutY="230.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text=" Produits" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn11" layoutX="14.0" layoutY="170.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="43.0" prefWidth="154.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="Utilisateurs" textFill="WHITE" AnchorPane.topAnchor="170.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="30.0" fitWidth="35.0" layoutX="27.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/aliments.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="btn221" layoutX="13.0" layoutY="565.0" mnemonicParsing="false" onAction="#stock" onMouseClicked="#stock" prefHeight="42.0" prefWidth="153.0" style="-fx-background-color: transparent;" styleClass="btn_home" stylesheets="@css/style_dash.css" text="    Alertes" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="24.0" fitWidth="28.0" layoutX="30.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/notification.png" />
+                     </image>
+                  </ImageView>
+                    <!-- Autres boutons et images... -->
+                </children>
 
-                    </children>
-
-                </AnchorPane>
-            </children>
-        </VBox>
-    </left>
+            </AnchorPane>
+        </children>
+    </VBox>
+</left>
     <center>
         <BorderPane fx:id="centerPane" prefHeight="665.0" prefWidth="747.0" />
     </center>
